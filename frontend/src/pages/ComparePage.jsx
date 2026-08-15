@@ -1,13 +1,13 @@
 import { API_BASE } from '../api';
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
-import { Bar, Radar } from 'react-chartjs-2';
+import { Bar } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
   CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend,
-  RadialLinearScale, PointElement, LineElement, Filler,
 } from 'chart.js';
 import CompareTable from '../components/CompareTable';
+import TechRadar from '../components/TechRadar';
 import Verdict from '../components/Verdict';
 import Container from 'react-bootstrap/Container';
 import Card from 'react-bootstrap/Card';
@@ -18,10 +18,9 @@ import Badge from 'react-bootstrap/Badge';
 import Button from 'react-bootstrap/Button';
 import { getProductScore } from '../utils/scores';
 
-ChartJS.register(
-  CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend,
-  RadialLinearScale, PointElement, LineElement, Filler
-);
+// Le radar est rendu par TechRadar (recharts) : seules les échelles du
+// graphique à barres restent à enregistrer côté Chart.js.
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 function ComparePage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -171,23 +170,13 @@ function ComparePage() {
       {activeView === 'radar' && product1 && product2 && (
         <Card className="ct-chart-card mb-5">
           <Card.Body className="p-4">
-            <h3 className="text-center mb-4 fw-bold">Comparaison Radar</h3>
+            <h3 className="text-center mb-2 fw-bold">Comparaison Radar</h3>
+            <p className="text-center text-muted small mb-4">
+              Chaque axe correspond à une caractéristique réellement mesurée,
+              ramenée sur une échelle de 0 à 100.
+            </p>
             <div style={{ maxWidth: '600px', height: '450px', margin: 'auto' }}>
-              <Radar
-                data={{
-                  labels: ['Performance', 'Efficacité', 'Prix/Qualité', 'Features', 'Durabilité'],
-                  datasets: [
-                    { label: product1.name, data: [getProductScore(product1, productType), 75, 70, 80, 72], borderColor: '#3b82f6', backgroundColor: 'rgba(59, 130, 246, 0.2)', borderWidth: 2 },
-                    { label: product2.name, data: [getProductScore(product2, productType), 80, 65, 75, 78], borderColor: '#f59e0b', backgroundColor: 'rgba(245, 158, 11, 0.2)', borderWidth: 2 },
-                  ],
-                }}
-                options={{
-                  responsive: true,
-                  maintainAspectRatio: false,
-                  scales: { r: { beginAtZero: true, max: 100, grid: { color: 'rgba(255,255,255,0.1)' }, ticks: { color: '#94a3b8', backdropColor: 'transparent' }, pointLabels: { color: '#94a3b8' } } },
-                  plugins: { legend: { labels: { color: '#94a3b8' } } },
-                }}
-              />
+              <TechRadar product1={product1} product2={product2} productType={productType} />
             </div>
           </Card.Body>
         </Card>
