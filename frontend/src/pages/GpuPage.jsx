@@ -1,5 +1,4 @@
-import { API_BASE } from '../api';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -11,12 +10,13 @@ import CompareBar from '../components/CompareBar';
 import FilterSidebar from '../components/FilterSidebar';
 import AnimatedPage from '../components/AnimatedPage';
 import LoadingSpinner from '../components/LoadingSpinner';
+import ErrorState from '../components/ErrorState';
+import { useCollection } from '../hooks/useCollection';
 
 function GpuPage() {
   const [searchTerm, setSearchTerm] = useState('');
-  const [gpus, setGpus] = useState([]);
-  const [loading, setLoading] = useState(true);
-  
+  const { data: gpus, loading, error, coldStart, retry } = useCollection('gpus');
+
   const [selectedFilters, setSelectedFilters] = useState({
     brand: [],
     memory_gb: []
@@ -53,20 +53,6 @@ function GpuPage() {
     });
   };
 
-  useEffect(() => {
-    setLoading(true);
-    fetch(`${API_BASE}/gpus`)
-      .then(response => response.json())
-      .then(data => {
-        setGpus(data);
-        setLoading(false);
-      })
-      .catch(error => {
-        console.error("Erreur:", error);
-        setLoading(false);
-      });
-  }, []);
-
   const filteredGpus = gpus.filter(gpu => {
     const searchLower = searchTerm.toLowerCase();
     const matchesSearch = gpu.name.toLowerCase().includes(searchLower) || 
@@ -97,9 +83,11 @@ function GpuPage() {
           <Col md={9}>
             <main>
               {loading ? (
-                <LoadingSpinner message="Chargement des unités de calcul graphique..." />
+                <LoadingSpinner message="Chargement des unités de calcul graphique..." coldStart={coldStart} />
+              ) : error ? (
+                <ErrorState message={error} onRetry={retry} />
               ) : (
-                <ProductList 
+                <ProductList
                   cpus={filteredGpus} 
                   compareList={compareIds}
                   onCompareToggle={handleCompareToggle}

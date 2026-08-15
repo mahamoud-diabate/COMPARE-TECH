@@ -1,5 +1,4 @@
-import { API_BASE } from '../api';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -11,12 +10,13 @@ import CompareBar from '../components/CompareBar';
 import FilterSidebar from '../components/FilterSidebar';
 import AnimatedPage from '../components/AnimatedPage';
 import LoadingSpinner from '../components/LoadingSpinner';
+import ErrorState from '../components/ErrorState';
+import { useCollection } from '../hooks/useCollection';
 
 function TelephonePage() {
   const [searchTerm, setSearchTerm] = useState('');
-  const [telephones, setTelephones] = useState([]);
-  const [loading, setLoading] = useState(true);
-  
+  const { data: telephones, loading, error, coldStart, retry } = useCollection('telephones');
+
   const [selectedFilters, setSelectedFilters] = useState({
     brand: [],
     ram_gb: [],
@@ -59,20 +59,6 @@ function TelephonePage() {
     });
   };
 
-  useEffect(() => {
-    setLoading(true);
-    fetch(`${API_BASE}/telephones`)
-      .then(response => response.json())
-      .then(data => {
-        setTelephones(data);
-        setLoading(false);
-      })
-      .catch(error => {
-        console.error("Erreur:", error);
-        setLoading(false);
-      });
-  }, []);
-
   const filteredTelephones = telephones.filter(tel => {
     const searchLower = searchTerm.toLowerCase();
     const matchesSearch = tel.name.toLowerCase().includes(searchLower) || 
@@ -107,9 +93,11 @@ function TelephonePage() {
           <Col md={9}>
             <main>
               {loading ? (
-                <LoadingSpinner message="Comparaison des smartphones de dernière génération..." />
+                <LoadingSpinner message="Comparaison des smartphones de dernière génération..." coldStart={coldStart} />
+              ) : error ? (
+                <ErrorState message={error} onRetry={retry} />
               ) : (
-                <ProductList 
+                <ProductList
                   cpus={filteredTelephones} 
                   compareList={compareIds}
                   onCompareToggle={handleCompareToggle}

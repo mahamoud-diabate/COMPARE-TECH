@@ -1,5 +1,4 @@
-import { API_BASE } from '../api';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -11,14 +10,15 @@ import CompareBar from '../components/CompareBar';
 import FilterSidebar from '../components/FilterSidebar';
 import AnimatedPage from '../components/AnimatedPage';
 import LoadingSpinner from '../components/LoadingSpinner';
+import ErrorState from '../components/ErrorState';
+import { useCollection } from '../hooks/useCollection';
 
 const AVAILABLE_BRANDS = ["Dell", "Apple", "Asus", "Lenovo", "HP", "Acer", "MSI","Razer"];
 
 function LaptopPage() {
   const [searchTerm, setSearchTerm] = useState('');
-  const [laptops, setLaptops] = useState([]);
-  const [loading, setLoading] = useState(true);
-  
+  const { data: laptops, loading, error, coldStart, retry } = useCollection('laptops');
+
   const [selectedFilters, setSelectedFilters] = useState({
     brand: [],
     ram_gb: [],
@@ -61,20 +61,6 @@ function LaptopPage() {
     });
   };
 
-  useEffect(() => {
-    setLoading(true);
-    fetch(`${API_BASE}/laptops`)
-      .then(response => response.json())
-      .then(data => {
-        setLaptops(data);
-        setLoading(false);
-      })
-      .catch(error => {
-        console.error("Erreur:", error);
-        setLoading(false);
-      });
-  }, []);
-
   const filteredLaptops = laptops.filter(laptop => {
     const searchLower = searchTerm.toLowerCase();
     const matchesSearch = laptop.name.toLowerCase().includes(searchLower) || 
@@ -109,9 +95,11 @@ function LaptopPage() {
           <Col md={9}>
             <main>
               {loading ? (
-                <LoadingSpinner message="Recherche des meilleurs ordinateurs portables..." />
+                <LoadingSpinner message="Recherche des meilleurs ordinateurs portables..." coldStart={coldStart} />
+              ) : error ? (
+                <ErrorState message={error} onRetry={retry} />
               ) : (
-                <ProductList 
+                <ProductList
                   cpus={filteredLaptops} 
                   compareList={compareIds}
                   onCompareToggle={handleCompareToggle}

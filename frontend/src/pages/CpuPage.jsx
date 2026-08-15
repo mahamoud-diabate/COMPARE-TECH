@@ -1,5 +1,4 @@
-import { API_BASE } from '../api';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -11,12 +10,13 @@ import CompareBar from '../components/CompareBar';
 import FilterSidebar from '../components/FilterSidebar';
 import AnimatedPage from '../components/AnimatedPage';
 import LoadingSpinner from '../components/LoadingSpinner';
+import ErrorState from '../components/ErrorState';
+import { useCollection } from '../hooks/useCollection';
 
 function CpuPage() {
   const [searchTerm, setSearchTerm] = useState('');
-  const [cpus, setCpus] = useState([]);
-  const [loading, setLoading] = useState(true);
-  
+  const { data: cpus, loading, error, coldStart, retry } = useCollection('cpus');
+
   const [selectedFilters, setSelectedFilters] = useState({
     brand: [],
     cores: []
@@ -53,20 +53,6 @@ function CpuPage() {
     });
   };
 
-  useEffect(() => {
-    setLoading(true);
-    fetch(`${API_BASE}/cpus`)
-      .then(response => response.json())
-      .then(data => {
-        setCpus(data);
-        setLoading(false);
-      })
-      .catch(error => {
-        console.error("Erreur:", error);
-        setLoading(false);
-      });
-  }, []);
-
   const filteredCpus = cpus.filter(cpu => {
     const searchLower = searchTerm.toLowerCase();
     const matchesSearch = cpu.name.toLowerCase().includes(searchLower) || 
@@ -97,9 +83,11 @@ function CpuPage() {
           <Col md={9}>
             <main>
               {loading ? (
-                <LoadingSpinner message="Analyse des processeurs en cours..." />
+                <LoadingSpinner message="Analyse des processeurs en cours..." coldStart={coldStart} />
+              ) : error ? (
+                <ErrorState message={error} onRetry={retry} />
               ) : (
-                <ProductList 
+                <ProductList
                   cpus={filteredCpus} 
                   compareList={compareIds}
                   onCompareToggle={handleCompareToggle}
