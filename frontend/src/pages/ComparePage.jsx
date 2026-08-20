@@ -246,22 +246,26 @@ function ComparePage() {
           )}
         </div>
 
-        {/* De vrais liens d'ancrage : partageables, ouvrables dans un nouvel
-            onglet, et fonctionnels sans JavaScript. Le défilement doux et la
-            marge sous l'en-tête collant sont gérés en CSS. */}
-        <nav className="nr-anchor-nav" aria-label="Sections du comparatif">
-          {sections.map(section => (
-            <a
-              key={section.key}
-              href={`#${section.key}`}
-              className={activeSection === section.key ? 'is-active' : ''}
-              aria-current={activeSection === section.key ? 'true' : undefined}
-            >
-              {section.label}
-            </a>
-          ))}
-        </nav>
       </section>
+
+      {/* Hors de la carte : `.nr-card` porte `overflow: hidden`, qui empêche
+          tout `position: sticky` interne de coller. La barre reste donc
+          visible pendant tout le défilement — sans quoi le suivi de section
+          qu'elle affiche ne servirait à personne.
+          De vrais liens d'ancrage : partageables, ouvrables dans un nouvel
+          onglet, fonctionnels sans JavaScript. */}
+      <nav className="nr-anchor-nav nr-anchor-nav-sticky" aria-label="Sections du comparatif">
+        {sections.map(section => (
+          <a
+            key={section.key}
+            href={`#${section.key}`}
+            className={activeSection === section.key ? 'is-active' : ''}
+            aria-current={activeSection === section.key ? 'true' : undefined}
+          >
+            {section.label}
+          </a>
+        ))}
+      </nav>
 
       <div id="differences" ref={register('differences')}>
         <KeyDifferences products={products} productType={productType} />
@@ -297,7 +301,22 @@ function ComparePage() {
         )}
       </div>
 
-      <section className="nr-card" id="specs" ref={register('specs')}>
+      <div id="specs" ref={register('specs')}>
+        {/* Hors de la carte, pour la même raison que la barre d'ancres :
+            `overflow: hidden` sur .nr-card annule `position: sticky`. Le
+            conteneur neutre limite la barre à la zone du tableau — elle
+            n'apparaît pas ailleurs sur la page. */}
+        <div className="nr-sticky-names">
+          <span className="nr-sticky-names-label">Comparés :</span>
+          {products.map((product, index) => (
+            <React.Fragment key={product._id}>
+              {index > 0 && <span className="nr-sticky-names-vs">vs</span>}
+              <span className="nr-sticky-names-item">{product.name}</span>
+            </React.Fragment>
+          ))}
+        </div>
+
+        <section className="nr-card">
         <div className="nr-card-head" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12 }}>
           <div>
             <h2 className="nr-title-h2">Spécifications</h2>
@@ -313,22 +332,13 @@ function ComparePage() {
             Différences seulement
           </button>
         </div>
-        <div className="nr-sticky-names">
-          <span className="nr-sticky-names-label">Comparés :</span>
-          {products.map((product, index) => (
-            <React.Fragment key={product._id}>
-              {index > 0 && <span className="nr-sticky-names-vs">vs</span>}
-              <span className="nr-sticky-names-item">{product.name}</span>
-            </React.Fragment>
-          ))}
-        </div>
-
-        <SpecTable
-          products={products}
-          productType={productType}
-          showDifferencesOnly={showDifferencesOnly}
-        />
-      </section>
+          <SpecTable
+            products={products}
+            productType={productType}
+            showDifferencesOnly={showDifferencesOnly}
+          />
+        </section>
+      </div>
 
       {products.map(product => (
         <ProsCons

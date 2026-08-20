@@ -1,0 +1,79 @@
+﻿.nr-cylinder-toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 28px;
+  height: 14px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  outline: none;
+  border-radius: 999px;
+  user-select: none;
+  transition: transform 0.15s ease, opacity 0.2s ease;
+  vertical-align: middle;
+}
+
+.nr-cylinder-toggle:hover {
+  transform: scale(1.06);
+}
+
+.nr-cylinder-toggle:active {
+  transform: scale(0.94);
+}
+
+.nr-cylinder-toggle:focus-visible {
+  box-shadow: 0 0 0 2px var(--nr-brand, #3b82f6);
+}
+
+/* Corps du cylindre (gélule) */
+.nr-cylinder-pill {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 999px;
+  overflow: hidden;
+  transition: background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s ease;
+}
+
+/* Face circulaire du cylindre */
+.nr-cylinder-face {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+              background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+              border-color 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.25s ease;
+}
+
+/* --- ÉTAT CLAIR (Light Mode) --- */
+.nr-cylinder-toggle.is-light .nr-cylinder-pill {
+  background-color: #d1d5db;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+.nr-cylinder-toggle.is-light .nr-cylinder-face {
+  transform: translateX(0);
+  background-color: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 1px 0 2px rgba(0, 0, 0, 0.12);
+}
+
+/* --- ÉTAT SOMBRE (Dark Mode) --- */
+.nr-cylinder-toggle.is-dark .nr-cylinder-pill {
+  background-color: #ffffff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+.nr-cylinder-toggle.is-dark .nr-cylinder-face {
+  transform: translateX(14px);
+  background-color: #0d0e12;
+  border: 1px solid #ffffff;
+  box-shadow: -1px 0 2px rgba(0, 0, 0, 0.2);
+}

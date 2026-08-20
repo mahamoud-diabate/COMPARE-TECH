@@ -1,6 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { Cpu, MonitorPlay, Laptop, Smartphone, BarChart3, Lock, X } from 'lucide-react';
+import { X } from 'lucide-react';
+import { Icone } from './icons';
+import ThemeToggle from './ThemeToggle';
 
 /*
  * Deux groupes, parce que le site fait deux choses distinctes que la barre
@@ -10,28 +12,36 @@ import { Cpu, MonitorPlay, Laptop, Smartphone, BarChart3, Lock, X } from 'lucide
  * « CPU » ne menait qu'au second ; on ne pouvait pas deviner que le premier
  * existait.
  */
+/*
+ * Une icône par catégorie de produit, la même dans les deux groupes.
+ *
+ * L'icône désigne la CHOSE, le titre du groupe désigne l'ACTION. Une version
+ * précédente mettait quatre histogrammes identiques dans « Classements » :
+ * répétée quatre fois de suite, une icône ne distingue plus rien. Ici, deux
+ * lignes portant la même icône désignent bien le même produit.
+ *
+ * Le nom renvoie à `components/icons.jsx`, qui sert le fichier déposé dans
+ * `assets/icons/` s'il existe, et un tracé de repli sinon.
+ */
+const CATEGORIES = [
+  { cle: 'cpu', pluriel: 'cpus', label: 'Processeurs', icone: 'cpu' },
+  { cle: 'gpu', pluriel: 'gpus', label: 'Cartes graphiques', icone: 'gpu' },
+  { cle: 'laptop', pluriel: 'laptops', label: 'Ordinateurs portables', icone: 'laptop' },
+  { cle: 'telephone', pluriel: 'telephones', label: 'Téléphones', icone: 'phone' },
+];
+
 const GROUPES = [
   {
     titre: 'Comparer',
-    liens: [
-      { to: '/compare?type=cpu', label: 'Processeurs', icone: Cpu },
-      { to: '/compare?type=gpu', label: 'Cartes graphiques', icone: MonitorPlay },
-      { to: '/compare?type=laptop', label: 'Ordinateurs portables', icone: Laptop },
-      { to: '/compare?type=telephone', label: 'Téléphones', icone: Smartphone },
-    ],
+    liens: CATEGORIES.map(c => ({ to: `/compare?type=${c.cle}`, label: c.label, icone: c.icone })),
   },
   {
     titre: 'Classements',
-    liens: [
-      { to: '/cpus', label: 'Processeurs', icone: BarChart3 },
-      { to: '/gpus', label: 'Cartes graphiques', icone: BarChart3 },
-      { to: '/laptops', label: 'Ordinateurs portables', icone: BarChart3 },
-      { to: '/telephones', label: 'Téléphones', icone: BarChart3 },
-    ],
+    liens: CATEGORIES.map(c => ({ to: `/${c.pluriel}`, label: c.label, icone: c.icone })),
   },
   {
     titre: 'Gestion',
-    liens: [{ to: '/admin', label: 'Administration', icone: Lock }],
+    liens: [{ to: '/admin', label: 'Administration', icone: 'admin' }],
   },
 ];
 
@@ -48,7 +58,7 @@ const GROUPES = [
  * retour, l'utilisateur au clavier se retrouve renvoyé en haut du document
  * après chaque fermeture.
  */
-function Sidebar({ ouvert, onClose, boutonRef }) {
+function Sidebar({ ouvert, onClose, boutonRef, theme, toggleTheme }) {
   const tiroirRef = useRef(null);
   const location = useLocation();
 
@@ -69,12 +79,12 @@ function Sidebar({ ouvert, onClose, boutonRef }) {
     const onKeyDown = (e) => {
       if (e.key === 'Escape') onClose();
     };
-    document.addEventListener('keydown', onKeyDown);
 
-    tiroirRef.current?.querySelector('a, button')?.focus();
+    window.addEventListener('keydown', onKeyDown);
+    tiroirRef.current?.focus();
 
     return () => {
-      document.removeEventListener('keydown', onKeyDown);
+      window.removeEventListener('keydown', onKeyDown);
       declencheur?.focus();
     };
   }, [ouvert, onClose, boutonRef]);
@@ -82,7 +92,7 @@ function Sidebar({ ouvert, onClose, boutonRef }) {
   return (
     <>
       <div
-        className={`nr-scrim${ouvert ? ' is-open' : ''}`}
+        className={`nr-scrim${ouvert ? ' is-visible' : ''}`}
         onClick={onClose}
         aria-hidden="true"
       />
@@ -116,12 +126,21 @@ function Sidebar({ ouvert, onClose, boutonRef }) {
                   `nr-drawer-link${isActive && estCourant(lien.to, location) ? ' is-active' : ''}`
                 }
               >
-                {React.createElement(lien.icone, { size: 16, strokeWidth: 2 })}
+                <Icone nom={lien.icone} size={16} />
                 <span>{lien.label}</span>
               </NavLink>
             ))}
           </div>
         ))}
+
+        {toggleTheme && (
+          <div className="nr-drawer-footer">
+            <span className="nr-text-small" style={{ color: 'var(--nr-muted)' }}>
+              Mode {theme === 'dark' ? 'sombre' : 'clair'}
+            </span>
+            <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
+          </div>
+        )}
       </nav>
     </>
   );

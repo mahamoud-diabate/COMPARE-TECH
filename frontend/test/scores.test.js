@@ -13,6 +13,7 @@ import {
   getScoreColor,
   scoreVar,
   scoreGrade,
+  explainScore,
 } from '../src/utils/scores.js';
 
 // --- pondération du score CPU ----------------------------------------------
@@ -112,4 +113,54 @@ test('getScoreColor reste disponible pour les appelants historiques', () => {
   assert.equal(getScoreColor(0), 'secondary');
   assert.equal(getScoreColor(95), 'success');
   assert.equal(getScoreColor(40), 'danger');
+});
+
+// --- explainScore : le calcul rendu vérifiable ---------------------------
+
+test('explainScore détaille chaque terme de la formule', () => {
+  const detail = explainScore({ geekbench_multi: 29000, geekbench_single: 3500 }, 'cpu');
+
+  assert.equal(detail.termes.length, 2);
+  assert.equal(detail.total, 100);
+  assert.equal(detail.complet, true);
+
+  const multi = detail.termes.find(t => t.key === 'geekbench_multi');
+  assert.equal(multi.valeur, 29000);
+  assert.equal(multi.max, 29000);
+  assert.equal(multi.poids, 0.7);
+  assert.equal(Math.round(multi.points), 70, 'le plafond apporte 100 × son poids');
+});
+
+test('la somme des points détaillés reconstitue le total affiché', () => {
+  // C'est toute la raison d'être de la table : le détail montré à l'écran ne
+  // peut pas raconter autre chose que le chiffre à côté duquel il s'affiche.
+  const produits = [
+    [{ geekbench_multi: 24000, geekbench_single: 3400 }, 'cpu'],
+    [{ benchmark_3dmark: 17500 }, 'gpu'],
+    [{ geekbench_multi: 13000 }, 'laptop'],
+    [{ antutu_score: 1600000 }, 'telephone'],
+  ];
+
+  for (const [produit, type] of produits) {
+    const detail = explainScore(produit, type);
+    const somme = Math.min(100, Math.round(detail.termes.reduce((s, t) => s + t.points, 0)));
+    assert.equal(somme, detail.total, `type ${type}`);
+    assert.equal(detail.total, getProductScore(produit, type));
+  }
+});
+
+test('explainScore signale une donnée manquante sans la compter comme zéro', () => {
+  const detail = explainScore({ geekbench_multi: 24000 }, 'cpu');
+
+  assert.equal(detail.complet, false);
+  assert.equal(detail.total, 0, 'le CPU exige ses deux mesures');
+
+  const mono = detail.termes.find(t => t.key === 'geekbench_single');
+  assert.equal(mono.valeur, null, 'la valeur est absente, pas nulle');
+  assert.equal(mono.points, 0);
+});
+
+test('explainScore renvoie une structure vide pour un type inconnu', () => {
+  const detail = explainScore({ geekbench_multi: 24000 }, 'montre');
+  assert.deepEqual(detail, { total: 0, termes: [], complet: false, formule: null });
 });

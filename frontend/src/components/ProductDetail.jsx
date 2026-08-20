@@ -2,13 +2,13 @@ import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { ImageOff } from 'lucide-react';
 
-import { ScoreChip } from './Score';
 import CategoryScores from './CategoryScores';
 import BenchmarkBars from './BenchmarkBars';
 import ProsCons from './ProsCons';
 import SpecTable from './SpecTable';
 import SimilarProducts from './SimilarProducts';
 import CompareWith from './CompareWith';
+import ScorePanel from './ScorePanel';
 import { useCollection } from '../hooks/useCollection';
 import { getProductScore } from '../utils/scores';
 import { usePageTitle } from '../hooks/usePageTitle';
@@ -51,8 +51,6 @@ function ProductDetail({ product, type }) {
   );
 
   if (!product) return null;
-
-  const score = getProductScore(product, type);
 
   return (
     <div className="nr-main">
@@ -102,14 +100,9 @@ function ProductDetail({ product, type }) {
             </div>
 
             <div style={{ flex: '1 1 300px', minWidth: 0 }}>
-              <div style={{ marginBottom: 12 }}>
-                <ScoreChip score={score} />
-              </div>
-
               <p className="nr-text-gray-small" style={{ marginBottom: 12 }}>
-                Le score CompareTech synthétise les benchmarks disponibles pour ce produit,
-                sur une échelle commune à toute la catégorie. Il permet de situer le modèle,
-                pas de remplacer la lecture des mesures ci-dessous.
+                {product.brand} · {meta.label.toLowerCase()}. La note, son calcul et la
+                position de ce modèle dans le classement figurent juste en dessous.
               </p>
 
               <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
@@ -126,6 +119,8 @@ function ProductDetail({ product, type }) {
           </div>
         </div>
       </section>
+
+      <ScorePanel product={product} type={type} peers={data} />
 
       <CompareWith product={product} type={type} others={others} />
 

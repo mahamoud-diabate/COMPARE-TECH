@@ -14,9 +14,20 @@ n'apparaît que là où elle **encode une mesure** :
 
 | Couleur | Ce qu'elle signifie |
 | --- | --- |
-| Échelle `--nr-g-*` (vert → rouge) | note du produit, A+ à D |
+| Échelle `--nr-g-*` (vert → ambre → rouge) | note du produit, A+ à D |
 | `--nr-win` (vert pâle) | valeur la plus favorable d'une ligne de tableau |
 | `--nr-plus` / `--nr-minus` | avantage / inconvénient |
+| `--nr-serie-*` | identité d'un produit sur le radar — **pas** une qualité |
+
+L'échelle de notes est **monotone** : chaque palier se déduit du précédent par
+une rotation de teinte, sans rupture. Les cinq contrastes sur fond blanc sont
+volontairement voisins (4,96 à 6,57:1, tous AA) — l'échelle se lit par la
+teinte, aucun palier ne paraît plus fort par un simple écart de luminosité.
+
+**La couleur n'est jamais le seul porteur** : la note-lettre l'accompagne
+partout, ce qui rend l'échelle lisible sans distinguer le vert du rouge. Les
+couleurs de série du radar sont tenues hors de cette échelle, pour qu'un
+polygone vert ne se lise pas « bon ».
 
 Conséquence recherchée : sur une page de comparatif, les seules taches de
 couleur sont les notes et les cellules gagnantes. C'est exactement ce qu'on
@@ -24,6 +35,23 @@ vient y lire.
 
 **Interdits :** dégradé sur du texte (`background-clip: text`), halo coloré,
 palette indigo/violet « moderne » par défaut.
+
+### Une exception, assumée
+
+Les icônes de catégorie déposées dans `src/assets/icons/` sont affichées telles
+quelles, couleurs comprises. Elles sont choisies pour leur apparence, pas
+générées à partir d'une mesure — la règle ci-dessus ne s'y applique donc pas.
+
+Deux conséquences à garder en tête :
+
+1. **Elles ne suivent pas le thème.** Un dessin clair restera clair sur fond
+   sombre. Vérifier chaque fichier dans les deux thèmes avant de l'adopter.
+2. **Ce sont des images**, pas des tracés : leur netteté dépend de la
+   résolution du fichier, et chacune ajoute une requête au chargement. Préférer
+   le SVG au PNG quand le site le propose.
+
+Les tracés de repli de `components/icons.jsx`, eux, restent sur `currentColor`
+et suivent le thème.
 
 ## 2. Aucune couleur en dur dans une règle de composant
 

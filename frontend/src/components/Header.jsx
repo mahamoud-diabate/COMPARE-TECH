@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Search, Moon, Sun, Menu } from 'lucide-react';
+import { Search } from 'lucide-react';
 import Sidebar from './Sidebar';
 import { loadCatalog } from '../utils/catalog';
 
@@ -94,7 +94,7 @@ function Header({ toggleTheme, theme }) {
           aria-label="Ouvrir le menu"
           aria-expanded={menuOuvert}
         >
-          <Menu size={18} strokeWidth={2} />
+          <span className="nr-menu-icon" aria-hidden="true" />
         </button>
 
         <Link to="/" className="nr-logo">
@@ -134,22 +134,14 @@ function Header({ toggleTheme, theme }) {
             </div>
           )}
         </div>
-
-        <button
-          className="nr-icon-btn"
-          onClick={toggleTheme}
-          title={theme === 'dark' ? 'Passer en clair' : 'Passer en sombre'}
-          aria-label="Changer de thème"
-          style={{ marginLeft: 'auto' }}
-        >
-          {theme === 'dark' ? <Sun size={16} strokeWidth={2} /> : <Moon size={16} strokeWidth={2} />}
-        </button>
       </div>
 
       <Sidebar
         ouvert={menuOuvert}
         onClose={() => setMenuOuvert(false)}
         boutonRef={menuBoutonRef}
+        theme={theme}
+        toggleTheme={toggleTheme}
       />
     </header>
   );

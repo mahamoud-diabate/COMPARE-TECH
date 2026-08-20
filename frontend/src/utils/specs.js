@@ -283,3 +283,31 @@ export function buildStrengths(products, productType) {
     return lines;
   });
 }
+
+/**
+ * Part des caractéristiques réellement renseignées pour un produit.
+ *
+ * Affiché tel quel sur la fiche : un comparateur qui masque ses trous laisse
+ * croire que l'absence de valeur est une valeur. Mieux vaut annoncer « 6 sur
+ * 8 » et nommer ce qui manque.
+ *
+ * @returns {{remplies: number, total: number, manquantes: string[]}}
+ */
+export function dataCompleteness(product, productType) {
+  const type = resolveType(productType || product?.productType);
+  if (!type || !product) return { remplies: 0, total: 0, manquantes: [] };
+
+  const lignes = SPEC_GROUPS[type].flatMap(groupe => groupe.rows);
+  const manquantes = lignes
+    .filter(ligne => {
+      const valeur = product[ligne.key];
+      return valeur === undefined || valeur === null || valeur === '';
+    })
+    .map(ligne => ligne.label);
+
+  return {
+    remplies: lignes.length - manquantes.length,
+    total: lignes.length,
+    manquantes,
+  };
+}

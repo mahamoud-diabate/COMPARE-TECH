@@ -1,5 +1,26 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { utiliseIconesPersonnalisees, iconesFournies } from '../utils/iconFiles';
+
+/*
+ * Auteurs des icônes déposées dans `assets/icons/`.
+ *
+ * La licence gratuite de Flaticon impose une mention visible dans le produit.
+ * Renseigner le nom indiqué sur la page de téléchargement, par fichier :
+ *   { fichier: 'gpu.svg', auteur: 'Freepik', source: 'Flaticon' }
+ *
+ * Tant que la liste est vide alors que des fichiers sont présents, le pied de
+ * page affiche un avertissement plutôt qu'une mention incomplète : une
+ * attribution fausse ne vaut pas mieux qu'une attribution absente.
+ */
+const ATTRIBUTIONS = [
+  {
+    auteur: 'bqlqn',
+    url: 'https://www.flaticon.com/authors/bqlqn',
+    source: 'Flaticon',
+    sourceUrl: 'https://www.flaticon.com/',
+  },
+];
 
 const LINKS = [
   { to: '/cpus', label: 'Processeurs' },
@@ -33,6 +54,44 @@ function Footer() {
         <span className="nr-text-gray-small" style={{ marginLeft: 'auto' }}>
           Scores calculés depuis Geekbench 6, 3DMark et AnTuTu · © {new Date().getFullYear()}
         </span>
+
+        {utiliseIconesPersonnalisees && (
+          <span className="nr-text-gray-small" style={{ flex: '1 1 100%' }}>
+            {ATTRIBUTIONS.length > 0 ? (
+              <>
+                Icônes créées par{' '}
+                {ATTRIBUTIONS.map((a, i) => (
+                  <React.Fragment key={a.auteur}>
+                    {i > 0 && ', '}
+                    <a
+                      href={a.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ color: 'inherit', textDecoration: 'underline' }}
+                    >
+                      {a.auteur}
+                    </a>
+                    {' sur '}
+                    <a
+                      href={a.sourceUrl || 'https://www.flaticon.com/'}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ color: 'inherit', textDecoration: 'underline' }}
+                    >
+                      {a.source}
+                    </a>
+                  </React.Fragment>
+                ))}
+              </>
+            ) : (
+              <strong>
+                Attribution à renseigner pour {iconesFournies.length} icône
+                {iconesFournies.length > 1 ? 's' : ''} ({iconesFournies.join(', ')})
+                {' '}— voir src/assets/icons/LISEZ-MOI.md
+              </strong>
+            )}
+          </span>
+        )}
       </div>
     </footer>
   );

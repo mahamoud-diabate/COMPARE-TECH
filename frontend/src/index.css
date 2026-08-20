@@ -39,21 +39,37 @@
     --nr-accent-text: #1d242b;
     --nr-focus: #111820;
 
-    /* Cellule gagnante d'un tableau comparatif */
-    --nr-win: #eaf9e3;
-    --nr-win-text: #1b5e20;
+    /* Cellule gagnante : le vert A+ dilué à 12 % dans le fond de carte, pour
+       rester dans la même famille que l'échelle de notes. Le texte gris de la
+       cellule y garde 5,05:1. */
+    --nr-win: #e4f0e7;
 
     --nr-track: #e6e6e8;
     --nr-plus: #008000;
     --nr-minus: #c62828;
 
-    /* Échelle de notes A+ / A / B / C / D — couleurs reprises de la référence. */
-    --nr-g-ap: #028612;
-    --nr-g-a: #467546;
-    --nr-g-b: #6c0180;
-    --nr-g-c: #b35d04;
-    --nr-g-d: #ec000b;
+    /* Échelle de notes A+ → D.
+     *
+     * Progression monotone vert → ambre → rouge : chaque palier se déduit du
+     * précédent par une rotation de teinte, sans rupture. Les cinq contrastes
+     * sur fond blanc sont volontairement voisins (4,96 à 6,57:1, tous AA) —
+     * l'échelle se lit donc par la teinte, et aucun palier ne paraît plus fort
+     * qu'un autre par un simple écart de luminosité.
+     *
+     * La couleur n'est jamais seule : la lettre l'accompagne partout, ce qui
+     * rend l'échelle lisible sans distinction du vert et du rouge. */
+    --nr-g-ap: #1a7f37;
+    --nr-g-a: #4d7c2a;
+    --nr-g-b: #8a6a10;
+    --nr-g-c: #b45309;
+    --nr-g-d: #b42318;
     --nr-g-none: #545454;
+
+    /* Séries du radar : des identités, pas des notes. Volontairement hors de
+       l'échelle ci-dessus, pour qu'un polygone vert ne se lise pas « bon ». */
+    --nr-serie-a: #2b333c;
+    --nr-serie-b: #6b7f99;
+    --nr-serie-c: #9c7b64;
 
     /* Vignette produit : fond clair même en sombre (PNG détourés sur blanc) */
     --nr-media: #f1f1f3;
@@ -66,6 +82,13 @@
     --nr-font-num: 'SFMono-Regular', ui-monospace, Consolas, 'Liberation Mono', monospace;
 
     --nr-skeleton-grad: linear-gradient(90deg, #eeeeee 25%, #f7f7f7 50%, #eeeeee 75%);
+
+    /* Hauteurs des deux barres collantes. Mesurées, pas estimées : elles
+       commandent l'empilement des éléments `sticky` et la marge des ancres.
+       Trois valeurs à garder d'accord, donc trois variables plutôt que trois
+       nombres recopiés. */
+    --nr-h-header: 52px;
+    --nr-h-anchors: 46px;
 }
 
 /* Variante sombre : mêmes rôles, mêmes contrastes relatifs. */
@@ -83,21 +106,24 @@
     --nr-accent-text: #d3dbe3;
     --nr-focus: #f0f3f6;
 
-    --nr-win: rgba(76, 175, 80, 0.16);
-    --nr-win-text: #a5d6a7;
+    --nr-win: rgba(78, 196, 111, 0.14);
 
     --nr-track: #2a313b;
     --nr-plus: #66bb6a;
     --nr-minus: #ef5350;
 
-    /* Mêmes teintes, éclaircies : les versions claires tombent sous le seuil
-       de contraste sur fond sombre. */
-    --nr-g-ap: #4ec16a;
-    --nr-g-a: #8fbf8f;
-    --nr-g-b: #c77dd6;
-    --nr-g-c: #e8a45c;
-    --nr-g-d: #ff6b70;
+    /* Mêmes teintes, éclaircies : les versions sombres tombent sous le seuil
+       de contraste sur fond sombre. Toutes entre 6,15 et 8,05:1 sur #1a1f27. */
+    --nr-g-ap: #4ec46f;
+    --nr-g-a: #8fc45c;
+    --nr-g-b: #d4ad4a;
+    --nr-g-c: #e89b4a;
+    --nr-g-d: #f27a72;
     --nr-g-none: #78838f;
+
+    --nr-serie-a: #aebbc7;
+    --nr-serie-b: #8fa8c9;
+    --nr-serie-c: #c2a189;
 
     --nr-media: #e8eaee;
 
@@ -137,7 +163,10 @@
 /* Les liens d'ancrage du comparatif visent des sections : sans cette marge,
    l'en-tete collant recouvrirait leur titre a l'arrivee. */
 html { scroll-behavior: smooth; }
-[id] { scroll-margin-top: 64px; }
+
+/* En-tête + barre d'ancres + une respiration. Sans cette marge, la section
+   visée arrive masquée sous les deux barres. */
+[id] { scroll-margin-top: calc(var(--nr-h-header) + var(--nr-h-anchors) + 10px); }
 
 @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
@@ -264,26 +293,38 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
 }
 
 .nr-score-bar-result { flex: 0 0 auto; }
-.nr-score-bar-result-number { font-weight: 600; font-variant-numeric: tabular-nums; }
+.nr-score-bar-result-number {
+    font-family: var(--nr-font-num);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
 .nr-score-bar-result-unit { color: var(--nr-muted); font-size: 12.5px; padding-left: 3px; }
 
+/* Filet gradué : des repères aux quarts, comme sur une règle. Le site mesure,
+   son interface le dit — et l'œil situe une valeur sans lire le chiffre. */
 .nr-score-bar-line {
     flex: 0 0 100%;
-    height: 4px;
-    margin-top: 2px;
+    height: 6px;
+    margin-top: 3px;
     background: var(--nr-track);
-    border-radius: 4px;
+    border-radius: 2px;
     overflow: hidden;
+    background-image: repeating-linear-gradient(
+        to right,
+        transparent 0,
+        transparent calc(25% - 1px),
+        var(--nr-card) calc(25% - 1px),
+        var(--nr-card) 25%
+    );
 }
 
 .nr-score-bar-line-filled {
-    height: 4px;
-    border-radius: 4px;
+    height: 6px;
+    border-radius: 2px;
     background: var(--nr-accent);
     transition: width 0.4s ease;
 }
 
-.nr-score-bar-line-filled.is-alt { background: #ef8c00; }
 .nr-score-bar-line-filled.is-muted { background: var(--nr-g-none); }
 
 /* ===================================================================
@@ -408,16 +449,29 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
    dessous. */
 .nr-sticky-names {
     position: sticky;
-    top: 52px;
+    /* En-tête + barre d'ancres : les trois éléments collants s'empilent au
+       lieu de se recouvrir. Doit vivre hors d'une .nr-card — son
+       `overflow: hidden` annulerait l'adhérence. */
+    top: calc(var(--nr-h-header) + var(--nr-h-anchors));
     z-index: 10;
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 8px 16px;
+    padding: 9px 16px;
     font-size: 13px;
-    background: color-mix(in srgb, var(--nr-card) 92%, transparent);
-    backdrop-filter: blur(4px);
+    background: color-mix(in srgb, var(--nr-card) 94%, transparent);
+    backdrop-filter: blur(6px);
+    border-radius: var(--nr-radius) var(--nr-radius) 0 0;
+    box-shadow: var(--nr-shadow);
     border-bottom: 1px solid var(--nr-line);
+}
+
+/* La carte du tableau se raccorde à la barre : pas de coins arrondis en haut,
+   les deux forment un seul bloc. */
+.nr-sticky-names + .nr-card {
+    margin-top: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
 }
 
 .nr-sticky-names-label { color: var(--nr-muted); flex: 0 0 auto; }
@@ -461,6 +515,7 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
    isolé. Ils ne portent donc pas le fond gris d'un en-tête de colonne. */
 .nr-table th,
 .nr-table td {
+    font-variant-numeric: tabular-nums;
     padding: 10px 16px;
     border: 1px solid var(--nr-line);
     vertical-align: top;
@@ -522,6 +577,31 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
     border-bottom: 1px solid var(--nr-line);
     padding: 0 8px;
 }
+
+/* Variante flottante : la table des matières du comparatif suit le
+   défilement. Elle affiche la section en cours de lecture — un repère qui ne
+   sert à rien s'il disparaît dès qu'on descend.
+   Elle doit vivre HORS d'une .nr-card : `overflow: hidden` y annule tout
+   `position: sticky` interne. */
+.nr-anchor-nav-sticky {
+    position: sticky;
+    top: var(--nr-h-header);
+    z-index: 15;
+    margin-bottom: 16px;
+    background: var(--nr-card);
+    border-radius: var(--nr-radius);
+    box-shadow: var(--nr-shadow);
+    overflow-x: auto;
+    flex-wrap: nowrap;
+
+    /* Barre de défilement masquée : elle ajoutait 16 px de hauteur là où les
+       onglets débordent (mobile), ce qui décalait la barre collante suivante.
+       Sur écran étroit le glissement au doigt reste naturel ; sur écran large
+       les six onglets tiennent, il n'y a rien à faire défiler. */
+    scrollbar-width: none;
+}
+
+.nr-anchor-nav-sticky::-webkit-scrollbar { display: none; }
 
 .nr-anchor-nav a {
     display: inline-block;
@@ -652,13 +732,13 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
    L'opacité de remplissage reste basse pour que les polygones superposés
    restent tous lisibles. */
 .nr-radar-shape { stroke-width: 2; fill-opacity: 0.18; }
-.nr-radar-shape.is-a { stroke: var(--nr-accent); fill: var(--nr-accent); }
-.nr-radar-shape.is-b { stroke: #ef8c00; fill: #ef8c00; }
-.nr-radar-shape.is-c { stroke: #2e9e4f; fill: #2e9e4f; }
+.nr-radar-shape.is-a { stroke: var(--nr-serie-a); fill: var(--nr-serie-a); }
+.nr-radar-shape.is-b { stroke: var(--nr-serie-b); fill: var(--nr-serie-b); }
+.nr-radar-shape.is-c { stroke: var(--nr-serie-c); fill: var(--nr-serie-c); }
 
-.nr-radar-dot.is-a { fill: var(--nr-accent); }
-.nr-radar-dot.is-b { fill: #ef8c00; }
-.nr-radar-dot.is-c { fill: #2e9e4f; }
+.nr-radar-dot.is-a { fill: var(--nr-serie-a); }
+.nr-radar-dot.is-b { fill: var(--nr-serie-b); }
+.nr-radar-dot.is-c { fill: var(--nr-serie-c); }
 
 .nr-radar-label {
     font-size: 11px;
@@ -684,9 +764,105 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
     border-radius: 2px;
 }
 
-.nr-radar-key.is-a::before { background: var(--nr-accent); }
-.nr-radar-key.is-b::before { background: #ef8c00; }
-.nr-radar-key.is-c::before { background: #2e9e4f; }
+.nr-radar-key.is-a::before { background: var(--nr-serie-a); }
+.nr-radar-key.is-b::before { background: var(--nr-serie-b); }
+.nr-radar-key.is-c::before { background: var(--nr-serie-c); }
+
+/* ===================================================================
+   BLOC DE NOTE — la signature du site
+   Registre « instrument de mesure » : réglette graduée, chiffres en chasse
+   fixe, calcul dépliable. C'est ce qui distingue ce comparateur d'un site qui
+   se contente d'afficher un nombre.
+   =================================================================== */
+.nr-score-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 14px; }
+
+.nr-score-big {
+    font-family: var(--nr-font-num);
+    font-size: 46px;
+    font-weight: 600;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+}
+
+.nr-score-big-grade { font-style: normal; font-size: 20px; padding-left: 6px; }
+
+.nr-score-head-side { display: flex; flex-direction: column; }
+.nr-score-rank { font-size: 14px; font-variant-numeric: tabular-nums; }
+.nr-score-rank sup { font-size: 10px; }
+
+/* --- Réglette : 0 à 100, graduée tous les quarts --- */
+.nr-scale { margin-bottom: 14px; }
+
+.nr-scale-track {
+    position: relative;
+    height: 10px;
+    background: var(--nr-track);
+    border-radius: 2px;
+}
+
+.nr-scale-tick {
+    position: absolute;
+    top: 0;
+    width: 1px;
+    height: 10px;
+    background: var(--nr-card);
+}
+
+/* Médiane : un trait fin, en retrait — c'est un repère, pas une valeur. */
+.nr-scale-median {
+    position: absolute;
+    top: -3px;
+    width: 1px;
+    height: 16px;
+    background: var(--nr-muted);
+}
+
+.nr-scale-marker {
+    position: absolute;
+    top: -3px;
+    width: 3px;
+    height: 16px;
+    border-radius: 1px;
+    transform: translateX(-1px);
+}
+
+.nr-scale-legend {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--nr-muted);
+    font-variant-numeric: tabular-nums;
+    margin-top: 3px;
+}
+
+/* --- Calcul dépliable --- */
+.nr-details { border-top: 1px solid var(--nr-line); padding-top: 10px; }
+
+.nr-details summary {
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 2px 0;
+    list-style-position: inside;
+}
+
+.nr-details summary::marker { color: var(--nr-muted); }
+
+.nr-formula { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+.nr-formula th, .nr-formula td { padding: 6px 8px; border-bottom: 1px solid var(--nr-line); }
+.nr-formula th { text-align: left; font-weight: 400; color: var(--nr-text); }
+.nr-formula td { text-align: right; font-variant-numeric: tabular-nums; }
+.nr-formula-scale { color: var(--nr-muted); }
+.nr-formula-points { font-weight: 600; }
+.nr-formula-total th, .nr-formula-total td { border-bottom: 0; font-weight: 600; }
+
+/* --- Couverture des données --- */
+.nr-coverage {
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid var(--nr-line);
+    font-size: 13px;
+}
 
 /* Raccourci « vs » vers un face-à-face. */
 .nr-versus {
@@ -970,13 +1146,14 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
 }
 
 .nr-header-inner {
-    max-width: 1180px;
-    margin: 0 auto;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
     display: flex;
     align-items: center;
     gap: 16px;
-    padding: 0 16px;
-    height: 52px;
+    padding: 0 20px;
+    height: var(--nr-h-header);
 }
 
 .nr-logo {
@@ -1019,6 +1196,8 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
     max-width: 84vw;
     background: var(--nr-card);
     border-right: 1px solid var(--nr-line-strong);
+    display: flex;
+    flex-direction: column;
     overflow-y: auto;
     transform: translateX(-100%);
     transition: transform 0.18s ease;
@@ -1038,6 +1217,15 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
     height: 52px;
     padding: 0 12px 0 16px;
     border-bottom: 1px solid var(--nr-line);
+}
+
+.nr-drawer-footer {
+    margin-top: auto;
+    padding: 14px 16px;
+    border-top: 1px solid var(--nr-line);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .nr-drawer-group { padding: 12px 0; border-bottom: 1px solid var(--nr-line); }
@@ -1064,7 +1252,22 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
 
 .nr-drawer-link:hover { background: var(--nr-card-alt); text-decoration: none; }
 
-.nr-drawer-link svg { color: var(--nr-muted); flex: 0 0 auto; }
+.nr-drawer-link svg,
+.nr-drawer-link .nr-icone,
+.nr-drawer-link .nr-icone-img { color: var(--nr-muted); flex: 0 0 auto; }
+
+/* Icônes déposées dans assets/icons/, affichées telles quelles.
+   `object-fit: contain` évite toute déformation si le fichier n'est pas
+   parfaitement carré ; `flex-shrink: 0` empêche l'icône d'être écrasée par un
+   libellé long dans une ligne flex. */
+.nr-icone { display: inline-flex; align-items: center; justify-content: center; }
+.nr-icone svg { width: 100%; height: 100%; display: block; }
+
+.nr-icone-img {
+    display: block;
+    object-fit: contain;
+    flex: 0 0 auto;
+}
 
 .nr-drawer-link.is-active {
     background: var(--nr-accent-soft);
@@ -1072,7 +1275,8 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
     font-weight: 600;
 }
 
-.nr-drawer-link.is-active svg { color: var(--nr-accent-text); }
+.nr-drawer-link.is-active svg,
+.nr-drawer-link.is-active .nr-icone { color: var(--nr-accent-text); }
 
 .nr-search { position: relative; flex: 1 1 auto; max-width: 340px; }
 
@@ -1146,6 +1350,21 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
 }
 
 .nr-icon-btn:hover { color: var(--nr-text); border-color: var(--nr-accent); }
+
+.nr-menu-icon {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background-color: currentColor;
+    -webkit-mask-image: url('./assets/icons/menu.png');
+    mask-image: url('./assets/icons/menu.png');
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+}
 
 @media (max-width: 575.98px) {
     .nr-header-inner { gap: 8px; padding: 0 10px; }

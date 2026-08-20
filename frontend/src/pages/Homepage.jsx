@@ -1,7 +1,8 @@
 import { API_BASE } from '../api';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Cpu, MonitorPlay, Laptop, Smartphone, ImageOff } from 'lucide-react';
+import { ImageOff } from 'lucide-react';
+import { Icone } from '../components/icons';
 import AnimatedPage from '../components/AnimatedPage';
 import { ScoreBox } from '../components/Score';
 import { getProductScore } from '../utils/scores';
@@ -14,7 +15,7 @@ const CATEGORIES = [
     title: 'Processeurs',
     desc: 'Intel Core, AMD Ryzen — Geekbench 6, cœurs, fréquences',
     to: '/cpus',
-    icon: Cpu,
+    icon: 'cpu',
   },
   {
     key: 'gpus',
@@ -22,7 +23,7 @@ const CATEGORIES = [
     title: 'Cartes graphiques',
     desc: 'GeForce RTX, Radeon — 3DMark, mémoire vidéo',
     to: '/gpus',
-    icon: MonitorPlay,
+    icon: 'gpu',
   },
   {
     key: 'laptops',
@@ -30,7 +31,7 @@ const CATEGORIES = [
     title: 'Ordinateurs portables',
     desc: 'Performances, luminosité, autonomie annoncée',
     to: '/laptops',
-    icon: Laptop,
+    icon: 'laptop',
   },
   {
     key: 'telephones',
@@ -38,7 +39,7 @@ const CATEGORIES = [
     title: 'Téléphones',
     desc: 'AnTuTu, batterie, mémoire, diagonale',
     to: '/telephones',
-    icon: Smartphone,
+    icon: 'phone',
   },
 ];
 
@@ -130,11 +131,9 @@ function HomePage() {
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                    {React.createElement(category.icon, {
-                      size: 18,
-                      strokeWidth: 2,
-                      color: 'var(--nr-accent-text)',
-                    })}
+                    <span style={{ color: 'var(--nr-accent-text)', display: 'flex' }}>
+                      <Icone nom={category.icon} size={18} />
+                    </span>
                     <span style={{ fontWeight: 600 }}>{category.title}</span>
                     <span className="nr-text-gray-small" style={{ marginLeft: 'auto' }}>
                       {counts[category.key] === null ? '…' : counts[category.key]}
