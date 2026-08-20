@@ -1,7 +1,16 @@
 // Point d'accès unique à l'API backend.
 // Définir VITE_API_BASE (racine, SANS /api) dans .env ou chez l'hébergeur (Vercel) :
 //   VITE_API_BASE=https://compare-tech-api.onrender.com
-export const API_ROOT = (import.meta.env.VITE_API_BASE || 'https://mahamoud-compare-tech-api.onrender.com').replace(/\/$/, '');
+//
+// Sans valeur explicite, la racine dépend du contexte :
+//  - en développement, chaîne vide : les appels partent en `/api`, donc en même
+//    origine, et le proxy de vite.config.js les relaie. L'API déployée refuse
+//    l'origine localhost (liste blanche CORS côté backend), un appel direct
+//    échouerait avec un 403.
+//  - au build, l'API déployée, appelée en absolu depuis le domaine de prod.
+const FALLBACK = import.meta.env.DEV ? '' : 'https://mahamoud-compare-tech-api.onrender.com';
+
+export const API_ROOT = (import.meta.env.VITE_API_BASE || FALLBACK).replace(/\/$/, '');
 export const API_BASE = `${API_ROOT}/api`;
 
 /*

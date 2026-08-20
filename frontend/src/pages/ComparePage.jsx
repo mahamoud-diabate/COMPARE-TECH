@@ -1,203 +1,347 @@
 import { API_BASE } from '../api';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
-import { Bar } from 'react-chartjs-2';
-import {
-  Chart as ChartJS,
-  CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend,
-} from 'chart.js';
-import CompareTable from '../components/CompareTable';
+
+import SpecTable from '../components/SpecTable';
 import TechRadar from '../components/TechRadar';
+import CategoryScores from '../components/CategoryScores';
+import BenchmarkBars from '../components/BenchmarkBars';
+import KeyDifferences from '../components/KeyDifferences';
+import ProsCons from '../components/ProsCons';
 import Verdict from '../components/Verdict';
-import Container from 'react-bootstrap/Container';
-import Card from 'react-bootstrap/Card';
-import Form from 'react-bootstrap/Form';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Badge from 'react-bootstrap/Badge';
-import Button from 'react-bootstrap/Button';
+import CompareSelector from '../components/CompareSelector';
+import { ScoreChip } from '../components/Score';
+import { ImageOff } from 'lucide-react';
 import { getProductScore } from '../utils/scores';
+import { resolveType } from '../utils/specs';
+import { usePageTitle } from '../hooks/usePageTitle';
 
-// Le radar est rendu par TechRadar (recharts) : seules les échelles du
-// graphique à barres restent à enregistrer côté Chart.js.
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+const TYPE_LABEL = {
+  cpu: 'processeurs',
+  gpu: 'cartes graphiques',
+  laptop: 'ordinateurs portables',
+  telephone: 'téléphones',
+};
 
+const SECTIONS = [
+  { key: 'differences', label: 'Différences', needsTwo: true },
+  { key: 'evaluation', label: 'Évaluation' },
+  { key: 'benchmarks', label: 'Benchmarks' },
+  { key: 'radar', label: 'Radar', needsTwo: true },
+  { key: 'specs', label: 'Spécifications' },
+  { key: 'verdict', label: 'Verdict', needsTwo: true },
+];
+
+const TYPE_PATH = {
+  cpu: '/cpus',
+  gpu: '/gpus',
+  laptop: '/laptops',
+  telephone: '/telephones',
+};
+
+/**
+ * Page de comparaison.
+ *
+ * Organisation reprise des comparateurs de référence : d'abord la synthèse
+ * (qui gagne et de combien), ensuite les notes par critère, puis les mesures
+ * brutes, et seulement à la fin le tableau exhaustif. Le lecteur pressé
+ * s'arrête après le premier bloc, le lecteur méticuleux descend.
+ *
+ * Le graphique en barres Chart.js a été retiré : il redisait ce que montrent
+ * déjà les barres de benchmark, avec une échelle normalisée moins lisible que
+ * les valeurs réelles.
+ */
 function ComparePage() {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [showDifferencesOnly, setShowDifferencesOnly] = useState(false);
-  const [activeView, setActiveView] = useState('overview');
+  const [activeSection, setActiveSection] = useState('differences');
+
+  const sectionsRef = useRef({});
+
+  // Titre de l'onglet : les deux noms, comme l'en-tête de la page. Calculé
+  // avant les retours anticipés — un hook ne peut pas être conditionnel.
+  const names = products.map(p => p.name).join(' vs ');
+  usePageTitle(
+    names && `${names} : lequel choisir ?`,
+    names && `Comparatif détaillé : ${names}. Différences clés, notes par critère, benchmarks et tableau complet.`
+  );
 
   const productType = searchParams.get('type') || '';
   const idsString = searchParams.get('ids') || '';
+  const type = resolveType(productType);
 
   useEffect(() => {
-    if (idsString && productType) {
-      setLoading(true);
-      const idsArray = idsString.split(',');
-      const collectionName = productType.endsWith('s') ? productType : `${productType}s`;
-      const apiUrl = `${API_BASE}/${collectionName}/compare`;
-
-      fetch(apiUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ids: idsArray }),
-      })
-        .then(response => response.json())
-        .then(data => {
-          const typedData = data.map(item => ({ ...item, productType }));
-          setProducts(typedData);
-        })
-        .catch(error => console.error("Erreur:", error))
-        .finally(() => setLoading(false));
+    if (!idsString || !productType) {
+      setLoading(false);
+      return;
     }
+    setLoading(true);
+    setError(null);
+
+    const collectionName = productType.endsWith('s') ? productType : `${productType}s`;
+
+    fetch(`${API_BASE}/${collectionName}/compare`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ids: idsString.split(',') }),
+    })
+      .then(response => {
+        if (!response.ok) throw new Error('Comparatif indisponible');
+        return response.json();
+      })
+      .then(data => setProducts(data.map(item => ({ ...item, productType }))))
+      .catch(err => setError(err.message))
+      .finally(() => setLoading(false));
   }, [idsString, productType]);
+
+  /*
+   * Onglet actif suivi au défilement.
+   *
+   * Sans cela, l'onglet ne changeait qu'au clic : après avoir fait défiler la
+   * page à la main, la navigation annonçait une section qu'on avait quittée
+   * depuis longtemps. La marge haute compense l'en-tête collant, la marge
+   * basse évite qu'une section à peine entrée par le bas prenne la main.
+   */
+  useEffect(() => {
+    if (products.length === 0) return undefined;
+
+    const entries = Object.entries(sectionsRef.current).filter(([, node]) => node);
+    if (entries.length === 0) return undefined;
+
+    const keyByNode = new Map(entries.map(([key, node]) => [node, key]));
+    const visible = new Set();
+
+    const observer = new IntersectionObserver(
+      (records) => {
+        records.forEach(record => {
+          const key = keyByNode.get(record.target);
+          if (!key) return;
+          if (record.isIntersecting) visible.add(key);
+          else visible.delete(key);
+        });
+
+        // La section active est la première de l'ordre de lecture encore à
+        // l'écran, pas la dernière signalée par l'observateur.
+        const current = SECTIONS.find(section => visible.has(section.key));
+        if (current) setActiveSection(current.key);
+      },
+      { rootMargin: '-60px 0px -55% 0px' }
+    );
+
+    entries.forEach(([, node]) => observer.observe(node));
+    return () => observer.disconnect();
+  }, [products]);
+
 
   if (loading) {
     return (
-      <Container className="my-5">
-        <div className="text-center">
-          <h3 className="ct-section-title mb-4">Chargement du comparatif...</h3>
-          <div className="spinner-border text-primary" role="status" style={{width:'3rem', height:'3rem'}} />
-        </div>
-      </Container>
-    );
-  }
-
-  if (products.length === 0) {
-    return (
-      <Container className="my-5 text-center">
-        <h3 className="ct-section-title mb-3">Aucun produit à comparer</h3>
-        <p className="text-muted mb-4">Sélectionnez des produits depuis les pages catégories pour lancer une comparaison.</p>
-        <Link to="/"><Button variant="primary">← Retour à l'accueil</Button></Link>
-      </Container>
-    );
-  }
-
-  const product1 = products[0];
-  const product2 = products.length > 1 ? products[1] : null;
-
-  // Bar chart data
-  const chartLabels = products.map(p => p.name?.substring(0, 20));
-  let datasets = [];
-
-  if (productType === 'laptop') {
-    const perfData = products.map(p => Math.round(((p.geekbench_multi || 0) / 22000) * 100));
-    const screenData = products.map(p => Math.round(((p.display_brightness_nits || 0) / 1600) * 100));
-    const batteryData = products.map(p => Math.round(((p.battery_life_hours || 0) / 20) * 100));
-    datasets = [
-      { label: 'Performance', data: perfData, backgroundColor: '#3b82f6', borderRadius: 6 },
-      { label: 'Écran', data: screenData, backgroundColor: '#f59e0b', borderRadius: 6 },
-      { label: 'Autonomie', data: batteryData, backgroundColor: '#10b981', borderRadius: 6 },
-    ];
-  } else {
-    const scoreData = products.map(p => getProductScore(p, productType));
-    datasets = [
-      { label: 'Score Global', data: scoreData, backgroundColor: '#3b82f6', borderRadius: 6 },
-    ];
-  }
-
-  const barData = { labels: chartLabels, datasets };
-  const barOptions = {
-    indexAxis: productType === 'laptop' ? 'x' : 'y',
-    scales: { x: { beginAtZero: true, max: 100, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } }, y: { beginAtZero: true, max: 100, grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#94a3b8' } } },
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: { legend: { labels: { color: '#94a3b8' } } },
-  };
-
-  return (
-    <Container className="my-5 ct-compare-page">
-      {/* Header */}
-      <div className="text-center mb-5">
-        <Badge bg="primary" className="mb-3 px-3 py-2">
-          Comparatif {productType?.toUpperCase()}
-        </Badge>
-        <Row className="align-items-center justify-content-center mb-4">
-          {products.map((p, index) => (
-            <React.Fragment key={p._id}>
-              <Col xs={5} md={4}>
-                <Card className="ct-compare-product-card p-3">
-                  {p.imageUrl && <img src={p.imageUrl} alt={p.name} className="ct-compare-img mb-2" />}
-                  <h4 className="fw-bold mb-1" style={{fontSize:'1rem'}}>{p.name}</h4>
-                  <Badge bg="dark" className="border">{p.brand}</Badge>
-                </Card>
-              </Col>
-              {index < products.length - 1 && (
-                <Col xs={2} md={1}>
-                  <div className="ct-vs-badge">VS</div>
-                </Col>
-              )}
-            </React.Fragment>
-          ))}
-        </Row>
-
-        {/* View Tabs */}
-        <div className="ct-view-tabs mb-4">
-          {[
-            { key: 'overview', label: '📊 Vue d\'ensemble' },
-            { key: 'radar', label: '🎯 Radar' },
-            { key: 'specs', label: '📋 Spécifications' },
-          ].map(tab => (
-            <button
-              key={tab.key}
-              className={`ct-view-tab ${activeView === tab.key ? 'active' : ''}`}
-              onClick={() => setActiveView(tab.key)}
-            >
-              {tab.label}
-            </button>
-          ))}
+      <div className="nr-main">
+        <div className="nr-card">
+          <div className="nr-empty">
+            <div className="nr-spinner" role="status" aria-label="Chargement" />
+            <div style={{ marginTop: 10 }}>Chargement du comparatif…</div>
+          </div>
         </div>
       </div>
+    );
+  }
 
-      {/* Overview View */}
-      {activeView === 'overview' && (
-        <>
-          <Card className="ct-chart-card mb-5">
-            <Card.Body className="p-4">
-              <h3 className="text-center mb-4 fw-bold">Analyse des Performances</h3>
-              <div style={{ maxWidth: '800px', height: '400px', margin: 'auto' }}>
-                <Bar options={barOptions} data={barData} />
-              </div>
-            </Card.Body>
-          </Card>
-          <Verdict products={products} productType={productType} />
-        </>
-      )}
+  // Sans produits demandés, la page n'est pas en erreur : c'est le point de
+  // départ d'une comparaison. On propose donc de les choisir, au lieu de
+  // renvoyer vers une page catégorie comme le faisait la version précédente.
+  if (!idsString) {
+    return <CompareSelector type={type} />;
+  }
 
-      {/* Radar View */}
-      {activeView === 'radar' && product1 && product2 && (
-        <Card className="ct-chart-card mb-5">
-          <Card.Body className="p-4">
-            <h3 className="text-center mb-2 fw-bold">Comparaison Radar</h3>
-            <p className="text-center text-muted small mb-4">
-              Chaque axe correspond à une caractéristique réellement mesurée,
-              ramenée sur une échelle de 0 à 100.
+  if (error || products.length === 0) {
+    return (
+      <div className="nr-main">
+        <div className="nr-card">
+          <div className="nr-empty">
+            <p style={{ marginBottom: 12 }}>
+              {error || 'Ces produits sont introuvables : ils ont pu être retirés du catalogue.'}
             </p>
-            <div style={{ maxWidth: '600px', height: '450px', margin: 'auto' }}>
-              <TechRadar product1={product1} product2={product2} productType={productType} />
-            </div>
-          </Card.Body>
-        </Card>
-      )}
-
-      {/* Specs View */}
-      {activeView === 'specs' && (
-        <>
-          <div className="d-flex justify-content-end mb-3">
-            <Form.Check
-              type="switch"
-              id="diff-switch"
-              label={<span className="text-muted">Différences seulement</span>}
-              checked={showDifferencesOnly}
-              onChange={() => setShowDifferencesOnly(!showDifferencesOnly)}
-            />
+            <Link className="nr-btn" to={`/compare${type ? `?type=${type}` : ''}`}>
+              Choisir deux produits
+            </Link>
           </div>
-          <CompareTable products={products} showDifferencesOnly={showDifferencesOnly} />
-        </>
-      )}
-    </Container>
+        </div>
+      </div>
+    );
+  }
+
+  const [p1, p2] = products;
+  const scores = products.map(p => getProductScore(p, productType));
+
+  // Une égalité de score est fréquente en haut de tableau, et annoncer malgré
+  // tout « le meilleur » — en l'occurrence le premier arrivé — ferait dire aux
+  // chiffres l'inverse de ce qu'ils montrent.
+  const bestScore = Math.max(...scores);
+  const leaders = products.filter((_, i) => scores[i] === bestScore);
+
+  const sections = SECTIONS.filter(section => !section.needsTwo || Boolean(p2));
+
+  const register = (key) => (node) => { sectionsRef.current[key] = node; };
+
+  return (
+    <div className="nr-main">
+      <div className="nr-breadcrumb">
+        <span><Link to="/">Accueil</Link></span>
+        {type && <span><Link to={TYPE_PATH[type]}>{TYPE_LABEL[type]}</Link></span>}
+        <span>Comparatif</span>
+      </div>
+
+      <section className="nr-card">
+        <div className="nr-card-head">
+          <h1 className="nr-title-h1">{names}</h1>
+        </div>
+
+        <div className="nr-card-body" style={{ paddingTop: 8 }}>
+          <div className="nr-compare-head">
+            {products.map((product, index) => (
+              <React.Fragment key={product._id}>
+                {index > 0 && <div className="nr-compare-head-vs">VS</div>}
+                <div className="nr-compare-head-item">
+                  <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 8 }}>
+                    <ScoreChip score={scores[index]} />
+                  </div>
+                  {product.imageUrl ? (
+                    <img className="nr-compare-head-img" src={product.imageUrl} alt={product.name} />
+                  ) : (
+                    <div className="nr-compare-head-img" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <ImageOff size={28} strokeWidth={1.5} color="#9aa0a6" />
+                    </div>
+                  )}
+                  <Link className="nr-compare-head-name" to={`/${type}/${product._id}`}>
+                    {product.name}
+                  </Link>
+                  <span className="nr-compare-head-brand">{product.brand}</span>
+                </div>
+              </React.Fragment>
+            ))}
+          </div>
+
+          {p2 && (
+            <p className="nr-text-gray-small" style={{ marginTop: 12 }}>
+              Comparatif de {products.length} {TYPE_LABEL[type] || 'produits'}.{' '}
+              {bestScore > 0 && (
+                leaders.length > 1 ? (
+                  <>
+                    <strong>{leaders.map(p => p.name).join(' et ')}</strong> obtiennent la même
+                    note globale ({bestScore}/100).
+                  </>
+                ) : (
+                  <>
+                    <strong>{leaders[0].name}</strong> obtient la meilleure note globale
+                    ({bestScore}/100).
+                  </>
+                )
+              )}{' '}
+              Les blocs ci-dessous détaillent les écarts, critère par critère, à partir des
+              seules valeurs mesurées.
+            </p>
+          )}
+        </div>
+
+        {/* De vrais liens d'ancrage : partageables, ouvrables dans un nouvel
+            onglet, et fonctionnels sans JavaScript. Le défilement doux et la
+            marge sous l'en-tête collant sont gérés en CSS. */}
+        <nav className="nr-anchor-nav" aria-label="Sections du comparatif">
+          {sections.map(section => (
+            <a
+              key={section.key}
+              href={`#${section.key}`}
+              className={activeSection === section.key ? 'is-active' : ''}
+              aria-current={activeSection === section.key ? 'true' : undefined}
+            >
+              {section.label}
+            </a>
+          ))}
+        </nav>
+      </section>
+
+      <div id="differences" ref={register('differences')}>
+        <KeyDifferences products={products} productType={productType} />
+      </div>
+
+      <div id="evaluation" ref={register('evaluation')}>
+        <CategoryScores products={products} productType={productType} />
+      </div>
+
+      <div id="benchmarks" ref={register('benchmarks')}>
+        <BenchmarkBars
+          products={products}
+          productType={productType}
+          subtitle="Valeurs brutes. La longueur du filet est relative au meilleur résultat du comparatif."
+        />
+      </div>
+
+      <div id="radar" ref={register('radar')}>
+        {p1 && p2 && (
+          <section className="nr-card">
+            <div className="nr-card-head">
+              <h2 className="nr-title-h2">Profil comparé</h2>
+              <p className="nr-text-gray-small">
+                Chaque axe est une caractéristique réellement mesurée, ramenée sur 100.
+              </p>
+            </div>
+            <div className="nr-card-body">
+              <div style={{ maxWidth: 420, margin: '0 auto' }}>
+                <TechRadar products={products} productType={productType} />
+              </div>
+            </div>
+          </section>
+        )}
+      </div>
+
+      <section className="nr-card" id="specs" ref={register('specs')}>
+        <div className="nr-card-head" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12 }}>
+          <div>
+            <h2 className="nr-title-h2">Spécifications</h2>
+            <p className="nr-text-gray-small" style={{ marginBottom: 12 }}>
+              Cellule verte : valeur la plus favorable de la ligne.
+            </p>
+          </div>
+          <button
+            type="button"
+            className={`nr-chip${showDifferencesOnly ? ' is-on' : ''}`}
+            onClick={() => setShowDifferencesOnly(v => !v)}
+          >
+            Différences seulement
+          </button>
+        </div>
+        <div className="nr-sticky-names">
+          <span className="nr-sticky-names-label">Comparés :</span>
+          {products.map((product, index) => (
+            <React.Fragment key={product._id}>
+              {index > 0 && <span className="nr-sticky-names-vs">vs</span>}
+              <span className="nr-sticky-names-item">{product.name}</span>
+            </React.Fragment>
+          ))}
+        </div>
+
+        <SpecTable
+          products={products}
+          productType={productType}
+          showDifferencesOnly={showDifferencesOnly}
+        />
+      </section>
+
+      {products.map(product => (
+        <ProsCons
+          key={product._id}
+          product={product}
+          title={`Points forts et limites — ${product.name}`}
+        />
+      ))}
+
+      <div id="verdict" ref={register('verdict')}>
+        <Verdict products={products} productType={productType} />
+      </div>
+    </div>
   );
 }
 

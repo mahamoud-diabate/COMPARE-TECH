@@ -1,7 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client';
 import {createBrowserRouter, RouterProvider} from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import App from './App.jsx';
 import HomePage from './pages/Homepage.jsx';
 import CpuPage from './pages/CpuPage.jsx';
@@ -17,6 +16,7 @@ import AdminPage from './pages/AdminPage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import NotFoundPage from './pages/NotFoundPage.jsx';
+import RouteError from './pages/RouteError.jsx';
 
 
 import'./index.css';
@@ -25,6 +25,9 @@ const router= createBrowserRouter([
   {
     path: "/",
     element:<App/>,
+    // Toute exception levee pendant le rendu d'un ecran enfant remonte ici,
+    // au lieu de demonter l'arbre et de laisser une page blanche.
+    errorElement:<RouteError/>,
     children:[
 
      { path: "/login", element: <LoginPage /> },
@@ -77,7 +80,6 @@ const router= createBrowserRouter([
         element:<ComparePage/>,
       },
 
-      { path: "/login", element: <LoginPage /> },
       { path: "*", element: <NotFoundPage /> }
     ]
   }

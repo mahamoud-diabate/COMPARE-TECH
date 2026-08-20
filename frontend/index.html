@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="fr" data-bs-theme="dark">
+<html lang="fr" data-theme="light">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
@@ -13,14 +13,17 @@
       Sans ce script, la page s'affiche brievement avec le theme par defaut
       puis bascule quand React monte : c'est le "flash" de theme incorrect.
       Le script est volontairement synchrone et place dans le <head>.
+
+      Le defaut doit rester identique a celui de App.jsx (clair) : deux
+      defauts differents recreent exactement le flash que ce script evite.
     -->
     <script>
       (function () {
         try {
           var t = localStorage.getItem('theme');
-          document.documentElement.setAttribute('data-bs-theme', t === 'light' ? 'light' : 'dark');
+          document.documentElement.setAttribute('data-theme', t === 'dark' ? 'dark' : 'light');
         } catch (e) {
-          document.documentElement.setAttribute('data-bs-theme', 'dark');
+          document.documentElement.setAttribute('data-theme', 'light');
         }
       })();
     </script>

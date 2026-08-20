@@ -1,98 +1,133 @@
-import { API_ROOT } from '../api';
+import { API_BASE } from '../api';
 import React, { useState } from 'react';
-import Card from 'react-bootstrap/Card';
-import Badge from 'react-bootstrap/Badge';
-import Alert from 'react-bootstrap/Alert';
-import Button from 'react-bootstrap/Button';
+import { ScoreBar } from './Score';
+import { getProductScore } from '../utils/scores';
+import { resolveType, toNumber, formatValue } from '../utils/specs';
 
+// Métrique de référence par type : celle qui pèse le plus dans le score.
+const MAIN_METRIC = {
+  cpu: { key: 'geekbench_multi', label: 'Geekbench 6 multi-cœur' },
+  gpu: { key: 'benchmark_3dmark', label: '3DMark' },
+  laptop: { key: 'geekbench_multi', label: 'Geekbench 6 multi-cœur' },
+  telephone: { key: 'antutu_score', label: 'AnTuTu' },
+};
+
+/**
+ * Verdict : d'abord le calcul, ensuite — à la demande — l'avis rédigé par
+ * l'IA. L'ordre compte : le chiffre est vérifiable, le commentaire ne l'est
+ * pas, donc le chiffre passe en premier et l'IA reste explicitement une
+ * option que le lecteur déclenche.
+ */
 function Verdict({ products, productType }) {
   const [aiAnalysis, setAiAnalysis] = useState(null);
   const [loading, setLoading] = useState(false);
 
   if (!products || products.length < 2) return null;
 
-  const p1 = products[0];
-  const p2 = products[1];
+  const [p1, p2] = products;
+  const type = resolveType(productType || p1.productType);
+  const metric = MAIN_METRIC[type] || MAIN_METRIC.cpu;
 
-  // Fonction pour appeler ton Backend (qui appelle Gemini)
   const askGemini = async () => {
     setLoading(true);
     try {
-      const apiBase = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-        ? 'http://localhost:3001'
-        : API_ROOT;
-      const response = await fetch(`${apiBase}/api/ai/verdict`, {
+      // Même point d'entrée que le reste du site : en développement, `/api`
+      // passe par le proxy Vite. L'ancienne version visait en dur un backend
+      // local sur le port 3001, qui n'existe que si on le démarre soi-même.
+      const response = await fetch(`${API_BASE}/ai/verdict`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ product1: p1, product2: p2 })
+        body: JSON.stringify({ product1: p1, product2: p2 }),
       });
       const data = await response.json();
-      if (response.ok && data.aiResponse) {
-        setAiAnalysis(data.aiResponse);
-      } else {
-        setAiAnalysis(data.error || data.details || "Une erreur est survenue sur le serveur IA.");
-      }
-    } catch (error) {
-      console.error("Erreur IA", error);
-      setAiAnalysis("Désolé, je n'arrive pas à joindre le serveur IA.");
+      setAiAnalysis(
+        response.ok && data.aiResponse
+          ? data.aiResponse
+          : data.error || data.details || 'Une erreur est survenue sur le serveur IA.'
+      );
+    } catch {
+      setAiAnalysis("Impossible de joindre le serveur d'analyse.");
     }
     setLoading(false);
   };
 
-  // --- LOGIQUE CLASSIQUE (Maths) ---
-  let mainMetricKey = (productType || '').includes('cpu') ? 'geekbench_multi' : 
-                      (productType || '').includes('gpu') ? 'benchmark_3dmark' : 
-                      (productType || '').includes('laptop') ? 'geekbench_multi' : 'antutu_score';
-  
-  const val1 = Number(p1[mainMetricKey]) || 0;
-  const val2 = Number(p2[mainMetricKey]) || 0;
-  
-  let winner = val1 > val2 ? p1 : p2;
-  let diffPercent = val1 && val2 ? Math.round((Math.abs(val1 - val2) / Math.min(val1, val2)) * 100) : 0;
+  const scores = products.map(p => getProductScore(p, productType));
+  const best = Math.max(...scores);
+  const winners = products.filter((_, i) => scores[i] === best);
+
+  const rawValues = products.map(p => toNumber(p[metric.key]));
+  const usable = rawValues.filter(v => v !== null && v > 0);
+  const rawBest = usable.length ? Math.max(...usable) : null;
+  const rawWorst = usable.length ? Math.min(...usable) : null;
+  const rawDelta =
+    usable.length > 1 && rawWorst > 0 && rawBest !== rawWorst
+      ? Math.round(((rawBest - rawWorst) / rawWorst) * 100)
+      : null;
 
   return (
-    <Card className="shadow-lg border-0 mb-5 overflow-hidden">
-      <div className="bg-primary p-3 text-white text-center d-flex justify-content-between align-items-center">
-        <h3 className="mb-0 fw-bold mx-auto">🏆 Verdict</h3>
+    <section className="nr-card">
+      <div className="nr-card-head">
+        <h2 className="nr-title-h2">Verdict</h2>
+        <p className="nr-text-gray-small">
+          Classement par score global, synthèse des benchmarks disponibles.
+        </p>
       </div>
-      
-      <Card.Body className="p-4 text-center">
-        
-        {/* VERDICT CLASSIQUE (Immédiat) */}
-        <h4 className="fw-normal text-muted mb-3">Mathématiquement, le gagnant est...</h4>
-        <h1 className="display-4 fw-bold text-primary mb-3">{winner.name}</h1>
-        <Badge bg="success" className="fs-5 px-3 py-2 rounded-pill mb-4">
-            +{diffPercent}% de puissance théorique
-        </Badge>
 
-        <hr className="my-4"/>
+      <div className="nr-card-body">
+        {products.map((product, i) => (
+          <ScoreBar
+            key={product._id}
+            name={product.name}
+            value={scores[i] > 0 ? scores[i] : 'n/d'}
+            unit={scores[i] > 0 ? '/100' : null}
+            percent={scores[i]}
+            muted={scores[i] <= 0}
+          />
+        ))}
 
-        {/* ZONE IA (Gemini) */}
+        <p style={{ marginTop: 4 }}>
+          {best <= 0 ? (
+            'Aucun benchmark exploitable pour départager ces produits.'
+          ) : winners.length > 1 ? (
+            <>
+              <strong>{winners.map(p => p.name).join(' et ')}</strong> terminent à égalité
+              sur le score global.
+            </>
+          ) : (
+            <>
+              <strong>{winners[0].name}</strong> l’emporte sur le score global.
+            </>
+          )}
+          {rawDelta !== null && (
+            <> Sur {metric.label}, l’écart est de {rawDelta} % ({formatValue(rawBest)} contre {formatValue(rawWorst)}).</>
+          )}
+        </p>
+      </div>
+
+      <hr className="nr-card-sep" />
+
+      <div className="nr-card-body">
         {!aiAnalysis ? (
-            <div className="text-center">
-                <p className="lead">Tu veux un avis plus nuancé et humain ?</p>
-                <Button 
-                    variant="outline-dark" 
-                    size="lg" 
-                    className="rounded-pill px-4 fw-bold ai-btn"
-                    onClick={askGemini}
-                    disabled={loading}
-                >
-                    {loading ? '🧠 Analyse en cours...' : '✨ Demander à l\'IA Gemini'}
-                </Button>
-            </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+            <span className="nr-text-gray-small" style={{ flex: '1 1 240px' }}>
+              Un commentaire rédigé peut compléter les chiffres. Il est généré par un
+              modèle de langage et n’est pas une mesure.
+            </span>
+            <button className="nr-btn" onClick={askGemini} disabled={loading}>
+              {loading ? 'Analyse en cours…' : 'Demander une analyse'}
+            </button>
+          </div>
         ) : (
-            <div className="bg-light p-4 rounded-3 border border-2 border-info text-start">
-                <h5 className="fw-bold text-info mb-3">🤖 L'avis de Gemini :</h5>
-                {/* On affiche le texte de l'IA (Markdown supporté si besoin) */}
-                <p style={{ whiteSpace: 'pre-line', fontSize: '1.1rem' }}>
-                    {aiAnalysis}
-                </p>
-            </div>
+          <>
+            <div className="nr-title-h4">Analyse générée</div>
+            <p style={{ whiteSpace: 'pre-line' }}>{aiAnalysis}</p>
+            <p className="nr-text-gray-small" style={{ marginTop: 8 }}>
+              Texte produit automatiquement : à recouper avec le tableau de spécifications.
+            </p>
+          </>
         )}
-
-      </Card.Body>
-    </Card>
+      </div>
+    </section>
   );
 }
 

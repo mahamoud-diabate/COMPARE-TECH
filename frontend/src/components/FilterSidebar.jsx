@@ -1,37 +1,73 @@
 import React from 'react';
-import Card from 'react-bootstrap/Card';
-import Form from 'react-bootstrap/Form';
-import Accordion from 'react-bootstrap/Accordion';
 
-function FilterSidebar({ filters, selectedFilters, onFilterChange }) {
+/**
+ * Filtres d'une page catégorie.
+ *
+ * Cases à cocher toujours dépliées : l'accordéon précédent demandait un clic
+ * pour découvrir quels filtres existaient, alors que la liste tient
+ * intégralement dans la colonne.
+ */
+function FilterSidebar({
+  filters = [],
+  selectedFilters = {},
+  onFilterChange,
+  searchTerm = '',
+  onSearchChange,
+  onReset,
+}) {
+  const activeCount = Object.values(selectedFilters).reduce(
+    (total, values) => total + (values?.length || 0),
+    0
+  );
+
   return (
-    <Card className="shadow-sm mb-4 border-0">
-      <Card.Header className="bg-white fw-bold border-bottom">Filtres</Card.Header>
-      <Card.Body className="p-0">
-        <Accordion defaultActiveKey={['0', '1', '2']} alwaysOpen flush>
-          {filters.map((group, index) => (
-            <Accordion.Item eventKey={String(index)} key={group.id}>
-              <Accordion.Header className="small fw-bold">{group.label}</Accordion.Header>
-              <Accordion.Body>
-                <Form>
-                  {group.options.map((option) => (
-                    <Form.Check 
-                      key={option}
-                      type="checkbox"
-                      id={`${group.id}-${option}`}
-                      label={group.unit ? `${option} ${group.unit}` : option}
-                      checked={selectedFilters[group.id]?.includes(option)}
-                      onChange={() => onFilterChange(group.id, option)}
-                      className="mb-2"
-                    />
-                  ))}
-                </Form>
-              </Accordion.Body>
-            </Accordion.Item>
-          ))}
-        </Accordion>
-      </Card.Body>
-    </Card>
+    <aside className="nr-card" style={{ position: 'sticky', top: 68 }}>
+      <div className="nr-toolbar">
+        <span style={{ fontWeight: 600 }}>Filtres</span>
+        {activeCount > 0 && (
+          <button className="nr-btn nr-btn-ghost nr-btn-sm" onClick={onReset}>
+            Réinitialiser ({activeCount})
+          </button>
+        )}
+      </div>
+
+      <div className="nr-card-body-tight">
+        <input
+          className="nr-input"
+          style={{ width: '100%' }}
+          type="search"
+          placeholder="Filtrer par nom…"
+          value={searchTerm}
+          onChange={(e) => onSearchChange(e.target.value)}
+          aria-label="Filtrer la liste par nom"
+        />
+      </div>
+
+      {filters.map(group => (
+        <div key={group.id}>
+          <hr className="nr-card-sep" />
+          <div className="nr-card-body-tight">
+            <div className="nr-label" style={{ marginBottom: 6 }}>{group.label}</div>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+              {group.options.map(option => {
+                const on = selectedFilters[group.id]?.includes(option);
+                return (
+                  <button
+                    key={option}
+                    type="button"
+                    className={`nr-chip${on ? ' is-on' : ''}`}
+                    onClick={() => onFilterChange(group.id, option)}
+                    aria-pressed={on}
+                  >
+                    {group.unit ? `${option} ${group.unit}` : option}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      ))}
+    </aside>
   );
 }
 

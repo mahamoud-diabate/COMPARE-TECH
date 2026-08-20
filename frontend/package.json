@@ -6,22 +6,16 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "test": "node --test \"test/*.test.js\"",
     "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {
-    "bootstrap": "^5.3.8",
-    "chart.js": "^4.5.1",
-    "framer-motion": "^12.23.24",
     "lucide-react": "^1.31.0",
     "react": "^19.1.1",
-    "react-bootstrap": "^2.10.10",
-    "react-chartjs-2": "^5.3.1",
     "react-dom": "^19.1.1",
     "react-hot-toast": "^2.6.0",
-    "react-router-bootstrap": "^0.26.3",
-    "react-router-dom": "^7.9.5",
-    "recharts": "^3.6.0"
+    "react-router-dom": "^7.9.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",

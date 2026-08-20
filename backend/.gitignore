@@ -1,2 +1,5 @@
 node_modules/
 .env
+
+# Sauvegardes produites par scripts/purge.js : contiennent tout le catalogue.
+backup/

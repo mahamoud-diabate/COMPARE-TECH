@@ -1,11 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Container from 'react-bootstrap/Container';
-import Card from 'react-bootstrap/Card';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
 import toast from 'react-hot-toast';
 import { login } from '../api';
+import { usePageTitle } from '../hooks/usePageTitle';
 
 function LoginPage() {
   const [username, setUsername] = useState('');
@@ -13,12 +10,14 @@ function LoginPage() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  usePageTitle('Administration');
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
       await login(username, password);
-      toast.success('Bienvenue Administrateur 🔓 !');
+      toast.success('Connexion réussie.');
       navigate('/admin');
     } catch (err) {
       toast.error(err.message || 'Identifiants invalides.');
@@ -28,36 +27,42 @@ function LoginPage() {
   };
 
   return (
-    <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: '60vh' }}>
-      <Card className="shadow p-4" style={{ width: '100%', maxWidth: '400px' }}>
-        <h2 className="text-center mb-4">Accès Admin 🔐</h2>
-        <Form onSubmit={handleLogin}>
-          <Form.Group className="mb-3">
-            <Form.Label>Nom d'utilisateur</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="admin"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              autoComplete="username"
-            />
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>Mot de passe</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              autoComplete="current-password"
-            />
-          </Form.Group>
-          <Button variant="primary" type="submit" className="w-100" disabled={loading}>
+    <div className="nr-main" style={{ maxWidth: 420 }}>
+      <section className="nr-card">
+        <div className="nr-card-head">
+          <h1 className="nr-title-h2">Administration</h1>
+          <p className="nr-text-gray-small">Réservé à la gestion du catalogue.</p>
+        </div>
+
+        <form className="nr-card-body" onSubmit={handleLogin}>
+          <label className="nr-label" htmlFor="login-user">Nom d’utilisateur</label>
+          <input
+            id="login-user"
+            className="nr-input"
+            style={{ width: '100%', marginBottom: 12 }}
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            autoComplete="username"
+          />
+
+          <label className="nr-label" htmlFor="login-pass">Mot de passe</label>
+          <input
+            id="login-pass"
+            className="nr-input"
+            style={{ width: '100%', marginBottom: 16 }}
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            autoComplete="current-password"
+          />
+
+          <button className="nr-btn" type="submit" disabled={loading} style={{ width: '100%' }}>
             {loading ? 'Connexion…' : 'Se connecter'}
-          </Button>
-        </Form>
-      </Card>
-    </Container>
+          </button>
+        </form>
+      </section>
+    </div>
   );
 }
 

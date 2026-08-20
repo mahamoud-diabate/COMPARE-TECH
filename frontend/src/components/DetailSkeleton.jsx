@@ -1,63 +1,49 @@
 import React from 'react';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Card from 'react-bootstrap/Card';
-import Placeholder from 'react-bootstrap/Placeholder';
 
+const Line = ({ w = '100%', h = 14, mb = 8 }) => (
+  <div className="nr-skeleton" style={{ width: w, height: h, marginBottom: mb }} />
+);
+
+/**
+ * Silhouette de la fiche produit pendant le chargement.
+ * Reprend les mêmes blocs et les mêmes hauteurs que <ProductDetail /> : un
+ * squelette d'une autre forme que le contenu final provoque un saut de mise
+ * en page à l'arrivée des données.
+ */
 function DetailSkeleton() {
   return (
-    <Container className="my-5">
-      
-      <div className="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
-        <Placeholder as="h1" animation="glow" style={{ width: '40%' }}>
-          <Placeholder xs={12} />
-        </Placeholder>
-        <div className="text-center">
-            <Placeholder as="div" animation="glow" style={{ width: '100px', height: '20px', marginBottom: '5px' }}>
-                <Placeholder xs={12} />
-            </Placeholder>
-            <Placeholder as="div" animation="glow" style={{ width: '80px', height: '50px', borderRadius: '50px' }}>
-                <Placeholder xs={12} style={{ height: '100%' }} />
-            </Placeholder>
+    <div className="nr-main" aria-busy="true" aria-label="Chargement de la fiche">
+      <section className="nr-card">
+        <div className="nr-card-head">
+          <Line w="55%" h={26} />
+          <Line w="18%" h={12} mb={4} />
         </div>
-      </div>
+        <div className="nr-card-body">
+          <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap' }}>
+            <div className="nr-skeleton" style={{ width: 190, height: 180 }} />
+            <div style={{ flex: '1 1 300px' }}>
+              <Line w={130} h={28} mb={14} />
+              <Line />
+              <Line w="85%" />
+              <Line w="60%" />
+            </div>
+          </div>
+        </div>
+      </section>
 
-      <Row>
-        
-        <Col md={4} className="mb-4">
-           <Card className="h-100 border-0 shadow-sm bg-light d-flex align-items-center justify-content-center" style={{ minHeight: '300px' }}>
-             <Placeholder as="div" animation="glow" style={{ width: '50%', height: '50%' }}>
-                <Placeholder xs={12} style={{ height: '100%' }} bg="secondary" />
-             </Placeholder>
-           </Card>
-        </Col>
-
-       
-        <Col md={8}>
-          <Card className="shadow-sm">
-            <Card.Header className="bg-white fw-bold">
-                <Placeholder as="span" animation="glow">
-                    <Placeholder xs={4} />
-                </Placeholder>
-            </Card.Header>
-            <Card.Body>
-                
-                {[...Array(6)].map((_, i) => (
-                    <div key={i} className="d-flex justify-content-between mb-3 border-bottom pb-2">
-                        <Placeholder as="span" animation="glow" style={{ width: '30%' }}>
-                            <Placeholder xs={12} />
-                        </Placeholder>
-                        <Placeholder as="span" animation="glow" style={{ width: '20%' }}>
-                            <Placeholder xs={12} />
-                        </Placeholder>
-                    </div>
-                ))}
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-    </Container>
+      <section className="nr-card">
+        <div className="nr-card-body">
+          <Line w="30%" h={18} mb={16} />
+          {[0, 1, 2, 3].map(i => (
+            <div key={i} style={{ marginBottom: 16 }}>
+              <Line w="45%" h={12} mb={6} />
+              <Line h={4} mb={10} />
+              <Line h={4} mb={0} />
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
   );
 }
 

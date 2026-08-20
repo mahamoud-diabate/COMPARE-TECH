@@ -1,111 +1,110 @@
-/* ===== COMPARETECH — DESIGN SYSTEM 2025 ===== */
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap');
-
-/*
- * Les couleurs passent par des variables --ct-* redefinies selon le theme.
- * Avant, les valeurs sombres etaient ecrites en dur (avec !important), donc
- * le bouton de bascule changeait bien data-bs-theme mais rien ne suivait :
- * le mode clair n'existait pas.
+/* ===== COMPARETECH — DESIGN SYSTEM "NR" =====
  *
- * Regle a respecter pour la suite : ne jamais ecrire une couleur en dur
- * dans une regle de composant. Toujours passer par une variable ci-dessous.
+ * Refonte inspirée de nanoreview.net : lisibilité dense, fond gris clair,
+ * cartes blanches à faible relief, typographie système 14px. La palette, en
+ * revanche, s'en écarte : voir DESIGN.md, section 1.
+ *
+ * Deux principes tenus dans tout le fichier :
+ *  1. Aucune couleur en dur dans une règle de composant — tout passe par une
+ *     variable --nr-*, sinon le thème sombre ne suit pas.
+ *  2. Pas de dégradé sur du texte, pas d'ombre portée large : la donnée doit
+ *     primer sur la décoration.
+ *
+ * Ce fichier est la seule feuille de style du site : Bootstrap a été retiré,
+ * il ne servait plus qu'à trois utilitaires de mise en page pour 250 Ko de
+ * CSS. L'ancien jeu de classes et de variables --ct-* a disparu avec la
+ * migration du dernier écran.
  */
 
-/* Sombre par defaut, porte par :root SEUL.
-   Ne jamais regrouper :root avec [data-bs-theme="dark"] : Bootstrap 5.3
-   definit ses propres regles sur ce selecteur et la cascade vidait alors
-   nos variables en mode sombre. */
+/* Thème clair porté par :root seul.
+   Un bloc [data-theme="light"] dupliqué était nécessaire tant que Bootstrap
+   posait ses propres variables sur ce sélecteur ; sans lui, [data-theme="dark"]
+   ne correspond simplement plus quand l'attribut repasse à "light", et :root
+   reprend la main. Rien à dupliquer. */
 :root {
-    /* Accents : communs aux deux themes */
-    --ct-primary: #0891b2;
-    --ct-primary-light: #22d3ee;
-    --ct-primary-dark: #0e7490;
-    --ct-accent: #f59e0b;
-    --ct-success: #10b981;
-    --ct-warning: #f59e0b;
-    --ct-danger: #ef4444;
+    --nr-bg: #f5f5f5;
+    --nr-card: #ffffff;
+    --nr-card-alt: #fafafa;
+    --nr-text: #202020;
+    --nr-muted: #646464;
+    --nr-line: #ebebeb;
+    --nr-line-strong: #e0e0e0;
 
-    /* Surfaces */
-    --ct-bg: #0b1220;
-    --ct-card: #131c2b;
-    --ct-surface: #1e2a3d;
-    --ct-surface-hover: #2b3a52;
+    /* Accent achromatique. La règle du projet : la couleur ne sert qu'à porter
+       une information mesurée (grade, cellule gagnante, avantage/inconvénient).
+       Tout le reste — liens, boutons, onglet actif, filets — est graphite, de
+       sorte que la seule couleur à l'écran soit celle des données. */
+    --nr-accent: #2b333c;
+    --nr-accent-soft: rgba(43, 51, 60, 0.07);
+    --nr-accent-text: #1d242b;
+    --nr-focus: #111820;
 
-    /* Texte */
-    --ct-text: #e8edf4;
-    --ct-text-secondary: #93a3b8;
-    --ct-heading: #f4f7fb;
+    /* Cellule gagnante d'un tableau comparatif */
+    --nr-win: #eaf9e3;
+    --nr-win-text: #1b5e20;
 
-    /* Bordures et ombres */
-    --ct-border: rgba(255, 255, 255, 0.08);
-    --ct-border-strong: rgba(255, 255, 255, 0.15);
-    --ct-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
-    --ct-shadow-lg: 0 12px 48px rgba(0, 0, 0, 0.4);
+    --nr-track: #e6e6e8;
+    --nr-plus: #008000;
+    --nr-minus: #c62828;
 
-    /* Degrades */
-    --ct-navbar-grad: linear-gradient(180deg, #0d1524 0%, #0b1220 100%);
-    --ct-brand-grad: linear-gradient(135deg, #f4f7fb, #67e8f9);
-    --ct-title-grad: linear-gradient(135deg, #f4f7fb, #67e8f9);
-    --ct-skeleton-grad: linear-gradient(90deg, #131c2b 25%, #1e2a3d 50%, #131c2b 75%);
+    /* Échelle de notes A+ / A / B / C / D — couleurs reprises de la référence. */
+    --nr-g-ap: #028612;
+    --nr-g-a: #467546;
+    --nr-g-b: #6c0180;
+    --nr-g-c: #b35d04;
+    --nr-g-d: #ec000b;
+    --nr-g-none: #545454;
 
-    /* Vignette produit : fond clair meme en sombre (PNG detoures sur blanc) */
-    --ct-media-bg: #dfe5ec;
+    /* Vignette produit : fond clair même en sombre (PNG détourés sur blanc) */
+    --nr-media: #f1f1f3;
 
-    --ct-font-display: 'Space Grotesk', 'Inter', sans-serif;
-    --ct-font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    --ct-font-mono: 'JetBrains Mono', 'SFMono-Regular', Consolas, monospace;
+    --nr-shadow: 0 0 3px rgba(0, 0, 0, 0.08);
+    --nr-shadow-pop: 0 2px 10px rgba(0, 0, 0, 0.12);
+    --nr-radius: 4px;
 
-    --ct-radius: 12px;
-    --ct-radius-sm: 8px;
-    --ct-transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    --nr-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --nr-font-num: 'SFMono-Regular', ui-monospace, Consolas, 'Liberation Mono', monospace;
+
+    --nr-skeleton-grad: linear-gradient(90deg, #eeeeee 25%, #f7f7f7 50%, #eeeeee 75%);
 }
 
-/* Bloc sombre autonome : indispensable pour revenir du clair au sombre,
-   et pour surcharger les variables Bootstrap posees sur ce meme selecteur. */
-[data-bs-theme="dark"] {
-    --ct-bg: #0b1220;
-    --ct-card: #131c2b;
-    --ct-surface: #1e2a3d;
-    --ct-surface-hover: #2b3a52;
+/* Variante sombre : mêmes rôles, mêmes contrastes relatifs. */
+[data-theme="dark"] {
+    --nr-bg: #12161c;
+    --nr-card: #1a1f27;
+    --nr-card-alt: #202631;
+    --nr-text: #e6e8eb;
+    --nr-muted: #9aa4b2;
+    --nr-line: #2a313b;
+    --nr-line-strong: #39414d;
 
-    --ct-text: #e8edf4;
-    --ct-text-secondary: #93a3b8;
-    --ct-heading: #f4f7fb;
+    --nr-accent: #aebbc7;
+    --nr-accent-soft: rgba(174, 187, 199, 0.12);
+    --nr-accent-text: #d3dbe3;
+    --nr-focus: #f0f3f6;
 
-    --ct-border: rgba(255, 255, 255, 0.08);
-    --ct-border-strong: rgba(255, 255, 255, 0.15);
-    --ct-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
-    --ct-shadow-lg: 0 12px 48px rgba(0, 0, 0, 0.4);
+    --nr-win: rgba(76, 175, 80, 0.16);
+    --nr-win-text: #a5d6a7;
 
-    --ct-navbar-grad: linear-gradient(180deg, #0d1524 0%, #0b1220 100%);
-    --ct-brand-grad: linear-gradient(135deg, #f4f7fb, #67e8f9);
-    --ct-title-grad: linear-gradient(135deg, #f4f7fb, #67e8f9);
-    --ct-skeleton-grad: linear-gradient(90deg, #131c2b 25%, #1e2a3d 50%, #131c2b 75%);
+    --nr-track: #2a313b;
+    --nr-plus: #66bb6a;
+    --nr-minus: #ef5350;
 
-    --ct-media-bg: #dfe5ec;
-}
+    /* Mêmes teintes, éclaircies : les versions claires tombent sous le seuil
+       de contraste sur fond sombre. */
+    --nr-g-ap: #4ec16a;
+    --nr-g-a: #8fbf8f;
+    --nr-g-b: #c77dd6;
+    --nr-g-c: #e8a45c;
+    --nr-g-d: #ff6b70;
+    --nr-g-none: #78838f;
 
-[data-bs-theme="light"] {
-    --ct-bg: #f6f7f9;
-    --ct-card: #ffffff;
-    --ct-surface: #e2e8f0;
-    --ct-surface-hover: #cbd5e1;
+    --nr-media: #e8eaee;
 
-    --ct-text: #0b1220;
-    --ct-text-secondary: #475569;
-    --ct-heading: #0b1220;
+    --nr-shadow: 0 0 0 1px rgba(255, 255, 255, 0.04);
+    --nr-shadow-pop: 0 4px 16px rgba(0, 0, 0, 0.5);
 
-    --ct-border: rgba(15, 23, 42, 0.1);
-    --ct-border-strong: rgba(15, 23, 42, 0.2);
-    --ct-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
-    --ct-shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.12);
-
-    --ct-navbar-grad: linear-gradient(180deg, #0d1524 0%, #131c2b 100%);
-    --ct-brand-grad: linear-gradient(135deg, #f4f7fb, #67e8f9);
-    --ct-title-grad: none;
-    --ct-skeleton-grad: linear-gradient(90deg, #e6eaef 25%, #f2f4f7 50%, #e6eaef 75%);
-
-    --ct-media-bg: #eef1f5;
+    --nr-skeleton-grad: linear-gradient(90deg, #1a1f27 25%, #232a34 50%, #1a1f27 75%);
 }
 
 * {
@@ -114,448 +113,1192 @@
     box-sizing: border-box;
 }
 
+/* ===================================================================
+   FOCUS CLAVIER
+   Un anneau visible sur TOUT élément atteignable au clavier, posé une seule
+   fois ici. `:focus-visible` et non `:focus` : la souris ne déclenche pas
+   l'anneau, seul le clavier le fait — on garde donc l'indicateur sans le
+   faire clignoter à chaque clic.
+   Ne jamais écrire `outline: none` sans anneau de remplacement : le parcours
+   au clavier devient alors invisible, et le site inutilisable sans souris.
+   =================================================================== */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+    outline: 2px solid var(--nr-focus);
+    outline-offset: 2px;
+    border-radius: 2px;
+}
+
+/* Les champs portent déjà une bordure : l'anneau se pose au ras, sans décalage
+   qui le ferait chevaucher le champ voisin. */
+:where(.nr-input, .nr-picker-input, .nr-select, .nr-search input):focus-visible {
+    outline-offset: 0;
+}
+
+/* Les liens d'ancrage du comparatif visent des sections : sans cette marge,
+   l'en-tete collant recouvrirait leur titre a l'arrivee. */
+html { scroll-behavior: smooth; }
+[id] { scroll-margin-top: 64px; }
+
+@media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+}
+
 body {
-    font-family: var(--ct-font-body);
-    background: var(--ct-bg);
-    color: var(--ct-text);
+    font-family: var(--nr-font);
+    font-size: 14px;
+    line-height: 1.7;
+    background: var(--nr-bg);
+    color: var(--nr-text);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    line-height: 1.6;
-    transition: background 0.25s ease, color 0.25s ease;
 }
 
-/* Scrollbar */
-::-webkit-scrollbar {
-    width: 8px;
-}
-::-webkit-scrollbar-track {
-    background: var(--ct-bg);
-}
-::-webkit-scrollbar-thumb {
-    background: var(--ct-surface);
-    border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-    background: var(--ct-surface-hover);
-}
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--nr-bg); }
+::-webkit-scrollbar-thumb { background: var(--nr-line-strong); border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: var(--nr-muted); }
 
-/* Selection */
-::selection {
-    background: rgba(8, 145, 178, 0.3);
-    color: var(--ct-text);
-}
+::selection { background: var(--nr-accent-soft); color: var(--nr-text); }
 
-/* Cards globales */
-.card {
-    background: var(--ct-card) !important;
-    border: 1px solid var(--ct-border) !important;
-    border-radius: var(--ct-radius) !important;
-    color: var(--ct-text);
-    transition: var(--ct-transition);
-}
+a { color: var(--nr-accent-text); text-decoration: none; }
+a:hover { color: var(--nr-accent-text); text-decoration: underline; }
 
-.card:hover {
-    border-color: rgba(8, 145, 178, 0.3) !important;
-    transform: translateY(-2px);
-    box-shadow: var(--ct-shadow-lg);
-}
-
-.card-body {
-    color: var(--ct-text);
-}
-
-/* Badge */
-.badge {
-    font-weight: 600;
-    letter-spacing: 0.3px;
-}
-
-/* Buttons */
-.btn {
-    border-radius: var(--ct-radius-sm) !important;
-    font-weight: 600 !important;
-    letter-spacing: 0.2px;
-    transition: var(--ct-transition);
-}
-
-.btn-primary {
-    background: linear-gradient(135deg, var(--ct-primary), var(--ct-primary-dark)) !important;
-    border: none !important;
-    color: #fff !important;
-}
-
-.btn-primary:hover {
-    background: linear-gradient(135deg, var(--ct-primary-light), var(--ct-primary)) !important;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(8, 145, 178, 0.4);
-}
-
-.btn-outline-primary {
-    border-color: var(--ct-primary) !important;
-    color: var(--ct-primary) !important;
-}
-
-.btn-outline-primary:hover {
-    background: var(--ct-primary) !important;
-    color: #fff !important;
-}
-
-[data-bs-theme="dark"] .btn-outline-primary {
-    color: var(--ct-primary-light) !important;
-}
-
-/* Form controls */
-.form-control, .form-select {
-    background: var(--ct-card) !important;
-    border: 1px solid var(--ct-border-strong) !important;
-    color: var(--ct-text) !important;
-    border-radius: var(--ct-radius-sm) !important;
-}
-
-.form-control::placeholder {
-    color: var(--ct-text-secondary) !important;
-    opacity: 1;
-}
-
-.form-control:focus, .form-select:focus {
-    border-color: var(--ct-primary) !important;
-    box-shadow: 0 0 0 3px rgba(8, 145, 178, 0.2) !important;
-}
-
-/* Text */
-.text-muted {
-    color: var(--ct-text-secondary) !important;
-}
-
+/* ===================================================================
+   1. TITRES
+   Échelle fixe et courte : h1 25px, h2 19px, h4 16px. Pas de clamp(),
+   pas de dégradé — un comparateur se lit, il ne se contemple pas.
+   =================================================================== */
 h1, h2, h3, h4, h5, h6 {
-    font-family: var(--ct-font-display);
-    color: var(--ct-heading);
+    font-family: var(--nr-font);
+    color: var(--nr-text);
     font-weight: 600;
-    letter-spacing: -0.5px;
+    letter-spacing: 0;
+    line-height: 1.35;
 }
 
-/* Chiffres en chasse fixe : dans un comparateur, les valeurs doivent
-   s'aligner verticalement d'une carte a l'autre. */
-.ct-num {
-    font-family: var(--ct-font-mono);
-    font-variant-numeric: tabular-nums;
-    letter-spacing: -0.5px;
-}
+.nr-title-h1 { font-size: 25px; font-weight: 600; }
+.nr-title-h2 { font-size: 21px; font-weight: 600; }
+.nr-title-h4 { font-size: 16px; font-weight: 600; padding-bottom: 8px; }
 
-.ct-spec-label {
-    font-size: 0.65rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--ct-text-secondary);
+/* Titre de groupe à l'intérieur d'une carte (groupes du tableau de specs). */
+.nr-title-h3 {
+    font-size: 18px;
     font-weight: 600;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--nr-line);
+}
+.nr-text-small { font-size: 12.5px; }
+.nr-text-gray { color: var(--nr-muted); }
+.nr-text-gray-small { color: var(--nr-muted); font-size: 12.5px; line-height: 1.6; }
+
+.nr-num { font-variant-numeric: tabular-nums; }
+
+/* ===================================================================
+   2. CARTE
+   Blanc, rayon 4px, ombre quasi nulle. C'est le conteneur unique du site :
+   toute section de contenu est une .nr-card.
+   =================================================================== */
+.nr-card {
+    background: var(--nr-card);
+    border-radius: var(--nr-radius);
+    box-shadow: var(--nr-shadow);
+    margin-bottom: 16px;
+    overflow: hidden;
 }
 
-.ct-score-badge {
-    font-family: var(--ct-font-mono);
+.nr-card-head { padding: 16px 16px 0; }
+.nr-card-body { padding: 16px; }
+.nr-card-body-tight { padding: 12px 16px; }
+
+.nr-card-sep {
+    border: 0;
+    border-top: 1px solid var(--nr-line);
+    margin: 0;
+}
+
+/* Largeur de lecture. nanoreview tient sur ~730px ; on élargit un peu pour
+   accueillir 3 produits comparés, sans jamais dépasser la ligne confortable. */
+.nr-main { max-width: 980px; margin: 0 auto; padding: 16px; }
+.nr-main-wide { max-width: 1180px; margin: 0 auto; padding: 16px; }
+
+/* Colonne de filtres + contenu. La sidebar passe au-dessus sur mobile plutôt
+   que de se replier dans un tiroir : trois groupes de puces tiennent en deux
+   lignes, un tiroir coûterait un clic pour rien. */
+.nr-layout {
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: 16px;
+    align-items: start;
+}
+
+@media (max-width: 899.98px) {
+    .nr-layout { grid-template-columns: 1fr; }
+    .nr-layout > aside { position: static !important; }
+}
+
+/* La barre de comparaison est fixée en bas : sans cette réserve, elle
+   masquerait la dernière ligne de la liste. La hauteur exacte est publiée par
+   le composant (il passe à trois lignes sur mobile), le 72px n'est qu'un
+   repli avant sa première mesure. */
+body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
+
+/* ===================================================================
+   3. SCORE-BAR — la signature du comparateur
+   nom (+écart%) / valeur / filet de 4px. Utilisé pour tout benchmark.
+   =================================================================== */
+.nr-score-bar { display: flex; flex-wrap: wrap; margin-bottom: 12px; }
+
+.nr-score-bar-name {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-right: 8px;
+}
+
+.nr-score-bar-diff {
+    font-size: 12px;
+    color: var(--nr-plus);
+    padding-left: 3px;
+}
+
+.nr-score-bar-result { flex: 0 0 auto; }
+.nr-score-bar-result-number { font-weight: 600; font-variant-numeric: tabular-nums; }
+.nr-score-bar-result-unit { color: var(--nr-muted); font-size: 12.5px; padding-left: 3px; }
+
+.nr-score-bar-line {
+    flex: 0 0 100%;
+    height: 4px;
+    margin-top: 2px;
+    background: var(--nr-track);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.nr-score-bar-line-filled {
+    height: 4px;
+    border-radius: 4px;
+    background: var(--nr-accent);
+    transition: width 0.4s ease;
+}
+
+.nr-score-bar-line-filled.is-alt { background: #ef8c00; }
+.nr-score-bar-line-filled.is-muted { background: var(--nr-g-none); }
+
+/* ===================================================================
+   4. PASTILLE DE NOTE — « 83 | sur 100 »
+   =================================================================== */
+.nr-score-chip {
+    display: inline-flex;
+    align-items: stretch;
+    height: 28px;
+    line-height: 26px;
+    font-size: 14px;
+}
+
+.nr-score-chip-num {
+    background: var(--nr-g-none);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 0 7px;
+    border-radius: 3px 0 0 3px;
     font-variant-numeric: tabular-nums;
-    font-weight: 700;
-    min-width: 2.6rem;
+}
+
+.nr-score-chip-outof {
+    border: 1px solid var(--nr-g-none);
+    border-left: 0;
+    border-radius: 0 3px 3px 0;
+    padding: 0 7px;
+    color: var(--nr-text);
+    white-space: nowrap;
+}
+
+/* Carré de note : plein pour celui qui mène, contour pour les autres.
+   Reprend la mécanique de la référence — la couleur ne porte pas
+   l'information, le remplissage si. */
+.nr-score-square {
+    display: inline-block;
+    width: 34px;
+    text-align: center;
+    padding: 0 6px;
+    border-radius: 3px;
+    /* Contour teinté de l'accent plutôt que gris neutre : le carré vide reste
+       visiblement de la même famille que le carré plein. */
+    border: 1px solid color-mix(in srgb, var(--nr-accent) 32%, var(--nr-card));
+    font-size: 14px;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    color: var(--nr-text);
+    background: transparent;
+}
+
+.nr-score-square.is-lead {
+    background: var(--nr-accent);
+    border-color: var(--nr-accent);
+    color: #fff;
+}
+
+/* Boîte de note du classement : contour et texte à la couleur du grade,
+   accompagnée de la lettre. */
+.nr-score-box {
+    display: inline-block;
+    width: 34px;
+    text-align: center;
+    padding: 0 5px;
+    border-radius: 3px;
+    border: 1px solid currentColor;
+    font-size: 15px;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+}
+
+.nr-score-grade { font-weight: 600; font-size: 13px; padding-left: 5px; }
+
+/* ===================================================================
+   5. EN-TÊTE DE COMPARAISON — produits + VS
+   =================================================================== */
+.nr-compare-head {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 16px 0 4px;
+}
+
+.nr-compare-head-item {
+    width: 150px;
     text-align: center;
 }
 
-.ct-icon-inline {
+.nr-compare-head-img {
+    height: 145px;
+    width: 100%;
+    object-fit: contain;
+    background: var(--nr-media);
+    border-radius: 3px;
+    padding: 6px;
+}
+
+.nr-compare-head-name {
+    display: block;
+    margin-top: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--nr-text);
+}
+
+.nr-compare-head-brand { font-size: 12px; color: var(--nr-muted); }
+
+.nr-compare-head-vs {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--nr-muted);
+    align-self: center;
+    padding: 0 4px;
+}
+
+/* Barre de noms collante au-dessus du tableau de specs.
+   Sur un tableau long, l'en-tete disparait au defilement et on ne sait plus
+   quelle colonne appartient a quel produit. Elle reste donc sous l'en-tete du
+   site (52px), en fond translucide pour laisser deviner le contenu qui passe
+   dessous. */
+.nr-sticky-names {
+    position: sticky;
+    top: 52px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    font-size: 13px;
+    background: color-mix(in srgb, var(--nr-card) 92%, transparent);
+    backdrop-filter: blur(4px);
+    border-bottom: 1px solid var(--nr-line);
+}
+
+.nr-sticky-names-label { color: var(--nr-muted); flex: 0 0 auto; }
+
+.nr-sticky-names-item {
+    flex: 1 1 0;
+    min-width: 0;
+    text-align: center;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.nr-sticky-names-vs {
+    flex: 0 0 auto;
+    color: var(--nr-muted);
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+@media (max-width: 575.98px) {
+    .nr-sticky-names-label { display: none; }
+}
+
+/* ===================================================================
+   6. TABLEAU DE SPÉCIFICATIONS
+   1px de filet, 13px, cellule gagnante en vert pâle. Aucune bordure
+   extérieure : le tableau flotte dans la carte.
+   =================================================================== */
+.nr-table-wrap { overflow-x: auto; }
+
+.nr-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+/* Les intitulés de ligne sont des <th scope="row"> : c'est leur rôle réel, et
+   un lecteur d'écran peut alors annoncer « Cœurs, 16 » plutôt qu'un « 16 »
+   isolé. Ils ne portent donc pas le fond gris d'un en-tête de colonne. */
+.nr-table th,
+.nr-table td {
+    padding: 10px 16px;
+    border: 1px solid var(--nr-line);
+    vertical-align: top;
+    font-size: 13px;
+}
+
+.nr-table .cell-h {
+    color: var(--nr-text);
+    font-weight: 400;
+    text-align: left;
+    width: 32%;
+}
+
+.nr-table .cell-v { color: var(--nr-muted); }
+
+/* Cellule la plus favorable : seul le fond change. Ajouter la couleur et la
+   graisse par-dessus surchargeait la ligne de trois signaux pour une seule
+   information, et rendait le tableau tapageur dès qu'un produit dominait. */
+.nr-table .cell-winner { background: var(--nr-win); }
+
+.nr-table .cell-equal { padding: 7px 16px; }
+
+.nr-table-caption {
+    padding: 8px 16px;
+    font-size: 12.5px;
+    color: var(--nr-muted);
+}
+
+/* ===================================================================
+   7. LISTE AVANTAGES / INCONVÉNIENTS
+   =================================================================== */
+.nr-proscons { list-style: none; padding: 0; margin: 0; }
+
+.nr-proscons li {
+    position: relative;
+    padding: 0 0 10px 22px;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.nr-proscons li::before {
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+.nr-proscons.is-plus li::before { content: '+'; color: var(--nr-plus); }
+.nr-proscons.is-minus li::before { content: '\2212'; color: var(--nr-minus); }
+
+/* ===================================================================
+   8. NAVIGATION PAR ONGLETS / ANCRES
+   =================================================================== */
+.nr-anchor-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    border-bottom: 1px solid var(--nr-line);
+    padding: 0 8px;
+}
+
+.nr-anchor-nav a {
+    display: inline-block;
+    border-bottom: 2px solid transparent;
+    padding: 10px 12px;
+    font-size: 14px;
+    color: var(--nr-muted);
+    transition: color 0.15s, border-color 0.15s;
+}
+
+.nr-anchor-nav button {
+    display: inline-block;
+    background: none;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    padding: 10px 12px;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--nr-muted);
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s;
+}
+
+.nr-anchor-nav a:hover,
+.nr-anchor-nav button:hover { color: var(--nr-text); text-decoration: none; }
+
+.nr-anchor-nav button.is-active {
+    color: var(--nr-accent-text);
+    border-bottom-color: var(--nr-accent);
+    font-weight: 600;
+}
+
+.nr-anchor-nav a.is-active {
+    color: var(--nr-accent-text);
+    border-bottom-color: var(--nr-accent);
+    font-weight: 600;
+}
+
+/* ===================================================================
+   9. LISTE CLASSÉE (pages catégorie)
+   Une ligne = un rang, une vignette, un nom, des specs, une note.
+   =================================================================== */
+.nr-rank-head,
+.nr-rank-row {
+    display: grid;
+    grid-template-columns: 34px 52px minmax(0, 1fr) 160px 62px 92px;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--nr-line);
+}
+
+.nr-rank-head {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--nr-muted);
+    background: var(--nr-card-alt);
+    border-bottom: 1px solid var(--nr-line-strong);
+}
+
+.nr-rank-row:last-child { border-bottom: 0; }
+.nr-rank-row:hover { background: var(--nr-card-alt); }
+
+.nr-rank-num {
+    font-size: 13px;
+    color: var(--nr-muted);
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+}
+
+.nr-rank-thumb {
+    height: 44px;
+    width: 52px;
+    object-fit: contain;
+    background: var(--nr-media);
+    border-radius: 3px;
+}
+
+.nr-rank-thumb-empty {
+    height: 44px;
+    width: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--nr-media);
+    border-radius: 3px;
+    color: #9aa0a6;
+}
+
+.nr-rank-name { font-weight: 600; font-size: 14px; line-height: 1.4; }
+.nr-rank-name a { color: var(--nr-text); }
+.nr-rank-name a:hover { color: var(--nr-accent-text); }
+.nr-rank-sub { font-size: 12px; color: var(--nr-muted); line-height: 1.4; }
+
+.nr-rank-specs {
+    font-size: 12.5px;
+    color: var(--nr-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.nr-rank-row.is-disabled { opacity: 0.4; pointer-events: none; }
+
+/* Ligne compacte réutilisée hors classement : « autres modèles », mieux notés
+   de l'accueil. Même vocabulaire visuel que .nr-rank-row, sans la grille. */
+.nr-mini-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--nr-line);
+}
+
+.nr-mini-row:last-child { border-bottom: 0; }
+
+/* ===================================================================
+   RADAR
+   Le SVG s'habille en CSS et non par attributs de présentation : `var()`
+   n'est pas résolu dans un attribut, seulement dans une propriété CSS.
+   C'est ce qui permet au tracé de suivre le thème.
+   =================================================================== */
+.nr-radar-grid { fill: none; stroke: var(--nr-line-strong); stroke-width: 1; }
+.nr-radar-axis { stroke: var(--nr-line-strong); stroke-width: 1; }
+
+/* Trois séries au maximum : la sélection est plafonnée à trois produits.
+   L'opacité de remplissage reste basse pour que les polygones superposés
+   restent tous lisibles. */
+.nr-radar-shape { stroke-width: 2; fill-opacity: 0.18; }
+.nr-radar-shape.is-a { stroke: var(--nr-accent); fill: var(--nr-accent); }
+.nr-radar-shape.is-b { stroke: #ef8c00; fill: #ef8c00; }
+.nr-radar-shape.is-c { stroke: #2e9e4f; fill: #2e9e4f; }
+
+.nr-radar-dot.is-a { fill: var(--nr-accent); }
+.nr-radar-dot.is-b { fill: #ef8c00; }
+.nr-radar-dot.is-c { fill: #2e9e4f; }
+
+.nr-radar-label {
+    font-size: 11px;
+    fill: var(--nr-muted);
+    font-family: var(--nr-font);
+}
+
+.nr-radar-legend {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 12px;
+    font-size: 12.5px;
+}
+
+.nr-radar-key { display: inline-flex; align-items: center; gap: 6px; }
+
+.nr-radar-key::before {
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+}
+
+.nr-radar-key.is-a::before { background: var(--nr-accent); }
+.nr-radar-key.is-b::before { background: #ef8c00; }
+.nr-radar-key.is-c::before { background: #2e9e4f; }
+
+/* Raccourci « vs » vers un face-à-face. */
+.nr-versus {
     display: inline-flex;
     align-items: center;
-    gap: 0.4rem;
-    vertical-align: middle;
+    gap: 8px;
+    max-width: 100%;
+    padding: 6px 10px;
+    border: 1px solid var(--nr-line-strong);
+    border-radius: 3px;
+    color: var(--nr-text);
+    background: var(--nr-card);
+    transition: border-color 0.15s;
 }
 
-/* Links */
-a {
-    color: var(--ct-primary);
-    transition: color 0.2s;
+.nr-versus:hover {
+    border-color: var(--nr-accent);
+    text-decoration: none;
+    color: var(--nr-text);
 }
 
-a:hover {
-    color: var(--ct-primary-dark);
+.nr-versus-vs {
+    font-weight: 700;
+    font-size: 12px;
+    text-transform: uppercase;
+    color: var(--nr-muted);
 }
 
-[data-bs-theme="dark"] a {
-    color: var(--ct-primary-light);
+.nr-versus-name {
+    font-size: 13px;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
-[data-bs-theme="dark"] a:hover {
-    color: #93c5fd;
+/* Sur mobile, seule la colonne « caractéristiques » disparaît : le bouton de
+   comparaison, lui, est la fonction principale du site et doit rester
+   atteignable au doigt. */
+@media (max-width: 767.98px) {
+    .nr-rank-head { display: none; }
+    .nr-rank-row {
+        grid-template-columns: 24px 40px minmax(0, 1fr) 40px auto;
+        gap: 8px;
+        padding: 8px;
+    }
+    .nr-rank-row .nr-rank-specs { display: none; }
+    .nr-rank-row .nr-rank-compare .nr-chip { padding: 3px 7px; font-size: 12px; }
+    .nr-rank-thumb, .nr-rank-thumb-empty { width: 40px; height: 36px; }
 }
 
-/* Skeleton Loader */
-@keyframes ct-skeleton {
+/* ===================================================================
+   10. FILTRES / CONTRÔLES
+   =================================================================== */
+.nr-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--nr-line);
+}
+
+.nr-select,
+.nr-input {
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--nr-text);
+    background: var(--nr-card);
+    border: 1px solid var(--nr-line-strong);
+    border-radius: 3px;
+    padding: 5px 8px;
+}
+
+.nr-input:focus,
+.nr-select:focus { border-color: var(--nr-accent); }
+
+.nr-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12.5px;
+    padding: 3px 9px;
+    border-radius: 3px;
+    border: 1px solid var(--nr-line-strong);
+    background: var(--nr-card);
+    color: var(--nr-muted);
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s;
+}
+
+.nr-chip:hover { border-color: var(--nr-accent); color: var(--nr-text); }
+
+.nr-chip.is-on {
+    background: var(--nr-accent-soft);
+    border-color: var(--nr-accent);
+    color: var(--nr-accent-text);
+    font-weight: 600;
+}
+
+.nr-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 7px 14px;
+    border-radius: 3px;
+    border: 1px solid transparent;
+    background: var(--nr-accent);
+    color: #fff;
+    cursor: pointer;
+    transition: filter 0.15s;
+}
+
+.nr-btn:hover { filter: brightness(1.1); color: #fff; text-decoration: none; }
+.nr-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.nr-btn-ghost {
+    background: transparent;
+    border-color: var(--nr-line-strong);
+    color: var(--nr-text);
+}
+
+.nr-btn-ghost:hover {
+    border-color: var(--nr-accent);
+    color: var(--nr-accent-text);
+    filter: none;
+}
+
+.nr-btn-sm { padding: 4px 10px; font-size: 12.5px; }
+
+/* ===================================================================
+   SÉLECTION D'UNE COMPARAISON
+   Deux champs à complétion empilés, séparés par un « VS ».
+   =================================================================== */
+.nr-picker { position: relative; }
+
+.nr-picker-field {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--nr-line-strong);
+    border-radius: 3px;
+    background: var(--nr-card);
+    transition: border-color 0.15s;
+}
+
+.nr-picker-field:focus-within { border-color: var(--nr-accent); }
+
+.nr-picker-input {
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 40px;
+    padding: 0 12px;
+    border: 0;
+    background: none;
+    font-family: inherit;
+    /* 16px : en dessous, les navigateurs mobiles zooment à la mise au point. */
+    font-size: 16px;
+    color: var(--nr-text);
+}
+
+.nr-picker-input::placeholder { color: var(--nr-muted); opacity: 1; }
+
+.nr-picker-mark {
+    flex: 0 0 auto;
+    width: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--nr-g-ap);
+}
+
+.nr-picker-list {
+    position: absolute;
+    top: calc(100% + 3px);
+    left: 0;
+    right: 0;
+    z-index: 20;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background: var(--nr-card);
+    border: 1px solid var(--nr-line-strong);
+    border-radius: 3px;
+    box-shadow: var(--nr-shadow-pop);
+    max-height: 320px;
+    overflow-y: auto;
+}
+
+.nr-picker-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 10px;
+    padding: 8px 12px;
+    font-size: 13px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--nr-line);
+}
+
+.nr-picker-list li:last-child { border-bottom: 0; }
+.nr-picker-list li.is-active { background: var(--nr-accent-soft); }
+
+.nr-versus-word {
+    text-align: center;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--nr-accent-text);
+    padding: 10px 0;
+}
+
+/* Puces conservées : sur une liste longue de liens de même forme, le disque
+   marque le début de chaque entrée et évite de lire deux noms à la suite comme
+   un seul. */
+.nr-matchups { margin: 0; padding-left: 20px; }
+.nr-matchups li { margin-top: 8px; font-size: 14px; }
+.nr-matchups li:first-child { margin-top: 0; }
+.nr-matchups li::marker { color: var(--nr-muted); }
+.nr-versus-inline { color: var(--nr-muted); font-size: 12px; text-transform: uppercase; }
+
+/* ===================================================================
+   11. BARRE DE COMPARAISON FIXE
+   =================================================================== */
+.nr-compare-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1030;
+    background: var(--nr-card);
+    border-top: 1px solid var(--nr-line-strong);
+    box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.12);
+    padding: 10px 16px;
+}
+
+.nr-compare-bar-inner {
+    max-width: 1180px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.nr-compare-bar-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12.5px;
+    padding: 3px 8px;
+    border-radius: 3px;
+    background: var(--nr-accent-soft);
+    color: var(--nr-accent-text);
+    border: 1px solid var(--nr-accent);
+}
+
+.nr-compare-bar-tag button {
+    border: 0;
+    background: none;
+    color: inherit;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+    font-size: 14px;
+}
+
+/* ===================================================================
+   12. EN-TÊTE DU SITE
+   =================================================================== */
+.nr-header {
+    background: var(--nr-card);
+    border-bottom: 1px solid var(--nr-line-strong);
+    position: sticky;
+    top: 0;
+    z-index: 1020;
+}
+
+.nr-header-inner {
+    max-width: 1180px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 0 16px;
+    height: 52px;
+}
+
+.nr-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--nr-text);
+    white-space: nowrap;
+}
+
+.nr-logo:hover { text-decoration: none; color: var(--nr-text); }
+.nr-logo em { font-style: normal; color: var(--nr-accent-text); }
+
+/* ===================================================================
+   TIROIR DE NAVIGATION
+   Recouvre le contenu à toutes les largeurs : un tiroir qui pousse la colonne
+   principale ferait sauter la lecture à chaque ouverture.
+   =================================================================== */
+.nr-scrim {
+    position: fixed;
+    inset: 0;
+    z-index: 1040;
+    background: rgba(0, 0, 0, 0.35);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.18s ease, visibility 0.18s;
+}
+
+.nr-scrim.is-open { opacity: 1; visibility: visible; }
+
+.nr-drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 1050;
+    width: 268px;
+    max-width: 84vw;
+    background: var(--nr-card);
+    border-right: 1px solid var(--nr-line-strong);
+    overflow-y: auto;
+    transform: translateX(-100%);
+    transition: transform 0.18s ease;
+}
+
+.nr-drawer.is-open { transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+    .nr-drawer, .nr-scrim { transition: none; }
+}
+
+.nr-drawer-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    height: 52px;
+    padding: 0 12px 0 16px;
+    border-bottom: 1px solid var(--nr-line);
+}
+
+.nr-drawer-group { padding: 12px 0; border-bottom: 1px solid var(--nr-line); }
+.nr-drawer-group:last-child { border-bottom: 0; }
+
+.nr-drawer-group-title {
+    padding: 0 16px 6px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--nr-muted);
+}
+
+.nr-drawer-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 16px;
+    font-size: 14px;
+    color: var(--nr-text);
+    border-left: 2px solid transparent;
+}
+
+.nr-drawer-link:hover { background: var(--nr-card-alt); text-decoration: none; }
+
+.nr-drawer-link svg { color: var(--nr-muted); flex: 0 0 auto; }
+
+.nr-drawer-link.is-active {
+    background: var(--nr-accent-soft);
+    border-left-color: var(--nr-accent);
+    font-weight: 600;
+}
+
+.nr-drawer-link.is-active svg { color: var(--nr-accent-text); }
+
+.nr-search { position: relative; flex: 1 1 auto; max-width: 340px; }
+
+.nr-search input {
+    width: 100%;
+    font-family: inherit;
+    font-size: 13px;
+    padding: 6px 10px 6px 30px;
+    border: 1px solid var(--nr-line-strong);
+    border-radius: 3px;
+    background: var(--nr-card-alt);
+    color: var(--nr-text);
+}
+
+.nr-search input:focus { border-color: var(--nr-accent); background: var(--nr-card); }
+
+.nr-search-icon {
+    position: absolute;
+    left: 9px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--nr-muted);
+    display: flex;
+}
+
+.nr-search-drop {
+    position: absolute;
+    top: calc(100% + 3px);
+    left: 0;
+    right: 0;
+    background: var(--nr-card);
+    border: 1px solid var(--nr-line-strong);
+    border-radius: 3px;
+    box-shadow: var(--nr-shadow-pop);
+    z-index: 1050;
+    max-height: 330px;
+    overflow-y: auto;
+}
+
+.nr-search-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    text-align: left;
+    padding: 7px 10px;
+    border: 0;
+    border-bottom: 1px solid var(--nr-line);
+    background: none;
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--nr-text);
+    cursor: pointer;
+}
+
+.nr-search-item:last-child { border-bottom: 0; }
+.nr-search-item:hover { background: var(--nr-card-alt); }
+
+.nr-icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 3px;
+    border: 1px solid var(--nr-line-strong);
+    background: var(--nr-card);
+    color: var(--nr-muted);
+    cursor: pointer;
+}
+
+.nr-icon-btn:hover { color: var(--nr-text); border-color: var(--nr-accent); }
+
+@media (max-width: 575.98px) {
+    .nr-header-inner { gap: 8px; padding: 0 10px; }
+    .nr-logo { font-size: 16px; }
+}
+
+/* ===================================================================
+   13. FIL D'ARIANE, DIVERS
+   =================================================================== */
+.nr-breadcrumb {
+    font-size: 12.5px;
+    color: var(--nr-muted);
+    padding: 12px 4px 4px;
+}
+
+.nr-breadcrumb a { color: var(--nr-muted); }
+.nr-breadcrumb a:hover { color: var(--nr-accent-text); }
+.nr-breadcrumb span + span::before { content: '\203A'; padding: 0 6px; }
+
+.nr-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 1px 6px;
+    border-radius: 3px;
+    background: var(--nr-accent-soft);
+    color: var(--nr-accent-text);
+}
+
+.nr-two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 24px;
+}
+
+/* Trois colonnes : comparatif à trois produits. */
+.nr-three-col {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0 20px;
+}
+
+@media (max-width: 899.98px) {
+    .nr-three-col { grid-template-columns: 1fr; gap: 0; }
+}
+
+.nr-kv {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--nr-line);
+    font-size: 13px;
+}
+
+.nr-kv:last-child { border-bottom: 0; }
+.nr-kv dt { color: var(--nr-muted); font-weight: 400; }
+.nr-kv dd { margin: 0; font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; }
+
+/* Visible des seuls lecteurs d'écran : légendes de tableau, libellés de
+   contexte. `display:none` les retirerait aussi de la restitution vocale. */
+.nr-visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.nr-empty {
+    padding: 40px 16px;
+    text-align: center;
+    color: var(--nr-muted);
+    font-size: 13px;
+}
+
+@media (max-width: 767.98px) {
+    .nr-two-col { grid-template-columns: 1fr; gap: 0; }
+    .nr-compare-head-item { width: 120px; }
+    .nr-compare-head-img { height: 110px; }
+}
+
+/* Squelette de chargement */
+@keyframes nr-skeleton {
     0% { background-position: -200% 0; }
     100% { background-position: 200% 0; }
 }
 
-.ct-skeleton {
-    background: var(--ct-skeleton-grad);
+.nr-skeleton {
+    background: var(--nr-skeleton-grad);
     background-size: 200% 100%;
-    animation: ct-skeleton 1.5s ease-in-out infinite;
-    border-radius: 8px;
+    animation: nr-skeleton 1.4s ease-in-out infinite;
+    border-radius: 3px;
 }
 
-/* Section Headers */
-.ct-section-title {
-    font-size: 2rem;
-    font-weight: 800;
-    text-align: center;
-    margin-bottom: 0.5rem;
-    background: var(--ct-title-grad);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.ct-section-subtitle {
-    color: var(--ct-text-secondary);
-    text-align: center;
-    margin-bottom: 2.5rem;
-    font-size: 1.05rem;
-}
-
-/* Glass card */
-.ct-glass {
-    background: color-mix(in srgb, var(--ct-card) 70%, transparent) !important;
-    backdrop-filter: blur(12px);
-    border: 1px solid var(--ct-border) !important;
-}
-
-/* Utility: fade-in animation */
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.ct-animate-in {
-    animation: fadeInUp 0.5s ease forwards;
-}
-
-/* Container tweaks */
-.container {
-    max-width: 1200px;
-}
-
-/* List group */
-.list-group-item {
-    background: var(--ct-card) !important;
-    color: var(--ct-text) !important;
-    border-color: var(--ct-border) !important;
-}
-
-/* Spinner */
-.spinner-border {
-    border-color: rgba(8, 145, 178, 0.2);
-    border-right-color: var(--ct-primary);
-}
-
-/* ===== Bandeau de recherche =====
-   Remplace l'aplat bleu plein ecran (marqueur de template) par une surface
-   sombre texturee. Contraste du titre : ~3:1 avant, >12:1 maintenant. */
-.ct-hero-band {
-    padding: 3.5rem 1rem;
-    background:
-        radial-gradient(1200px 300px at 50% -50%, rgba(8, 145, 178, 0.18), transparent 70%),
-        linear-gradient(180deg, #0d1524 0%, #0b1220 100%);
-    border-bottom: 1px solid var(--ct-border);
-}
-
-.ct-hero-band-title {
-    font-family: var(--ct-font-display);
-    font-size: clamp(1.9rem, 4vw, 2.9rem);
-    font-weight: 600;
-    letter-spacing: -1px;
-    color: #f4f7fb;
-    margin-bottom: 0.5rem;
-}
-
-.ct-hero-band-sub {
-    color: #93a3b8;
-    font-size: 1rem;
-    margin-bottom: 1.75rem;
-}
-
-/* ===== HOMEPAGE =====
-   Classes utilisees dans Homepage.jsx sans avoir jamais ete definies :
-   la page retombait sur le style Bootstrap par defaut.
-
-   IMPORTANT : le JSX utilise <Row>/<Col> Bootstrap (systeme flex). Ne jamais
-   poser display:grid sur .ct-stats-row : deux systemes de mise en page en
-   concurrence ecrasent les colonnes. */
-
-.ct-hero {
-    padding: 4rem 0 2.5rem;
-    text-align: center;
-}
-
-.ct-hero-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
-    padding: 0.35rem 0.9rem;
-    border: 1px solid var(--ct-border-strong);
-    border-radius: 999px;
-    background: color-mix(in srgb, var(--ct-primary) 12%, transparent);
-    color: var(--ct-primary-light);
-    font-size: 0.82rem;
-    font-weight: 600;
-    margin-bottom: 1.25rem;
-}
-
-.ct-hero-title {
-    font-family: var(--ct-font-display);
-    font-size: clamp(2rem, 5vw, 3.2rem);
-    font-weight: 600;
-    line-height: 1.1;
-    letter-spacing: -1.5px;
-    margin-bottom: 1rem;
-}
-
-.ct-hero-highlight { color: var(--ct-primary-light); }
-
-.ct-hero-subtitle {
-    color: var(--ct-text-secondary);
-    font-size: 1.05rem;
-    max-width: 620px;
-    margin: 0 auto 2rem;
-}
-
-.ct-hero-actions {
-    display: flex;
-    gap: 0.75rem;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-.ct-hero-btn-primary,
-.ct-hero-btn-secondary {
-    padding: 0.7rem 1.5rem;
-    border-radius: var(--ct-radius-sm);
-    font-weight: 600;
-    text-decoration: none;
-    transition: var(--ct-transition);
-    border: 1px solid transparent;
-}
-
-.ct-hero-btn-primary { background: var(--ct-primary); color: #fff; }
-.ct-hero-btn-primary:hover { background: var(--ct-primary-dark); color: #fff; }
-.ct-hero-btn-secondary { border-color: var(--ct-border-strong); color: var(--ct-text); }
-.ct-hero-btn-secondary:hover { border-color: var(--ct-primary); color: var(--ct-primary-light); }
-
-/* --- Statistiques : espacement seulement, Bootstrap gere les colonnes --- */
-.ct-stats-row { margin-top: 2.5rem; }
-
-.ct-stat-card {
-    height: 100%;
-    text-align: center;
-    padding: 1.35rem 0.75rem;
-    border: 1px solid var(--ct-border);
-    border-radius: var(--ct-radius);
-    background: var(--ct-card);
-}
-
-.ct-stat-icon {
-    display: flex;
-    justify-content: center;
-    color: var(--ct-primary-light);
-    margin-bottom: 0.6rem;
-}
-
-.ct-stat-value {
-    font-family: var(--ct-font-mono);
-    font-variant-numeric: tabular-nums;
-    font-size: 1.7rem;
-    font-weight: 700;
-    color: var(--ct-heading);
-    line-height: 1.15;
-}
-
-.ct-stat-label {
-    font-size: 0.72rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--ct-text-secondary);
-    margin-top: 0.3rem;
-}
-
-/* --- Cartes de categorie : appliquees sur un <Card> Bootstrap.
-       Pas de padding/bordure/fond ici, .card et Card.Body s'en chargent. --- */
-.ct-category-card {
-    height: 100%;
-    text-decoration: none;
-    color: inherit;
-    cursor: pointer;
-    transition: var(--ct-transition);
-}
-
-.ct-category-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 46px;
-    height: 46px;
-    border-radius: 11px;
-    background: color-mix(in srgb, var(--ct-primary) 14%, transparent);
-    color: var(--ct-primary-light);
-}
-
-/* --- Top performers --- */
-.ct-featured-card { height: 100%; overflow: hidden; }
-
-.ct-featured-img-wrapper {
-    height: 150px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--ct-media-bg);
-    border-bottom: 1px solid var(--ct-border);
-}
-
-.ct-featured-img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    padding: 0.75rem;
-}
-
-/* --- Section "pourquoi" --- */
-.ct-why-section { margin: 3.5rem 0; }
-
-.ct-feature-list { list-style: none; padding: 0; margin: 0; }
-
-.ct-feature-list li {
-    padding: 0.5rem 0 0.5rem 1.5rem;
-    position: relative;
-    color: var(--ct-text-secondary);
-}
-
-.ct-feature-list li::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 1.05rem;
-    width: 6px;
-    height: 6px;
+/* ===================================================================
+   14. INDICATEUR DE CHARGEMENT
+   Bootstrap n'est plus charge : le seul composant qu'on lui empruntait
+   encore est reecrit ici, en 12 lignes plutot qu'en 250 Ko de feuille.
+   =================================================================== */
+.nr-spinner {
+    width: 26px;
+    height: 26px;
+    margin: 0 auto;
+    border: 2px solid var(--nr-line-strong);
+    border-right-color: var(--nr-accent);
     border-radius: 50%;
-    background: var(--ct-primary);
+    animation: nr-spin 0.75s linear infinite;
 }
 
-.ct-why-visual,
-.ct-why-chart-placeholder {
-    border: 1px solid var(--ct-border);
-    border-radius: var(--ct-radius);
-    background: var(--ct-card);
-    min-height: 200px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--ct-text-secondary);
+@keyframes nr-spin {
+    to { transform: rotate(360deg); }
 }
 
-/* --- Marque du header --- */
-.ct-brand-icon {
-    display: inline-flex;
-    align-items: center;
-    color: var(--ct-primary-light);
+/* Apparition de page (voir components/AnimatedPage.jsx).
+ *
+ * Opacité seule, JAMAIS de transform : un ancêtre transformé devient le bloc
+ * conteneur de ses descendants `position: fixed`, qui se positionnent alors
+ * par rapport à lui et non par rapport à la fenêtre. La barre de comparaison
+ * se retrouvait ainsi en bas du contenu — il fallait parcourir toute la liste
+ * pour atteindre le bouton « Comparer ». Même piège avec `filter`,
+ * `perspective`, `will-change: transform` et `contain: paint`. */
+@keyframes nr-page-enter {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.nr-page-enter { animation: nr-page-enter 0.25s ease-out both; }
+
+/* Le mouvement est confortable pour la plupart des gens et pénible pour
+   certains : quand le système le signale, on garde le contenu, pas l'effet. */
+@media (prefers-reduced-motion: reduce) {
+    .nr-page-enter { animation: none; }
+    .nr-score-bar-line-filled { transition: none; }
+    .nr-spinner { animation-duration: 2s; }
+}
+
+/* ===================================================================
+   15. LIBELLÉ DE CHAMP
+   Seul rescapé de l'ancien jeu de classes .ct-* : sert d'étiquette au-dessus
+   des champs de formulaire et des groupes de filtres.
+   =================================================================== */
+.nr-label {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--nr-muted);
+    font-weight: 600;
 }

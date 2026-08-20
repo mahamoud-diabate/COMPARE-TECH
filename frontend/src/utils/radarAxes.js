@@ -57,17 +57,41 @@ export function resolveType(productType) {
   return Object.keys(RADAR_AXES).find(key => type.includes(key)) || null;
 }
 
-/**
- * Construit les données du radar pour un ou deux produits.
- *
- * Un axe est retenu seulement si au moins un des produits comparés porte
- * réellement la valeur : afficher un 0 pour une donnée absente laisserait
- * croire à une faiblesse du produit alors qu'il s'agit d'une information
- * manquante.
+/*
+ * Libellés secondaires du bloc « Évaluation » : une ligne d'axe sans
+ * explication force le lecteur à deviner ce que mesure la note.
+ * Les clés doivent reprendre à l'identique les `label` de RADAR_AXES.
  */
-export function buildRadarData(product1, product2, productType) {
-  const type = resolveType(productType || product1?.productType);
-  if (!type || !product1) return [];
+export const AXIS_HINTS = {
+  'Mono-cœur': 'Réactivité sur une tâche unique',
+  'Multi-cœur': 'Rendu, compilation, montage vidéo',
+  'Cœurs': 'Nombre de cœurs physiques',
+  'Threads': 'Fils d’exécution simultanés',
+  'Fréquence': 'Fréquence maximale atteinte',
+  'Performance 3D': 'Rendu graphique et jeux',
+  'VRAM': 'Mémoire dédiée à la carte',
+  'Unités de calcul': 'Cœurs CUDA / Stream',
+  'Performance': 'Puissance de calcul générale',
+  'Mémoire': 'Quantité de mémoire vive',
+  'Stockage': 'Capacité de stockage interne',
+  'Luminosité': 'Luminosité maximale de l’écran',
+  'Autonomie': 'Durée d’utilisation annoncée',
+  'Puissance': 'Score de synthèse AnTuTu',
+  'Batterie': 'Capacité de la batterie',
+  'Écran': 'Diagonale de l’écran'
+};
+
+/**
+ * Notes par critère, sur 100, pour un ou plusieurs produits.
+ * Réutilise exactement les axes du radar : afficher deux échelles
+ * différentes pour la même donnée selon l'écran serait incohérent.
+ *
+ * Renvoie [{ label, hint, values: [n|null, ...] }]
+ */
+export function buildCategoryScores(products, productType) {
+  const list = (products || []).filter(Boolean);
+  const type = resolveType(productType || list[0]?.productType);
+  if (!type || list.length === 0) return [];
 
   const normalize = (raw, max) => {
     const value = num(raw);
@@ -77,10 +101,9 @@ export function buildRadarData(product1, product2, productType) {
 
   return RADAR_AXES[type]
     .map(({ label, field, max }) => {
-      const a = normalize(product1[field], max);
-      const b = product2 ? normalize(product2[field], max) : null;
-      if (a === null && b === null) return null;
-      return { subject: label, A: a ?? 0, B: b ?? 0, fullMark: 100 };
+      const values = list.map(p => normalize(p[field], max));
+      if (values.every(v => v === null)) return null;
+      return { label, hint: AXIS_HINTS[label] || '', values };
     })
     .filter(Boolean);
 }

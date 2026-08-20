@@ -1,6 +1,4 @@
 import React from 'react';
-import Container from 'react-bootstrap/Container';
-import Button from 'react-bootstrap/Button';
 
 /**
  * Affiché quand un chargement échoue.
@@ -11,28 +9,26 @@ import Button from 'react-bootstrap/Button';
  */
 function ErrorState({ message, onRetry }) {
   return (
-    <Container
-      className="d-flex flex-column align-items-center justify-content-center text-center"
-      style={{ minHeight: '400px' }}
-    >
-      <div style={{ fontSize: '2.5rem', lineHeight: 1 }} aria-hidden="true">📡</div>
+    <div className="nr-card">
+      <div className="nr-empty">
+        <p style={{ color: 'var(--nr-text)', fontWeight: 600, marginBottom: 4 }}>
+          Données indisponibles
+        </p>
 
-      <h4 className="fw-bold mt-3 mb-2">Données indisponibles</h4>
+        <p style={{ maxWidth: 460, margin: '0 auto 4px' }}>
+          {message || "Le serveur n'a pas pu être joint."}
+        </p>
 
-      <p className="text-muted mb-1" style={{ maxWidth: '32rem' }}>
-        {message || "Le serveur n'a pas pu être joint."}
-      </p>
-      <p className="text-muted small mb-4" style={{ maxWidth: '32rem' }}>
-        L'API est hébergée sur une offre gratuite qui met le serveur en veille :
-        un nouvel essai suffit généralement.
-      </p>
+        <p className="nr-text-gray-small" style={{ maxWidth: 460, margin: '0 auto 16px' }}>
+          L’API est hébergée sur une offre gratuite qui met le serveur en veille :
+          un nouvel essai suffit généralement.
+        </p>
 
-      {onRetry && (
-        <Button variant="primary" onClick={onRetry}>
-          Réessayer
-        </Button>
-      )}
-    </Container>
+        {onRetry && (
+          <button className="nr-btn" onClick={onRetry}>Réessayer</button>
+        )}
+      </div>
+    </div>
   );
 }
 

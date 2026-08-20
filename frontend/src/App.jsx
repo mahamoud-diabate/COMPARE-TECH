@@ -5,34 +5,29 @@ import Footer from './components/Footer';
 import { Toaster } from 'react-hot-toast';
 
 function App() {
-  const [theme, setTheme] = useState(() => {
-    return localStorage.getItem('theme') || 'dark';
-  });
+  // Clair par défaut : le comparateur est fait pour être lu longtemps, avec
+  // beaucoup de tableaux et de chiffres, et le fond clair y tient mieux le
+  // contraste. Le choix de l'utilisateur reste prioritaire une fois posé.
+  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'light');
 
-  const toggleTheme = () => {
-    const newTheme = theme === 'dark' ? 'light' : 'dark';
-    setTheme(newTheme);
-  };
+  const toggleTheme = () => setTheme(theme === 'dark' ? 'light' : 'dark');
 
   useEffect(() => {
-    document.documentElement.setAttribute('data-bs-theme', theme);
+    document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('theme', theme);
   }, [theme]);
 
-  // Le conteneur racine tire ses couleurs des variables CSS : un style
-  // inline en dur bloquerait le theme clair (priorite non surchargeable).
   return (
-    <div
-      className="d-flex flex-column min-vh-100"
-      style={{ background: 'var(--ct-bg)', color: 'var(--ct-text)' }}
-    >
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', background: 'var(--nr-bg)' }}>
       <Toaster
         position="top-center"
         toastOptions={{
           style: {
-            background: 'var(--ct-card)',
-            color: 'var(--ct-text)',
-            border: '1px solid rgba(37, 99, 235, 0.2)',
+            background: 'var(--nr-card)',
+            color: 'var(--nr-text)',
+            border: '1px solid var(--nr-line-strong)',
+            borderRadius: '3px',
+            fontSize: '13px',
           },
         }}
       />

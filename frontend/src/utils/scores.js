@@ -46,3 +46,32 @@ export const getProductScore = (product, typeOverride) => {
     if (type.includes('laptop')) return calculateLaptopScore(product);
     return 0;
 };
+/*
+ * Note-lettre associee a un score 0-100.
+ *
+ * Reprend le systeme du comparateur de reference : une lettre a cote du
+ * chiffre situe le produit d'un coup d'oeil, la ou un nombre seul demande de
+ * connaitre l'echelle. Les seuils sont en revanche adaptes a la distribution
+ * de nos scores : ceux de la reference placeraient presque tout le catalogue
+ * en « A », ce qui ne distinguerait plus rien.
+ *
+ * `variable` renvoie une variable CSS, donc une couleur qui suit le theme
+ * sans que le composant ait a le savoir. Utilisable en style inline React.
+ */
+const GRADES = [
+  { min: 90, letter: 'A+', variable: 'var(--nr-g-ap)' },
+  { min: 70, letter: 'A', variable: 'var(--nr-g-a)' },
+  { min: 50, letter: 'B', variable: 'var(--nr-g-b)' },
+  { min: 30, letter: 'C', variable: 'var(--nr-g-c)' },
+  { min: 1, letter: 'D', variable: 'var(--nr-g-d)' },
+];
+
+const NO_GRADE = { letter: null, variable: 'var(--nr-g-none)' };
+
+export const scoreGrade = (score) => {
+  if (!score || score <= 0) return NO_GRADE;
+  return GRADES.find(grade => score >= grade.min) || NO_GRADE;
+};
+
+/** Raccourci : la seule couleur, pour un fond ou une bordure. */
+export const scoreVar = (score) => scoreGrade(score).variable;

@@ -1,183 +1,157 @@
-import { API_BASE } from '../api';
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
-import ListGroup from 'react-bootstrap/ListGroup';
-import { LinkContainer } from 'react-router-bootstrap';
-import { Search, Moon, Sun, Zap } from 'lucide-react';
-import './Header.css';
+import { Search, Moon, Sun, Menu } from 'lucide-react';
+import Sidebar from './Sidebar';
+import { loadCatalog } from '../utils/catalog';
 
+const TYPE_LABEL = { cpu: 'CPU', gpu: 'GPU', laptop: 'Portable', telephone: 'Téléphone' };
 
-
+/**
+ * En-tête du site : marque, recherche globale, navigation, thème.
+ *
+ * Une seule barre de recherche pour tous les formats — l'ancienne version en
+ * dupliquait une pour le mobile, ce qui obligeait à synchroniser deux refs et
+ * deux listes de suggestions pour un résultat identique.
+ */
 function Header({ toggleTheme, theme }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [allProducts, setAllProducts] = useState([]);
-  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [menuOuvert, setMenuOuvert] = useState(false);
   const navigate = useNavigate();
-  // Deux barres de recherche (desktop + mobile) : il faut une ref par bloc,
-  // sinon la seconde ecrase la premiere et le clic-exterieur ferme a tort.
   const searchRef = useRef(null);
-  const searchMobileRef = useRef(null);
+  const menuBoutonRef = useRef(null);
 
   useEffect(() => {
     const fetchAll = async () => {
       try {
-        const urls = ['cpus', 'gpus', 'laptops', 'telephones'].map(e => `${API_BASE}/${e}`);
-        const responses = await Promise.all(urls.map(url => fetch(url).then(r => r.json())));
-        const cpus = responses[0].map(p => ({ ...p, productType: 'cpu' }));
-        const gpus = responses[1].map(p => ({ ...p, productType: 'gpu' }));
-        const laptops = responses[2].map(p => ({ ...p, productType: 'laptop' }));
-        const phones = responses[3].map(p => ({ ...p, productType: 'telephone' }));
-        setAllProducts([...cpus, ...gpus, ...laptops, ...phones]);
-      } catch (e) { /* silent */ }
+        const endpoints = [
+          ['cpus', 'cpu'],
+          ['gpus', 'gpu'],
+          ['laptops', 'laptop'],
+          ['telephones', 'telephone'],
+        ];
+        // Passe par le cache partagé : les pages catégorie et les fiches
+        // produit demandent les mêmes collections, une seule requête suffit.
+        const responses = await Promise.all(endpoints.map(([path]) => loadCatalog(path)));
+        setAllProducts(
+          responses.flatMap((list, i) =>
+            (Array.isArray(list) ? list : []).map(p => ({ ...p, productType: endpoints[i][1] }))
+          )
+        );
+      } catch {
+        // Recherche indisponible hors ligne : le reste du site fonctionne.
+      }
     };
     fetchAll();
   }, []);
 
   useEffect(() => {
-    if (searchTerm.length >= 2) {
-      const matches = allProducts.filter(p =>
-        (p.name && p.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (p.brand && p.brand.toLowerCase().includes(searchTerm.toLowerCase()))
-      ).slice(0, 6);
-      setSuggestions(matches);
-      setShowSuggestions(true);
-    } else {
+    if (searchTerm.trim().length < 2) {
       setSuggestions([]);
-      setShowSuggestions(false);
+      setOpen(false);
+      return;
     }
+    const needle = searchTerm.toLowerCase();
+    setSuggestions(
+      allProducts
+        .filter(p =>
+          (p.name && p.name.toLowerCase().includes(needle)) ||
+          (p.brand && p.brand.toLowerCase().includes(needle))
+        )
+        .slice(0, 7)
+    );
+    setOpen(true);
   }, [searchTerm, allProducts]);
 
   useEffect(() => {
-    const handleClickOutside = (e) => {
-      const inDesktop = searchRef.current && searchRef.current.contains(e.target);
-      const inMobile = searchMobileRef.current && searchMobileRef.current.contains(e.target);
-      if (!inDesktop && !inMobile) {
-        setShowSuggestions(false);
-      }
+    const onClickOutside = (e) => {
+      if (searchRef.current && !searchRef.current.contains(e.target)) setOpen(false);
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener('mousedown', onClickOutside);
+    return () => document.removeEventListener('mousedown', onClickOutside);
   }, []);
 
-  const handleSelect = (product) => {
-    const type = product.productType || 'cpu';
-    navigate(`/${type}/${product._id}`);
+  const select = (product) => {
+    navigate(`/${product.productType || 'cpu'}/${product._id}`);
     setSearchTerm('');
-    setShowSuggestions(false);
+    setOpen(false);
   };
 
-  const handleSubmit = (e) => {
+  const onSubmit = (e) => {
     e.preventDefault();
-    if (suggestions.length > 0) {
-      handleSelect(suggestions[0]);
-    }
+    if (suggestions.length > 0) select(suggestions[0]);
   };
 
   return (
-    <Navbar expand="lg" sticky="top" className="ct-navbar" variant="dark">
-      <Container>
-        <LinkContainer to="/">
-          <Navbar.Brand className="ct-brand">
-            <span className="ct-brand-icon"><Zap size={20} strokeWidth={2.5} /></span>
-            <span className="ct-brand-text">Compare<span className="text-primary">Tech</span></span>
-          </Navbar.Brand>
-        </LinkContainer>
+    <header className="nr-header">
+      <div className="nr-header-inner">
+        <button
+          className="nr-icon-btn"
+          ref={menuBoutonRef}
+          onClick={() => setMenuOuvert(true)}
+          aria-label="Ouvrir le menu"
+          aria-expanded={menuOuvert}
+        >
+          <Menu size={18} strokeWidth={2} />
+        </button>
 
-        <div className="ct-search-desktop" ref={searchRef}>
-          <Form onSubmit={handleSubmit}>
-            <InputGroup className="ct-search-group">
-              <InputGroup.Text className="ct-search-icon"><Search size={16} strokeWidth={2} /></InputGroup.Text>
-              <Form.Control
-                type="search"
-                placeholder="Rechercher un produit..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                onFocus={() => suggestions.length > 0 && setShowSuggestions(true)}
-                className="ct-search-input"
-                autoComplete="off"
-              />
-            </InputGroup>
-          </Form>
-          {showSuggestions && suggestions.length > 0 && (
-            <ListGroup className="ct-search-dropdown">
-              {suggestions.map((product) => (
-                <ListGroup.Item
+        <Link to="/" className="nr-logo">
+          Compare<em>Tech</em>
+        </Link>
+
+        <div className="nr-search" ref={searchRef}>
+          <form onSubmit={onSubmit}>
+            <span className="nr-search-icon"><Search size={14} strokeWidth={2} /></span>
+            <input
+              type="search"
+              placeholder="Rechercher un produit…"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onFocus={() => suggestions.length > 0 && setOpen(true)}
+              autoComplete="off"
+              aria-label="Rechercher un produit"
+            />
+          </form>
+
+          {open && suggestions.length > 0 && (
+            <div className="nr-search-drop">
+              {suggestions.map(product => (
+                <button
                   key={product._id}
-                  action
-                  onClick={() => handleSelect(product)}
-                  className="ct-search-item"
+                  type="button"
+                  className="nr-search-item"
+                  onClick={() => select(product)}
                 >
-                  <div className="d-flex justify-content-between align-items-center w-100">
-                    <div>
-                      <strong className="d-block">{product.name}</strong>
-                      <small className="text-muted">{product.brand}</small>
-                    </div>
-                    <span className="ct-search-badge">{product.productType?.toUpperCase()}</span>
-                  </div>
-                </ListGroup.Item>
+                  <span style={{ minWidth: 0 }}>
+                    <strong style={{ display: 'block' }}>{product.name}</strong>
+                    <span className="nr-text-gray-small">{product.brand}</span>
+                  </span>
+                  <span className="nr-badge">{TYPE_LABEL[product.productType]}</span>
+                </button>
               ))}
-            </ListGroup>
+            </div>
           )}
         </div>
 
-        <Navbar.Toggle aria-controls="main-nav" />
-        <Navbar.Collapse id="main-nav">
-          <Nav className="ms-auto align-items-lg-center">
-            <LinkContainer to="/cpus"><Nav.Link className="ct-nav-link">CPU</Nav.Link></LinkContainer>
-            <LinkContainer to="/gpus"><Nav.Link className="ct-nav-link">GPU</Nav.Link></LinkContainer>
-            <LinkContainer to="/laptops"><Nav.Link className="ct-nav-link">Laptops</Nav.Link></LinkContainer>
-            <LinkContainer to="/telephones"><Nav.Link className="ct-nav-link">Phones</Nav.Link></LinkContainer>
-            <LinkContainer to="/admin">
-              <Nav.Link className="ct-nav-link ct-nav-admin">Admin</Nav.Link>
-            </LinkContainer>
-            <button
-              className="ct-theme-toggle ms-lg-3 mt-2 mt-lg-0"
-              onClick={toggleTheme}
-              title={theme === 'dark' ? 'Mode clair' : 'Mode sombre'}
-            >
-              {theme === 'dark' ? <Sun size={17} strokeWidth={2} /> : <Moon size={17} strokeWidth={2} />}
-            </button>
-          </Nav>
-        </Navbar.Collapse>
+        <button
+          className="nr-icon-btn"
+          onClick={toggleTheme}
+          title={theme === 'dark' ? 'Passer en clair' : 'Passer en sombre'}
+          aria-label="Changer de thème"
+          style={{ marginLeft: 'auto' }}
+        >
+          {theme === 'dark' ? <Sun size={16} strokeWidth={2} /> : <Moon size={16} strokeWidth={2} />}
+        </button>
+      </div>
 
-        {/* Barre de recherche mobile */}
-        <div className="ct-search-mobile mt-2" ref={searchMobileRef}>
-          <Form onSubmit={handleSubmit}>
-            <InputGroup>
-              <Form.Control
-                type="search"
-                placeholder="Rechercher..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                onFocus={() => suggestions.length > 0 && setShowSuggestions(true)}
-                className="ct-search-input"
-                autoComplete="off"
-              />
-            </InputGroup>
-          </Form>
-          {showSuggestions && suggestions.length > 0 && (
-            <ListGroup className="ct-search-dropdown">
-              {suggestions.map((product) => (
-                <ListGroup.Item
-                  key={product._id}
-                  action
-                  onClick={() => handleSelect(product)}
-                  className="ct-search-item"
-                >
-                  <strong>{product.name}</strong> <small className="text-muted">({product.brand})</small>
-                </ListGroup.Item>
-              ))}
-            </ListGroup>
-          )}
-        </div>
-      </Container>
-    </Navbar>
+      <Sidebar
+        ouvert={menuOuvert}
+        onClose={() => setMenuOuvert(false)}
+        boutonRef={menuBoutonRef}
+      />
+    </header>
   );
 }
 
