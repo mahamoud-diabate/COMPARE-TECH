@@ -1,55 +1,40 @@
-# CompareTech Analytics API (MERN Backend)
+﻿# Backend — CompareTech API
 
-> **Partie d'un projet fullstack.** Frontend : [compare-tech-frontend](https://github.com/mahamoud-diabate/compare-tech-frontend) · Backend : [compare-tech-backend](https://github.com/mahamoud-diabate/compare-tech-backend) · Démo : [compare-tech-frontend.vercel.app](https://compare-tech-frontend.vercel.app)
+API REST construite avec Node.js, Express et MongoDB pour alimenter la plateforme CompareTech.
 
-## 🚀 Overview
-This is a high-performance RESTful API built to power the **CompareTech** hardware analytics platform. It manages a complex dataset of CPUs, GPUs, Laptops, and Smartphones, serving as the bridge between a MongoDB Atlas cloud database and a React-based frontend.
+## Installation et démarrage
 
-## 🛠️ Technical Stack
-*   **Runtime:** Node.js
-*   **Framework:** Express.js
-*   **Database:** MongoDB Atlas (NoSQL)
-*   **ODM:** Mongoose
-*   **Environment Management:** Dotenv
-*   **Data Acquisition:** Axios + Cheerio (Web Scraping)
+```bash
+# Installation des dépendances
+npm install
 
-## 🏗️ Key Engineering Achievements
+# Lancer en développement (avec nodemon)
+npm run dev
 
-### 1. Automated Data Engineering (Scraping)
-To move beyond static data, I implemented custom web scraping scripts to maintain a library of **400+ high-fidelity products**.
-*   **Engineering:** Handled dynamic HTML structures with configurable HTTP headers, rate limiting, retry-on-error, and request delays to respect the source sites' load.
-*   **Scrapers:**
-    *   `scrapeCpus.js`: Extracts technical specs from *Notebookcheck*.
-    *   `scrapeGpus.js`: Parses massive hardware tables from *Wikipedia*.
+# Lancer en production
+npm start
 
-### 2. Scalable Schema Design
-Designed a multi-model architecture where each hardware category (CPU, GPU, etc.) has its own schema validation while maintaining a consistent API response structure for the frontend's consumption.
+# Exécuter les tests unitaires
+npm test
+```
 
-### 3. Security & Best Practices
-*   Implemented **Environment Variable isolation** using `.env` to secure database credentials.
-*   Decoupled architecture for independent scaling of Frontend and Backend services.
-*   Centralized error handling for API reliability.
+## Variables d'environnement (`.env`)
 
-## 🔌 API Architecture
+```env
+PORT=3001
+DB_URI=mongodb://localhost:27017/compare-tech
+JWT_SECRET=votre_secret_jwt
+ADMIN_PASSWORD=votre_mot_de_passe_admin
+GEMINI_API_KEY=votre_cle_gemini
+CORS_ORIGINS=http://localhost:5173,http://localhost:5174
+```
 
-| Method | Endpoint | Description |
-| :--- | :--- | :--- |
-| `GET` | `/api/cpus` | Retrieve all CPU records |
-| `GET` | `/api/gpus` | Retrieve all GPU records |
-| `POST`| `/api/compare` | Bulk-fetch records by ID array for comparison views |
-| `GET` | `/api/featured` | Aggregates top-performing hardware across models |
+## Endpoints principaux
 
-## 🛠️ Local Setup & Deployment
-
-1. **Clone the repo.**
-2. **Installation:** `npm install`
-3. **Environment:** Create a `.env` file:
-    ```env
-    DB_URI=your_mongodb_atlas_uri
-    PORT=3001
-    ```
-4. **Seed Database:** Run `node scripts/populateRemaining.js` to initialize the library.
-5. **Start:** `npm start`
-
----
-*Developed by KING2MO - Focus on Scalability, Data Integrity, and API Performance.*
+- `GET /api/cpus` — Liste des processeurs
+- `GET /api/gpus` — Liste des cartes graphiques
+- `GET /api/laptops` — Liste des ordinateurs portables
+- `GET /api/telephones` — Liste des smartphones
+- `GET /api/featured` — Produits mis en avant
+- `POST /api/ai/verdict` — Synthèse comparative générée
+- `POST /api/auth/login` — Authentification administrateur
