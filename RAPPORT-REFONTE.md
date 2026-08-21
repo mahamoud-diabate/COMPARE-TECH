@@ -4,8 +4,16 @@ Document de passation. Il consigne ce qui a été fait, **pourquoi**, ce qui res
 ouvert, et les pièges rencontrés — pour qu'une reprise n'ait pas à redécouvrir
 les mêmes choses.
 
-**Branche :** `refonte-nanoreview` · **Point de restauration :** commit `61f279f`
-· **Rien n'a été poussé.**
+**Branche :** `refonte-nanoreview` · **Rien n'a été poussé.**
+
+| Commit | Contenu |
+| --- | --- |
+| `61f279f` | Refonte de l'interface, design system, tests, accessibilité |
+| `4547139` | Originalité, échelle de notes dérivée, tiroir de navigation |
+| *(non commité)* | Icônes de rubrique, restructuration du tiroir |
+
+Un commit `9ef8ba6` a existé puis a été annulé sur demande — voir §5.4. Il reste
+récupérable quelques semaines via `git reflog`.
 
 ---
 
@@ -71,8 +79,26 @@ alignée sur les modèles Mongo. Le formulaire d'administration en est dérivé.
 - **`/compare` sans produits** était une impasse. C'est désormais une **page de
   sélection** : deux champs à complétion, « VS », et 24 confrontations serrées
   calculées depuis le classement.
-- **Navigation en tiroir**, séparant « Comparer » et « Classements » — deux
-  choses distinctes que la barre plate présentait à l'identique.
+- **Navigation en tiroir.** Structure finale, après deux corrections :
+
+  ```
+     ⚖  Comparer deux produits      ← premier, en gras, sans intitulé
+  —  CLASSEMENTS 🏆
+     Processeurs · Cartes graphiques · Ordinateurs portables · Téléphones
+  —  GESTION
+     Administration
+  ```
+
+  Deux enseignements. **Le tiroir listait d'abord les quatre mêmes libellés et
+  icônes dans « Comparer » et « Classements »** — huit liens pour quatre
+  destinations, une lecture de doublon. Les quatre entrées « Comparer » ne
+  faisaient que présélectionner un onglet que la page de comparaison porte déjà :
+  elles ont été fondues en une seule.
+
+  Ensuite, **l'ordre suivait la commodité de mise en page** (la liste de quatre
+  d'abord) et non l'intention du produit. Le classement sert à trouver un
+  produit, la comparaison est ce qu'on vient faire : elle passe donc en tête.
+  Mise en avant par la graisse et l'espace, jamais par la couleur.
 - **Titre et description par page**, dérivés des données.
 
 ### 2.5 Originalité — « CompareTech montre son calcul »
@@ -120,7 +146,26 @@ et non par un écart de luminosité.
 
 **La couleur n'est jamais seule** : la note-lettre l'accompagne partout.
 
-### 2.7 Robustesse
+### 2.7 Icônes
+
+Système à deux sources : un fichier déposé dans `frontend/src/assets/icons/`,
+un tracé de repli sinon. **Deux techniques d'affichage selon le fichier :**
+
+| Type de fichier | Rendu | Suit le thème |
+| --- | --- | --- |
+| PNG en couleur (`cpu`, `gpu`, `laptop`, `phone`) | `<img>` tel quel | **non** |
+| PNG monochrome (`menu`, `ranking`, `compare`) | masque CSS `.nr-mask-icon` | **oui** |
+
+Le masque n'utilise que le canal alpha : la forme vient du fichier, la couleur
+du contexte. Il ne convient qu'aux fichiers sans couleur propre — un dessin
+colorié y perdrait tout sauf sa silhouette.
+
+Attribution obligatoire, affichée en pied de page et renseignée dans
+`ATTRIBUTIONS` (`Footer.jsx`) : actuellement **bqlqn sur Flaticon** et
+**Icons8**. Tant qu'un fichier est présent sans auteur déclaré, le pied de page
+affiche un avertissement plutôt qu'une mention incomplète.
+
+### 2.8 Robustesse
 
 - **54 tests** (`node --test`, sans dépendance) sur `specs.js`, `scores.js`,
   `radarAxes.js`.
@@ -156,25 +201,18 @@ Les causes racines valent d'être conservées.
 ## 4. État actuel
 
 ```
-28 composants · 14 pages · 5 utils · 3 hooks
-4 843 lignes JS/JSX · 1 523 lignes CSS
+29 composants · 14 pages · 6 utils · 3 hooks
 54 tests · lint propre · build OK
-JS 381 Ko (123 Ko gzip) · CSS 34 Ko
+JS 392 Ko (124 Ko gzip) · CSS 35 Ko
+8 fichiers dans assets/icons/
 ```
 
-**Commité** (`61f279f`) : toute la refonte jusqu'aux tests et à
-l'accessibilité.
+**Commité** jusqu'à `4547139` : refonte complète, originalité, échelle de notes
+dérivée, tiroir, page de sélection, icônes de catégorie.
 
-**Non commité** — les quatre chantiers d'originalité, l'échelle de notes
-dérivée, le tiroir, la page de sélection, les icônes :
-
-- `frontend/src/components/ScorePanel.jsx`
-- `frontend/src/components/icons.jsx`
-- `frontend/src/utils/iconFiles.js`
-- `frontend/src/assets/icons/` (cpu, gpu, laptop, phone, menu — PNG Flaticon)
-- `frontend/src/components/ThemeToggle.{jsx,css}` *(ajouté hors de mes
-  modifications)*
-- plus 17 fichiers modifiés
+**Non commité** — cinq fichiers : les deux icônes de rubrique (`ranking.png`,
+`compare.png`), la classe `.nr-mask-icon`, la fusion des groupes dupliqués du
+tiroir et la remise en tête de « Comparer ».
 
 ---
 
@@ -222,12 +260,39 @@ qui compose des frames :
 - le parcours réel à la touche `Tab` — la règle CSS est vérifiée dans la
   feuille compilée.
 
-### 5.4 Ordre suggéré
+### 5.4 Frictions « débutant » — traitées puis annulées
 
-1. **Les vraies données.** Rien d'autre ne compte tant que ce n'est pas fait.
-2. **Des tests de composant** sur les quatre interactions ci-dessus.
-3. **Supprimer les styles en ligne**, ou assumer le mélange et l'écrire dans
-   `DESIGN.md`.
+Trois constats formulés après relecture sous l'angle d'un visiteur qui découvre
+le site. Ils ont été implémentés dans le commit `9ef8ba6`, **annulé sur demande**
+juste après. Les constats restent valides ; le code est récupérable via
+`git reflog` (`git reset --hard 9ef8ba6`).
+
+1. **Navigation masquée sur grand écran.** Ouvrir un tiroir pour découvrir les
+   catégories ralentit la découverte sur un écran de bureau. Correction faite :
+   les quatre classements dans l'en-tête au-delà de 900 px, le tiroir en dessous.
+
+2. **Rival direct sur la fiche produit.** Le bloc « Comparer avec » existe, mais
+   choisissait par proximité de score seule — donc trois AMD sur un AMD. Or
+   l'acheteur se demande « AMD ou Intel ? ». Correction faite : `pickRivals`
+   réservait la première place au concurrent le plus proche d'une **autre
+   marque**, avec quatre tests.
+
+3. **Vulgarisation des benchmarks.** « Geekbench 6 (mono-cœur) » ne parle pas à
+   tout le monde. Correction faite : `MESURE_EXPLIQUEE` traduisait sept mesures
+   en français courant, **en texte visible** — et non en infobulle au survol, qui
+   n'existe ni au doigt ni au clavier et cacherait l'explication à ceux qui en
+   ont le plus besoin.
+
+### 5.5 Ordre suggéré
+
+1. **Les vraies données** (§5.1). Rien d'autre ne compte tant que ce n'est pas
+   fait — tout le reste est du vernis sur un catalogue inventé.
+2. **Reprendre les trois frictions** (§5.4) : les constats restent valides, et le
+   code existe déjà dans `9ef8ba6`.
+3. **Des tests de composant** (§5.3) sur les interactions vérifiées à la main
+   une seule fois.
+4. **Supprimer les styles en ligne** (§5.2), ou assumer le mélange et l'écrire
+   dans `DESIGN.md`.
 
 ---
 
@@ -248,10 +313,15 @@ npm --prefix backend test         # 10 tests
   bundle.
 - Redémarrer le serveur de dev après tout changement de dépendances ou de
   `.env` : Vite garde les valeurs chargées au démarrage.
-- Pour ajouter une icône : déposer le fichier dans
+- Pour ajouter une icône de catégorie : déposer le fichier dans
   `frontend/src/assets/icons/` sous le nom `cpu`, `gpu`, `laptop`, `phone` ou
-  `admin`. Voir le LISEZ-MOI du dossier. **L'attribution Flaticon est
-  obligatoire** et se renseigne dans `ATTRIBUTIONS`, dans `Footer.jsx`.
+  `admin`. Voir le LISEZ-MOI du dossier.
+- **Vérifier d'abord si le fichier est monochrome.** Si oui, l'afficher par
+  masque CSS (`.nr-mask-icon`) plutôt qu'en `<img>` : il suivra alors le thème.
+  C'est ce que font `menu`, `ranking` et `compare`.
+- **L'attribution est obligatoire** et se renseigne dans `ATTRIBUTIONS`
+  (`Footer.jsx`). Quand la banque signe de son propre nom, ne pas répéter
+  (« Icons8 sur Icons8 ») — le composant s'en charge.
 
 ---
 
