@@ -4,12 +4,30 @@ Comparateur d'appareils technologiques (CPU, GPU, portables, téléphones) avec 
 
 Monorepo réunissant le backend et le frontend dans un seul dépôt, avec l'historique Git complet des deux projets.
 
+## Aperçu
+
+**Parcourir** — accueil, catégories notées, puis le classement complet d'une famille de produits.
+
+![Parcours du site : accueil, menu, classement des cartes graphiques](docs/demo-parcours.gif)
+
+**Comparer** — deux modèles désignés à la saisie, leurs écarts chiffrés, les notes par critère et le radar de profil.
+
+![Comparaison de deux cartes graphiques, des différences clés au radar](docs/demo-comparaison.gif)
+
+**Chercher** — recherche instantanée sur tout le catalogue, fiche produit, thème sombre.
+
+![Recherche instantanée, fiche produit et bascule en thème sombre](docs/demo-recherche.gif)
+
+Ces animations sont rejouables : `docs/record-demo.mjs` pilote le site, capture
+le rendu et assemble les GIF (voir [Démonstrations](#démonstrations)).
+
 ## Structure
 
 ```
 COMPARE-TECH/
 ├── backend/    → API REST (Node.js · Express · MongoDB · JWT · Gemini)
-└── frontend/   → Interface web (React · Vite)
+├── frontend/   → Interface web (React · Vite)
+└── docs/       → GIF de démonstration et script qui les enregistre
 ```
 
 ## Backend
@@ -55,6 +73,23 @@ Le radar est tracé en SVG par `src/components/TechRadar.jsx`, sans bibliothèqu
 de graphiques. Les collections sont mises en cache une minute par
 `src/utils/catalog.js`, partagé entre la recherche de l'en-tête et les pages :
 c'est ce qui évite qu'une même liste soit demandée deux fois par écran.
+
+## Démonstrations
+
+Les GIF de l'aperçu sont produits par un script, pas capturés à la main : une
+évolution de l'interface se répercute en une commande, et les trois scénarios
+restent identiques d'une version à l'autre.
+
+```bash
+npm i puppeteer-core          # hors dépendances du projet, uniquement pour la doc
+node docs/record-demo.mjs     # ou : node docs/record-demo.mjs comparaison
+```
+
+Le script attend le site sur `http://localhost:5173` (`DEMO_URL` pour un autre
+port), un navigateur Chromium installé (`DEMO_BROWSER` pour en imposer un) et
+`ffmpeg` dans le PATH. Il écrit `docs/demo-<scénario>.gif` et nettoie ses
+images intermédiaires. Les trois scénarios — `parcours`, `comparaison`,
+`recherche` — sont décrits en tête de fichier.
 
 ## Déploiement
 
