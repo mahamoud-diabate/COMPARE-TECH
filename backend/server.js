@@ -65,7 +65,15 @@ if (!aiModel) {
  * CORS : liste blanche configurable
  * ------------------------------------------------------------------ */
 
-const DEFAULT_ORIGINS = ['http://localhost:5173', 'http://localhost:4173'];
+// Ports de developpement autorises. 5174 et 5175 comptent : Vite passe au port
+// suivant des que 5173 est occupe — deux instances, ou un serveur oublie — et
+// le CORS echouait alors sans que rien n'indique pourquoi.
+const DEFAULT_ORIGINS = [
+  'http://localhost:5173',
+  'http://localhost:5174',
+  'http://localhost:5175',
+  'http://localhost:4173',
+];
 // Origine de production connue : si CORS_ORIGINS n'est pas renseignée
 // (ex. oubli dans le tableau de bord Render), on autorise au moins le
 // frontend déployé pour ne pas casser la démo en ligne. On reste en liste

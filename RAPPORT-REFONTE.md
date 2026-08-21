@@ -6,14 +6,12 @@ les mêmes choses.
 
 **Branche :** `refonte-interface` · **Rien n'a été poussé.**
 
-| Commit | Contenu |
-| --- | --- |
-| `61f279f` | Refonte de l'interface, design system, tests, accessibilité |
-| `4547139` | Originalité, échelle de notes dérivée, tiroir de navigation |
-| *(non commité)* | Icônes de rubrique, restructuration du tiroir |
-
-Un commit `9ef8ba6` a existé puis a été annulé sur demande — voir §5.4. Il reste
-récupérable quelques semaines via `git reflog`.
+L'historique a été refondu après coup : le travail décrit ici a d'abord vécu
+sur une branche `refonte-nanoreview`, dont les commits ont ensuite été repris,
+renommés (préfixe CSS `nr-` → `ct-`) et rassemblés dans `7070acb` puis
+`ee774d9`. **Le contenu est intégralement présent dans `HEAD`** — c'est
+vérifiable fichier par fichier — mais les identifiants de commit d'origine ne
+correspondent plus à rien dans l'historique actuel.
 
 ---
 
@@ -207,12 +205,8 @@ JS 392 Ko (124 Ko gzip) · CSS 35 Ko
 8 fichiers dans assets/icons/
 ```
 
-**Commité** jusqu'à `4547139` : refonte complète, originalité, échelle de notes
-dérivée, tiroir, page de sélection, icônes de catégorie.
-
-**Non commité** — cinq fichiers : les deux icônes de rubrique (`ranking.png`,
-`compare.png`), la classe `.nr-mask-icon`, la fusion des groupes dupliqués du
-tiroir et la remise en tête de « Comparer ».
+Tout est commité sur `refonte-interface`. Le préfixe des classes CSS est
+`ct-*` depuis la refonte de `7070acb`.
 
 ---
 
@@ -263,9 +257,11 @@ qui compose des frames :
 ### 5.4 Frictions « débutant » — traitées puis annulées
 
 Trois constats formulés après relecture sous l'angle d'un visiteur qui découvre
-le site. Ils ont été implémentés dans le commit `9ef8ba6`, **annulé sur demande**
-juste après. Les constats restent valides ; le code est récupérable via
-`git reflog` (`git reset --hard 9ef8ba6`).
+le site. Ils ont été implémentés puis **annulés sur demande** juste après. Les constats
+restent valides, mais **le code correspondant n'existe plus dans l'historique** :
+il vivait dans un commit devenu orphelin lors de la refonte de branche, que le
+nettoyage automatique de Git finira par supprimer. À considérer comme **à
+refaire**, en s'appuyant sur les descriptions ci-dessous.
 
 1. **Navigation masquée sur grand écran.** Ouvrir un tiroir pour découvrir les
    catégories ralentit la découverte sur un écran de bureau. Correction faite :
@@ -287,8 +283,8 @@ juste après. Les constats restent valides ; le code est récupérable via
 
 1. **Les vraies données** (§5.1). Rien d'autre ne compte tant que ce n'est pas
    fait — tout le reste est du vernis sur un catalogue inventé.
-2. **Reprendre les trois frictions** (§5.4) : les constats restent valides, et le
-   code existe déjà dans `9ef8ba6`.
+2. **Reprendre les trois frictions** (§5.4) : les constats restent valides, mais
+   le code est à réécrire — voir la mise en garde de cette section.
 3. **Des tests de composant** (§5.3) sur les interactions vérifiées à la main
    une seule fois.
 4. **Supprimer les styles en ligne** (§5.2), ou assumer le mélange et l'écrire
