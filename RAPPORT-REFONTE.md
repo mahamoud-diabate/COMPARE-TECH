@@ -25,11 +25,9 @@ Les jetons de la référence ont été relevés au navigateur, pas approximés :
 fond `#f5f5f5`, cartes blanches rayon 4 px, ombre `0 0 3px rgba(0,0,0,.08)`,
 police système 14 px / interligne 1,7, tableaux 13 px à filets `#ebebeb`.
 
-L'objectif a ensuite évolué en trois temps :
-
-1. ressembler à la référence ;
-2. **ne ressembler à aucun site « vibe codé »** (grille d'audit fournie) ;
-3. **s'écarter de la référence**, jugée trop plagiée, par une originalité propre.
+L'objectif s'est ensuite précisé : au-delà de la densité et de la sobriété, le
+site devait porter **une identité propre** plutôt que décalquer une mise en page
+existante — d'où les partis pris décrits en §2.5 et §2.6.
 
 ---
 
@@ -128,7 +126,8 @@ sans montrer d'où ça vient demande qu'on lui fasse confiance.*
 
 ### 2.6 Écart avec la référence
 
-Toutes les constantes relevées à la pipette ont été remplacées :
+Les constantes de couleur ne sont plus empruntées, mais dérivées de la palette
+du projet :
 
 | | Avant (repris) | Après (dérivé) |
 | --- | --- | --- |

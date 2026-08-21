@@ -106,9 +106,9 @@ export const calculateTelephoneScore = (tel) => explainScore(tel, 'telephone').t
  * Note-lettre associée à un score.
  *
  * Une lettre à côté du chiffre situe le produit sans qu'on ait à connaître
- * l'échelle. Les seuils sont calés sur la distribution réelle du catalogue,
- * et les couleurs viennent de la palette du projet — pas d'une pipette posée
- * sur un site voisin.
+ * l'échelle. Les seuils sont calés sur la distribution réelle du catalogue, et
+ * les couleurs sont dérivées de la palette du projet : progression monotone
+ * vert → ambre → rouge, contrastes AA dans les deux thèmes.
  */
 const GRADES = [
   { min: 90, letter: 'A+', variable: 'var(--ct-g-ap)' },

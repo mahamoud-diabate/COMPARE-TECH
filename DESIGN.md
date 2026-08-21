@@ -33,8 +33,8 @@ Conséquence recherchée : sur une page de comparatif, les seules taches de
 couleur sont les notes et les cellules gagnantes. C'est exactement ce qu'on
 vient y lire.
 
-**Interdits :** dégradé sur du texte (`background-clip: text`), halo coloré,
-palette indigo/violet « moderne » par défaut.
+**Interdits :** dégradé sur du texte (`background-clip: text`), halo coloré.
+Rien qui attire l'œil sans porter d'information.
 
 ### Une exception, assumée
 
