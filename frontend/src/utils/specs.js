@@ -95,7 +95,11 @@ export const SPEC_GROUPS = {
     },
     {
       group: 'Performances',
-      rows: [{ label: 'AnTuTu', key: 'antutu_score', numeric: true }],
+      rows: [
+        { label: 'Geekbench 6 (mono-cœur)', key: 'geekbench_single', numeric: true },
+        { label: 'Geekbench 6 (multi-cœur)', key: 'geekbench_multi', numeric: true },
+        { label: 'AnTuTu', key: 'antutu_score', numeric: true },
+      ],
     },
   ],
 };
@@ -117,7 +121,8 @@ export const BENCHMARKS = {
     { label: 'Autonomie', key: 'battery_life_hours', max: 20, unit: 'h' },
   ],
   telephone: [
-    { label: 'AnTuTu', key: 'antutu_score', max: 3200000 },
+    { label: 'Geekbench 6 mono-cœur', key: 'geekbench_single', max: 3600 },
+    { label: 'Geekbench 6 multi-cœur', key: 'geekbench_multi', max: 9500 },
     { label: 'Batterie', key: 'battery_mah', max: 6000, unit: 'mAh' },
   ],
 };
@@ -149,7 +154,8 @@ export const KEY_METRICS = {
     { key: 'storage_gb', label: 'de stockage', unit: 'Go' },
   ],
   telephone: [
-    { key: 'antutu_score', label: 'de puissance (AnTuTu)' },
+    { key: 'geekbench_multi', label: 'de puissance multi-cœur' },
+    { key: 'geekbench_single', label: 'de réactivité (mono-cœur)' },
     { key: 'battery_mah', label: 'de capacité de batterie', unit: 'mAh' },
     { key: 'ram_gb', label: 'de mémoire vive', unit: 'Go' },
     { key: 'storage_gb', label: 'de stockage', unit: 'Go' },

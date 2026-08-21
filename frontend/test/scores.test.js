@@ -40,7 +40,7 @@ test('aucun score ne dépasse 100, même au-delà du plafond de référence', ()
   assert.equal(calculateCpuScore({ geekbench_multi: 99000, geekbench_single: 9000 }), 100);
   assert.equal(calculateGpuScore({ benchmark_3dmark: 99000 }), 100);
   assert.equal(calculateLaptopScore({ geekbench_multi: 99000 }), 100);
-  assert.equal(calculateTelephoneScore({ antutu_score: 9000000 }), 100);
+  assert.equal(calculateTelephoneScore({ geekbench_multi: 99000, geekbench_single: 9000 }), 100);
 });
 
 test('un benchmark absent donne 0 et non NaN', () => {
@@ -58,7 +58,9 @@ test('getProductScore choisit la formule d’après le type', () => {
 });
 
 test('getProductScore lit le type porté par le produit à défaut d’argument', () => {
-  const phone = { antutu_score: 1600000, productType: 'telephone' };
+  // La moitié de chaque plafond téléphone (9500 multi, 3600 mono) : quelle que
+  // soit la pondération, la note vaut 50.
+  const phone = { geekbench_multi: 4750, geekbench_single: 1800, productType: 'telephone' };
   assert.equal(getProductScore(phone), 50);
 });
 
@@ -138,7 +140,7 @@ test('la somme des points détaillés reconstitue le total affiché', () => {
     [{ geekbench_multi: 24000, geekbench_single: 3400 }, 'cpu'],
     [{ benchmark_3dmark: 17500 }, 'gpu'],
     [{ geekbench_multi: 13000 }, 'laptop'],
-    [{ antutu_score: 1600000 }, 'telephone'],
+    [{ geekbench_multi: 7000, geekbench_single: 2600 }, 'telephone'],
   ];
 
   for (const [produit, type] of produits) {

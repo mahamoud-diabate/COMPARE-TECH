@@ -31,7 +31,19 @@ const FORMULES = {
     termes: [{ key: 'geekbench_multi', label: 'Geekbench 6 multi-cœur', max: 26000, poids: 1 }],
   },
   telephone: {
-    termes: [{ key: 'antutu_score', label: 'AnTuTu', max: 3200000, poids: 1 }],
+    // Geekbench 6 plutôt qu'AnTuTu, pour une raison de mesure et non de goût :
+    // AnTuTu teste Android en Vulkan et iOS en Metal, deux API graphiques
+    // différentes — les scores ne sont pas comparables d'une plateforme à
+    // l'autre. Sur le catalogue relevé, l'A18 Pro sortait 7e derrière quatre
+    // Snapdragon, ce qui est faux. Geekbench exécute les mêmes charges partout.
+    //
+    // Même pondération que les processeurs, et pour la même raison : le
+    // multi-cœur décide sur les usages qui saturent la puce.
+    exigeTout: true,
+    termes: [
+      { key: 'geekbench_multi', label: 'Geekbench 6 multi-cœur', max: 9500, poids: 0.7 },
+      { key: 'geekbench_single', label: 'Geekbench 6 mono-cœur', max: 3600, poids: 0.3 },
+    ],
   },
 };
 

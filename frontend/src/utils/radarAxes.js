@@ -42,7 +42,8 @@ export const RADAR_AXES = {
     { label: 'Autonomie', field: 'battery_life_hours', max: 20 }
   ],
   telephone: [
-    { label: 'Puissance', field: 'antutu_score', max: 3200000 },
+    { label: 'Mono-cœur', field: 'geekbench_single', max: 3600 },
+    { label: 'Multi-cœur', field: 'geekbench_multi', max: 9500 },
     { label: 'Batterie', field: 'battery_mah', max: 6000 },
     { label: 'Mémoire', field: 'ram_gb', max: 24 },
     { label: 'Stockage', field: 'storage_gb', max: 1024 },
@@ -76,7 +77,6 @@ export const AXIS_HINTS = {
   'Stockage': 'Capacité de stockage interne',
   'Luminosité': 'Luminosité maximale de l’écran',
   'Autonomie': 'Durée d’utilisation annoncée',
-  'Puissance': 'Score de synthèse AnTuTu',
   'Batterie': 'Capacité de la batterie',
   'Écran': 'Diagonale de l’écran'
 };
