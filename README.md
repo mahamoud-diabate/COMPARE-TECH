@@ -4,6 +4,11 @@ Comparateur d'appareils technologiques (CPU, GPU, portables, téléphones) avec 
 
 Monorepo réunissant le backend et le frontend dans un seul dépôt, avec l'historique Git complet des deux projets.
 
+## En ligne
+
+- **Frontend** — https://compare-tech-king2mos-projects.vercel.app
+- **API backend** — https://mahamoud-compare-tech-api.onrender.com
+
 ## Aperçu
 
 **Parcourir** — accueil, catégories notées, puis le classement complet d'une famille de produits.
@@ -93,8 +98,8 @@ images intermédiaires. Les trois scénarios — `parcours`, `comparaison`,
 
 ## Déploiement
 
-- **Backend** → Render (configuration dans `backend/render.yaml`)
-- **Frontend** → Vercel (configuration dans `frontend/vercel.json`)
+- **Frontend** → Vercel : https://compare-tech-king2mos-projects.vercel.app (`frontend/vercel.json`, root `frontend/`)
+- **Backend** → Render : https://mahamoud-compare-tech-api.onrender.com (`backend/render.yaml`, root `backend/`)
 
 ## Auteur
 

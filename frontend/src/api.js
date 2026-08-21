@@ -1,6 +1,6 @@
 // Point d'accès unique à l'API backend.
 // Définir VITE_API_BASE (racine, SANS /api) dans .env ou chez l'hébergeur (Vercel) :
-//   VITE_API_BASE=https://compare-tech-api.onrender.com
+//   VITE_API_BASE=https://mahamoud-compare-tech-api.onrender.com
 //
 // Sans valeur explicite, la racine dépend du contexte :
 //  - en développement, chaîne vide : les appels partent en `/api`, donc en même

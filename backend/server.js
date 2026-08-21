@@ -78,7 +78,7 @@ const DEFAULT_ORIGINS = [
 // (ex. oubli dans le tableau de bord Render), on autorise au moins le
 // frontend déployé pour ne pas casser la démo en ligne. On reste en liste
 // blanche (une seule origine connue), jamais en wildcard.
-const PROD_FALLBACK = 'https://compare-tech-frontend.vercel.app';
+const PROD_FALLBACK = 'https://compare-tech-king2mos-projects.vercel.app';
 const allowedOrigins = [...new Set(
   (process.env.CORS_ORIGINS || PROD_FALLBACK)
     .split(',')
