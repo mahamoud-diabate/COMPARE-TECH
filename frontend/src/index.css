@@ -1232,6 +1232,9 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
 .nr-drawer-group:last-child { border-bottom: 0; }
 
 .nr-drawer-group-title {
+    display: flex;
+    align-items: center;
+    gap: 7px;
     padding: 0 16px 6px;
     font-size: 11px;
     font-weight: 600;
@@ -1251,6 +1254,10 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
 }
 
 .nr-drawer-link:hover { background: var(--nr-card-alt); text-decoration: none; }
+
+/* Action principale du site, en tête du tiroir. Mise en avant par la graisse
+   et l'espace, pas par la couleur — celle-ci reste réservée à la donnée. */
+.nr-drawer-link.is-principal { font-weight: 600; padding-top: 10px; padding-bottom: 10px; }
 
 .nr-drawer-link svg,
 .nr-drawer-link .nr-icone,
@@ -1350,6 +1357,17 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
 }
 
 .nr-icon-btn:hover { color: var(--nr-text); border-color: var(--nr-accent); }
+
+/* Icône monochrome reteintée par masque : la forme vient du fichier, la
+   couleur du contexte. Réservée aux fichiers sans couleur propre — un dessin
+   en couleur y perdrait tout sauf sa silhouette. */
+.nr-mask-icon {
+    display: inline-block;
+    background-color: currentColor;
+    -webkit-mask: var(--src) center/contain no-repeat;
+    mask: var(--src) center/contain no-repeat;
+    flex: 0 0 auto;
+}
 
 .nr-menu-icon {
     display: inline-block;
