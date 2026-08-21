@@ -1,0 +1,64 @@
+{
+  "_lisez_moi": "Fichier de DEMONSTRATION des gardes de scripts/import.js. Aucune valeur ici n'est un releve : les URL pointent vers un domaine reserve aux exemples (exemple.invalid) et ne resolvent nulle part. Ne jamais importer ce fichier.",
+  "type": "cpus",
+  "produits": [
+    {
+      "name": "Exemple Conforme 9000",
+      "brand": "Exemple",
+      "cores": 24,
+      "threads": 32,
+      "max_freq_ghz": 6,
+      "geekbench_multi": 23500,
+      "provenance": {
+        "cores": {
+          "url": "https://exemple.invalid/fiche-technique",
+          "releve_le": "2026-08-20",
+          "extrait": "24 cores (8 P-cores + 16 E-cores)"
+        },
+        "threads": {
+          "url": "https://exemple.invalid/fiche-technique",
+          "releve_le": "2026-08-20",
+          "extrait": "32 threads"
+        },
+        "max_freq_ghz": {
+          "url": "https://exemple.invalid/fiche-technique",
+          "releve_le": "2026-08-20",
+          "extrait": "Max Turbo Frequency 6.0 GHz"
+        },
+        "geekbench_multi": {
+          "url": "https://exemple.invalid/resultats",
+          "releve_le": "2026-08-20",
+          "extrait": "Multi-Core Score 23500"
+        }
+      }
+    },
+    {
+      "name": "Exemple Sans Source 1000",
+      "brand": "Exemple",
+      "cores": 8,
+      "geekbench_multi": 14200,
+      "provenance": {
+        "cores": {
+          "url": "https://exemple.invalid/fiche-technique",
+          "releve_le": "2026-08-20"
+        }
+      }
+    },
+    {
+      "name": "Exemple Hors Plage 2000",
+      "brand": "Exemple",
+      "cores": 16,
+      "max_freq_ghz": 570,
+      "provenance": {
+        "cores": {
+          "url": "https://exemple.invalid/fiche-technique",
+          "releve_le": "2026-08-20"
+        },
+        "max_freq_ghz": {
+          "url": "https://exemple.invalid/fiche-technique",
+          "releve_le": "pas une date"
+        }
+      }
+    }
+  ]
+}

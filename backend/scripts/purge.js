@@ -1,7 +1,9 @@
 const fs = require('fs');
 const path = require('path');
 const mongoose = require('mongoose');
-require('dotenv').config({ quiet: true });
+// Chemin explicite : sans lui, dotenv cherche le .env dans le dossier courant
+// et la commande echoue des qu'on la lance depuis la racine du depot.
+require('dotenv').config({ quiet: true, path: require('node:path').join(__dirname, '..', '.env') });
 
 const Cpu = require('../models/Cpu');
 const Gpu = require('../models/Gpu');

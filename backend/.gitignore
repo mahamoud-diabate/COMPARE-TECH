@@ -1,5 +1,10 @@
 node_modules/
 .env
+# Toute variante : .env.local, .env.avant-correction… Une seule ligne « .env »
+# laisserait passer une copie de sauvegarde contenant la chaine de connexion,
+# dans un depot public.
+.env.*
+!.env.example
 
 # Sauvegardes produites par scripts/purge.js : contiennent tout le catalogue.
 backup/

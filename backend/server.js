@@ -1,4 +1,8 @@
-require('dotenv').config();
+// Le .env vit a la racine du backend, quel que soit le dossier depuis lequel
+// on lance la commande. Sans ce chemin explicite, dotenv le cherche dans le
+// dossier courant : lance depuis la racine du depot, il ne trouve rien et
+// echoue en annoncant une variable absente qui est pourtant bien la.
+require('dotenv').config({ path: require('node:path').join(__dirname, '.env') });
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -187,6 +191,10 @@ const MODELS = { cpus: Cpu, gpus: Gpu, laptops: Laptop, telephones: Telephone };
 
 const isValidId = id => mongoose.Types.ObjectId.isValid(id);
 
+// Forme attendue d'un slug. Le parametre d'URL est une chaine libre : la
+// contraindre ici evite qu'elle parte telle quelle dans une requete Mongo.
+const SLUG_VALIDE = /^[a-z0-9][a-z0-9-]{0,79}$/;
+
 // N'expose jamais le message d'erreur brut en production : il peut reveler
 // la structure de la base ou des chemins internes.
 function fail(res, status, publicMessage, err) {
@@ -268,12 +276,20 @@ for (const [segment, Model] of Object.entries(MODELS)) {
     }
   });
 
+  // Une fiche repond a son slug comme a son identifiant Mongo. Les deux, et
+  // pas seulement le slug : les URLs deja partagees ou indexees portent
+  // l'identifiant, et les documents importes avant l'ajout du slug n'en ont
+  // pas encore. Le jour ou une collection est rechargee, les adresses en slug
+  // survivent — c'est tout l'interet du champ.
   app.get(`/api/${segment}/:id`, async (req, res) => {
-    if (!isValidId(req.params.id)) {
+    const cle = req.params.id;
+    if (!isValidId(cle) && !SLUG_VALIDE.test(cle)) {
       return res.status(400).json({ error: 'Identifiant invalide.' });
     }
     try {
-      const doc = await Model.findById(req.params.id);
+      const doc = isValidId(cle)
+        ? await Model.findById(cle)
+        : await Model.findOne({ slug: cle });
       if (!doc) return res.status(404).json({ error: `${label} non trouve.` });
       res.json(doc);
     } catch (err) {

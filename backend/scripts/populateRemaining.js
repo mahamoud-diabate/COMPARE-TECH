@@ -1,5 +1,9 @@
 const mongoose = require('mongoose');
-require('dotenv').config();
+// Le .env vit a la racine du backend, quel que soit le dossier depuis lequel
+// on lance la commande. Sans ce chemin explicite, dotenv le cherche dans le
+// dossier courant : lance depuis la racine du depot, il ne trouve rien et
+// echoue en annoncant une variable absente qui est pourtant bien la.
+require('dotenv').config({ path: require('node:path').join(__dirname, '..', '.env') });
 const Telephone = require('../models/Telephone');
 const Laptop = require('../models/Laptop');
 

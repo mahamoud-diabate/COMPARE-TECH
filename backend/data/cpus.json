@@ -1,0 +1,47 @@
+{
+  "type": "cpus",
+  "produits": [
+    {
+      "name": "Intel Core Ultra 9 285K",
+      "brand": "Intel",
+      "cores": 24,
+      "provenance": {
+        "cores": {
+          "url": "https://nanoreview.net/en/cpu-compare/intel-core-ultra-9-285k-vs-apple-m5",
+          "releve_le": "2026-08-20",
+          "extrait": "Total Cores 24"
+        }
+      }
+    },
+    {
+      "name": "Intel Core Ultra 7 265K",
+      "brand": "Intel",
+      "cores": 20,
+      "provenance": {
+        "cores": {
+          "url": "https://nanoreview.net/en/cpu-compare/intel-core-ultra-7-265k-vs-amd-ryzen-5-5500x3d",
+          "releve_le": "2026-08-20",
+          "extrait": "Total Cores 20"
+        }
+      }
+    },
+    { "name": "Intel Core Ultra 5 245K", "brand": "Intel" },
+    { "name": "Intel Core i9-14900K", "brand": "Intel" },
+    { "name": "Intel Core i7-14700K", "brand": "Intel" },
+    { "name": "Intel Core i5-14600K", "brand": "Intel" },
+    { "name": "Intel Core i9-13900K", "brand": "Intel" },
+    { "name": "Intel Core i7-13700K", "brand": "Intel" },
+    { "name": "Intel Core i5-13600K", "brand": "Intel" },
+    { "name": "AMD Ryzen 9 9950X", "brand": "AMD" },
+    { "name": "AMD Ryzen 9 9900X", "brand": "AMD" },
+    { "name": "AMD Ryzen 7 9700X", "brand": "AMD" },
+    { "name": "AMD Ryzen 5 9600X", "brand": "AMD" },
+    { "name": "AMD Ryzen 9 7950X3D", "brand": "AMD" },
+    { "name": "AMD Ryzen 9 7950X", "brand": "AMD" },
+    { "name": "AMD Ryzen 7 7800X3D", "brand": "AMD" },
+    { "name": "AMD Ryzen 7 7700X", "brand": "AMD" },
+    { "name": "AMD Ryzen 5 7600X", "brand": "AMD" },
+    { "name": "AMD Ryzen 9 5950X", "brand": "AMD" },
+    { "name": "AMD Ryzen 7 5800X3D", "brand": "AMD" }
+  ]
+}

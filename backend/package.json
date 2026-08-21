@@ -5,8 +5,9 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "node --test test/auth.test.js",
-    "purge": "node scripts/purge.js"
+    "test": "node --test \"test/*.test.js\"",
+    "purge": "node scripts/purge.js",
+    "import": "node scripts/import.js"
   },
   "keywords": [],
   "author": "",

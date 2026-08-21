@@ -1,0 +1,249 @@
+{
+  "type": "laptops",
+  "produits": [
+    {
+      "name": "HP EliteBook 8 G2a 14 AI",
+      "brand": "HP",
+      "cpu_name": "AMD Ryzen AI 7 450",
+      "gpu_name": "AMD Radeon 860M",
+      "ram_gb": 32,
+      "storage_gb": 1000,
+      "display_brightness_nits": 434.2,
+      "battery_life_hours": 19.32,
+      "provenance": {
+        "ram_gb": {
+          "url": "https://www.notebookcheck.net/14-inch-business-laptop-with-excellent-battery-life-HP-EliteBook-8-G2a-14-AI-Review.1370559.0.html",
+          "releve_le": "2026-08-20",
+          "extrait": "Memory 32 GB"
+        },
+        "storage_gb": {
+          "url": "https://www.notebookcheck.net/14-inch-business-laptop-with-excellent-battery-life-HP-EliteBook-8-G2a-14-AI-Review.1370559.0.html",
+          "releve_le": "2026-08-20",
+          "extrait": "PC SN5000S SDEPNSJ-1T00-1006, 1000 GB"
+        },
+        "display_brightness_nits": {
+          "url": "https://www.notebookcheck.net/14-inch-business-laptop-with-excellent-battery-life-HP-EliteBook-8-G2a-14-AI-Review.1370559.0.html",
+          "releve_le": "2026-08-20",
+          "extrait": "Average: 434.2 cd/m²"
+        },
+        "battery_life_hours": {
+          "url": "https://www.notebookcheck.net/14-inch-business-laptop-with-excellent-battery-life-HP-EliteBook-8-G2a-14-AI-Review.1370559.0.html",
+          "releve_le": "2026-08-20",
+          "extrait": "WiFi Websurfing 19h 19min"
+        }
+      }
+    },
+    {
+      "name": "Asus ProArt PX13 2026 Convertible",
+      "brand": "Asus",
+      "cpu_name": "AMD Ryzen AI Max+ 388",
+      "gpu_name": "AMD Radeon 8060S",
+      "ram_gb": 32,
+      "storage_gb": 512,
+      "battery_life_hours": 10.52,
+      "provenance": {
+        "ram_gb": {
+          "url": "https://www.notebookcheck.net/AMD-Strix-Halo-with-32-GB-RAM-for-1899-Asus-ProArt-PX13-2026-Convertible-Review.1352377.0.html",
+          "releve_le": "2026-08-20",
+          "extrait": "Memory 32 GB"
+        },
+        "storage_gb": {
+          "url": "https://www.notebookcheck.net/AMD-Strix-Halo-with-32-GB-RAM-for-1899-Asus-ProArt-PX13-2026-Convertible-Review.1352377.0.html",
+          "releve_le": "2026-08-20",
+          "extrait": "BG6 KBG60ZNS512G, 512 GB"
+        },
+        "battery_life_hours": {
+          "url": "https://www.notebookcheck.net/AMD-Strix-Halo-with-32-GB-RAM-for-1899-Asus-ProArt-PX13-2026-Convertible-Review.1352377.0.html",
+          "releve_le": "2026-08-20",
+          "extrait": "WiFi Websurfing 10h 31min"
+        }
+      }
+    },
+    {
+      "name": "Lenovo ThinkPad T14s Gen 7 AMD",
+      "brand": "Lenovo",
+      "cpu_name": "AMD Ryzen AI 7 PRO 450",
+      "gpu_name": "AMD Radeon 860M",
+      "ram_gb": 64,
+      "storage_gb": 512,
+      "display_brightness_nits": 529.7,
+      "battery_life_hours": 17.37,
+      "provenance": {
+        "ram_gb": {
+          "url": "https://www.notebookcheck.net/Excellent-business-laptop-with-64-GB-RAM-Lenovo-ThinkPad-T14s-Gen-7-AMD-Review.1328170.0.html",
+          "releve_le": "2026-08-20",
+          "extrait": "Memory 64 GB"
+        },
+        "storage_gb": {
+          "url": "https://www.notebookcheck.net/Excellent-business-laptop-with-64-GB-RAM-Lenovo-ThinkPad-T14s-Gen-7-AMD-Review.1328170.0.html",
+          "releve_le": "2026-08-20",
+          "extrait": "2650 MTFDKBA512TGW, 512 GB"
+        },
+        "display_brightness_nits": {
+          "url": "https://www.notebookcheck.net/Excellent-business-laptop-with-64-GB-RAM-Lenovo-ThinkPad-T14s-Gen-7-AMD-Review.1328170.0.html",
+          "releve_le": "2026-08-20",
+          "extrait": "Average: 529.7 cd/m²"
+        },
+        "battery_life_hours": {
+          "url": "https://www.notebookcheck.net/Excellent-business-laptop-with-64-GB-RAM-Lenovo-ThinkPad-T14s-Gen-7-AMD-Review.1328170.0.html",
+          "releve_le": "2026-08-20",
+          "extrait": "WiFi Websurfing 17h 22min"
+        }
+      }
+    },
+    {
+      "name": "Lenovo ThinkPad X1 Carbon Gen 14",
+      "brand": "Lenovo",
+      "cpu_name": "Intel Core Ultra 5 325",
+      "gpu_name": "Intel Graphics 4 Xe3 Panther Lake iGPU",
+      "ram_gb": 32,
+      "storage_gb": 512,
+      "display_brightness_nits": 524.3,
+      "battery_life_hours": 23.22,
+      "provenance": {
+        "ram_gb": {
+          "url": "https://www.notebookcheck.net/Flagship-business-laptop-with-almost-24-hours-of-battery-life-Lenovo-ThinkPad-X1-Carbon-Gen-14-Review.1332558.0.html",
+          "releve_le": "2026-08-20",
+          "extrait": "Memory 32 GB"
+        },
+        "storage_gb": {
+          "url": "https://www.notebookcheck.net/Flagship-business-laptop-with-almost-24-hours-of-battery-life-Lenovo-ThinkPad-X1-Carbon-Gen-14-Review.1332558.0.html",
+          "releve_le": "2026-08-20",
+          "extrait": "PM9C1b MZVL8512HFLU-00BLL, 512 GB"
+        },
+        "display_brightness_nits": {
+          "url": "https://www.notebookcheck.net/Flagship-business-laptop-with-almost-24-hours-of-battery-life-Lenovo-ThinkPad-X1-Carbon-Gen-14-Review.1332558.0.html",
+          "releve_le": "2026-08-20",
+          "extrait": "Average: 524.3 cd/m²"
+        },
+        "battery_life_hours": {
+          "url": "https://www.notebookcheck.net/Flagship-business-laptop-with-almost-24-hours-of-battery-life-Lenovo-ThinkPad-X1-Carbon-Gen-14-Review.1332558.0.html",
+          "releve_le": "2026-08-20",
+          "extrait": "WiFi Websurfing 23h 13min"
+        }
+      }
+    },
+    {
+      "name": "Asus ROG Strix SCAR 18 G835LXG",
+      "brand": "Asus",
+      "cpu_name": "Intel Core Ultra 9 290HX Plus",
+      "gpu_name": "NVIDIA GeForce RTX 5090 Laptop - 24 GB VRAM",
+      "ram_gb": 128,
+      "storage_gb": 8192,
+      "display_brightness_nits": 604.4,
+      "battery_life_hours": 4,
+      "provenance": {
+        "ram_gb": {
+          "url": "https://www.notebookcheck.net/Gaming-Monster-with-4K-Mini-LED-RTX-5090-and-128-GB-RAM-Asus-ROG-Strix-SCAR-18-G835LXG-Review.1351131.0.html",
+          "releve_le": "2026-08-20",
+          "extrait": "Memory 128 GB"
+        },
+        "storage_gb": {
+          "url": "https://www.notebookcheck.net/Gaming-Monster-with-4K-Mini-LED-RTX-5090-and-128-GB-RAM-Asus-ROG-Strix-SCAR-18-G835LXG-Review.1351131.0.html",
+          "releve_le": "2026-08-20",
+          "extrait": "PM9E1 MZVLC4T0HBL1 (RAID 0), 8192 GB"
+        },
+        "display_brightness_nits": {
+          "url": "https://www.notebookcheck.net/Gaming-Monster-with-4K-Mini-LED-RTX-5090-and-128-GB-RAM-Asus-ROG-Strix-SCAR-18-G835LXG-Review.1351131.0.html",
+          "releve_le": "2026-08-20",
+          "extrait": "Average: 604.4 cd/m²"
+        },
+        "battery_life_hours": {
+          "url": "https://www.notebookcheck.net/Gaming-Monster-with-4K-Mini-LED-RTX-5090-and-128-GB-RAM-Asus-ROG-Strix-SCAR-18-G835LXG-Review.1351131.0.html",
+          "releve_le": "2026-08-20",
+          "extrait": "2h 58min WiFi Websurfing 4h"
+        }
+      }
+    },
+    {
+      "name": "Chuwi UniBook Laptop",
+      "brand": "Chuwi",
+      "cpu_name": "Intel Core 3 304",
+      "gpu_name": "Intel Graphics 1 Xe3 Wildcat Lake iGPU",
+      "ram_gb": 8,
+      "storage_gb": 256,
+      "display_brightness_nits": 286.8,
+      "battery_life_hours": 13.67,
+      "provenance": {
+        "ram_gb": {
+          "url": "https://www.notebookcheck.net/MacBook-Neo-rival-with-Intel-Wildcat-Lake-for-449-Chuwi-UniBook-Laptop-Review.1360578.0.html",
+          "releve_le": "2026-08-20",
+          "extrait": "Memory 8 GB"
+        },
+        "storage_gb": {
+          "url": "https://www.notebookcheck.net/MacBook-Neo-rival-with-Intel-Wildcat-Lake-for-449-Chuwi-UniBook-Laptop-Review.1360578.0.html",
+          "releve_le": "2026-08-20",
+          "extrait": "Lake-U PCHStorageHOGE H750L 256GB"
+        },
+        "display_brightness_nits": {
+          "url": "https://www.notebookcheck.net/MacBook-Neo-rival-with-Intel-Wildcat-Lake-for-449-Chuwi-UniBook-Laptop-Review.1360578.0.html",
+          "releve_le": "2026-08-20",
+          "extrait": "Average: 286.8 cd/m²"
+        },
+        "battery_life_hours": {
+          "url": "https://www.notebookcheck.net/MacBook-Neo-rival-with-Intel-Wildcat-Lake-for-449-Chuwi-UniBook-Laptop-Review.1360578.0.html",
+          "releve_le": "2026-08-20",
+          "extrait": "WiFi Websurfing 13h 40min"
+        }
+      }
+    },
+    {
+      "name": "Microsoft Surface Laptop 13.8 2026",
+      "brand": "Microsoft",
+      "cpu_name": "Qualcomm Snapdragon X2 Plus X2P-64-100",
+      "gpu_name": "Qualcomm SD X2 Adreno X2-45",
+      "ram_gb": 16,
+      "storage_gb": 512,
+      "display_brightness_nits": 623.3,
+      "battery_life_hours": 18.88,
+      "provenance": {
+        "ram_gb": {
+          "url": "https://www.notebookcheck.net/Snapdragon-X2-Plus-is-much-faster-Microsoft-Surface-Laptop-13-8-2026-Review.1334131.0.html",
+          "releve_le": "2026-08-20",
+          "extrait": "Memory 16 GB"
+        },
+        "storage_gb": {
+          "url": "https://www.notebookcheck.net/Snapdragon-X2-Plus-is-much-faster-Microsoft-Surface-Laptop-13-8-2026-Review.1334131.0.html",
+          "releve_le": "2026-08-20",
+          "extrait": "Touchscreen Display, 16GB RAM, 512GB"
+        },
+        "display_brightness_nits": {
+          "url": "https://www.notebookcheck.net/Snapdragon-X2-Plus-is-much-faster-Microsoft-Surface-Laptop-13-8-2026-Review.1334131.0.html",
+          "releve_le": "2026-08-20",
+          "extrait": "Average: 623.3 cd/m²"
+        },
+        "battery_life_hours": {
+          "url": "https://www.notebookcheck.net/Snapdragon-X2-Plus-is-much-faster-Microsoft-Surface-Laptop-13-8-2026-Review.1334131.0.html",
+          "releve_le": "2026-08-20",
+          "extrait": "WiFi Websurfing 18h 53min"
+        }
+      }
+    },
+    {
+      "name": "Razer Blade 18 2026",
+      "brand": "Razer",
+      "cpu_name": "Intel Core Ultra 9 290HX Plus",
+      "gpu_name": "NVIDIA GeForce RTX 5090 Laptop - 24 GB VRAM",
+      "ram_gb": 32,
+      "storage_gb": 2048,
+      "battery_life_hours": 7.78,
+      "provenance": {
+        "ram_gb": {
+          "url": "https://www.notebookcheck.net/Still-one-of-the-fastest-and-quietest-gaming-laptops-Razer-Blade-18-2026-Review.1338818.0.html",
+          "releve_le": "2026-08-20",
+          "extrait": "Memory 32 GB"
+        },
+        "storage_gb": {
+          "url": "https://www.notebookcheck.net/Still-one-of-the-fastest-and-quietest-gaming-laptops-Razer-Blade-18-2026-Review.1338818.0.html",
+          "releve_le": "2026-08-20",
+          "extrait": "PM9C1b MZVL82T0HBL1, 2048 GB"
+        },
+        "battery_life_hours": {
+          "url": "https://www.notebookcheck.net/Still-one-of-the-fastest-and-quietest-gaming-laptops-Razer-Blade-18-2026-Review.1338818.0.html",
+          "releve_le": "2026-08-20",
+          "extrait": "WiFi Websurfing 7h 47min"
+        }
+      }
+    }
+  ]
+}
