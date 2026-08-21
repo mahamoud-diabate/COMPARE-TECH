@@ -13,7 +13,7 @@ function TelephonePage() {
       collection="telephones"
       type="telephone"
       filterOptions={FILTERS}
-      intro="Téléphones classés par score CompareTech, calculé depuis le total AnTuTu."
+      intro="Téléphones classés par score CompareTech, calculé depuis Geekbench 6 (70 % multi-cœur, 30 % mono-cœur)."
     />
   );
 }

@@ -43,7 +43,13 @@ export const SPEC_GROUPS = {
       group: 'Général',
       rows: [
         { label: 'Marque', key: 'brand' },
-        { label: 'Unités de calcul', key: 'cores', numeric: true },
+        // Pas de `numeric` : la valeur s'affiche, mais aucun gagnant n'est
+        // désigné. Un GPU Nvidia compte des cœurs CUDA, un GPU AMD des stream
+        // processors — deux unités différentes. La RX 7900 XTX en annonce
+        // 6 144 contre 10 240 à la RTX 4080 SUPER, et devance pourtant cette
+        // dernière de 9 % en Time Spy. Surligner le plus grand nombre
+        // affirmerait quelque chose de faux.
+        { label: 'Unités de calcul', key: 'cores' },
         { label: 'Mémoire vidéo', key: 'memory_gb', unit: 'Go', numeric: true },
         { label: 'Type de mémoire', key: 'memory_type' },
       ],
@@ -144,7 +150,7 @@ export const KEY_METRICS = {
   gpu: [
     { key: 'benchmark_3dmark', label: 'de performances 3D' },
     { key: 'memory_gb', label: 'de mémoire vidéo', unit: 'Go' },
-    { key: 'cores', label: 'd’unités de calcul' },
+
   ],
   laptop: [
     { key: 'geekbench_multi', label: 'de performances' },

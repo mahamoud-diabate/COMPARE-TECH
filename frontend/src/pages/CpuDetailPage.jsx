@@ -12,10 +12,10 @@ import { useProduct } from '../hooks/useProduct';
 // utils/specs.js).
 function CpuDetailPage() {
   const { id } = useParams();
-  const { product, loading, error, retry } = useProduct('cpus', id, 'cpu');
+  const { product, loading, error, statut, retry } = useProduct('cpus', id, 'cpu');
 
   if (loading) return <DetailSkeleton />;
-  if (error) return <ErrorState message={error} onRetry={retry} />;
+  if (error) return <ErrorState message={error} statut={statut} onRetry={retry} />;
 
   return (
     <AnimatedPage>

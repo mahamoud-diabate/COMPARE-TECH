@@ -7,14 +7,34 @@ import AnimatedPage from '../components/AnimatedPage';
 import { ScoreBox } from '../components/Score';
 import { getProductScore } from '../utils/scores';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { cheminProduit } from '../utils/liens';
 
+/*
+ * `key` nomme la collection de l'API (donc le compteur), `type` la catégorie
+ * telle que l'attend la page de comparaison. Les deux diffèrent (« telephones »
+ * contre « telephone ») : les garder côte à côte évite de recomposer l'un à
+ * partir de l'autre à chaque usage.
+ */
 const CATEGORIES = [
+  {
+    key: 'telephones',
+    type: 'telephone',
+    title: 'Téléphones',
+    desc: 'Geekbench 6, batterie, mémoire, diagonale',
+    icon: 'phone',
+  },
+  {
+    key: 'laptops',
+    type: 'laptop',
+    title: 'Ordinateurs portables',
+    desc: 'Performances, luminosité, autonomie annoncée',
+    icon: 'laptop',
+  },
   {
     key: 'cpus',
     type: 'cpu',
     title: 'Processeurs',
     desc: 'Intel Core, AMD Ryzen — Geekbench 6, cœurs, fréquences',
-    to: '/cpus',
     icon: 'cpu',
   },
   {
@@ -22,24 +42,7 @@ const CATEGORIES = [
     type: 'gpu',
     title: 'Cartes graphiques',
     desc: 'GeForce RTX, Radeon — 3DMark, mémoire vidéo',
-    to: '/gpus',
     icon: 'gpu',
-  },
-  {
-    key: 'laptops',
-    type: 'laptop',
-    title: 'Ordinateurs portables',
-    desc: 'Performances, luminosité, autonomie annoncée',
-    to: '/laptops',
-    icon: 'laptop',
-  },
-  {
-    key: 'telephones',
-    type: 'telephone',
-    title: 'Téléphones',
-    desc: 'AnTuTu, batterie, mémoire, diagonale',
-    to: '/telephones',
-    icon: 'phone',
   },
 ];
 
@@ -58,7 +61,7 @@ function HomePage() {
 
   usePageTitle(
     'Comparateur de matériel informatique',
-    'Comparez processeurs, cartes graphiques, ordinateurs portables et téléphones à partir de benchmarks publics : Geekbench 6, 3DMark, AnTuTu.'
+    'Comparez processeurs, cartes graphiques, ordinateurs portables et téléphones à partir de benchmarks publics : Geekbench 6 et 3DMark.'
   );
 
   useEffect(() => {
@@ -100,7 +103,7 @@ function HomePage() {
             <p className="nr-text-gray-small" style={{ maxWidth: 620 }}>
               Processeurs, cartes graphiques, ordinateurs portables et téléphones,
               notés sur une échelle commune à partir de benchmarks publics —
-              Geekbench 6, 3DMark et AnTuTu. {total > 0 && `${total} modèles référencés.`}
+              Geekbench 6 et 3DMark. {total > 0 && `${total} modèles référencés.`}
             </p>
           </div>
         </section>
@@ -120,7 +123,7 @@ function HomePage() {
               {CATEGORIES.map(category => (
                 <Link
                   key={category.key}
-                  to={category.to}
+                  to={`/compare?type=${category.type}`}
                   style={{
                     display: 'block',
                     padding: 12,
@@ -141,6 +144,12 @@ function HomePage() {
                   </div>
                   <div className="nr-text-gray-small" style={{ marginTop: 4 }}>
                     {category.desc}
+                  </div>
+                  <div
+                    className="nr-text-small"
+                    style={{ marginTop: 6, color: 'var(--nr-accent-text)' }}
+                  >
+                    Comparer deux modèles →
                   </div>
                 </Link>
               ))}
@@ -175,7 +184,7 @@ function HomePage() {
 
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div className="nr-rank-name">
-                      <Link to={`/${product.productType}/${product._id}`}>{product.name}</Link>
+                      <Link to={cheminProduit(product.productType, product)}>{product.name}</Link>
                     </div>
                     <div className="nr-rank-sub">
                       {product.brand}
@@ -202,7 +211,7 @@ function HomePage() {
               </dl>
               <dl style={{ margin: 0 }}>
                 <div className="nr-kv"><dt>Ordinateurs portables</dt><dd>Geekbench 6 multi-cœur</dd></div>
-                <div className="nr-kv"><dt>Téléphones</dt><dd>AnTuTu, score total</dd></div>
+                <div className="nr-kv"><dt>Téléphones</dt><dd>Geekbench 6 · 70 % multi, 30 % mono</dd></div>
               </dl>
             </div>
             <p className="nr-text-gray-small" style={{ marginTop: 12 }}>

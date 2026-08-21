@@ -67,11 +67,10 @@ export function ScoreChip({ score, label = 'sur 100' }) {
  * avoir à connaître l'échelle.
  */
 export function ScoreBox({ score }) {
-  const { letter, variable } = scoreGrade(score);
+  const color = scoreVar(score);
   return (
-    <span style={{ color: variable, whiteSpace: 'nowrap' }}>
+    <span style={{ color, whiteSpace: 'nowrap' }}>
       <span className="nr-score-box">{score > 0 ? score : '—'}</span>
-      {letter && <span className="nr-score-grade">{letter}</span>}
     </span>
   );
 }

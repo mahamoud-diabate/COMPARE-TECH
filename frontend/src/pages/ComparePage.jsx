@@ -15,6 +15,7 @@ import { ImageOff } from 'lucide-react';
 import { getProductScore } from '../utils/scores';
 import { resolveType } from '../utils/specs';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { cheminProduit } from '../utils/liens';
 
 const TYPE_LABEL = {
   cpu: 'processeurs',
@@ -165,7 +166,7 @@ function ComparePage() {
               {error || 'Ces produits sont introuvables : ils ont pu être retirés du catalogue.'}
             </p>
             <Link className="nr-btn" to={`/compare${type ? `?type=${type}` : ''}`}>
-              Choisir deux produits
+              Choisir des produits
             </Link>
           </div>
         </div>
@@ -215,7 +216,7 @@ function ComparePage() {
                       <ImageOff size={28} strokeWidth={1.5} color="#9aa0a6" />
                     </div>
                   )}
-                  <Link className="nr-compare-head-name" to={`/${type}/${product._id}`}>
+                  <Link className="nr-compare-head-name" to={cheminProduit(type, product)}>
                     {product.name}
                   </Link>
                   <span className="nr-compare-head-brand">{product.brand}</span>

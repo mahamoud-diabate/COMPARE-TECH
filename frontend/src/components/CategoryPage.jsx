@@ -10,6 +10,7 @@ import LoadingSpinner from './LoadingSpinner';
 import ErrorState from './ErrorState';
 import { useCollection } from '../hooks/useCollection';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { getProductScore } from '../utils/scores';
 
 const MAX_COMPARE_ITEMS = 3;
 
@@ -32,7 +33,7 @@ const BREADCRUMB = {
  * l'identifiant du champ qu'il filtre, et une valeur cochée doit être égale à
  * celle du produit. C'est exactement ce que faisaient les quatre pages.
  */
-function CategoryPage({ collection, type, filterOptions = [], intro }) {
+function CategoryPage({ collection, type, filterOptions = [], intro, introSansNote }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedFilters, setSelectedFilters] = useState(() =>
     Object.fromEntries(filterOptions.map(group => [group.id, []]))
@@ -41,7 +42,22 @@ function CategoryPage({ collection, type, filterOptions = [], intro }) {
 
   const { data, loading, error, coldStart, retry } = useCollection(collection);
 
-  usePageTitle(`${BREADCRUMB[type] || collection} : classement par score`, intro);
+  /*
+   * Une catégorie dont aucun produit n'est noté n'est pas un classement : c'est
+   * une liste. Le titre et l'introduction le disent, plutôt que de promettre un
+   * tri par score qui n'existe pas — les portables sont dans ce cas tant que
+   * leur benchmark n'est pas relevé.
+   *
+   * Déduit des données, pas déclaré : le jour où les mesures arrivent, la page
+   * redevient un classement toute seule.
+   */
+  const noteDisponible = data.some(produit => getProductScore(produit, type) > 0);
+  const introAffichee = noteDisponible ? intro : (introSansNote || intro);
+
+  usePageTitle(
+    `${BREADCRUMB[type] || collection} : ${noteDisponible ? 'classement par score' : 'catalogue'}`,
+    introAffichee
+  );
 
   const handleFilterChange = (groupId, value) => {
     setSelectedFilters(prev => {
@@ -98,8 +114,8 @@ function CategoryPage({ collection, type, filterOptions = [], intro }) {
             <span>{BREADCRUMB[type] || collection}</span>
           </div>
 
-          {intro && (
-            <p className="nr-text-gray-small" style={{ padding: '0 4px 8px' }}>{intro}</p>
+          {introAffichee && (
+            <p className="nr-text-gray-small" style={{ padding: '0 4px 8px' }}>{introAffichee}</p>
           )}
 
           <div className="nr-layout">
@@ -114,7 +130,7 @@ function CategoryPage({ collection, type, filterOptions = [], intro }) {
 
             <main>
               {loading ? (
-                <LoadingSpinner message="Chargement du classement…" coldStart={coldStart} />
+                <LoadingSpinner message="Chargement du catalogue…" coldStart={coldStart} />
               ) : error ? (
                 <ErrorState message={error} onRetry={retry} />
               ) : (

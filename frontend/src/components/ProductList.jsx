@@ -39,25 +39,7 @@ const summarize = (product, key) => {
   return parts.join(' · ');
 };
 
-/** Étiquettes d'usage. Volontairement rares : un badge sur chaque ligne ne
- *  distingue plus rien. */
-const getTags = (product, key) => {
-  const tags = [];
-  if (key === 'cpu') {
-    if (product.geekbench_single >= 2800) tags.push('Gaming');
-    if (product.geekbench_multi >= 20000) tags.push('Station de travail');
-  } else if (key === 'gpu') {
-    if (product.benchmark_3dmark >= 25000) tags.push('4K');
-    else if (product.benchmark_3dmark >= 15000) tags.push('1440p');
-  } else if (key === 'laptop') {
-    if (/RTX|RX /.test(product.gpu_name || '')) tags.push('Jeu');
-    if (product.battery_life_hours >= 12) tags.push('Endurance');
-  } else if (key === 'telephone') {
-    if (product.antutu_score >= 1500000) tags.push('Haut de gamme');
-    if (product.battery_mah >= 5000) tags.push('Endurance');
-  }
-  return tags;
-};
+
 
 /**
  * Liste classée d'une catégorie.
@@ -74,7 +56,11 @@ function ProductList({
   productType = 'cpu',
   compareType,
 }) {
-  const [sortOption, setSortOption] = useState('score-desc');
+  // Trier par score une liste où personne n'est noté ne trie rien : l'ordre
+  // affiché serait celui de la base, sans que rien ne l'annonce. On classe
+  // alors par nom, ce qui est au moins un ordre lisible.
+  const aucuneNote = cpus.every(p => getProductScore(p, productType) <= 0);
+  const [sortOption, setSortOption] = useState(aucuneNote ? 'name-asc' : 'score-desc');
   const [failedImages, setFailedImages] = useState({});
 
   const key = resolveKey(productType);
@@ -125,12 +111,10 @@ function ProductList({
           {sorted.map((product, index) => {
             const isSelected = compareList.includes(product._id);
             const isDisabled =
-              !isSelected &&
-              compareType !== null &&
-              compareType !== undefined &&
+              compareType &&
+              compareList.length > 0 &&
               productType !== compareType;
             const score = getProductScore(product, productType);
-            const tags = getTags(product, key);
 
             return (
               <div
@@ -158,9 +142,6 @@ function ProductList({
                 <div style={{ minWidth: 0 }}>
                   <div className="nr-rank-name">
                     <Link to={cheminProduit(key, product)}>{product.name}</Link>
-                    {tags.map(tag => (
-                      <span key={tag} className="nr-badge" style={{ marginLeft: 6 }}>{tag}</span>
-                    ))}
                   </div>
                   <div className="nr-rank-sub">{product.brand}</div>
                 </div>

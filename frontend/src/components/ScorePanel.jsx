@@ -69,7 +69,6 @@ function ScorePanel({ product, type, peers = [] }) {
         <div className="nr-score-head">
           <span className="nr-score-big" style={{ color: variable }}>
             {note > 0 ? note : '—'}
-            {letter && <em className="nr-score-big-grade">{letter}</em>}
           </span>
           <span className="nr-score-head-side">
             <span className="nr-text-gray-small">sur 100</span>

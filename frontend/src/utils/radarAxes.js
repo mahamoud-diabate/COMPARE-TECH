@@ -71,7 +71,7 @@ export const AXIS_HINTS = {
   'Fréquence': 'Fréquence maximale atteinte',
   'Performance 3D': 'Rendu graphique et jeux',
   'VRAM': 'Mémoire dédiée à la carte',
-  'Unités de calcul': 'Cœurs CUDA / Stream',
+  'Unités de calcul': 'Cœurs CUDA (Nvidia) ou Stream (AMD) — non comparables entre marques',
   'Performance': 'Puissance de calcul générale',
   'Mémoire': 'Quantité de mémoire vive',
   'Stockage': 'Capacité de stockage interne',
