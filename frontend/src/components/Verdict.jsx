@@ -9,7 +9,7 @@ const MAIN_METRIC = {
   cpu: { key: 'geekbench_multi', label: 'Geekbench 6 multi-cœur' },
   gpu: { key: 'benchmark_3dmark', label: '3DMark' },
   laptop: { key: 'geekbench_multi', label: 'Geekbench 6 multi-cœur' },
-  telephone: { key: 'antutu_score', label: 'AnTuTu' },
+  telephone: { key: 'geekbench_multi', label: 'Geekbench 6 multi-cœur' },
 };
 
 /**

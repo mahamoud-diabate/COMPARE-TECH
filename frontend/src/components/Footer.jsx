@@ -23,10 +23,10 @@ const ATTRIBUTIONS = [
 ];
 
 const LINKS = [
+  { to: '/telephones', label: 'Téléphones' },
+  { to: '/laptops', label: 'Ordinateurs portables' },
   { to: '/cpus', label: 'Processeurs' },
   { to: '/gpus', label: 'Cartes graphiques' },
-  { to: '/laptops', label: 'Ordinateurs portables' },
-  { to: '/telephones', label: 'Téléphones' },
 ];
 
 function Footer() {
@@ -52,14 +52,14 @@ function Footer() {
         </nav>
 
         <span className="nr-text-gray-small" style={{ marginLeft: 'auto' }}>
-          Scores calculés depuis Geekbench 6, 3DMark et AnTuTu · © {new Date().getFullYear()}
+          Scores calculés depuis Geekbench 6 et 3DMark · © {new Date().getFullYear()}
         </span>
 
         {utiliseIconesPersonnalisees && (
           <span className="nr-text-gray-small" style={{ flex: '1 1 100%' }}>
             {ATTRIBUTIONS.length > 0 ? (
               <>
-                Icônes créées par{' '}
+                Remerciements a : {' '}
                 {ATTRIBUTIONS.map((a, i) => (
                   <React.Fragment key={a.auteur}>
                     {i > 0 && ', '}
@@ -71,15 +71,22 @@ function Footer() {
                     >
                       {a.auteur}
                     </a>
-                    {' sur '}
-                    <a
-                      href={a.sourceUrl || 'https://www.flaticon.com/'}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{ color: 'inherit', textDecoration: 'underline' }}
-                    >
-                      {a.source}
-                    </a>
+                    {/* Certaines banques signent de leur propre nom : « Icons8
+                        sur Icons8 » ne veut rien dire, on n'affiche alors que
+                        le lien unique. */}
+                    {a.auteur !== a.source && (
+                      <>
+                        {' sur '}
+                        <a
+                          href={a.sourceUrl || a.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{ color: 'inherit', textDecoration: 'underline' }}
+                        >
+                          {a.source}
+                        </a>
+                      </>
+                    )}
                   </React.Fragment>
                 ))}
               </>

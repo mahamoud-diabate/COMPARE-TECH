@@ -8,10 +8,10 @@ import { getProductScore } from '../utils/scores';
 import { RADAR_AXES } from '../utils/radarAxes';
 
 const TYPES = [
+  { type: 'telephone', collection: 'telephones', label: 'Téléphones', singular: 'téléphone' },
+  { type: 'laptop', collection: 'laptops', label: 'Ordinateurs portables', singular: 'ordinateur portable' },
   { type: 'cpu', collection: 'cpus', label: 'Processeurs', singular: 'processeur' },
   { type: 'gpu', collection: 'gpus', label: 'Cartes graphiques', singular: 'carte graphique' },
-  { type: 'laptop', collection: 'laptops', label: 'Ordinateurs portables', singular: 'ordinateur portable' },
-  { type: 'telephone', collection: 'telephones', label: 'Téléphones', singular: 'téléphone' },
 ];
 
 /**
@@ -28,7 +28,7 @@ const TYPES = [
  */
 function CompareSelector({ type: initialType }) {
   const [type, setType] = useState(
-    () => TYPES.find(t => t.type === initialType)?.type || 'cpu'
+    () => TYPES.find(t => t.type === initialType)?.type || 'telephone'
   );
   const [first, setFirst] = useState(null);
   const [second, setSecond] = useState(null);
@@ -38,8 +38,8 @@ function CompareSelector({ type: initialType }) {
   const { data, loading } = useCollection(meta.collection);
 
   usePageTitle(
-    `Comparer deux ${meta.label.toLowerCase()}`,
-    `Sélectionnez deux ${meta.label.toLowerCase()} et obtenez leurs écarts mesurés, critère par critère.`
+    `Comparer ${meta.label.toLowerCase()}`,
+    `Sélectionnez ${meta.label.toLowerCase()} et obtenez leurs écarts mesurés, critère par critère.`
   );
 
   // Critères annoncés dans l'introduction : lus depuis la définition des axes,
@@ -86,10 +86,10 @@ function CompareSelector({ type: initialType }) {
 
       <section className="nr-card">
         <div className="nr-card-head">
-          <h1 className="nr-title-h1">Comparer deux {meta.label.toLowerCase()}</h1>
+          <h1 className="nr-title-h1">Comparer {meta.label.toLowerCase()}</h1>
           <p className="nr-text-gray-small" style={{ marginBottom: 12 }}>
             {data.length > 0 && `${data.length} ${meta.label.toLowerCase()} au catalogue. `}
-            Choisissez-en deux : vous obtiendrez leurs écarts chiffrés
+            Sélectionnez vos modèles : vous obtiendrez leurs écarts chiffrés
             {criteres && `, une note sur 100 par critère — ${criteres} —`} et le tableau
             complet des caractéristiques.
           </p>

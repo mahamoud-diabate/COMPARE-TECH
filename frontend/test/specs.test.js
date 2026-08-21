@@ -222,3 +222,24 @@ test('buildStrengths renvoie une liste vide sans type ou sans rival', () => {
   assert.deepEqual(buildStrengths([{ cores: 8 }], 'cpu'), []);
   assert.deepEqual(buildStrengths([{ cores: 8 }, { cores: 16 }], 'montre'), []);
 });
+
+test('les unités de calcul GPU ne désignent pas de gagnant', () => {
+  // Un GPU Nvidia compte des cœurs CUDA, un GPU AMD des stream processors :
+  // deux unités différentes. La RX 7900 XTX en annonce 6 144 contre 10 240 à la
+  // RTX 4080 SUPER, et la devance pourtant de 9 % en Time Spy. Marquer cette
+  // ligne `numeric` surlignerait le plus grand nombre comme vainqueur, ce qui
+  // est faux. Le classement, lui, repose sur Time Spy — qui est comparable.
+  const ligne = SPEC_GROUPS.gpu
+    .flatMap(groupe => groupe.rows)
+    .find(r => r.key === 'cores');
+
+  assert.ok(ligne, 'la ligne doit rester affichée');
+  assert.notEqual(ligne.numeric, true, 'aucun gagnant ne doit être désigné sur cette ligne');
+});
+
+test('les différences clés GPU ne chiffrent pas un écart d’unités de calcul', () => {
+  // Même raison : « 67 % d’unités de calcul en plus » n’a pas de sens entre
+  // deux marques qui ne comptent pas la même chose.
+  const criteres = KEY_METRICS.gpu || [];
+  assert.ok(!criteres.some(c => c.key === 'cores'));
+});

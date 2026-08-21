@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Search } from 'lucide-react';
 import Sidebar from './Sidebar';
 import { loadCatalog } from '../utils/catalog';
+import { cheminProduit } from '../utils/liens';
 
 const TYPE_LABEL = { cpu: 'CPU', gpu: 'GPU', laptop: 'Portable', telephone: 'Téléphone' };
 
@@ -27,10 +28,10 @@ function Header({ toggleTheme, theme }) {
     const fetchAll = async () => {
       try {
         const endpoints = [
+          ['telephones', 'telephone'],
+          ['laptops', 'laptop'],
           ['cpus', 'cpu'],
           ['gpus', 'gpu'],
-          ['laptops', 'laptop'],
-          ['telephones', 'telephone'],
         ];
         // Passe par le cache partagé : les pages catégorie et les fiches
         // produit demandent les mêmes collections, une seule requête suffit.
@@ -74,7 +75,7 @@ function Header({ toggleTheme, theme }) {
   }, []);
 
   const select = (product) => {
-    navigate(`/${product.productType || 'cpu'}/${product._id}`);
+    navigate(cheminProduit(product.productType || 'cpu', product));
     setSearchTerm('');
     setOpen(false);
   };

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ImageOff } from 'lucide-react';
 import { ScoreBox } from './Score';
 import { getProductScore } from '../utils/scores';
+import { cheminProduit } from '../utils/liens';
 
 /**
  * Autres modèles de la même catégorie.
@@ -32,7 +33,7 @@ function SimilarProducts({ products = [], type }) {
 
           <div style={{ flex: 1, minWidth: 0 }}>
             <div className="nr-rank-name">
-              <Link to={`/${type}/${product._id}`}>{product.name}</Link>
+              <Link to={cheminProduit(type, product)}>{product.name}</Link>
             </div>
             <div className="nr-rank-sub">{product.brand}</div>
           </div>

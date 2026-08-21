@@ -2,6 +2,8 @@ import React, { useEffect, useRef } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { X } from 'lucide-react';
 import { Icone } from './icons';
+import ranking from '../assets/icons/ranking.png';
+import balance from '../assets/icons/compare.png';
 import ThemeToggle from './ThemeToggle';
 
 /*
@@ -24,22 +26,38 @@ import ThemeToggle from './ThemeToggle';
  * `assets/icons/` s'il existe, et un tracé de repli sinon.
  */
 const CATEGORIES = [
+  { cle: 'telephone', pluriel: 'telephones', label: 'Téléphones', icone: 'phone' },
+  { cle: 'laptop', pluriel: 'laptops', label: 'Ordinateurs portables', icone: 'laptop' },
   { cle: 'cpu', pluriel: 'cpus', label: 'Processeurs', icone: 'cpu' },
   { cle: 'gpu', pluriel: 'gpus', label: 'Cartes graphiques', icone: 'gpu' },
-  { cle: 'laptop', pluriel: 'laptops', label: 'Ordinateurs portables', icone: 'laptop' },
-  { cle: 'telephone', pluriel: 'telephones', label: 'Téléphones', icone: 'phone' },
 ];
 
 const GROUPES = [
   {
-    titre: 'Comparer',
-    liens: CATEGORIES.map(c => ({ to: `/compare?type=${c.cle}`, label: c.label, icone: c.icone })),
+    /*
+     * Premier, et sans titre de rubrique : c'est la raison d'être du site.
+     * Le classement sert à trouver un produit, la comparaison est ce qu'on
+     * vient y faire — l'ordre du menu doit dire lequel des deux compte.
+     *
+     * Pas d'intitulé de groupe non plus : « COMPARER » au-dessus de
+     * « Comparer deux produits » répéterait le même mot deux fois.
+     */
+    id: 'comparer',
+    liens: [{
+      to: '/compare',
+      label: 'Comparer',
+      marqueur: balance,
+      principal: true,
+    }],
   },
   {
-    titre: 'Classements',
+    id: 'classements',
+    titre: 'Classement',
+    marqueur: ranking,
     liens: CATEGORIES.map(c => ({ to: `/${c.pluriel}`, label: c.label, icone: c.icone })),
   },
   {
+    id: 'gestion',
     titre: 'Gestion',
     liens: [{ to: '/admin', label: 'Administration', icone: 'admin' }],
   },
@@ -116,17 +134,35 @@ function Sidebar({ ouvert, onClose, boutonRef, theme, toggleTheme }) {
         </div>
 
         {GROUPES.map(groupe => (
-          <div key={groupe.titre} className="nr-drawer-group">
-            <p className="nr-drawer-group-title">{groupe.titre}</p>
+          <div key={groupe.id} className="nr-drawer-group">
+            {groupe.titre && <p className="nr-drawer-group-title">
+              {groupe.marqueur && (
+                <span
+                  className="nr-mask-icon"
+                  style={{ '--src': `url(${groupe.marqueur})`, width: 13, height: 13 }}
+                  aria-hidden="true"
+                />
+              )}
+              {groupe.titre}
+            </p>}
             {groupe.liens.map(lien => (
               <NavLink
                 key={lien.to}
                 to={lien.to}
                 className={({ isActive }) =>
-                  `nr-drawer-link${isActive && estCourant(lien.to, location) ? ' is-active' : ''}`
+                  `nr-drawer-link${lien.principal ? ' is-principal' : ''}` +
+                  `${isActive && estCourant(lien.to, location) ? ' is-active' : ''}`
                 }
               >
-                <Icone nom={lien.icone} size={16} />
+                {lien.marqueur ? (
+                  <span
+                    className="nr-mask-icon"
+                    style={{ '--src': `url(${lien.marqueur})`, width: 16, height: 16 }}
+                    aria-hidden="true"
+                  />
+                ) : (
+                  <Icone nom={lien.icone} size={16} />
+                )}
                 <span>{lien.label}</span>
               </NavLink>
             ))}

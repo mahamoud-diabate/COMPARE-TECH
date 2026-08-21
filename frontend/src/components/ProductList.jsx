@@ -4,6 +4,7 @@ import { ImageOff } from 'lucide-react';
 import { ScoreBox } from './Score';
 import { getProductScore } from '../utils/scores';
 import { formatValue } from '../utils/specs';
+import { cheminProduit } from '../utils/liens';
 
 const TITLES = {
   cpu: 'Processeurs',
@@ -156,7 +157,7 @@ function ProductList({
 
                 <div style={{ minWidth: 0 }}>
                   <div className="nr-rank-name">
-                    <Link to={`/${key}/${product._id}`}>{product.name}</Link>
+                    <Link to={cheminProduit(key, product)}>{product.name}</Link>
                     {tags.map(tag => (
                       <span key={tag} className="nr-badge" style={{ marginLeft: 6 }}>{tag}</span>
                     ))}
