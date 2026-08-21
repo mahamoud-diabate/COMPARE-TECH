@@ -1,4 +1,4 @@
-# Compare-Tech
+# COMPARE-TECH
 
 Comparateur d'appareils technologiques (CPU, GPU, portables, téléphones) avec **verdict généré par IA**.
 
@@ -7,7 +7,7 @@ Monorepo réunissant le backend et le frontend dans un seul dépôt, avec l'hist
 ## Structure
 
 ```
-compare-tech/
+COMPARE-TECH/
 ├── backend/    → API REST (Node.js · Express · MongoDB · JWT · Gemini)
 └── frontend/   → Interface web (React · Vite)
 ```
