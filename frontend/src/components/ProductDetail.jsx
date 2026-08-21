@@ -53,20 +53,20 @@ function ProductDetail({ product, type }) {
   if (!product) return null;
 
   return (
-    <div className="nr-main">
-      <div className="nr-breadcrumb">
+    <div className="ct-main">
+      <div className="ct-breadcrumb">
         <span><Link to="/">Accueil</Link></span>
         <span><Link to={meta.path}>{meta.label}</Link></span>
         <span>{product.name}</span>
       </div>
 
-      <section className="nr-card">
-        <div className="nr-card-head">
-          <h1 className="nr-title-h1">{product.name}</h1>
-          <p className="nr-text-gray-small">{product.brand}</p>
+      <section className="ct-card">
+        <div className="ct-card-head">
+          <h1 className="ct-title-h1">{product.name}</h1>
+          <p className="ct-text-gray-small">{product.brand}</p>
         </div>
 
-        <div className="nr-card-body">
+        <div className="ct-card-body">
           <div style={{ display: 'flex', gap: 20, flexWrap: 'wrap', alignItems: 'flex-start' }}>
             <div style={{ width: 190, flex: '0 0 auto' }}>
               {product.imageUrl ? (
@@ -77,7 +77,7 @@ function ProductDetail({ product, type }) {
                     width: '100%',
                     height: 180,
                     objectFit: 'contain',
-                    background: 'var(--nr-media)',
+                    background: 'var(--ct-media)',
                     borderRadius: 3,
                     padding: 8,
                   }}
@@ -90,7 +90,7 @@ function ProductDetail({ product, type }) {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    background: 'var(--nr-media)',
+                    background: 'var(--ct-media)',
                     borderRadius: 3,
                   }}
                 >
@@ -100,17 +100,17 @@ function ProductDetail({ product, type }) {
             </div>
 
             <div style={{ flex: '1 1 300px', minWidth: 0 }}>
-              <p className="nr-text-gray-small" style={{ marginBottom: 12 }}>
+              <p className="ct-text-gray-small" style={{ marginBottom: 12 }}>
                 {product.brand} · {meta.label.toLowerCase()}. La note, son calcul et la
                 position de ce modèle dans le classement figurent juste en dessous.
               </p>
 
               <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                <Link className="nr-btn nr-btn-ghost" to={meta.path}>
+                <Link className="ct-btn ct-btn-ghost" to={meta.path}>
                   Voir tous les {meta.label.toLowerCase()}
                 </Link>
                 {product.buyUrl && (
-                  <a className="nr-btn" href={product.buyUrl} target="_blank" rel="noreferrer">
+                  <a className="ct-btn" href={product.buyUrl} target="_blank" rel="noreferrer">
                     Voir l’offre
                   </a>
                 )}
@@ -134,10 +134,10 @@ function ProductDetail({ product, type }) {
 
       <ProsCons product={product} />
 
-      <section className="nr-card">
-        <div className="nr-card-head">
-          <h2 className="nr-title-h2">Fiche technique</h2>
-          <p className="nr-text-gray-small" style={{ marginBottom: 12 }}>
+      <section className="ct-card">
+        <div className="ct-card-head">
+          <h2 className="ct-title-h2">Fiche technique</h2>
+          <p className="ct-text-gray-small" style={{ marginBottom: 12 }}>
             Caractéristiques telles qu’enregistrées en base.
           </p>
         </div>
@@ -145,11 +145,11 @@ function ProductDetail({ product, type }) {
       </section>
 
       {others.length > 0 && (
-        <section className="nr-card">
-          <div className="nr-card-head">
-            <h2 className="nr-title-h2">Autres modèles</h2>
+        <section className="ct-card">
+          <div className="ct-card-head">
+            <h2 className="ct-title-h2">Autres modèles</h2>
           </div>
-          <div className="nr-card-body" style={{ paddingTop: 8 }}>
+          <div className="ct-card-body" style={{ paddingTop: 8 }}>
             <SimilarProducts products={others.slice(0, 4)} type={type} />
           </div>
         </section>

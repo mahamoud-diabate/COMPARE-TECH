@@ -1,5 +1,5 @@
 import React from 'react';
-import { scoreVar, scoreGrade } from '../utils/scores';
+import { scoreVar } from '../utils/scores';
 
 /**
  * Barre de résultat : nom, écart relatif, valeur, filet de progression.
@@ -18,18 +18,18 @@ export function ScoreBar({ name, value, unit, percent = 0, diff = null, muted = 
   const width = Math.max(0, Math.min(100, Number(percent) || 0));
 
   return (
-    <div className="nr-score-bar">
-      <div className="nr-score-bar-name">
+    <div className="ct-score-bar">
+      <div className="ct-score-bar-name">
         {name}
-        {diff ? <span className="nr-score-bar-diff">+{diff} %</span> : null}
+        {diff ? <span className="ct-score-bar-diff">+{diff} %</span> : null}
       </div>
-      <div className="nr-score-bar-result">
-        <span className="nr-score-bar-result-number">{value}</span>
-        {unit ? <span className="nr-score-bar-result-unit">{unit}</span> : null}
+      <div className="ct-score-bar-result">
+        <span className="ct-score-bar-result-number">{value}</span>
+        {unit ? <span className="ct-score-bar-result-unit">{unit}</span> : null}
       </div>
-      <div className="nr-score-bar-line">
+      <div className="ct-score-bar-line">
         <div
-          className={`nr-score-bar-line-filled${muted ? ' is-muted' : ''}`}
+          className={`ct-score-bar-line-filled${muted ? ' is-muted' : ''}`}
           style={{ width: `${width}%` }}
         />
       </div>
@@ -40,7 +40,7 @@ export function ScoreBar({ name, value, unit, percent = 0, diff = null, muted = 
 /** Carré de note du bloc « Évaluation » : plein pour celui qui mène. */
 export function ScoreSquare({ value, lead = false }) {
   return (
-    <span className={`nr-score-square${lead ? ' is-lead' : ''}`}>
+    <span className={`ct-score-square${lead ? ' is-lead' : ''}`}>
       {value === null || value === undefined ? 'n/d' : value}
     </span>
   );
@@ -50,11 +50,11 @@ export function ScoreSquare({ value, lead = false }) {
 export function ScoreChip({ score, label = 'sur 100' }) {
   const color = scoreVar(score);
   return (
-    <span className="nr-score-chip">
-      <span className="nr-score-chip-num" style={{ background: color }}>
+    <span className="ct-score-chip">
+      <span className="ct-score-chip-num" style={{ background: color }}>
         {score > 0 ? score : '—'}
       </span>
-      <span className="nr-score-chip-outof" style={{ borderColor: color }}>
+      <span className="ct-score-chip-outof" style={{ borderColor: color }}>
         {label}
       </span>
     </span>
@@ -62,15 +62,15 @@ export function ScoreChip({ score, label = 'sur 100' }) {
 }
 
 /**
- * Note d'un classement : boîte contourée à la couleur du grade, suivie de la
- * lettre. Le chiffre situe précisément, la lettre situe d'un coup d'œil sans
- * avoir à connaître l'échelle.
+ * Note d'un classement : boîte contourée à la couleur du grade. Le chiffre
+ * situe précisément, la couleur situe d'un coup d'œil sans avoir à connaître
+ * l'échelle.
  */
 export function ScoreBox({ score }) {
   const color = scoreVar(score);
   return (
     <span style={{ color, whiteSpace: 'nowrap' }}>
-      <span className="nr-score-box">{score > 0 ? score : '—'}</span>
+      <span className="ct-score-box">{score > 0 ? score : '—'}</span>
     </span>
   );
 }

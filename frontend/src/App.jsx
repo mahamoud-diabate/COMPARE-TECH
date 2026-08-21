@@ -18,14 +18,14 @@ function App() {
   }, [theme]);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', background: 'var(--nr-bg)' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', background: 'var(--ct-bg)' }}>
       <Toaster
         position="top-center"
         toastOptions={{
           style: {
-            background: 'var(--nr-card)',
-            color: 'var(--nr-text)',
-            border: '1px solid var(--nr-line-strong)',
+            background: 'var(--ct-card)',
+            color: 'var(--ct-text)',
+            border: '1px solid var(--ct-line-strong)',
             borderRadius: '3px',
             fontSize: '13px',
           },

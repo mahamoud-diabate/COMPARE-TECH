@@ -74,16 +74,16 @@ function ProductList({
   });
 
   return (
-    <section className="nr-card">
-      <div className="nr-toolbar">
+    <section className="ct-card">
+      <div className="ct-toolbar">
         <div>
-          <h1 className="nr-title-h2" style={{ display: 'inline' }}>{TITLES[key]}</h1>
-          <span className="nr-text-gray-small" style={{ marginLeft: 8 }}>
+          <h1 className="ct-title-h2" style={{ display: 'inline' }}>{TITLES[key]}</h1>
+          <span className="ct-text-gray-small" style={{ marginLeft: 8 }}>
             {sorted.length} modèle{sorted.length > 1 ? 's' : ''}
           </span>
         </div>
         <select
-          className="nr-select"
+          className="ct-select"
           value={sortOption}
           onChange={(e) => setSortOption(e.target.value)}
           aria-label="Trier la liste"
@@ -96,10 +96,10 @@ function ProductList({
       </div>
 
       {sorted.length === 0 ? (
-        <p className="nr-empty">Aucun produit ne correspond aux filtres.</p>
+        <p className="ct-empty">Aucun produit ne correspond aux filtres.</p>
       ) : (
         <>
-          <div className="nr-rank-head">
+          <div className="ct-rank-head">
             <span>#</span>
             <span />
             <span>Modèle</span>
@@ -119,13 +119,13 @@ function ProductList({
             return (
               <div
                 key={product._id}
-                className={`nr-rank-row${isDisabled ? ' is-disabled' : ''}`}
+                className={`ct-rank-row${isDisabled ? ' is-disabled' : ''}`}
               >
-                <span className="nr-rank-num">{index + 1}</span>
+                <span className="ct-rank-num">{index + 1}</span>
 
                 {product.imageUrl && !failedImages[product._id] ? (
                   <img
-                    className="nr-rank-thumb"
+                    className="ct-rank-thumb"
                     src={product.imageUrl}
                     alt=""
                     loading="lazy"
@@ -134,28 +134,28 @@ function ProductList({
                     }
                   />
                 ) : (
-                  <span className="nr-rank-thumb-empty">
+                  <span className="ct-rank-thumb-empty">
                     <ImageOff size={18} strokeWidth={1.5} aria-label="Image indisponible" />
                   </span>
                 )}
 
                 <div style={{ minWidth: 0 }}>
-                  <div className="nr-rank-name">
+                  <div className="ct-rank-name">
                     <Link to={cheminProduit(key, product)}>{product.name}</Link>
                   </div>
-                  <div className="nr-rank-sub">{product.brand}</div>
+                  <div className="ct-rank-sub">{product.brand}</div>
                 </div>
 
-                <div className="nr-rank-specs">{summarize(product, key)}</div>
+                <div className="ct-rank-specs">{summarize(product, key)}</div>
 
                 <div style={{ textAlign: 'center' }}>
                   <ScoreBox score={score} />
                 </div>
 
-                <div className="nr-rank-compare" style={{ textAlign: 'center' }}>
+                <div className="ct-rank-compare" style={{ textAlign: 'center' }}>
                   <button
                     type="button"
-                    className={`nr-chip${isSelected ? ' is-on' : ''}`}
+                    className={`ct-chip${isSelected ? ' is-on' : ''}`}
                     onClick={() => onCompareToggle(product)}
                     disabled={isDisabled}
                   >

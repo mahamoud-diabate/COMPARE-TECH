@@ -71,10 +71,10 @@ function ProductPicker({ label, products = [], value, onChange, exclude, placeho
   const expanded = open && matches.length > 0;
 
   return (
-    <div className="nr-picker" ref={wrapRef}>
-      <div className="nr-picker-field">
+    <div className="ct-picker" ref={wrapRef}>
+      <div className="ct-picker-field">
         <input
-          className="nr-picker-input"
+          className="ct-picker-input"
           type="text"
           role="combobox"
           aria-label={label}
@@ -94,12 +94,12 @@ function ProductPicker({ label, products = [], value, onChange, exclude, placeho
           onFocus={() => setOpen(true)}
           onKeyDown={onKeyDown}
         />
-        <span className="nr-picker-mark" aria-hidden="true">
+        <span className="ct-picker-mark" aria-hidden="true">
           {value && <Check size={18} strokeWidth={2.5} />}
         </span>
       </div>
 
-      <ul className="nr-picker-list" id={listId} role="listbox" hidden={!expanded}>
+      <ul className="ct-picker-list" id={listId} role="listbox" hidden={!expanded}>
         {matches.map((product, i) => (
           <li
             key={product._id}
@@ -111,12 +111,12 @@ function ProductPicker({ label, products = [], value, onChange, exclude, placeho
             onMouseDown={(e) => { e.preventDefault(); select(product); }}
           >
             <strong>{product.name}</strong>
-            <span className="nr-text-gray-small">{product.brand}</span>
+            <span className="ct-text-gray-small">{product.brand}</span>
           </li>
         ))}
       </ul>
 
-      <span className="nr-visually-hidden" role="status" aria-live="polite">
+      <span className="ct-visually-hidden" role="status" aria-live="polite">
         {expanded
           ? `${matches.length} résultat${matches.length > 1 ? 's' : ''}`
           : 'Commencez à taper pour voir des résultats.'}

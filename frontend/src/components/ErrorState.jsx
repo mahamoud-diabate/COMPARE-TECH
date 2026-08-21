@@ -21,9 +21,9 @@ function ErrorState({ message, onRetry, statut }) {
   const transitoire = statut == null || statut >= 500;
 
   return (
-    <div className="nr-card">
-      <div className="nr-empty">
-        <p style={{ color: 'var(--nr-text)', fontWeight: 600, marginBottom: 4 }}>
+    <div className="ct-card">
+      <div className="ct-empty">
+        <p style={{ color: 'var(--ct-text)', fontWeight: 600, marginBottom: 4 }}>
           Données indisponibles
         </p>
 
@@ -31,14 +31,14 @@ function ErrorState({ message, onRetry, statut }) {
           {message || "Le serveur n'a pas pu être joint."}
         </p>
 
-        <p className="nr-text-gray-small" style={{ maxWidth: 460, margin: '0 auto 16px' }}>
+        <p className="ct-text-gray-small" style={{ maxWidth: 460, margin: '0 auto 16px' }}>
           {transitoire
             ? 'L’API est hébergée sur une offre gratuite qui met le serveur en veille : un nouvel essai suffit généralement.'
             : 'Le serveur a refusé cette requête : réessayer ne changera rien. Vérifiez l’adresse, ou revenez au classement de la catégorie.'}
         </p>
 
         {onRetry && transitoire && (
-          <button className="nr-btn" onClick={onRetry}>Réessayer</button>
+          <button className="ct-btn" onClick={onRetry}>Réessayer</button>
         )}
       </div>
     </div>

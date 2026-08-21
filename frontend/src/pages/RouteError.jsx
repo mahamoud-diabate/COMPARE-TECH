@@ -26,10 +26,10 @@ function RouteError() {
     : error?.message || 'Erreur inattendue.';
 
   return (
-    <div className="nr-main">
-      <section className="nr-card">
-        <div className="nr-empty">
-          <p style={{ color: 'var(--nr-text)', fontWeight: 600, marginBottom: 4 }}>
+    <div className="ct-main">
+      <section className="ct-card">
+        <div className="ct-empty">
+          <p style={{ color: 'var(--ct-text)', fontWeight: 600, marginBottom: 4 }}>
             Cette page n’a pas pu s’afficher
           </p>
           <p style={{ maxWidth: 460, margin: '0 auto 16px' }}>
@@ -44,8 +44,8 @@ function RouteError() {
                 maxWidth: 560,
                 margin: '0 auto 16px',
                 padding: 12,
-                background: 'var(--nr-card-alt)',
-                border: '1px solid var(--nr-line)',
+                background: 'var(--ct-card-alt)',
+                border: '1px solid var(--ct-line)',
                 borderRadius: 3,
                 fontSize: 12,
                 whiteSpace: 'pre-wrap',
@@ -57,8 +57,8 @@ function RouteError() {
           )}
 
           <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link className="nr-btn" to="/">Accueil</Link>
-            <button className="nr-btn nr-btn-ghost" onClick={() => window.location.reload()}>
+            <Link className="ct-btn" to="/">Accueil</Link>
+            <button className="ct-btn ct-btn-ghost" onClick={() => window.location.reload()}>
               Recharger
             </button>
           </div>

@@ -94,13 +94,13 @@ function HomePage() {
 
   return (
     <AnimatedPage>
-      <div className="nr-main-wide">
-        <section className="nr-card">
-          <div className="nr-card-head">
-            <h1 className="nr-title-h1">Comparateur de matériel informatique</h1>
+      <div className="ct-main-wide">
+        <section className="ct-card">
+          <div className="ct-card-head">
+            <h1 className="ct-title-h1">Comparateur de matériel informatique</h1>
           </div>
-          <div className="nr-card-body" style={{ paddingTop: 4 }}>
-            <p className="nr-text-gray-small" style={{ maxWidth: 620 }}>
+          <div className="ct-card-body" style={{ paddingTop: 4 }}>
+            <p className="ct-text-gray-small" style={{ maxWidth: 620 }}>
               Processeurs, cartes graphiques, ordinateurs portables et téléphones,
               notés sur une échelle commune à partir de benchmarks publics —
               Geekbench 6 et 3DMark. {total > 0 && `${total} modèles référencés.`}
@@ -108,11 +108,11 @@ function HomePage() {
           </div>
         </section>
 
-        <section className="nr-card">
-          <div className="nr-card-head">
-            <h2 className="nr-title-h2">Catégories</h2>
+        <section className="ct-card">
+          <div className="ct-card-head">
+            <h2 className="ct-title-h2">Catégories</h2>
           </div>
-          <div className="nr-card-body" style={{ paddingTop: 12 }}>
+          <div className="ct-card-body" style={{ paddingTop: 12 }}>
             <div
               style={{
                 display: 'grid',
@@ -127,27 +127,27 @@ function HomePage() {
                   style={{
                     display: 'block',
                     padding: 12,
-                    border: '1px solid var(--nr-line)',
+                    border: '1px solid var(--ct-line)',
                     borderRadius: 3,
                     color: 'inherit',
                     textDecoration: 'none',
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                    <span style={{ color: 'var(--nr-accent-text)', display: 'flex' }}>
+                    <span style={{ color: 'var(--ct-accent-text)', display: 'flex' }}>
                       <Icone nom={category.icon} size={18} />
                     </span>
                     <span style={{ fontWeight: 600 }}>{category.title}</span>
-                    <span className="nr-text-gray-small" style={{ marginLeft: 'auto' }}>
+                    <span className="ct-text-gray-small" style={{ marginLeft: 'auto' }}>
                       {counts[category.key] === null ? '…' : counts[category.key]}
                     </span>
                   </div>
-                  <div className="nr-text-gray-small" style={{ marginTop: 4 }}>
+                  <div className="ct-text-gray-small" style={{ marginTop: 4 }}>
                     {category.desc}
                   </div>
                   <div
-                    className="nr-text-small"
-                    style={{ marginTop: 6, color: 'var(--nr-accent-text)' }}
+                    className="ct-text-small"
+                    style={{ marginTop: 6, color: 'var(--ct-accent-text)' }}
                   >
                     Comparer deux modèles →
                   </div>
@@ -158,17 +158,17 @@ function HomePage() {
         </section>
 
         {featured.length > 0 && (
-          <section className="nr-card">
-            <div className="nr-card-head">
-              <h2 className="nr-title-h2">Les mieux notés</h2>
-              <p className="nr-text-gray-small">Meilleur score de chaque catégorie.</p>
+          <section className="ct-card">
+            <div className="ct-card-head">
+              <h2 className="ct-title-h2">Les mieux notés</h2>
+              <p className="ct-text-gray-small">Meilleur score de chaque catégorie.</p>
             </div>
-            <div className="nr-card-body" style={{ paddingTop: 8 }}>
+            <div className="ct-card-body" style={{ paddingTop: 8 }}>
               {featured.map(product => (
-                <div key={product._id} className="nr-mini-row">
+                <div key={product._id} className="ct-mini-row">
                   {product.imageUrl && !failedImages[product._id] ? (
                     <img
-                      className="nr-rank-thumb"
+                      className="ct-rank-thumb"
                       src={product.imageUrl}
                       alt=""
                       loading="lazy"
@@ -177,16 +177,16 @@ function HomePage() {
                       }
                     />
                   ) : (
-                    <span className="nr-rank-thumb-empty">
+                    <span className="ct-rank-thumb-empty">
                       <ImageOff size={16} strokeWidth={1.5} aria-label="Image indisponible" />
                     </span>
                   )}
 
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <div className="nr-rank-name">
+                    <div className="ct-rank-name">
                       <Link to={cheminProduit(product.productType, product)}>{product.name}</Link>
                     </div>
-                    <div className="nr-rank-sub">
+                    <div className="ct-rank-sub">
                       {product.brand}
                       {product.highlight ? ` · ${product.highlight}` : ''}
                     </div>
@@ -199,22 +199,22 @@ function HomePage() {
           </section>
         )}
 
-        <section className="nr-card">
-          <div className="nr-card-head">
-            <h2 className="nr-title-h2">Comment le score est calculé</h2>
+        <section className="ct-card">
+          <div className="ct-card-head">
+            <h2 className="ct-title-h2">Comment le score est calculé</h2>
           </div>
-          <div className="nr-card-body" style={{ paddingTop: 8 }}>
-            <div className="nr-two-col">
+          <div className="ct-card-body" style={{ paddingTop: 8 }}>
+            <div className="ct-two-col">
               <dl style={{ margin: 0 }}>
-                <div className="nr-kv"><dt>Processeurs</dt><dd>Geekbench 6 · 70 % multi, 30 % mono</dd></div>
-                <div className="nr-kv"><dt>Cartes graphiques</dt><dd>3DMark</dd></div>
+                <div className="ct-kv"><dt>Processeurs</dt><dd>Geekbench 6 · 70 % multi, 30 % mono</dd></div>
+                <div className="ct-kv"><dt>Cartes graphiques</dt><dd>3DMark</dd></div>
               </dl>
               <dl style={{ margin: 0 }}>
-                <div className="nr-kv"><dt>Ordinateurs portables</dt><dd>Geekbench 6 multi-cœur</dd></div>
-                <div className="nr-kv"><dt>Téléphones</dt><dd>Geekbench 6 · 70 % multi, 30 % mono</dd></div>
+                <div className="ct-kv"><dt>Ordinateurs portables</dt><dd>Geekbench 6 multi-cœur</dd></div>
+                <div className="ct-kv"><dt>Téléphones</dt><dd>Geekbench 6 · 70 % multi, 30 % mono</dd></div>
               </dl>
             </div>
-            <p className="nr-text-gray-small" style={{ marginTop: 12 }}>
+            <p className="ct-text-gray-small" style={{ marginTop: 12 }}>
               Chaque score est ramené sur 100 par rapport à un plafond de référence propre
               à la catégorie. Deux produits de catégories différentes ne sont donc pas
               comparables entre eux par leur score.

@@ -110,13 +110,13 @@ function Sidebar({ ouvert, onClose, boutonRef, theme, toggleTheme }) {
   return (
     <>
       <div
-        className={`nr-scrim${ouvert ? ' is-visible' : ''}`}
+        className={`ct-scrim${ouvert ? ' is-visible' : ''}`}
         onClick={onClose}
         aria-hidden="true"
       />
 
       <nav
-        className={`nr-drawer${ouvert ? ' is-open' : ''}`}
+        className={`ct-drawer${ouvert ? ' is-open' : ''}`}
         ref={tiroirRef}
         aria-label="Navigation principale"
         // Retiré de l'ordre de tabulation ET de la restitution vocale quand il
@@ -126,19 +126,19 @@ function Sidebar({ ouvert, onClose, boutonRef, theme, toggleTheme }) {
         // et ignore silencieusement `inert=""`.
         inert={!ouvert}
       >
-        <div className="nr-drawer-head">
-          <span className="nr-logo">Compare<em>Tech</em></span>
-          <button className="nr-icon-btn" onClick={onClose} aria-label="Fermer le menu">
+        <div className="ct-drawer-head">
+          <span className="ct-logo">Compare<em>Tech</em></span>
+          <button className="ct-icon-btn" onClick={onClose} aria-label="Fermer le menu">
             <X size={16} strokeWidth={2} />
           </button>
         </div>
 
         {GROUPES.map(groupe => (
-          <div key={groupe.id} className="nr-drawer-group">
-            {groupe.titre && <p className="nr-drawer-group-title">
+          <div key={groupe.id} className="ct-drawer-group">
+            {groupe.titre && <p className="ct-drawer-group-title">
               {groupe.marqueur && (
                 <span
-                  className="nr-mask-icon"
+                  className="ct-mask-icon"
                   style={{ '--src': `url(${groupe.marqueur})`, width: 13, height: 13 }}
                   aria-hidden="true"
                 />
@@ -150,13 +150,13 @@ function Sidebar({ ouvert, onClose, boutonRef, theme, toggleTheme }) {
                 key={lien.to}
                 to={lien.to}
                 className={({ isActive }) =>
-                  `nr-drawer-link${lien.principal ? ' is-principal' : ''}` +
+                  `ct-drawer-link${lien.principal ? ' is-principal' : ''}` +
                   `${isActive && estCourant(lien.to, location) ? ' is-active' : ''}`
                 }
               >
                 {lien.marqueur ? (
                   <span
-                    className="nr-mask-icon"
+                    className="ct-mask-icon"
                     style={{ '--src': `url(${lien.marqueur})`, width: 16, height: 16 }}
                     aria-hidden="true"
                   />
@@ -170,8 +170,8 @@ function Sidebar({ ouvert, onClose, boutonRef, theme, toggleTheme }) {
         ))}
 
         {toggleTheme && (
-          <div className="nr-drawer-footer">
-            <span className="nr-text-small" style={{ color: 'var(--nr-muted)' }}>
+          <div className="ct-drawer-footer">
+            <span className="ct-text-small" style={{ color: 'var(--ct-muted)' }}>
               Mode {theme === 'dark' ? 'sombre' : 'clair'}
             </span>
             <ThemeToggle theme={theme} toggleTheme={toggleTheme} />

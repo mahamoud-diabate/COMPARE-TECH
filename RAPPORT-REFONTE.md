@@ -4,7 +4,7 @@ Document de passation. Il consigne ce qui a été fait, **pourquoi**, ce qui res
 ouvert, et les pièges rencontrés — pour qu'une reprise n'ait pas à redécouvrir
 les mêmes choses.
 
-**Branche :** `refonte-nanoreview` · **Rien n'a été poussé.**
+**Branche :** `refonte-interface` · **Rien n'a été poussé.**
 
 | Commit | Contenu |
 | --- | --- |
@@ -21,7 +21,7 @@ récupérable quelques semaines via `git reflog`.
 
 Le site existait, fonctionnel, mais habillé d'un thème sombre à dégradés, halos
 et police display. L'objectif énoncé : **ressembler à
-[nanoreview.net](https://nanoreview.net)**, la référence du domaine.
+les comparateurs denses du domaine**, qui font passer la donnée avant la décoration.
 
 Les jetons de la référence ont été relevés au navigateur, pas approximés :
 fond `#f5f5f5`, cartes blanches rayon 4 px, ombre `0 0 3px rgba(0,0,0,.08)`,

@@ -22,20 +22,20 @@ function SimilarProducts({ products = [], type }) {
   return (
     <div>
       {products.map(product => (
-        <div key={product._id} className="nr-mini-row">
+        <div key={product._id} className="ct-mini-row">
           {product.imageUrl ? (
-            <img className="nr-rank-thumb" src={product.imageUrl} alt="" loading="lazy" />
+            <img className="ct-rank-thumb" src={product.imageUrl} alt="" loading="lazy" />
           ) : (
-            <span className="nr-rank-thumb-empty">
+            <span className="ct-rank-thumb-empty">
               <ImageOff size={16} strokeWidth={1.5} aria-label="Image indisponible" />
             </span>
           )}
 
           <div style={{ flex: 1, minWidth: 0 }}>
-            <div className="nr-rank-name">
+            <div className="ct-rank-name">
               <Link to={cheminProduit(type, product)}>{product.name}</Link>
             </div>
-            <div className="nr-rank-sub">{product.brand}</div>
+            <div className="ct-rank-sub">{product.brand}</div>
           </div>
 
           <ScoreBox score={getProductScore(product, type)} />

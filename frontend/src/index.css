@@ -1,12 +1,12 @@
 /* ===== COMPARETECH — DESIGN SYSTEM "NR" =====
  *
- * Refonte inspirée de nanoreview.net : lisibilité dense, fond gris clair,
+ * Refonte orientée lisibilité dense : fond gris clair,
  * cartes blanches à faible relief, typographie système 14px. La palette, en
  * revanche, s'en écarte : voir DESIGN.md, section 1.
  *
  * Deux principes tenus dans tout le fichier :
  *  1. Aucune couleur en dur dans une règle de composant — tout passe par une
- *     variable --nr-*, sinon le thème sombre ne suit pas.
+ *     variable --ct-*, sinon le thème sombre ne suit pas.
  *  2. Pas de dégradé sur du texte, pas d'ombre portée large : la donnée doit
  *     primer sur la décoration.
  *
@@ -22,31 +22,31 @@
    ne correspond simplement plus quand l'attribut repasse à "light", et :root
    reprend la main. Rien à dupliquer. */
 :root {
-    --nr-bg: #f5f5f5;
-    --nr-card: #ffffff;
-    --nr-card-alt: #fafafa;
-    --nr-text: #202020;
-    --nr-muted: #646464;
-    --nr-line: #ebebeb;
-    --nr-line-strong: #e0e0e0;
+    --ct-bg: #f5f5f5;
+    --ct-card: #ffffff;
+    --ct-card-alt: #fafafa;
+    --ct-text: #202020;
+    --ct-muted: #646464;
+    --ct-line: #ebebeb;
+    --ct-line-strong: #e0e0e0;
 
     /* Accent achromatique. La règle du projet : la couleur ne sert qu'à porter
        une information mesurée (grade, cellule gagnante, avantage/inconvénient).
        Tout le reste — liens, boutons, onglet actif, filets — est graphite, de
        sorte que la seule couleur à l'écran soit celle des données. */
-    --nr-accent: #2b333c;
-    --nr-accent-soft: rgba(43, 51, 60, 0.07);
-    --nr-accent-text: #1d242b;
-    --nr-focus: #111820;
+    --ct-accent: #2b333c;
+    --ct-accent-soft: rgba(43, 51, 60, 0.07);
+    --ct-accent-text: #1d242b;
+    --ct-focus: #111820;
 
     /* Cellule gagnante : le vert A+ dilué à 12 % dans le fond de carte, pour
        rester dans la même famille que l'échelle de notes. Le texte gris de la
        cellule y garde 5,05:1. */
-    --nr-win: #e4f0e7;
+    --ct-win: #e4f0e7;
 
-    --nr-track: #e6e6e8;
-    --nr-plus: #008000;
-    --nr-minus: #c62828;
+    --ct-track: #e6e6e8;
+    --ct-plus: #008000;
+    --ct-minus: #c62828;
 
     /* Échelle de notes A+ → D.
      *
@@ -58,79 +58,79 @@
      *
      * La couleur n'est jamais seule : la lettre l'accompagne partout, ce qui
      * rend l'échelle lisible sans distinction du vert et du rouge. */
-    --nr-g-ap: #1a7f37;
-    --nr-g-a: #4d7c2a;
-    --nr-g-b: #8a6a10;
-    --nr-g-c: #b45309;
-    --nr-g-d: #b42318;
-    --nr-g-none: #545454;
+    --ct-g-ap: #1a7f37;
+    --ct-g-a: #4d7c2a;
+    --ct-g-b: #8a6a10;
+    --ct-g-c: #b45309;
+    --ct-g-d: #b42318;
+    --ct-g-none: #545454;
 
     /* Séries du radar : des identités, pas des notes. Volontairement hors de
        l'échelle ci-dessus, pour qu'un polygone vert ne se lise pas « bon ». */
-    --nr-serie-a: #2b333c;
-    --nr-serie-b: #6b7f99;
-    --nr-serie-c: #9c7b64;
+    --ct-serie-a: #2b333c;
+    --ct-serie-b: #6b7f99;
+    --ct-serie-c: #9c7b64;
 
     /* Vignette produit : fond clair même en sombre (PNG détourés sur blanc) */
-    --nr-media: #f1f1f3;
+    --ct-media: #f1f1f3;
 
-    --nr-shadow: 0 0 3px rgba(0, 0, 0, 0.08);
-    --nr-shadow-pop: 0 2px 10px rgba(0, 0, 0, 0.12);
-    --nr-radius: 4px;
+    --ct-shadow: 0 0 3px rgba(0, 0, 0, 0.08);
+    --ct-shadow-pop: 0 2px 10px rgba(0, 0, 0, 0.12);
+    --ct-radius: 4px;
 
-    --nr-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    --nr-font-num: 'SFMono-Regular', ui-monospace, Consolas, 'Liberation Mono', monospace;
+    --ct-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --ct-font-num: 'SFMono-Regular', ui-monospace, Consolas, 'Liberation Mono', monospace;
 
-    --nr-skeleton-grad: linear-gradient(90deg, #eeeeee 25%, #f7f7f7 50%, #eeeeee 75%);
+    --ct-skeleton-grad: linear-gradient(90deg, #eeeeee 25%, #f7f7f7 50%, #eeeeee 75%);
 
     /* Hauteurs des deux barres collantes. Mesurées, pas estimées : elles
        commandent l'empilement des éléments `sticky` et la marge des ancres.
        Trois valeurs à garder d'accord, donc trois variables plutôt que trois
        nombres recopiés. */
-    --nr-h-header: 52px;
-    --nr-h-anchors: 46px;
+    --ct-h-header: 52px;
+    --ct-h-anchors: 46px;
 }
 
 /* Variante sombre : mêmes rôles, mêmes contrastes relatifs. */
 [data-theme="dark"] {
-    --nr-bg: #12161c;
-    --nr-card: #1a1f27;
-    --nr-card-alt: #202631;
-    --nr-text: #e6e8eb;
-    --nr-muted: #9aa4b2;
-    --nr-line: #2a313b;
-    --nr-line-strong: #39414d;
+    --ct-bg: #12161c;
+    --ct-card: #1a1f27;
+    --ct-card-alt: #202631;
+    --ct-text: #e6e8eb;
+    --ct-muted: #9aa4b2;
+    --ct-line: #2a313b;
+    --ct-line-strong: #39414d;
 
-    --nr-accent: #aebbc7;
-    --nr-accent-soft: rgba(174, 187, 199, 0.12);
-    --nr-accent-text: #d3dbe3;
-    --nr-focus: #f0f3f6;
+    --ct-accent: #aebbc7;
+    --ct-accent-soft: rgba(174, 187, 199, 0.12);
+    --ct-accent-text: #d3dbe3;
+    --ct-focus: #f0f3f6;
 
-    --nr-win: rgba(78, 196, 111, 0.14);
+    --ct-win: rgba(78, 196, 111, 0.14);
 
-    --nr-track: #2a313b;
-    --nr-plus: #66bb6a;
-    --nr-minus: #ef5350;
+    --ct-track: #2a313b;
+    --ct-plus: #66bb6a;
+    --ct-minus: #ef5350;
 
     /* Mêmes teintes, éclaircies : les versions sombres tombent sous le seuil
        de contraste sur fond sombre. Toutes entre 6,15 et 8,05:1 sur #1a1f27. */
-    --nr-g-ap: #4ec46f;
-    --nr-g-a: #8fc45c;
-    --nr-g-b: #d4ad4a;
-    --nr-g-c: #e89b4a;
-    --nr-g-d: #f27a72;
-    --nr-g-none: #78838f;
+    --ct-g-ap: #4ec46f;
+    --ct-g-a: #8fc45c;
+    --ct-g-b: #d4ad4a;
+    --ct-g-c: #e89b4a;
+    --ct-g-d: #f27a72;
+    --ct-g-none: #78838f;
 
-    --nr-serie-a: #aebbc7;
-    --nr-serie-b: #8fa8c9;
-    --nr-serie-c: #c2a189;
+    --ct-serie-a: #aebbc7;
+    --ct-serie-b: #8fa8c9;
+    --ct-serie-c: #c2a189;
 
-    --nr-media: #e8eaee;
+    --ct-media: #e8eaee;
 
-    --nr-shadow: 0 0 0 1px rgba(255, 255, 255, 0.04);
-    --nr-shadow-pop: 0 4px 16px rgba(0, 0, 0, 0.5);
+    --ct-shadow: 0 0 0 1px rgba(255, 255, 255, 0.04);
+    --ct-shadow-pop: 0 4px 16px rgba(0, 0, 0, 0.5);
 
-    --nr-skeleton-grad: linear-gradient(90deg, #1a1f27 25%, #232a34 50%, #1a1f27 75%);
+    --ct-skeleton-grad: linear-gradient(90deg, #1a1f27 25%, #232a34 50%, #1a1f27 75%);
 }
 
 * {
@@ -149,14 +149,14 @@
    au clavier devient alors invisible, et le site inutilisable sans souris.
    =================================================================== */
 :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
-    outline: 2px solid var(--nr-focus);
+    outline: 2px solid var(--ct-focus);
     outline-offset: 2px;
     border-radius: 2px;
 }
 
 /* Les champs portent déjà une bordure : l'anneau se pose au ras, sans décalage
    qui le ferait chevaucher le champ voisin. */
-:where(.nr-input, .nr-picker-input, .nr-select, .nr-search input):focus-visible {
+:where(.ct-input, .ct-picker-input, .ct-select, .ct-search input):focus-visible {
     outline-offset: 0;
 }
 
@@ -166,31 +166,31 @@ html { scroll-behavior: smooth; }
 
 /* En-tête + barre d'ancres + une respiration. Sans cette marge, la section
    visée arrive masquée sous les deux barres. */
-[id] { scroll-margin-top: calc(var(--nr-h-header) + var(--nr-h-anchors) + 10px); }
+[id] { scroll-margin-top: calc(var(--ct-h-header) + var(--ct-h-anchors) + 10px); }
 
 @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
 }
 
 body {
-    font-family: var(--nr-font);
+    font-family: var(--ct-font);
     font-size: 14px;
     line-height: 1.7;
-    background: var(--nr-bg);
-    color: var(--nr-text);
+    background: var(--ct-bg);
+    color: var(--ct-text);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 
 ::-webkit-scrollbar { width: 10px; }
-::-webkit-scrollbar-track { background: var(--nr-bg); }
-::-webkit-scrollbar-thumb { background: var(--nr-line-strong); border-radius: 5px; }
-::-webkit-scrollbar-thumb:hover { background: var(--nr-muted); }
+::-webkit-scrollbar-track { background: var(--ct-bg); }
+::-webkit-scrollbar-thumb { background: var(--ct-line-strong); border-radius: 5px; }
+::-webkit-scrollbar-thumb:hover { background: var(--ct-muted); }
 
-::selection { background: var(--nr-accent-soft); color: var(--nr-text); }
+::selection { background: var(--ct-accent-soft); color: var(--ct-text); }
 
-a { color: var(--nr-accent-text); text-decoration: none; }
-a:hover { color: var(--nr-accent-text); text-decoration: underline; }
+a { color: var(--ct-accent-text); text-decoration: none; }
+a:hover { color: var(--ct-accent-text); text-decoration: underline; }
 
 /* ===================================================================
    1. TITRES
@@ -198,62 +198,62 @@ a:hover { color: var(--nr-accent-text); text-decoration: underline; }
    pas de dégradé — un comparateur se lit, il ne se contemple pas.
    =================================================================== */
 h1, h2, h3, h4, h5, h6 {
-    font-family: var(--nr-font);
-    color: var(--nr-text);
+    font-family: var(--ct-font);
+    color: var(--ct-text);
     font-weight: 600;
     letter-spacing: 0;
     line-height: 1.35;
 }
 
-.nr-title-h1 { font-size: 25px; font-weight: 600; }
-.nr-title-h2 { font-size: 21px; font-weight: 600; }
-.nr-title-h4 { font-size: 16px; font-weight: 600; padding-bottom: 8px; }
+.ct-title-h1 { font-size: 25px; font-weight: 600; }
+.ct-title-h2 { font-size: 21px; font-weight: 600; }
+.ct-title-h4 { font-size: 16px; font-weight: 600; padding-bottom: 8px; }
 
 /* Titre de groupe à l'intérieur d'une carte (groupes du tableau de specs). */
-.nr-title-h3 {
+.ct-title-h3 {
     font-size: 18px;
     font-weight: 600;
     padding: 12px 16px;
-    border-bottom: 1px solid var(--nr-line);
+    border-bottom: 1px solid var(--ct-line);
 }
-.nr-text-small { font-size: 12.5px; }
-.nr-text-gray { color: var(--nr-muted); }
-.nr-text-gray-small { color: var(--nr-muted); font-size: 12.5px; line-height: 1.6; }
+.ct-text-small { font-size: 12.5px; }
+.ct-text-gray { color: var(--ct-muted); }
+.ct-text-gray-small { color: var(--ct-muted); font-size: 12.5px; line-height: 1.6; }
 
-.nr-num { font-variant-numeric: tabular-nums; }
+.ct-num { font-variant-numeric: tabular-nums; }
 
 /* ===================================================================
    2. CARTE
    Blanc, rayon 4px, ombre quasi nulle. C'est le conteneur unique du site :
-   toute section de contenu est une .nr-card.
+   toute section de contenu est une .ct-card.
    =================================================================== */
-.nr-card {
-    background: var(--nr-card);
-    border-radius: var(--nr-radius);
-    box-shadow: var(--nr-shadow);
+.ct-card {
+    background: var(--ct-card);
+    border-radius: var(--ct-radius);
+    box-shadow: var(--ct-shadow);
     margin-bottom: 16px;
     overflow: hidden;
 }
 
-.nr-card-head { padding: 16px 16px 0; }
-.nr-card-body { padding: 16px; }
-.nr-card-body-tight { padding: 12px 16px; }
+.ct-card-head { padding: 16px 16px 0; }
+.ct-card-body { padding: 16px; }
+.ct-card-body-tight { padding: 12px 16px; }
 
-.nr-card-sep {
+.ct-card-sep {
     border: 0;
-    border-top: 1px solid var(--nr-line);
+    border-top: 1px solid var(--ct-line);
     margin: 0;
 }
 
-/* Largeur de lecture. nanoreview tient sur ~730px ; on élargit un peu pour
+/* Largeur de lecture. Les comparateurs denses tiennent sur ~730px ; on élargit pour
    accueillir 3 produits comparés, sans jamais dépasser la ligne confortable. */
-.nr-main { max-width: 980px; margin: 0 auto; padding: 16px; }
-.nr-main-wide { max-width: 1180px; margin: 0 auto; padding: 16px; }
+.ct-main { max-width: 980px; margin: 0 auto; padding: 16px; }
+.ct-main-wide { max-width: 1180px; margin: 0 auto; padding: 16px; }
 
 /* Colonne de filtres + contenu. La sidebar passe au-dessus sur mobile plutôt
    que de se replier dans un tiroir : trois groupes de puces tiennent en deux
    lignes, un tiroir coûterait un clic pour rien. */
-.nr-layout {
+.ct-layout {
     display: grid;
     grid-template-columns: 220px minmax(0, 1fr);
     gap: 16px;
@@ -261,23 +261,23 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @media (max-width: 899.98px) {
-    .nr-layout { grid-template-columns: 1fr; }
-    .nr-layout > aside { position: static !important; }
+    .ct-layout { grid-template-columns: 1fr; }
+    .ct-layout > aside { position: static !important; }
 }
 
 /* La barre de comparaison est fixée en bas : sans cette réserve, elle
    masquerait la dernière ligne de la liste. La hauteur exacte est publiée par
    le composant (il passe à trois lignes sur mobile), le 72px n'est qu'un
    repli avant sa première mesure. */
-body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
+body:has(.ct-compare-bar) { padding-bottom: var(--ct-compare-bar-h, 72px); }
 
 /* ===================================================================
    3. SCORE-BAR — la signature du comparateur
    nom (+écart%) / valeur / filet de 4px. Utilisé pour tout benchmark.
    =================================================================== */
-.nr-score-bar { display: flex; flex-wrap: wrap; margin-bottom: 12px; }
+.ct-score-bar { display: flex; flex-wrap: wrap; margin-bottom: 12px; }
 
-.nr-score-bar-name {
+.ct-score-bar-name {
     flex: 1 1 auto;
     min-width: 0;
     overflow: hidden;
@@ -286,51 +286,51 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
     padding-right: 8px;
 }
 
-.nr-score-bar-diff {
+.ct-score-bar-diff {
     font-size: 12px;
-    color: var(--nr-plus);
+    color: var(--ct-plus);
     padding-left: 3px;
 }
 
-.nr-score-bar-result { flex: 0 0 auto; }
-.nr-score-bar-result-number {
-    font-family: var(--nr-font-num);
+.ct-score-bar-result { flex: 0 0 auto; }
+.ct-score-bar-result-number {
+    font-family: var(--ct-font-num);
     font-weight: 600;
     font-variant-numeric: tabular-nums;
 }
-.nr-score-bar-result-unit { color: var(--nr-muted); font-size: 12.5px; padding-left: 3px; }
+.ct-score-bar-result-unit { color: var(--ct-muted); font-size: 12.5px; padding-left: 3px; }
 
 /* Filet gradué : des repères aux quarts, comme sur une règle. Le site mesure,
    son interface le dit — et l'œil situe une valeur sans lire le chiffre. */
-.nr-score-bar-line {
+.ct-score-bar-line {
     flex: 0 0 100%;
     height: 6px;
     margin-top: 3px;
-    background: var(--nr-track);
+    background: var(--ct-track);
     border-radius: 2px;
     overflow: hidden;
     background-image: repeating-linear-gradient(
         to right,
         transparent 0,
         transparent calc(25% - 1px),
-        var(--nr-card) calc(25% - 1px),
-        var(--nr-card) 25%
+        var(--ct-card) calc(25% - 1px),
+        var(--ct-card) 25%
     );
 }
 
-.nr-score-bar-line-filled {
+.ct-score-bar-line-filled {
     height: 6px;
     border-radius: 2px;
-    background: var(--nr-accent);
+    background: var(--ct-accent);
     transition: width 0.4s ease;
 }
 
-.nr-score-bar-line-filled.is-muted { background: var(--nr-g-none); }
+.ct-score-bar-line-filled.is-muted { background: var(--ct-g-none); }
 
 /* ===================================================================
    4. PASTILLE DE NOTE — « 83 | sur 100 »
    =================================================================== */
-.nr-score-chip {
+.ct-score-chip {
     display: inline-flex;
     align-items: stretch;
     height: 28px;
@@ -338,8 +338,8 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
     font-size: 14px;
 }
 
-.nr-score-chip-num {
-    background: var(--nr-g-none);
+.ct-score-chip-num {
+    background: var(--ct-g-none);
     color: #fff;
     font-size: 15px;
     font-weight: 500;
@@ -348,19 +348,19 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
     font-variant-numeric: tabular-nums;
 }
 
-.nr-score-chip-outof {
-    border: 1px solid var(--nr-g-none);
+.ct-score-chip-outof {
+    border: 1px solid var(--ct-g-none);
     border-left: 0;
     border-radius: 0 3px 3px 0;
     padding: 0 7px;
-    color: var(--nr-text);
+    color: var(--ct-text);
     white-space: nowrap;
 }
 
 /* Carré de note : plein pour celui qui mène, contour pour les autres.
    Reprend la mécanique de la référence — la couleur ne porte pas
    l'information, le remplissage si. */
-.nr-score-square {
+.ct-score-square {
     display: inline-block;
     width: 34px;
     text-align: center;
@@ -368,23 +368,23 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
     border-radius: 3px;
     /* Contour teinté de l'accent plutôt que gris neutre : le carré vide reste
        visiblement de la même famille que le carré plein. */
-    border: 1px solid color-mix(in srgb, var(--nr-accent) 32%, var(--nr-card));
+    border: 1px solid color-mix(in srgb, var(--ct-accent) 32%, var(--ct-card));
     font-size: 14px;
     font-weight: 500;
     font-variant-numeric: tabular-nums;
-    color: var(--nr-text);
+    color: var(--ct-text);
     background: transparent;
 }
 
-.nr-score-square.is-lead {
-    background: var(--nr-accent);
-    border-color: var(--nr-accent);
+.ct-score-square.is-lead {
+    background: var(--ct-accent);
+    border-color: var(--ct-accent);
     color: #fff;
 }
 
 /* Boîte de note du classement : contour et texte à la couleur du grade,
    accompagnée de la lettre. */
-.nr-score-box {
+.ct-score-box {
     display: inline-block;
     width: 34px;
     text-align: center;
@@ -396,12 +396,11 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
     font-variant-numeric: tabular-nums;
 }
 
-.nr-score-grade { font-weight: 600; font-size: 13px; padding-left: 5px; }
 
 /* ===================================================================
    5. EN-TÊTE DE COMPARAISON — produits + VS
    =================================================================== */
-.nr-compare-head {
+.ct-compare-head {
     display: flex;
     justify-content: space-evenly;
     align-items: flex-start;
@@ -410,34 +409,34 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
     padding: 16px 0 4px;
 }
 
-.nr-compare-head-item {
+.ct-compare-head-item {
     width: 150px;
     text-align: center;
 }
 
-.nr-compare-head-img {
+.ct-compare-head-img {
     height: 145px;
     width: 100%;
     object-fit: contain;
-    background: var(--nr-media);
+    background: var(--ct-media);
     border-radius: 3px;
     padding: 6px;
 }
 
-.nr-compare-head-name {
+.ct-compare-head-name {
     display: block;
     margin-top: 6px;
     font-size: 13px;
     font-weight: 600;
-    color: var(--nr-text);
+    color: var(--ct-text);
 }
 
-.nr-compare-head-brand { font-size: 12px; color: var(--nr-muted); }
+.ct-compare-head-brand { font-size: 12px; color: var(--ct-muted); }
 
-.nr-compare-head-vs {
+.ct-compare-head-vs {
     font-size: 28px;
     font-weight: 700;
-    color: var(--nr-muted);
+    color: var(--ct-muted);
     align-self: center;
     padding: 0 4px;
 }
@@ -447,36 +446,36 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
    quelle colonne appartient a quel produit. Elle reste donc sous l'en-tete du
    site (52px), en fond translucide pour laisser deviner le contenu qui passe
    dessous. */
-.nr-sticky-names {
+.ct-sticky-names {
     position: sticky;
     /* En-tête + barre d'ancres : les trois éléments collants s'empilent au
-       lieu de se recouvrir. Doit vivre hors d'une .nr-card — son
+       lieu de se recouvrir. Doit vivre hors d'une .ct-card — son
        `overflow: hidden` annulerait l'adhérence. */
-    top: calc(var(--nr-h-header) + var(--nr-h-anchors));
+    top: calc(var(--ct-h-header) + var(--ct-h-anchors));
     z-index: 10;
     display: flex;
     align-items: center;
     gap: 8px;
     padding: 9px 16px;
     font-size: 13px;
-    background: color-mix(in srgb, var(--nr-card) 94%, transparent);
+    background: color-mix(in srgb, var(--ct-card) 94%, transparent);
     backdrop-filter: blur(6px);
-    border-radius: var(--nr-radius) var(--nr-radius) 0 0;
-    box-shadow: var(--nr-shadow);
-    border-bottom: 1px solid var(--nr-line);
+    border-radius: var(--ct-radius) var(--ct-radius) 0 0;
+    box-shadow: var(--ct-shadow);
+    border-bottom: 1px solid var(--ct-line);
 }
 
 /* La carte du tableau se raccorde à la barre : pas de coins arrondis en haut,
    les deux forment un seul bloc. */
-.nr-sticky-names + .nr-card {
+.ct-sticky-names + .ct-card {
     margin-top: 0;
     border-top-left-radius: 0;
     border-top-right-radius: 0;
 }
 
-.nr-sticky-names-label { color: var(--nr-muted); flex: 0 0 auto; }
+.ct-sticky-names-label { color: var(--ct-muted); flex: 0 0 auto; }
 
-.nr-sticky-names-item {
+.ct-sticky-names-item {
     flex: 1 1 0;
     min-width: 0;
     text-align: center;
@@ -486,15 +485,15 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
     white-space: nowrap;
 }
 
-.nr-sticky-names-vs {
+.ct-sticky-names-vs {
     flex: 0 0 auto;
-    color: var(--nr-muted);
+    color: var(--ct-muted);
     font-size: 12px;
     text-transform: uppercase;
 }
 
 @media (max-width: 575.98px) {
-    .nr-sticky-names-label { display: none; }
+    .ct-sticky-names-label { display: none; }
 }
 
 /* ===================================================================
@@ -502,9 +501,9 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
    1px de filet, 13px, cellule gagnante en vert pâle. Aucune bordure
    extérieure : le tableau flotte dans la carte.
    =================================================================== */
-.nr-table-wrap { overflow-x: auto; }
+.ct-table-wrap { overflow-x: auto; }
 
-.nr-table {
+.ct-table {
     width: 100%;
     border-collapse: collapse;
     font-size: 13px;
@@ -513,50 +512,50 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
 /* Les intitulés de ligne sont des <th scope="row"> : c'est leur rôle réel, et
    un lecteur d'écran peut alors annoncer « Cœurs, 16 » plutôt qu'un « 16 »
    isolé. Ils ne portent donc pas le fond gris d'un en-tête de colonne. */
-.nr-table th,
-.nr-table td {
+.ct-table th,
+.ct-table td {
     font-variant-numeric: tabular-nums;
     padding: 10px 16px;
-    border: 1px solid var(--nr-line);
+    border: 1px solid var(--ct-line);
     vertical-align: top;
     font-size: 13px;
 }
 
-.nr-table .cell-h {
-    color: var(--nr-text);
+.ct-table .cell-h {
+    color: var(--ct-text);
     font-weight: 400;
     text-align: left;
     width: 32%;
 }
 
-.nr-table .cell-v { color: var(--nr-muted); }
+.ct-table .cell-v { color: var(--ct-muted); }
 
 /* Cellule la plus favorable : seul le fond change. Ajouter la couleur et la
    graisse par-dessus surchargeait la ligne de trois signaux pour une seule
    information, et rendait le tableau tapageur dès qu'un produit dominait. */
-.nr-table .cell-winner { background: var(--nr-win); }
+.ct-table .cell-winner { background: var(--ct-win); }
 
-.nr-table .cell-equal { padding: 7px 16px; }
+.ct-table .cell-equal { padding: 7px 16px; }
 
-.nr-table-caption {
+.ct-table-caption {
     padding: 8px 16px;
     font-size: 12.5px;
-    color: var(--nr-muted);
+    color: var(--ct-muted);
 }
 
 /* ===================================================================
    7. LISTE AVANTAGES / INCONVÉNIENTS
    =================================================================== */
-.nr-proscons { list-style: none; padding: 0; margin: 0; }
+.ct-proscons { list-style: none; padding: 0; margin: 0; }
 
-.nr-proscons li {
+.ct-proscons li {
     position: relative;
     padding: 0 0 10px 22px;
     font-size: 14px;
     line-height: 1.6;
 }
 
-.nr-proscons li::before {
+.ct-proscons li::before {
     position: absolute;
     left: 0;
     top: 0;
@@ -564,33 +563,33 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
     font-size: 14px;
 }
 
-.nr-proscons.is-plus li::before { content: '+'; color: var(--nr-plus); }
-.nr-proscons.is-minus li::before { content: '\2212'; color: var(--nr-minus); }
+.ct-proscons.is-plus li::before { content: '+'; color: var(--ct-plus); }
+.ct-proscons.is-minus li::before { content: '\2212'; color: var(--ct-minus); }
 
 /* ===================================================================
    8. NAVIGATION PAR ONGLETS / ANCRES
    =================================================================== */
-.nr-anchor-nav {
+.ct-anchor-nav {
     display: flex;
     flex-wrap: wrap;
     gap: 2px;
-    border-bottom: 1px solid var(--nr-line);
+    border-bottom: 1px solid var(--ct-line);
     padding: 0 8px;
 }
 
 /* Variante flottante : la table des matières du comparatif suit le
    défilement. Elle affiche la section en cours de lecture — un repère qui ne
    sert à rien s'il disparaît dès qu'on descend.
-   Elle doit vivre HORS d'une .nr-card : `overflow: hidden` y annule tout
+   Elle doit vivre HORS d'une .ct-card : `overflow: hidden` y annule tout
    `position: sticky` interne. */
-.nr-anchor-nav-sticky {
+.ct-anchor-nav-sticky {
     position: sticky;
-    top: var(--nr-h-header);
+    top: var(--ct-h-header);
     z-index: 15;
     margin-bottom: 16px;
-    background: var(--nr-card);
-    border-radius: var(--nr-radius);
-    box-shadow: var(--nr-shadow);
+    background: var(--ct-card);
+    border-radius: var(--ct-radius);
+    box-shadow: var(--ct-shadow);
     overflow-x: auto;
     flex-wrap: nowrap;
 
@@ -601,18 +600,18 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
     scrollbar-width: none;
 }
 
-.nr-anchor-nav-sticky::-webkit-scrollbar { display: none; }
+.ct-anchor-nav-sticky::-webkit-scrollbar { display: none; }
 
-.nr-anchor-nav a {
+.ct-anchor-nav a {
     display: inline-block;
     border-bottom: 2px solid transparent;
     padding: 10px 12px;
     font-size: 14px;
-    color: var(--nr-muted);
+    color: var(--ct-muted);
     transition: color 0.15s, border-color 0.15s;
 }
 
-.nr-anchor-nav button {
+.ct-anchor-nav button {
     display: inline-block;
     background: none;
     border: 0;
@@ -620,23 +619,23 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
     padding: 10px 12px;
     font-size: 14px;
     font-family: inherit;
-    color: var(--nr-muted);
+    color: var(--ct-muted);
     cursor: pointer;
     transition: color 0.15s, border-color 0.15s;
 }
 
-.nr-anchor-nav a:hover,
-.nr-anchor-nav button:hover { color: var(--nr-text); text-decoration: none; }
+.ct-anchor-nav a:hover,
+.ct-anchor-nav button:hover { color: var(--ct-text); text-decoration: none; }
 
-.nr-anchor-nav button.is-active {
-    color: var(--nr-accent-text);
-    border-bottom-color: var(--nr-accent);
+.ct-anchor-nav button.is-active {
+    color: var(--ct-accent-text);
+    border-bottom-color: var(--ct-accent);
     font-weight: 600;
 }
 
-.nr-anchor-nav a.is-active {
-    color: var(--nr-accent-text);
-    border-bottom-color: var(--nr-accent);
+.ct-anchor-nav a.is-active {
+    color: var(--ct-accent-text);
+    border-bottom-color: var(--ct-accent);
     font-weight: 600;
 }
 
@@ -644,80 +643,80 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
    9. LISTE CLASSÉE (pages catégorie)
    Une ligne = un rang, une vignette, un nom, des specs, une note.
    =================================================================== */
-.nr-rank-head,
-.nr-rank-row {
+.ct-rank-head,
+.ct-rank-row {
     display: grid;
     grid-template-columns: 34px 52px minmax(0, 1fr) 160px 62px 92px;
     align-items: center;
     gap: 10px;
     padding: 8px 12px;
-    border-bottom: 1px solid var(--nr-line);
+    border-bottom: 1px solid var(--ct-line);
 }
 
-.nr-rank-head {
+.ct-rank-head {
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: var(--nr-muted);
-    background: var(--nr-card-alt);
-    border-bottom: 1px solid var(--nr-line-strong);
+    color: var(--ct-muted);
+    background: var(--ct-card-alt);
+    border-bottom: 1px solid var(--ct-line-strong);
 }
 
-.nr-rank-row:last-child { border-bottom: 0; }
-.nr-rank-row:hover { background: var(--nr-card-alt); }
+.ct-rank-row:last-child { border-bottom: 0; }
+.ct-rank-row:hover { background: var(--ct-card-alt); }
 
-.nr-rank-num {
+.ct-rank-num {
     font-size: 13px;
-    color: var(--nr-muted);
+    color: var(--ct-muted);
     text-align: center;
     font-variant-numeric: tabular-nums;
 }
 
-.nr-rank-thumb {
+.ct-rank-thumb {
     height: 44px;
     width: 52px;
     object-fit: contain;
-    background: var(--nr-media);
+    background: var(--ct-media);
     border-radius: 3px;
 }
 
-.nr-rank-thumb-empty {
+.ct-rank-thumb-empty {
     height: 44px;
     width: 52px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--nr-media);
+    background: var(--ct-media);
     border-radius: 3px;
     color: #9aa0a6;
 }
 
-.nr-rank-name { font-weight: 600; font-size: 14px; line-height: 1.4; }
-.nr-rank-name a { color: var(--nr-text); }
-.nr-rank-name a:hover { color: var(--nr-accent-text); }
-.nr-rank-sub { font-size: 12px; color: var(--nr-muted); line-height: 1.4; }
+.ct-rank-name { font-weight: 600; font-size: 14px; line-height: 1.4; }
+.ct-rank-name a { color: var(--ct-text); }
+.ct-rank-name a:hover { color: var(--ct-accent-text); }
+.ct-rank-sub { font-size: 12px; color: var(--ct-muted); line-height: 1.4; }
 
-.nr-rank-specs {
+.ct-rank-specs {
     font-size: 12.5px;
-    color: var(--nr-muted);
+    color: var(--ct-muted);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
-.nr-rank-row.is-disabled { opacity: 0.4; pointer-events: none; }
+.ct-rank-row.is-disabled { opacity: 0.4; pointer-events: none; }
 
 /* Ligne compacte réutilisée hors classement : « autres modèles », mieux notés
-   de l'accueil. Même vocabulaire visuel que .nr-rank-row, sans la grille. */
-.nr-mini-row {
+   de l'accueil. Même vocabulaire visuel que .ct-rank-row, sans la grille. */
+.ct-mini-row {
     display: flex;
     align-items: center;
     gap: 10px;
     padding: 8px 0;
-    border-bottom: 1px solid var(--nr-line);
+    border-bottom: 1px solid var(--ct-line);
 }
 
-.nr-mini-row:last-child { border-bottom: 0; }
+.ct-mini-row:last-child { border-bottom: 0; }
 
 /* ===================================================================
    RADAR
@@ -725,28 +724,28 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
    n'est pas résolu dans un attribut, seulement dans une propriété CSS.
    C'est ce qui permet au tracé de suivre le thème.
    =================================================================== */
-.nr-radar-grid { fill: none; stroke: var(--nr-line-strong); stroke-width: 1; }
-.nr-radar-axis { stroke: var(--nr-line-strong); stroke-width: 1; }
+.ct-radar-grid { fill: none; stroke: var(--ct-line-strong); stroke-width: 1; }
+.ct-radar-axis { stroke: var(--ct-line-strong); stroke-width: 1; }
 
 /* Trois séries au maximum : la sélection est plafonnée à trois produits.
    L'opacité de remplissage reste basse pour que les polygones superposés
    restent tous lisibles. */
-.nr-radar-shape { stroke-width: 2; fill-opacity: 0.18; }
-.nr-radar-shape.is-a { stroke: var(--nr-serie-a); fill: var(--nr-serie-a); }
-.nr-radar-shape.is-b { stroke: var(--nr-serie-b); fill: var(--nr-serie-b); }
-.nr-radar-shape.is-c { stroke: var(--nr-serie-c); fill: var(--nr-serie-c); }
+.ct-radar-shape { stroke-width: 2; fill-opacity: 0.18; }
+.ct-radar-shape.is-a { stroke: var(--ct-serie-a); fill: var(--ct-serie-a); }
+.ct-radar-shape.is-b { stroke: var(--ct-serie-b); fill: var(--ct-serie-b); }
+.ct-radar-shape.is-c { stroke: var(--ct-serie-c); fill: var(--ct-serie-c); }
 
-.nr-radar-dot.is-a { fill: var(--nr-serie-a); }
-.nr-radar-dot.is-b { fill: var(--nr-serie-b); }
-.nr-radar-dot.is-c { fill: var(--nr-serie-c); }
+.ct-radar-dot.is-a { fill: var(--ct-serie-a); }
+.ct-radar-dot.is-b { fill: var(--ct-serie-b); }
+.ct-radar-dot.is-c { fill: var(--ct-serie-c); }
 
-.nr-radar-label {
+.ct-radar-label {
     font-size: 11px;
-    fill: var(--nr-muted);
-    font-family: var(--nr-font);
+    fill: var(--ct-muted);
+    font-family: var(--ct-font);
 }
 
-.nr-radar-legend {
+.ct-radar-legend {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -755,18 +754,18 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
     font-size: 12.5px;
 }
 
-.nr-radar-key { display: inline-flex; align-items: center; gap: 6px; }
+.ct-radar-key { display: inline-flex; align-items: center; gap: 6px; }
 
-.nr-radar-key::before {
+.ct-radar-key::before {
     content: '';
     width: 10px;
     height: 10px;
     border-radius: 2px;
 }
 
-.nr-radar-key.is-a::before { background: var(--nr-serie-a); }
-.nr-radar-key.is-b::before { background: var(--nr-serie-b); }
-.nr-radar-key.is-c::before { background: var(--nr-serie-c); }
+.ct-radar-key.is-a::before { background: var(--ct-serie-a); }
+.ct-radar-key.is-b::before { background: var(--ct-serie-b); }
+.ct-radar-key.is-c::before { background: var(--ct-serie-c); }
 
 /* ===================================================================
    BLOC DE NOTE — la signature du site
@@ -774,50 +773,50 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
    fixe, calcul dépliable. C'est ce qui distingue ce comparateur d'un site qui
    se contente d'afficher un nombre.
    =================================================================== */
-.nr-score-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 14px; }
+.ct-score-head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 14px; }
 
-.nr-score-big {
-    font-family: var(--nr-font-num);
+.ct-score-big {
+    font-family: var(--ct-font-num);
     font-size: 46px;
     font-weight: 600;
     line-height: 1;
     font-variant-numeric: tabular-nums;
 }
 
-.nr-score-big-grade { font-style: normal; font-size: 20px; padding-left: 6px; }
+.ct-score-big-grade { font-style: normal; font-size: 20px; padding-left: 6px; }
 
-.nr-score-head-side { display: flex; flex-direction: column; }
-.nr-score-rank { font-size: 14px; font-variant-numeric: tabular-nums; }
-.nr-score-rank sup { font-size: 10px; }
+.ct-score-head-side { display: flex; flex-direction: column; }
+.ct-score-rank { font-size: 14px; font-variant-numeric: tabular-nums; }
+.ct-score-rank sup { font-size: 10px; }
 
 /* --- Réglette : 0 à 100, graduée tous les quarts --- */
-.nr-scale { margin-bottom: 14px; }
+.ct-scale { margin-bottom: 14px; }
 
-.nr-scale-track {
+.ct-scale-track {
     position: relative;
     height: 10px;
-    background: var(--nr-track);
+    background: var(--ct-track);
     border-radius: 2px;
 }
 
-.nr-scale-tick {
+.ct-scale-tick {
     position: absolute;
     top: 0;
     width: 1px;
     height: 10px;
-    background: var(--nr-card);
+    background: var(--ct-card);
 }
 
 /* Médiane : un trait fin, en retrait — c'est un repère, pas une valeur. */
-.nr-scale-median {
+.ct-scale-median {
     position: absolute;
     top: -3px;
     width: 1px;
     height: 16px;
-    background: var(--nr-muted);
+    background: var(--ct-muted);
 }
 
-.nr-scale-marker {
+.ct-scale-marker {
     position: absolute;
     top: -3px;
     width: 3px;
@@ -826,19 +825,19 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
     transform: translateX(-1px);
 }
 
-.nr-scale-legend {
+.ct-scale-legend {
     display: flex;
     justify-content: space-between;
     font-size: 11px;
-    color: var(--nr-muted);
+    color: var(--ct-muted);
     font-variant-numeric: tabular-nums;
     margin-top: 3px;
 }
 
 /* --- Calcul dépliable --- */
-.nr-details { border-top: 1px solid var(--nr-line); padding-top: 10px; }
+.ct-details { border-top: 1px solid var(--ct-line); padding-top: 10px; }
 
-.nr-details summary {
+.ct-details summary {
     cursor: pointer;
     font-size: 13px;
     font-weight: 600;
@@ -846,52 +845,52 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
     list-style-position: inside;
 }
 
-.nr-details summary::marker { color: var(--nr-muted); }
+.ct-details summary::marker { color: var(--ct-muted); }
 
-.nr-formula { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
-.nr-formula th, .nr-formula td { padding: 6px 8px; border-bottom: 1px solid var(--nr-line); }
-.nr-formula th { text-align: left; font-weight: 400; color: var(--nr-text); }
-.nr-formula td { text-align: right; font-variant-numeric: tabular-nums; }
-.nr-formula-scale { color: var(--nr-muted); }
-.nr-formula-points { font-weight: 600; }
-.nr-formula-total th, .nr-formula-total td { border-bottom: 0; font-weight: 600; }
+.ct-formula { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+.ct-formula th, .ct-formula td { padding: 6px 8px; border-bottom: 1px solid var(--ct-line); }
+.ct-formula th { text-align: left; font-weight: 400; color: var(--ct-text); }
+.ct-formula td { text-align: right; font-variant-numeric: tabular-nums; }
+.ct-formula-scale { color: var(--ct-muted); }
+.ct-formula-points { font-weight: 600; }
+.ct-formula-total th, .ct-formula-total td { border-bottom: 0; font-weight: 600; }
 
 /* --- Couverture des données --- */
-.nr-coverage {
+.ct-coverage {
     margin-top: 12px;
     padding-top: 10px;
-    border-top: 1px solid var(--nr-line);
+    border-top: 1px solid var(--ct-line);
     font-size: 13px;
 }
 
 /* Raccourci « vs » vers un face-à-face. */
-.nr-versus {
+.ct-versus {
     display: inline-flex;
     align-items: center;
     gap: 8px;
     max-width: 100%;
     padding: 6px 10px;
-    border: 1px solid var(--nr-line-strong);
+    border: 1px solid var(--ct-line-strong);
     border-radius: 3px;
-    color: var(--nr-text);
-    background: var(--nr-card);
+    color: var(--ct-text);
+    background: var(--ct-card);
     transition: border-color 0.15s;
 }
 
-.nr-versus:hover {
-    border-color: var(--nr-accent);
+.ct-versus:hover {
+    border-color: var(--ct-accent);
     text-decoration: none;
-    color: var(--nr-text);
+    color: var(--ct-text);
 }
 
-.nr-versus-vs {
+.ct-versus-vs {
     font-weight: 700;
     font-size: 12px;
     text-transform: uppercase;
-    color: var(--nr-muted);
+    color: var(--ct-muted);
 }
 
-.nr-versus-name {
+.ct-versus-name {
     font-size: 13px;
     font-weight: 600;
     overflow: hidden;
@@ -903,69 +902,69 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
    comparaison, lui, est la fonction principale du site et doit rester
    atteignable au doigt. */
 @media (max-width: 767.98px) {
-    .nr-rank-head { display: none; }
-    .nr-rank-row {
+    .ct-rank-head { display: none; }
+    .ct-rank-row {
         grid-template-columns: 24px 40px minmax(0, 1fr) 40px auto;
         gap: 8px;
         padding: 8px;
     }
-    .nr-rank-row .nr-rank-specs { display: none; }
-    .nr-rank-row .nr-rank-compare .nr-chip { padding: 3px 7px; font-size: 12px; }
-    .nr-rank-thumb, .nr-rank-thumb-empty { width: 40px; height: 36px; }
+    .ct-rank-row .ct-rank-specs { display: none; }
+    .ct-rank-row .ct-rank-compare .ct-chip { padding: 3px 7px; font-size: 12px; }
+    .ct-rank-thumb, .ct-rank-thumb-empty { width: 40px; height: 36px; }
 }
 
 /* ===================================================================
    10. FILTRES / CONTRÔLES
    =================================================================== */
-.nr-toolbar {
+.ct-toolbar {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
     align-items: center;
     justify-content: space-between;
     padding: 10px 12px;
-    border-bottom: 1px solid var(--nr-line);
+    border-bottom: 1px solid var(--ct-line);
 }
 
-.nr-select,
-.nr-input {
+.ct-select,
+.ct-input {
     font-family: inherit;
     font-size: 13px;
-    color: var(--nr-text);
-    background: var(--nr-card);
-    border: 1px solid var(--nr-line-strong);
+    color: var(--ct-text);
+    background: var(--ct-card);
+    border: 1px solid var(--ct-line-strong);
     border-radius: 3px;
     padding: 5px 8px;
 }
 
-.nr-input:focus,
-.nr-select:focus { border-color: var(--nr-accent); }
+.ct-input:focus,
+.ct-select:focus { border-color: var(--ct-accent); }
 
-.nr-chip {
+.ct-chip {
     display: inline-flex;
     align-items: center;
     gap: 5px;
     font-size: 12.5px;
     padding: 3px 9px;
     border-radius: 3px;
-    border: 1px solid var(--nr-line-strong);
-    background: var(--nr-card);
-    color: var(--nr-muted);
+    border: 1px solid var(--ct-line-strong);
+    background: var(--ct-card);
+    color: var(--ct-muted);
     cursor: pointer;
     font-family: inherit;
     transition: all 0.15s;
 }
 
-.nr-chip:hover { border-color: var(--nr-accent); color: var(--nr-text); }
+.ct-chip:hover { border-color: var(--ct-accent); color: var(--ct-text); }
 
-.nr-chip.is-on {
-    background: var(--nr-accent-soft);
-    border-color: var(--nr-accent);
-    color: var(--nr-accent-text);
+.ct-chip.is-on {
+    background: var(--ct-accent-soft);
+    border-color: var(--ct-accent);
+    color: var(--ct-accent-text);
     font-weight: 600;
 }
 
-.nr-btn {
+.ct-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -976,47 +975,47 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
     padding: 7px 14px;
     border-radius: 3px;
     border: 1px solid transparent;
-    background: var(--nr-accent);
+    background: var(--ct-accent);
     color: #fff;
     cursor: pointer;
     transition: filter 0.15s;
 }
 
-.nr-btn:hover { filter: brightness(1.1); color: #fff; text-decoration: none; }
-.nr-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.ct-btn:hover { filter: brightness(1.1); color: #fff; text-decoration: none; }
+.ct-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-.nr-btn-ghost {
+.ct-btn-ghost {
     background: transparent;
-    border-color: var(--nr-line-strong);
-    color: var(--nr-text);
+    border-color: var(--ct-line-strong);
+    color: var(--ct-text);
 }
 
-.nr-btn-ghost:hover {
-    border-color: var(--nr-accent);
-    color: var(--nr-accent-text);
+.ct-btn-ghost:hover {
+    border-color: var(--ct-accent);
+    color: var(--ct-accent-text);
     filter: none;
 }
 
-.nr-btn-sm { padding: 4px 10px; font-size: 12.5px; }
+.ct-btn-sm { padding: 4px 10px; font-size: 12.5px; }
 
 /* ===================================================================
    SÉLECTION D'UNE COMPARAISON
    Deux champs à complétion empilés, séparés par un « VS ».
    =================================================================== */
-.nr-picker { position: relative; }
+.ct-picker { position: relative; }
 
-.nr-picker-field {
+.ct-picker-field {
     display: flex;
     align-items: center;
-    border: 1px solid var(--nr-line-strong);
+    border: 1px solid var(--ct-line-strong);
     border-radius: 3px;
-    background: var(--nr-card);
+    background: var(--ct-card);
     transition: border-color 0.15s;
 }
 
-.nr-picker-field:focus-within { border-color: var(--nr-accent); }
+.ct-picker-field:focus-within { border-color: var(--ct-accent); }
 
-.nr-picker-input {
+.ct-picker-input {
     flex: 1 1 auto;
     min-width: 0;
     height: 40px;
@@ -1026,21 +1025,21 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
     font-family: inherit;
     /* 16px : en dessous, les navigateurs mobiles zooment à la mise au point. */
     font-size: 16px;
-    color: var(--nr-text);
+    color: var(--ct-text);
 }
 
-.nr-picker-input::placeholder { color: var(--nr-muted); opacity: 1; }
+.ct-picker-input::placeholder { color: var(--ct-muted); opacity: 1; }
 
-.nr-picker-mark {
+.ct-picker-mark {
     flex: 0 0 auto;
     width: 34px;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--nr-g-ap);
+    color: var(--ct-g-ap);
 }
 
-.nr-picker-list {
+.ct-picker-list {
     position: absolute;
     top: calc(100% + 3px);
     left: 0;
@@ -1049,15 +1048,15 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
     margin: 0;
     padding: 0;
     list-style: none;
-    background: var(--nr-card);
-    border: 1px solid var(--nr-line-strong);
+    background: var(--ct-card);
+    border: 1px solid var(--ct-line-strong);
     border-radius: 3px;
-    box-shadow: var(--nr-shadow-pop);
+    box-shadow: var(--ct-shadow-pop);
     max-height: 320px;
     overflow-y: auto;
 }
 
-.nr-picker-list li {
+.ct-picker-list li {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
@@ -1065,45 +1064,45 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
     padding: 8px 12px;
     font-size: 13px;
     cursor: pointer;
-    border-bottom: 1px solid var(--nr-line);
+    border-bottom: 1px solid var(--ct-line);
 }
 
-.nr-picker-list li:last-child { border-bottom: 0; }
-.nr-picker-list li.is-active { background: var(--nr-accent-soft); }
+.ct-picker-list li:last-child { border-bottom: 0; }
+.ct-picker-list li.is-active { background: var(--ct-accent-soft); }
 
-.nr-versus-word {
+.ct-versus-word {
     text-align: center;
     font-size: 20px;
     font-weight: 700;
-    color: var(--nr-accent-text);
+    color: var(--ct-accent-text);
     padding: 10px 0;
 }
 
 /* Puces conservées : sur une liste longue de liens de même forme, le disque
    marque le début de chaque entrée et évite de lire deux noms à la suite comme
    un seul. */
-.nr-matchups { margin: 0; padding-left: 20px; }
-.nr-matchups li { margin-top: 8px; font-size: 14px; }
-.nr-matchups li:first-child { margin-top: 0; }
-.nr-matchups li::marker { color: var(--nr-muted); }
-.nr-versus-inline { color: var(--nr-muted); font-size: 12px; text-transform: uppercase; }
+.ct-matchups { margin: 0; padding-left: 20px; }
+.ct-matchups li { margin-top: 8px; font-size: 14px; }
+.ct-matchups li:first-child { margin-top: 0; }
+.ct-matchups li::marker { color: var(--ct-muted); }
+.ct-versus-inline { color: var(--ct-muted); font-size: 12px; text-transform: uppercase; }
 
 /* ===================================================================
    11. BARRE DE COMPARAISON FIXE
    =================================================================== */
-.nr-compare-bar {
+.ct-compare-bar {
     position: fixed;
     left: 0;
     right: 0;
     bottom: 0;
     z-index: 1030;
-    background: var(--nr-card);
-    border-top: 1px solid var(--nr-line-strong);
+    background: var(--ct-card);
+    border-top: 1px solid var(--ct-line-strong);
     box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.12);
     padding: 10px 16px;
 }
 
-.nr-compare-bar-inner {
+.ct-compare-bar-inner {
     max-width: 1180px;
     margin: 0 auto;
     display: flex;
@@ -1112,19 +1111,19 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
     flex-wrap: wrap;
 }
 
-.nr-compare-bar-tag {
+.ct-compare-bar-tag {
     display: inline-flex;
     align-items: center;
     gap: 6px;
     font-size: 12.5px;
     padding: 3px 8px;
     border-radius: 3px;
-    background: var(--nr-accent-soft);
-    color: var(--nr-accent-text);
-    border: 1px solid var(--nr-accent);
+    background: var(--ct-accent-soft);
+    color: var(--ct-accent-text);
+    border: 1px solid var(--ct-accent);
 }
 
-.nr-compare-bar-tag button {
+.ct-compare-bar-tag button {
     border: 0;
     background: none;
     color: inherit;
@@ -1137,15 +1136,15 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
 /* ===================================================================
    12. EN-TÊTE DU SITE
    =================================================================== */
-.nr-header {
-    background: var(--nr-card);
-    border-bottom: 1px solid var(--nr-line-strong);
+.ct-header {
+    background: var(--ct-card);
+    border-bottom: 1px solid var(--ct-line-strong);
     position: sticky;
     top: 0;
     z-index: 1020;
 }
 
-.nr-header-inner {
+.ct-header-inner {
     width: 100%;
     max-width: 100%;
     margin: 0;
@@ -1153,28 +1152,28 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
     align-items: center;
     gap: 16px;
     padding: 0 20px;
-    height: var(--nr-h-header);
+    height: var(--ct-h-header);
 }
 
-.nr-logo {
+.ct-logo {
     display: inline-flex;
     align-items: center;
     gap: 6px;
     font-size: 18px;
     font-weight: 700;
-    color: var(--nr-text);
+    color: var(--ct-text);
     white-space: nowrap;
 }
 
-.nr-logo:hover { text-decoration: none; color: var(--nr-text); }
-.nr-logo em { font-style: normal; color: var(--nr-accent-text); }
+.ct-logo:hover { text-decoration: none; color: var(--ct-text); }
+.ct-logo em { font-style: normal; color: var(--ct-accent-text); }
 
 /* ===================================================================
    TIROIR DE NAVIGATION
    Recouvre le contenu à toutes les largeurs : un tiroir qui pousse la colonne
    principale ferait sauter la lecture à chaque ouverture.
    =================================================================== */
-.nr-scrim {
+.ct-scrim {
     position: fixed;
     inset: 0;
     z-index: 1040;
@@ -1184,9 +1183,9 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
     transition: opacity 0.18s ease, visibility 0.18s;
 }
 
-.nr-scrim.is-open { opacity: 1; visibility: visible; }
+.ct-scrim.is-open { opacity: 1; visibility: visible; }
 
-.nr-drawer {
+.ct-drawer {
     position: fixed;
     top: 0;
     left: 0;
@@ -1194,8 +1193,8 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
     z-index: 1050;
     width: 268px;
     max-width: 84vw;
-    background: var(--nr-card);
-    border-right: 1px solid var(--nr-line-strong);
+    background: var(--ct-card);
+    border-right: 1px solid var(--ct-line-strong);
     display: flex;
     flex-direction: column;
     overflow-y: auto;
@@ -1203,35 +1202,35 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
     transition: transform 0.18s ease;
 }
 
-.nr-drawer.is-open { transform: none; }
+.ct-drawer.is-open { transform: none; }
 
 @media (prefers-reduced-motion: reduce) {
-    .nr-drawer, .nr-scrim { transition: none; }
+    .ct-drawer, .ct-scrim { transition: none; }
 }
 
-.nr-drawer-head {
+.ct-drawer-head {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 12px;
     height: 52px;
     padding: 0 12px 0 16px;
-    border-bottom: 1px solid var(--nr-line);
+    border-bottom: 1px solid var(--ct-line);
 }
 
-.nr-drawer-footer {
+.ct-drawer-footer {
     margin-top: auto;
     padding: 14px 16px;
-    border-top: 1px solid var(--nr-line);
+    border-top: 1px solid var(--ct-line);
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
-.nr-drawer-group { padding: 12px 0; border-bottom: 1px solid var(--nr-line); }
-.nr-drawer-group:last-child { border-bottom: 0; }
+.ct-drawer-group { padding: 12px 0; border-bottom: 1px solid var(--ct-line); }
+.ct-drawer-group:last-child { border-bottom: 0; }
 
-.nr-drawer-group-title {
+.ct-drawer-group-title {
     display: flex;
     align-items: center;
     gap: 7px;
@@ -1240,90 +1239,90 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    color: var(--nr-muted);
+    color: var(--ct-muted);
 }
 
-.nr-drawer-link {
+.ct-drawer-link {
     display: flex;
     align-items: center;
     gap: 10px;
     padding: 8px 16px;
     font-size: 14px;
-    color: var(--nr-text);
+    color: var(--ct-text);
     border-left: 2px solid transparent;
 }
 
-.nr-drawer-link:hover { background: var(--nr-card-alt); text-decoration: none; }
+.ct-drawer-link:hover { background: var(--ct-card-alt); text-decoration: none; }
 
 /* Action principale du site, en tête du tiroir. Mise en avant par la graisse
    et l'espace, pas par la couleur — celle-ci reste réservée à la donnée. */
-.nr-drawer-link.is-principal { font-weight: 600; padding-top: 10px; padding-bottom: 10px; }
+.ct-drawer-link.is-principal { font-weight: 600; padding-top: 10px; padding-bottom: 10px; }
 
-.nr-drawer-link svg,
-.nr-drawer-link .nr-icone,
-.nr-drawer-link .nr-icone-img { color: var(--nr-muted); flex: 0 0 auto; }
+.ct-drawer-link svg,
+.ct-drawer-link .ct-icone,
+.ct-drawer-link .ct-icone-img { color: var(--ct-muted); flex: 0 0 auto; }
 
 /* Icônes déposées dans assets/icons/, affichées telles quelles.
    `object-fit: contain` évite toute déformation si le fichier n'est pas
    parfaitement carré ; `flex-shrink: 0` empêche l'icône d'être écrasée par un
    libellé long dans une ligne flex. */
-.nr-icone { display: inline-flex; align-items: center; justify-content: center; }
-.nr-icone svg { width: 100%; height: 100%; display: block; }
+.ct-icone { display: inline-flex; align-items: center; justify-content: center; }
+.ct-icone svg { width: 100%; height: 100%; display: block; }
 
-.nr-icone-img {
+.ct-icone-img {
     display: block;
     object-fit: contain;
     flex: 0 0 auto;
 }
 
-.nr-drawer-link.is-active {
-    background: var(--nr-accent-soft);
-    border-left-color: var(--nr-accent);
+.ct-drawer-link.is-active {
+    background: var(--ct-accent-soft);
+    border-left-color: var(--ct-accent);
     font-weight: 600;
 }
 
-.nr-drawer-link.is-active svg,
-.nr-drawer-link.is-active .nr-icone { color: var(--nr-accent-text); }
+.ct-drawer-link.is-active svg,
+.ct-drawer-link.is-active .ct-icone { color: var(--ct-accent-text); }
 
-.nr-search { position: relative; flex: 1 1 auto; max-width: 340px; }
+.ct-search { position: relative; flex: 1 1 auto; max-width: 340px; }
 
-.nr-search input {
+.ct-search input {
     width: 100%;
     font-family: inherit;
     font-size: 13px;
     padding: 6px 10px 6px 30px;
-    border: 1px solid var(--nr-line-strong);
+    border: 1px solid var(--ct-line-strong);
     border-radius: 3px;
-    background: var(--nr-card-alt);
-    color: var(--nr-text);
+    background: var(--ct-card-alt);
+    color: var(--ct-text);
 }
 
-.nr-search input:focus { border-color: var(--nr-accent); background: var(--nr-card); }
+.ct-search input:focus { border-color: var(--ct-accent); background: var(--ct-card); }
 
-.nr-search-icon {
+.ct-search-icon {
     position: absolute;
     left: 9px;
     top: 50%;
     transform: translateY(-50%);
-    color: var(--nr-muted);
+    color: var(--ct-muted);
     display: flex;
 }
 
-.nr-search-drop {
+.ct-search-drop {
     position: absolute;
     top: calc(100% + 3px);
     left: 0;
     right: 0;
-    background: var(--nr-card);
-    border: 1px solid var(--nr-line-strong);
+    background: var(--ct-card);
+    border: 1px solid var(--ct-line-strong);
     border-radius: 3px;
-    box-shadow: var(--nr-shadow-pop);
+    box-shadow: var(--ct-shadow-pop);
     z-index: 1050;
     max-height: 330px;
     overflow-y: auto;
 }
 
-.nr-search-item {
+.ct-search-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -1332,36 +1331,36 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
     text-align: left;
     padding: 7px 10px;
     border: 0;
-    border-bottom: 1px solid var(--nr-line);
+    border-bottom: 1px solid var(--ct-line);
     background: none;
     font-family: inherit;
     font-size: 13px;
-    color: var(--nr-text);
+    color: var(--ct-text);
     cursor: pointer;
 }
 
-.nr-search-item:last-child { border-bottom: 0; }
-.nr-search-item:hover { background: var(--nr-card-alt); }
+.ct-search-item:last-child { border-bottom: 0; }
+.ct-search-item:hover { background: var(--ct-card-alt); }
 
-.nr-icon-btn {
+.ct-icon-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     width: 32px;
     height: 32px;
     border-radius: 3px;
-    border: 1px solid var(--nr-line-strong);
-    background: var(--nr-card);
-    color: var(--nr-muted);
+    border: 1px solid var(--ct-line-strong);
+    background: var(--ct-card);
+    color: var(--ct-muted);
     cursor: pointer;
 }
 
-.nr-icon-btn:hover { color: var(--nr-text); border-color: var(--nr-accent); }
+.ct-icon-btn:hover { color: var(--ct-text); border-color: var(--ct-accent); }
 
 /* Icône monochrome reteintée par masque : la forme vient du fichier, la
    couleur du contexte. Réservée aux fichiers sans couleur propre — un dessin
    en couleur y perdrait tout sauf sa silhouette. */
-.nr-mask-icon {
+.ct-mask-icon {
     display: inline-block;
     background-color: currentColor;
     -webkit-mask: var(--src) center/contain no-repeat;
@@ -1369,7 +1368,7 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
     flex: 0 0 auto;
 }
 
-.nr-menu-icon {
+.ct-menu-icon {
     display: inline-block;
     width: 18px;
     height: 18px;
@@ -1385,24 +1384,24 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
 }
 
 @media (max-width: 575.98px) {
-    .nr-header-inner { gap: 8px; padding: 0 10px; }
-    .nr-logo { font-size: 16px; }
+    .ct-header-inner { gap: 8px; padding: 0 10px; }
+    .ct-logo { font-size: 16px; }
 }
 
 /* ===================================================================
    13. FIL D'ARIANE, DIVERS
    =================================================================== */
-.nr-breadcrumb {
+.ct-breadcrumb {
     font-size: 12.5px;
-    color: var(--nr-muted);
+    color: var(--ct-muted);
     padding: 12px 4px 4px;
 }
 
-.nr-breadcrumb a { color: var(--nr-muted); }
-.nr-breadcrumb a:hover { color: var(--nr-accent-text); }
-.nr-breadcrumb span + span::before { content: '\203A'; padding: 0 6px; }
+.ct-breadcrumb a { color: var(--ct-muted); }
+.ct-breadcrumb a:hover { color: var(--ct-accent-text); }
+.ct-breadcrumb span + span::before { content: '\203A'; padding: 0 6px; }
 
-.nr-badge {
+.ct-badge {
     display: inline-block;
     font-size: 11px;
     font-weight: 600;
@@ -1410,43 +1409,43 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
     letter-spacing: 0.04em;
     padding: 1px 6px;
     border-radius: 3px;
-    background: var(--nr-accent-soft);
-    color: var(--nr-accent-text);
+    background: var(--ct-accent-soft);
+    color: var(--ct-accent-text);
 }
 
-.nr-two-col {
+.ct-two-col {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0 24px;
 }
 
 /* Trois colonnes : comparatif à trois produits. */
-.nr-three-col {
+.ct-three-col {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0 20px;
 }
 
 @media (max-width: 899.98px) {
-    .nr-three-col { grid-template-columns: 1fr; gap: 0; }
+    .ct-three-col { grid-template-columns: 1fr; gap: 0; }
 }
 
-.nr-kv {
+.ct-kv {
     display: flex;
     justify-content: space-between;
     gap: 12px;
     padding: 7px 0;
-    border-bottom: 1px solid var(--nr-line);
+    border-bottom: 1px solid var(--ct-line);
     font-size: 13px;
 }
 
-.nr-kv:last-child { border-bottom: 0; }
-.nr-kv dt { color: var(--nr-muted); font-weight: 400; }
-.nr-kv dd { margin: 0; font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; }
+.ct-kv:last-child { border-bottom: 0; }
+.ct-kv dt { color: var(--ct-muted); font-weight: 400; }
+.ct-kv dd { margin: 0; font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; }
 
 /* Visible des seuls lecteurs d'écran : légendes de tableau, libellés de
    contexte. `display:none` les retirerait aussi de la restitution vocale. */
-.nr-visually-hidden {
+.ct-visually-hidden {
     position: absolute;
     width: 1px;
     height: 1px;
@@ -1458,29 +1457,29 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
     border: 0;
 }
 
-.nr-empty {
+.ct-empty {
     padding: 40px 16px;
     text-align: center;
-    color: var(--nr-muted);
+    color: var(--ct-muted);
     font-size: 13px;
 }
 
 @media (max-width: 767.98px) {
-    .nr-two-col { grid-template-columns: 1fr; gap: 0; }
-    .nr-compare-head-item { width: 120px; }
-    .nr-compare-head-img { height: 110px; }
+    .ct-two-col { grid-template-columns: 1fr; gap: 0; }
+    .ct-compare-head-item { width: 120px; }
+    .ct-compare-head-img { height: 110px; }
 }
 
 /* Squelette de chargement */
-@keyframes nr-skeleton {
+@keyframes ct-skeleton {
     0% { background-position: -200% 0; }
     100% { background-position: 200% 0; }
 }
 
-.nr-skeleton {
-    background: var(--nr-skeleton-grad);
+.ct-skeleton {
+    background: var(--ct-skeleton-grad);
     background-size: 200% 100%;
-    animation: nr-skeleton 1.4s ease-in-out infinite;
+    animation: ct-skeleton 1.4s ease-in-out infinite;
     border-radius: 3px;
 }
 
@@ -1489,17 +1488,17 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
    Bootstrap n'est plus charge : le seul composant qu'on lui empruntait
    encore est reecrit ici, en 12 lignes plutot qu'en 250 Ko de feuille.
    =================================================================== */
-.nr-spinner {
+.ct-spinner {
     width: 26px;
     height: 26px;
     margin: 0 auto;
-    border: 2px solid var(--nr-line-strong);
-    border-right-color: var(--nr-accent);
+    border: 2px solid var(--ct-line-strong);
+    border-right-color: var(--ct-accent);
     border-radius: 50%;
-    animation: nr-spin 0.75s linear infinite;
+    animation: ct-spin 0.75s linear infinite;
 }
 
-@keyframes nr-spin {
+@keyframes ct-spin {
     to { transform: rotate(360deg); }
 }
 
@@ -1511,19 +1510,19 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
  * se retrouvait ainsi en bas du contenu — il fallait parcourir toute la liste
  * pour atteindre le bouton « Comparer ». Même piège avec `filter`,
  * `perspective`, `will-change: transform` et `contain: paint`. */
-@keyframes nr-page-enter {
+@keyframes ct-page-enter {
     from { opacity: 0; }
     to { opacity: 1; }
 }
 
-.nr-page-enter { animation: nr-page-enter 0.25s ease-out both; }
+.ct-page-enter { animation: ct-page-enter 0.25s ease-out both; }
 
 /* Le mouvement est confortable pour la plupart des gens et pénible pour
    certains : quand le système le signale, on garde le contenu, pas l'effet. */
 @media (prefers-reduced-motion: reduce) {
-    .nr-page-enter { animation: none; }
-    .nr-score-bar-line-filled { transition: none; }
-    .nr-spinner { animation-duration: 2s; }
+    .ct-page-enter { animation: none; }
+    .ct-score-bar-line-filled { transition: none; }
+    .ct-spinner { animation-duration: 2s; }
 }
 
 /* ===================================================================
@@ -1531,11 +1530,11 @@ body:has(.nr-compare-bar) { padding-bottom: var(--nr-compare-bar-h, 72px); }
    Seul rescapé de l'ancien jeu de classes .ct-* : sert d'étiquette au-dessus
    des champs de formulaire et des groupes de filtres.
    =================================================================== */
-.nr-label {
+.ct-label {
     display: block;
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: var(--nr-muted);
+    color: var(--ct-muted);
     font-weight: 600;
 }

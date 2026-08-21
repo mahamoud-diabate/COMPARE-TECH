@@ -34,29 +34,29 @@ function Footer() {
     <footer
       style={{
         marginTop: 24,
-        background: 'var(--nr-card)',
-        borderTop: '1px solid var(--nr-line-strong)',
+        background: 'var(--ct-card)',
+        borderTop: '1px solid var(--ct-line-strong)',
       }}
     >
       <div
-        className="nr-main-wide"
+        className="ct-main-wide"
         style={{ display: 'flex', gap: 16, flexWrap: 'wrap', alignItems: 'center' }}
       >
         <span style={{ fontWeight: 700 }}>CompareTech</span>
 
         <nav style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
           {LINKS.map(link => (
-            <Link key={link.to} className="nr-text-small" to={link.to}>{link.label}</Link>
+            <Link key={link.to} className="ct-text-small" to={link.to}>{link.label}</Link>
           ))}
-          <Link className="nr-text-small" to="/login">Administration</Link>
+          <Link className="ct-text-small" to="/login">Administration</Link>
         </nav>
 
-        <span className="nr-text-gray-small" style={{ marginLeft: 'auto' }}>
+        <span className="ct-text-gray-small" style={{ marginLeft: 'auto' }}>
           Scores calculés depuis Geekbench 6 et 3DMark · © {new Date().getFullYear()}
         </span>
 
         {utiliseIconesPersonnalisees && (
-          <span className="nr-text-gray-small" style={{ flex: '1 1 100%' }}>
+          <span className="ct-text-gray-small" style={{ flex: '1 1 100%' }}>
             {ATTRIBUTIONS.length > 0 ? (
               <>
                 Remerciements a : {' '}

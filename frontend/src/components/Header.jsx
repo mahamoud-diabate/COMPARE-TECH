@@ -86,25 +86,25 @@ function Header({ toggleTheme, theme }) {
   };
 
   return (
-    <header className="nr-header">
-      <div className="nr-header-inner">
+    <header className="ct-header">
+      <div className="ct-header-inner">
         <button
-          className="nr-icon-btn"
+          className="ct-icon-btn"
           ref={menuBoutonRef}
           onClick={() => setMenuOuvert(true)}
           aria-label="Ouvrir le menu"
           aria-expanded={menuOuvert}
         >
-          <span className="nr-menu-icon" aria-hidden="true" />
+          <span className="ct-menu-icon" aria-hidden="true" />
         </button>
 
-        <Link to="/" className="nr-logo">
+        <Link to="/" className="ct-logo">
           Compare<em>Tech</em>
         </Link>
 
-        <div className="nr-search" ref={searchRef}>
+        <div className="ct-search" ref={searchRef}>
           <form onSubmit={onSubmit}>
-            <span className="nr-search-icon"><Search size={14} strokeWidth={2} /></span>
+            <span className="ct-search-icon"><Search size={14} strokeWidth={2} /></span>
             <input
               type="search"
               placeholder="Rechercher un produit…"
@@ -117,19 +117,19 @@ function Header({ toggleTheme, theme }) {
           </form>
 
           {open && suggestions.length > 0 && (
-            <div className="nr-search-drop">
+            <div className="ct-search-drop">
               {suggestions.map(product => (
                 <button
                   key={product._id}
                   type="button"
-                  className="nr-search-item"
+                  className="ct-search-item"
                   onClick={() => select(product)}
                 >
                   <span style={{ minWidth: 0 }}>
                     <strong style={{ display: 'block' }}>{product.name}</strong>
-                    <span className="nr-text-gray-small">{product.brand}</span>
+                    <span className="ct-text-gray-small">{product.brand}</span>
                   </span>
-                  <span className="nr-badge">{TYPE_LABEL[product.productType]}</span>
+                  <span className="ct-badge">{TYPE_LABEL[product.productType]}</span>
                 </button>
               ))}
             </div>

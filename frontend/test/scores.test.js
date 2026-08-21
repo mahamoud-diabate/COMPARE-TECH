@@ -94,7 +94,7 @@ test('scoreGrade suit les seuils 90 / 70 / 50 / 30', () => {
 test('scoreGrade associe une couleur distincte à chaque palier', () => {
   const couleurs = [100, 80, 60, 40, 10].map(v => scoreGrade(v).variable);
   assert.equal(new Set(couleurs).size, 5, 'cinq paliers, cinq couleurs');
-  assert.ok(couleurs.every(c => c.startsWith('var(--nr-g-')));
+  assert.ok(couleurs.every(c => c.startsWith('var(--ct-g-')));
 });
 
 test('scoreGrade distingue « pas de note » de « mauvaise note »', () => {
@@ -102,13 +102,13 @@ test('scoreGrade distingue « pas de note » de « mauvaise note »', () => {
   // n'est pas mauvais, il est non mesuré. D'où l'absence de lettre.
   for (const value of [0, undefined, null]) {
     assert.equal(scoreGrade(value).letter, null, `valeur : ${String(value)}`);
-    assert.equal(scoreGrade(value).variable, 'var(--nr-g-none)');
+    assert.equal(scoreGrade(value).variable, 'var(--ct-g-none)');
   }
 });
 
 test('scoreVar reste un raccourci vers la couleur du grade', () => {
   assert.equal(scoreVar(95), scoreGrade(95).variable);
-  assert.equal(scoreVar(0), 'var(--nr-g-none)');
+  assert.equal(scoreVar(0), 'var(--ct-g-none)');
 });
 
 test('getScoreColor reste disponible pour les appelants historiques', () => {

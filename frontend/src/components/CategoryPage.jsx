@@ -108,17 +108,17 @@ function CategoryPage({ collection, type, filterOptions = [], intro, introSansNo
   return (
     <>
       <AnimatedPage>
-        <div className="nr-main-wide">
-          <div className="nr-breadcrumb">
+        <div className="ct-main-wide">
+          <div className="ct-breadcrumb">
             <span><Link to="/">Accueil</Link></span>
             <span>{BREADCRUMB[type] || collection}</span>
           </div>
 
           {introAffichee && (
-            <p className="nr-text-gray-small" style={{ padding: '0 4px 8px' }}>{introAffichee}</p>
+            <p className="ct-text-gray-small" style={{ padding: '0 4px 8px' }}>{introAffichee}</p>
           )}
 
-          <div className="nr-layout">
+          <div className="ct-layout">
             <FilterSidebar
               filters={filterOptions}
               selectedFilters={selectedFilters}

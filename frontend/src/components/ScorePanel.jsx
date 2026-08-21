@@ -15,21 +15,21 @@ function Reglette({ note, rang }) {
   const { variable } = scoreGrade(note);
 
   return (
-    <div className="nr-scale" aria-hidden="true">
-      <div className="nr-scale-track">
+    <div className="ct-scale" aria-hidden="true">
+      <div className="ct-scale-track">
         {[25, 50, 75].map(t => (
-          <span key={t} className="nr-scale-tick" style={{ left: `${t}%` }} />
+          <span key={t} className="ct-scale-tick" style={{ left: `${t}%` }} />
         ))}
         {rang && (
           <span
-            className="nr-scale-median"
+            className="ct-scale-median"
             style={{ left: `${rang.mediane}%` }}
             title={`Médiane de la catégorie : ${rang.mediane}`}
           />
         )}
-        <span className="nr-scale-marker" style={{ left: `${note}%`, background: variable }} />
+        <span className="ct-scale-marker" style={{ left: `${note}%`, background: variable }} />
       </div>
-      <div className="nr-scale-legend">
+      <div className="ct-scale-legend">
         <span>0</span>
         {rang && <span>médiane {rang.mediane}</span>}
         <span>100</span>
@@ -54,26 +54,26 @@ function ScorePanel({ product, type, peers = [] }) {
   if (!product) return null;
 
   const note = getProductScore(product, type);
-  const { letter, variable } = scoreGrade(note);
+  const { variable } = scoreGrade(note);
   const detail = explainScore(product, type);
   const rang = rankInCategory(product, peers, type);
   const completude = dataCompleteness(product, type);
 
   return (
-    <section className="nr-card">
-      <div className="nr-card-head">
-        <h2 className="nr-title-h2">Note</h2>
+    <section className="ct-card">
+      <div className="ct-card-head">
+        <h2 className="ct-title-h2">Note</h2>
       </div>
 
-      <div className="nr-card-body" style={{ paddingTop: 8 }}>
-        <div className="nr-score-head">
-          <span className="nr-score-big" style={{ color: variable }}>
+      <div className="ct-card-body" style={{ paddingTop: 8 }}>
+        <div className="ct-score-head">
+          <span className="ct-score-big" style={{ color: variable }}>
             {note > 0 ? note : '—'}
           </span>
-          <span className="nr-score-head-side">
-            <span className="nr-text-gray-small">sur 100</span>
+          <span className="ct-score-head-side">
+            <span className="ct-text-gray-small">sur 100</span>
             {rang && (
-              <strong className="nr-score-rank">
+              <strong className="ct-score-rank">
                 {rang.rang}<sup>{rang.rang === 1 ? 'er' : 'e'}</sup> sur {rang.total} notés
               </strong>
             )}
@@ -83,42 +83,42 @@ function ScorePanel({ product, type, peers = [] }) {
         {note > 0 && <Reglette note={note} rang={rang} />}
 
         {note === 0 && (
-          <p className="nr-text-gray-small">
+          <p className="ct-text-gray-small">
             Non mesurable : les benchmarks nécessaires au calcul ne sont pas renseignés
             pour ce modèle. Ce n’est pas une contre-performance, c’est une donnée absente.
           </p>
         )}
 
         {detail.termes.length > 0 && (
-          <details className="nr-details">
+          <details className="ct-details">
             <summary>D’où vient cette note</summary>
 
-            <table className="nr-formula">
+            <table className="ct-formula">
               <tbody>
                 {detail.termes.map(terme => (
                   <tr key={terme.key}>
                     <th scope="row">{terme.label}</th>
-                    <td className="nr-num">
+                    <td className="ct-num">
                       {terme.valeur === null ? 'non renseigné' : nombre(terme.valeur)}
                     </td>
-                    <td className="nr-num nr-formula-scale">/ {nombre(terme.max)}</td>
-                    <td className="nr-num nr-formula-scale">
+                    <td className="ct-num ct-formula-scale">/ {nombre(terme.max)}</td>
+                    <td className="ct-num ct-formula-scale">
                       {terme.poids < 1 ? `× ${Math.round(terme.poids * 100)} %` : ''}
                     </td>
-                    <td className="nr-num nr-formula-points">
+                    <td className="ct-num ct-formula-points">
                       {terme.valeur === null ? '—' : Math.round(terme.points)}
                     </td>
                   </tr>
                 ))}
-                <tr className="nr-formula-total">
+                <tr className="ct-formula-total">
                   <th scope="row">Total</th>
                   <td colSpan="3" />
-                  <td className="nr-num nr-formula-points">{note > 0 ? note : '—'}</td>
+                  <td className="ct-num ct-formula-points">{note > 0 ? note : '—'}</td>
                 </tr>
               </tbody>
             </table>
 
-            <p className="nr-text-gray-small" style={{ marginTop: 10 }}>
+            <p className="ct-text-gray-small" style={{ marginTop: 10 }}>
               Chaque mesure est ramenée sur 100 par rapport à un plafond de référence
               propre à la catégorie, puis pondérée. Le plafond fixe l’échelle, il ne
               change pas l’ordre entre deux produits.
@@ -127,11 +127,11 @@ function ScorePanel({ product, type, peers = [] }) {
         )}
 
         {completude.total > 0 && (
-          <p className="nr-coverage">
-            <strong className="nr-num">{completude.remplies}</strong> caractéristiques
+          <p className="ct-coverage">
+            <strong className="ct-num">{completude.remplies}</strong> caractéristiques
             renseignées sur {completude.total}
             {completude.manquantes.length > 0 && (
-              <span className="nr-text-gray-small">
+              <span className="ct-text-gray-small">
                 {' '}— manque : {completude.manquantes.join(', ').toLowerCase()}
               </span>
             )}

@@ -16,10 +16,10 @@ export function ThemeToggle({ theme, toggleTheme }) {
       aria-label={isDark ? 'Passer en mode clair' : 'Passer en mode sombre'}
       title={isDark ? 'Passer en mode clair' : 'Passer en mode sombre'}
       onClick={toggleTheme}
-      className={`nr-cylinder-toggle ${isDark ? 'is-dark' : 'is-light'}`}
+      className={`ct-cylinder-toggle ${isDark ? 'is-dark' : 'is-light'}`}
     >
-      <span className="nr-cylinder-pill">
-        <span className="nr-cylinder-face" />
+      <span className="ct-cylinder-pill">
+        <span className="ct-cylinder-face" />
       </span>
     </button>
   );

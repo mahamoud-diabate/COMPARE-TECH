@@ -65,7 +65,7 @@ function TechRadar({ products = [], productType }) {
 
   if (axes.length < 3) {
     return (
-      <div className="nr-empty">
+      <div className="ct-empty">
         Les caractéristiques disponibles ne permettent pas de tracer un radar
         (trois axes minimum).
       </div>
@@ -89,18 +89,18 @@ function TechRadar({ products = [], productType }) {
         </title>
 
         {RINGS.map(percent => (
-          <polygon key={percent} className="nr-radar-grid" points={ringPolygon(total, percent)} />
+          <polygon key={percent} className="ct-radar-grid" points={ringPolygon(total, percent)} />
         ))}
 
         {axes.map((axis, i) => {
           const [x, y] = pointAt(i, total, 100);
-          return <line key={axis.label} className="nr-radar-axis" x1={CENTER} y1={CENTER} x2={x} y2={y} />;
+          return <line key={axis.label} className="ct-radar-axis" x1={CENTER} y1={CENTER} x2={x} y2={y} />;
         })}
 
         {list.map((product, seriesIndex) => (
           <polygon
             key={`shape-${product._id || seriesIndex}`}
-            className={`nr-radar-shape is-${SERIES[seriesIndex] || 'a'}`}
+            className={`ct-radar-shape is-${SERIES[seriesIndex] || 'a'}`}
             points={polygon(total, axes.map(axis => axis.values[seriesIndex] ?? 0))}
           />
         ))}
@@ -113,7 +113,7 @@ function TechRadar({ products = [], productType }) {
             return (
               <circle
                 key={`dot-${seriesIndex}-${axis.label}`}
-                className={`nr-radar-dot is-${SERIES[seriesIndex] || 'a'}`}
+                className={`ct-radar-dot is-${SERIES[seriesIndex] || 'a'}`}
                 cx={x}
                 cy={y}
                 r="3"
@@ -132,7 +132,7 @@ function TechRadar({ products = [], productType }) {
           return (
             <text
               key={`label-${axis.label}`}
-              className="nr-radar-label"
+              className="ct-radar-label"
               x={lx}
               y={ly}
               textAnchor={anchorFor(x)}
@@ -144,9 +144,9 @@ function TechRadar({ products = [], productType }) {
         })}
       </svg>
 
-      <figcaption className="nr-radar-legend">
+      <figcaption className="ct-radar-legend">
         {list.map((product, i) => (
-          <span key={product._id || i} className={`nr-radar-key is-${SERIES[i] || 'a'}`}>
+          <span key={product._id || i} className={`ct-radar-key is-${SERIES[i] || 'a'}`}>
             {product.name}
           </span>
         ))}

@@ -12,7 +12,7 @@ import React from 'react';
  * animations (voir `prefers-reduced-motion` dans index.css).
  */
 const AnimatedPage = ({ children }) => (
-  <div className="nr-page-enter">{children}</div>
+  <div className="ct-page-enter">{children}</div>
 );
 
 export default AnimatedPage;

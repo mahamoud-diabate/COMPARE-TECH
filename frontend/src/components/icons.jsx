@@ -86,7 +86,7 @@ export function Icone({ nom, size = 16 }) {
   if (png) {
     return (
       <img
-        className="nr-icone-img"
+        className="ct-icone-img"
         src={png}
         alt=""
         aria-hidden="true"
@@ -108,7 +108,7 @@ export function Icone({ nom, size = 16 }) {
   if (svg) {
     return (
       <span
-        className="nr-icone"
+        className="ct-icone"
         style={{ width: size, height: size }}
         dangerouslySetInnerHTML={{ __html: dimensionner(svg, size) }}
       />

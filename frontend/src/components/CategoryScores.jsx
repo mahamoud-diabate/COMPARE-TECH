@@ -34,8 +34,8 @@ function CategoryScores({ products = [], productType }) {
 
     return (
       <div key={key} style={{ marginBottom: 18 }}>
-        <div className="nr-title-h4" style={{ paddingBottom: 2 }}>{label}</div>
-        {hint ? <div className="nr-text-gray-small" style={{ marginBottom: 8 }}>{hint}</div> : null}
+        <div className="ct-title-h4" style={{ paddingBottom: 2 }}>{label}</div>
+        {hint ? <div className="ct-text-gray-small" style={{ marginBottom: 8 }}>{hint}</div> : null}
         {list.map((product, i) => (
           <ScoreBar
             key={product._id || i}
@@ -50,18 +50,18 @@ function CategoryScores({ products = [], productType }) {
   };
 
   return (
-    <section className="nr-card">
-      <div className="nr-card-head">
-        <h2 className="nr-title-h2">Évaluation</h2>
-        <p className="nr-text-gray-small" style={{ marginBottom: 12 }}>
+    <section className="ct-card">
+      <div className="ct-card-head">
+        <h2 className="ct-title-h2">Évaluation</h2>
+        <p className="ct-text-gray-small" style={{ marginBottom: 12 }}>
           Note sur 100 par critère, calculée depuis les caractéristiques mesurées.
         </p>
       </div>
-      <div className="nr-card-body" style={{ paddingTop: 0 }}>
-        <div className="nr-two-col">
+      <div className="ct-card-body" style={{ paddingTop: 0 }}>
+        <div className="ct-two-col">
           {categories.map((c, i) => renderBlock(c.label, c.hint, c.values, i))}
         </div>
-        <hr className="nr-card-sep" style={{ margin: '4px 0 16px' }} />
+        <hr className="ct-card-sep" style={{ margin: '4px 0 16px' }} />
         {renderBlock(
           'Score CompareTech',
           'Synthèse pondérée des benchmarks du produit',

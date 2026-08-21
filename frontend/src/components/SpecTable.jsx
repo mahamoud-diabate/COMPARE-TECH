@@ -10,7 +10,7 @@ import { SPEC_GROUPS, resolveType, formatValue, winnerIndex } from '../utils/spe
  * comme un bloc autonome.
  *
  * Il n'y a pas non plus d'en-tête de colonnes répété : les noms des produits
- * sont portés par la barre collante (`nr-sticky-names`), qui reste visible
+ * sont portés par la barre collante (`ct-sticky-names`), qui reste visible
  * pendant tout le défilement — alors qu'un `<thead>` disparaît au premier
  * écran et laisse le lecteur deviner à qui appartient chaque colonne.
  *
@@ -45,17 +45,17 @@ function SpecTable({ products = [], showDifferencesOnly = false, productType }) 
     .filter(group => group.rows.length > 0);
 
   if (visibleGroups.length === 0) {
-    return <p className="nr-empty">Aucune différence sur les caractéristiques suivies.</p>;
+    return <p className="ct-empty">Aucune différence sur les caractéristiques suivies.</p>;
   }
 
   return (
     <>
       {visibleGroups.map(group => (
         <section key={group.group}>
-          <h3 className="nr-title-h3">{group.group}</h3>
-          <div className="nr-table-wrap">
-            <table className="nr-table">
-              <caption className="nr-visually-hidden">
+          <h3 className="ct-title-h3">{group.group}</h3>
+          <div className="ct-table-wrap">
+            <table className="ct-table">
+              <caption className="ct-visually-hidden">
                 {group.group} — {list.map(p => p.name).join(', ')}
               </caption>
               <tbody>

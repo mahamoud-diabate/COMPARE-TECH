@@ -163,35 +163,35 @@ function AdminPage() {
   };
 
   return (
-    <div className="nr-main-wide">
-      <div className="nr-breadcrumb">
+    <div className="ct-main-wide">
+      <div className="ct-breadcrumb">
         <span>Administration</span>
       </div>
 
-      <section className="nr-card">
-        <div className="nr-toolbar">
-          <h1 className="nr-title-h2">Gestion du catalogue</h1>
-          <button className="nr-btn nr-btn-ghost nr-btn-sm" onClick={handleLogout}>
+      <section className="ct-card">
+        <div className="ct-toolbar">
+          <h1 className="ct-title-h2">Gestion du catalogue</h1>
+          <button className="ct-btn ct-btn-ghost ct-btn-sm" onClick={handleLogout}>
             Déconnexion
           </button>
         </div>
 
-        <form className="nr-card-body" onSubmit={handleSubmit}>
+        <form className="ct-card-body" onSubmit={handleSubmit}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12, marginBottom: 14 }}>
-            <div className="nr-title-h4" style={{ paddingBottom: 0 }}>
+            <div className="ct-title-h4" style={{ paddingBottom: 0 }}>
               {editingId ? 'Modifier un produit' : 'Ajouter un produit'}
             </div>
             {editingId && (
-              <button type="button" className="nr-btn nr-btn-ghost nr-btn-sm" onClick={handleCancel}>
+              <button type="button" className="ct-btn ct-btn-ghost ct-btn-sm" onClick={handleCancel}>
                 Annuler l’édition
               </button>
             )}
           </div>
 
-          <label className="nr-label" htmlFor="admin-collection">Catégorie</label>
+          <label className="ct-label" htmlFor="admin-collection">Catégorie</label>
           <select
             id="admin-collection"
-            className="nr-select"
+            className="ct-select"
             style={{ width: '100%', marginBottom: 14 }}
             value={collection}
             onChange={(e) => setCollection(e.target.value)}
@@ -202,12 +202,12 @@ function AdminPage() {
             ))}
           </select>
 
-          <div className="nr-two-col">
+          <div className="ct-two-col">
             <div style={{ marginBottom: 12 }}>
-              <label className="nr-label" htmlFor="admin-name">Nom</label>
+              <label className="ct-label" htmlFor="admin-name">Nom</label>
               <input
                 id="admin-name"
-                className="nr-input"
+                className="ct-input"
                 style={{ width: '100%' }}
                 name="name"
                 value={formData.name}
@@ -216,10 +216,10 @@ function AdminPage() {
               />
             </div>
             <div style={{ marginBottom: 12 }}>
-              <label className="nr-label" htmlFor="admin-brand">Marque</label>
+              <label className="ct-label" htmlFor="admin-brand">Marque</label>
               <input
                 id="admin-brand"
-                className="nr-input"
+                className="ct-input"
                 style={{ width: '100%' }}
                 name="brand"
                 value={formData.brand}
@@ -229,10 +229,10 @@ function AdminPage() {
             </div>
           </div>
 
-          <label className="nr-label" htmlFor="admin-image">URL de l’image</label>
+          <label className="ct-label" htmlFor="admin-image">URL de l’image</label>
           <input
             id="admin-image"
-            className="nr-input"
+            className="ct-input"
             style={{ width: '100%', marginBottom: 16 }}
             name="imageUrl"
             value={formData.imageUrl}
@@ -240,18 +240,18 @@ function AdminPage() {
             placeholder="https://…"
           />
 
-          <hr className="nr-card-sep" style={{ margin: '0 0 14px' }} />
+          <hr className="ct-card-sep" style={{ margin: '0 0 14px' }} />
 
-          <div className="nr-title-h4">Spécifications</div>
-          <div className="nr-two-col">
+          <div className="ct-title-h4">Spécifications</div>
+          <div className="ct-two-col">
             {specFields.map(field => (
               <div key={field.key} style={{ marginBottom: 12 }}>
-                <label className="nr-label" htmlFor={`admin-${field.key}`}>
+                <label className="ct-label" htmlFor={`admin-${field.key}`}>
                   {field.label}{field.unit ? ` (${field.unit})` : ''}
                 </label>
                 <input
                   id={`admin-${field.key}`}
-                  className="nr-input"
+                  className="ct-input"
                   style={{ width: '100%' }}
                   type={NUMERIC_FIELDS.has(field.key) ? 'number' : 'text'}
                   step="any"
@@ -263,17 +263,17 @@ function AdminPage() {
             ))}
           </div>
 
-          <hr className="nr-card-sep" style={{ margin: '0 0 14px' }} />
+          <hr className="ct-card-sep" style={{ margin: '0 0 14px' }} />
 
-          <div className="nr-title-h4">Analyse</div>
-          <p className="nr-text-gray-small" style={{ marginBottom: 10 }}>
+          <div className="ct-title-h4">Analyse</div>
+          <p className="ct-text-gray-small" style={{ marginBottom: 10 }}>
             Un élément par virgule.
           </p>
 
-          <label className="nr-label" htmlFor="admin-pros">Avantages</label>
+          <label className="ct-label" htmlFor="admin-pros">Avantages</label>
           <textarea
             id="admin-pros"
-            className="nr-input"
+            className="ct-input"
             style={{ width: '100%', marginBottom: 12 }}
             rows={2}
             name="pros"
@@ -282,10 +282,10 @@ function AdminPage() {
             placeholder="Écran lumineux, Autonomie confortable"
           />
 
-          <label className="nr-label" htmlFor="admin-cons">Inconvénients</label>
+          <label className="ct-label" htmlFor="admin-cons">Inconvénients</label>
           <textarea
             id="admin-cons"
-            className="nr-input"
+            className="ct-input"
             style={{ width: '100%', marginBottom: 16 }}
             rows={2}
             name="cons"
@@ -295,7 +295,7 @@ function AdminPage() {
           />
 
           <button
-            className="nr-btn"
+            className="ct-btn"
             type="submit"
             disabled={saving}
             aria-busy={saving}
@@ -310,17 +310,17 @@ function AdminPage() {
         </form>
       </section>
 
-      <section className="nr-card">
-        <div className="nr-toolbar">
-          <h2 className="nr-title-h2">Produits enregistrés</h2>
-          <span className="nr-text-gray-small">{products.length}</span>
+      <section className="ct-card">
+        <div className="ct-toolbar">
+          <h2 className="ct-title-h2">Produits enregistrés</h2>
+          <span className="ct-text-gray-small">{products.length}</span>
         </div>
 
         {products.length === 0 ? (
-          <p className="nr-empty">Aucun produit dans cette catégorie.</p>
+          <p className="ct-empty">Aucun produit dans cette catégorie.</p>
         ) : (
-          <div className="nr-table-wrap">
-            <table className="nr-table">
+          <div className="ct-table-wrap">
+            <table className="ct-table">
               <thead>
                 <tr>
                   <th style={{ width: 64 }}>Visuel</th>
@@ -340,7 +340,7 @@ function AdminPage() {
                           style={{ width: 40, height: 34, objectFit: 'contain' }}
                         />
                       ) : (
-                        <span className="nr-text-gray-small">—</span>
+                        <span className="ct-text-gray-small">—</span>
                       )}
                     </td>
                     <td style={{ fontWeight: 600 }}>{product.name}</td>
@@ -348,14 +348,14 @@ function AdminPage() {
                     <td>
                       <div style={{ display: 'flex', gap: 6 }}>
                         <button
-                          className="nr-chip"
+                          className="ct-chip"
                           onClick={() => handleEdit(product)}
                         >
                           Modifier
                         </button>
                         <button
-                          className="nr-chip"
-                          style={{ color: 'var(--nr-minus)' }}
+                          className="ct-chip"
+                          style={{ color: 'var(--ct-minus)' }}
                           onClick={() => handleDelete(product._id, product.name)}
                         >
                           Supprimer

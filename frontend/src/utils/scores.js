@@ -111,14 +111,14 @@ export const calculateTelephoneScore = (tel) => explainScore(tel, 'telephone').t
  * sur un site voisin.
  */
 const GRADES = [
-  { min: 90, letter: 'A+', variable: 'var(--nr-g-ap)' },
-  { min: 70, letter: 'A', variable: 'var(--nr-g-a)' },
-  { min: 50, letter: 'B', variable: 'var(--nr-g-b)' },
-  { min: 30, letter: 'C', variable: 'var(--nr-g-c)' },
-  { min: 1, letter: 'D', variable: 'var(--nr-g-d)' },
+  { min: 90, letter: 'A+', variable: 'var(--ct-g-ap)' },
+  { min: 70, letter: 'A', variable: 'var(--ct-g-a)' },
+  { min: 50, letter: 'B', variable: 'var(--ct-g-b)' },
+  { min: 30, letter: 'C', variable: 'var(--ct-g-c)' },
+  { min: 1, letter: 'D', variable: 'var(--ct-g-d)' },
 ];
 
-const NO_GRADE = { letter: null, variable: 'var(--nr-g-none)' };
+const NO_GRADE = { letter: null, variable: 'var(--ct-g-none)' };
 
 export const scoreGrade = (score) => {
   if (!score || score <= 0) return NO_GRADE;

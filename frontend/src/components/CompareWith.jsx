@@ -33,32 +33,32 @@ function CompareWith({ product, type, others = [] }) {
   };
 
   return (
-    <section className="nr-card">
-      <div className="nr-card-head">
-        <h2 className="nr-title-h2">Comparer avec</h2>
-        <p className="nr-text-gray-small">
+    <section className="ct-card">
+      <div className="ct-card-head">
+        <h2 className="ct-title-h2">Comparer avec</h2>
+        <p className="ct-text-gray-small">
           Face-à-face détaillé : différences clés, notes par critère et tableau complet.
         </p>
       </div>
 
-      <div className="nr-card-body" style={{ paddingTop: 12 }}>
+      <div className="ct-card-body" style={{ paddingTop: 12 }}>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginBottom: 14 }}>
           {rivals.map(({ other, score: rivalScore }) => (
-            <Link key={other._id} className="nr-versus" to={compareUrl(other._id)}>
-              <span className="nr-versus-vs">vs</span>
-              <span className="nr-versus-name">{other.name}</span>
+            <Link key={other._id} className="ct-versus" to={compareUrl(other._id)}>
+              <span className="ct-versus-vs">vs</span>
+              <span className="ct-versus-name">{other.name}</span>
               <ScoreBox score={rivalScore} />
             </Link>
           ))}
         </div>
 
         <form onSubmit={submit} style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-          <label className="nr-label" htmlFor="compare-with" style={{ flex: '1 1 100%' }}>
+          <label className="ct-label" htmlFor="compare-with" style={{ flex: '1 1 100%' }}>
             Ou choisir un autre modèle
           </label>
           <select
             id="compare-with"
-            className="nr-select"
+            className="ct-select"
             style={{ flex: '1 1 240px' }}
             value={choice}
             onChange={(e) => setChoice(e.target.value)}
@@ -68,7 +68,7 @@ function CompareWith({ product, type, others = [] }) {
               <option key={other._id} value={other._id}>{other.name}</option>
             ))}
           </select>
-          <button className="nr-btn" type="submit" disabled={!choice}>
+          <button className="ct-btn" type="submit" disabled={!choice}>
             Comparer
           </button>
         </form>

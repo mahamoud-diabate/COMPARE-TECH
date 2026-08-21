@@ -78,16 +78,16 @@ function CompareSelector({ type: initialType }) {
   };
 
   return (
-    <div className="nr-main">
-      <div className="nr-breadcrumb">
+    <div className="ct-main">
+      <div className="ct-breadcrumb">
         <span><Link to="/">Accueil</Link></span>
         <span>Comparer</span>
       </div>
 
-      <section className="nr-card">
-        <div className="nr-card-head">
-          <h1 className="nr-title-h1">Comparer {meta.label.toLowerCase()}</h1>
-          <p className="nr-text-gray-small" style={{ marginBottom: 12 }}>
+      <section className="ct-card">
+        <div className="ct-card-head">
+          <h1 className="ct-title-h1">Comparer {meta.label.toLowerCase()}</h1>
+          <p className="ct-text-gray-small" style={{ marginBottom: 12 }}>
             {data.length > 0 && `${data.length} ${meta.label.toLowerCase()} au catalogue. `}
             Sélectionnez vos modèles : vous obtiendrez leurs écarts chiffrés
             {criteres && `, une note sur 100 par critère — ${criteres} —`} et le tableau
@@ -95,7 +95,7 @@ function CompareSelector({ type: initialType }) {
           </p>
         </div>
 
-        <div className="nr-anchor-nav" role="tablist" aria-label="Catégorie à comparer">
+        <div className="ct-anchor-nav" role="tablist" aria-label="Catégorie à comparer">
           {TYPES.map(item => (
             <button
               key={item.type}
@@ -110,7 +110,7 @@ function CompareSelector({ type: initialType }) {
           ))}
         </div>
 
-        <form className="nr-card-body" onSubmit={submit}>
+        <form className="ct-card-body" onSubmit={submit}>
           <ProductPicker
             label={`Premier ${meta.singular}`}
             products={data}
@@ -120,7 +120,7 @@ function CompareSelector({ type: initialType }) {
             placeholder={loading ? 'Chargement du catalogue…' : `Nom du premier ${meta.singular}`}
           />
 
-          <div className="nr-versus-word">VS</div>
+          <div className="ct-versus-word">VS</div>
 
           <ProductPicker
             label={`Second ${meta.singular}`}
@@ -131,26 +131,26 @@ function CompareSelector({ type: initialType }) {
             placeholder={loading ? 'Chargement du catalogue…' : `Nom du second ${meta.singular}`}
           />
 
-          <button className="nr-btn" type="submit" disabled={!ready} style={{ marginTop: 16 }}>
+          <button className="ct-btn" type="submit" disabled={!ready} style={{ marginTop: 16 }}>
             Comparer
           </button>
         </form>
       </section>
 
       {matchups.length > 0 && (
-        <section className="nr-card">
-          <div className="nr-card-head">
-            <h2 className="nr-title-h2">Confrontations serrées</h2>
-            <p className="nr-text-gray-small">
+        <section className="ct-card">
+          <div className="ct-card-head">
+            <h2 className="ct-title-h2">Confrontations serrées</h2>
+            <p className="ct-text-gray-small">
               Les modèles qui se suivent au classement — ceux entre lesquels le choix se joue.
             </p>
           </div>
-          <div className="nr-card-body" style={{ paddingTop: 8 }}>
-            <ul className="nr-matchups">
+          <div className="ct-card-body" style={{ paddingTop: 8 }}>
+            <ul className="ct-matchups">
               {matchups.map(([a, b]) => (
                 <li key={`${a._id}-${b._id}`}>
                   <Link to={`/compare?type=${type}&ids=${a._id},${b._id}`}>
-                    {a.name} <span className="nr-versus-inline">vs</span> {b.name}
+                    {a.name} <span className="ct-versus-inline">vs</span> {b.name}
                   </Link>
                 </li>
               ))}

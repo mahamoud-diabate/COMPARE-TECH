@@ -34,30 +34,30 @@ function KeyDifferences({ products = [], productType }) {
   if (columns.every(lines => lines.length === 0)) return null;
 
   return (
-    <section className="nr-card" id="differences">
-      <div className="nr-card-head">
-        <h2 className="nr-title-h2">Différences clés</h2>
-        <p className="nr-text-gray-small" style={{ marginBottom: 12 }}>
+    <section className="ct-card" id="differences">
+      <div className="ct-card-head">
+        <h2 className="ct-title-h2">Différences clés</h2>
+        <p className="ct-text-gray-small" style={{ marginBottom: 12 }}>
           {isPair
             ? 'Les écarts mesurables entre les deux produits, du plus structurant au plus secondaire.'
             : 'Pour chaque produit, les critères où il devance tous les autres — et de combien par rapport au plus proche.'}
         </p>
       </div>
 
-      <div className="nr-card-body" style={{ paddingTop: 0 }}>
-        <div className={isPair ? 'nr-two-col' : 'nr-three-col'}>
+      <div className="ct-card-body" style={{ paddingTop: 0 }}>
+        <div className={isPair ? 'ct-two-col' : 'ct-three-col'}>
           {list.map((product, index) => (
             <div key={product._id || index} style={{ marginBottom: 12 }}>
-              <div className="nr-title-h4">
+              <div className="ct-title-h4">
                 {isPair ? `Pourquoi choisir ${product.name}` : product.name}
               </div>
 
               {columns[index]?.length > 0 ? (
-                <ul className="nr-proscons is-plus">
+                <ul className="ct-proscons is-plus">
                   {columns[index].map((reason, i) => <li key={i}>{reason}</li>)}
                 </ul>
               ) : (
-                <p className="nr-text-gray-small">
+                <p className="ct-text-gray-small">
                   {isPair
                     ? 'Aucun avantage chiffré sur les critères suivis.'
                     : 'En tête sur aucun des critères suivis.'}

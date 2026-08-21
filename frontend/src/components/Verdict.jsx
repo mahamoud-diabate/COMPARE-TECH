@@ -65,15 +65,15 @@ function Verdict({ products, productType }) {
       : null;
 
   return (
-    <section className="nr-card">
-      <div className="nr-card-head">
-        <h2 className="nr-title-h2">Verdict</h2>
-        <p className="nr-text-gray-small">
+    <section className="ct-card">
+      <div className="ct-card-head">
+        <h2 className="ct-title-h2">Verdict</h2>
+        <p className="ct-text-gray-small">
           Classement par score global, synthèse des benchmarks disponibles.
         </p>
       </div>
 
-      <div className="nr-card-body">
+      <div className="ct-card-body">
         {products.map((product, i) => (
           <ScoreBar
             key={product._id}
@@ -104,24 +104,24 @@ function Verdict({ products, productType }) {
         </p>
       </div>
 
-      <hr className="nr-card-sep" />
+      <hr className="ct-card-sep" />
 
-      <div className="nr-card-body">
+      <div className="ct-card-body">
         {!aiAnalysis ? (
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
-            <span className="nr-text-gray-small" style={{ flex: '1 1 240px' }}>
+            <span className="ct-text-gray-small" style={{ flex: '1 1 240px' }}>
               Un commentaire rédigé peut compléter les chiffres. Il est généré par un
               modèle de langage et n’est pas une mesure.
             </span>
-            <button className="nr-btn" onClick={askGemini} disabled={loading}>
+            <button className="ct-btn" onClick={askGemini} disabled={loading}>
               {loading ? 'Analyse en cours…' : 'Demander une analyse'}
             </button>
           </div>
         ) : (
           <>
-            <div className="nr-title-h4">Analyse générée</div>
+            <div className="ct-title-h4">Analyse générée</div>
             <p style={{ whiteSpace: 'pre-line' }}>{aiAnalysis}</p>
-            <p className="nr-text-gray-small" style={{ marginTop: 8 }}>
+            <p className="ct-text-gray-small" style={{ marginTop: 8 }}>
               Texte produit automatiquement : à recouper avec le tableau de spécifications.
             </p>
           </>

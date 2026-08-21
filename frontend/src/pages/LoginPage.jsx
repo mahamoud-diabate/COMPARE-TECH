@@ -27,18 +27,18 @@ function LoginPage() {
   };
 
   return (
-    <div className="nr-main" style={{ maxWidth: 420 }}>
-      <section className="nr-card">
-        <div className="nr-card-head">
-          <h1 className="nr-title-h2">Administration</h1>
-          <p className="nr-text-gray-small">Réservé à la gestion du catalogue.</p>
+    <div className="ct-main" style={{ maxWidth: 420 }}>
+      <section className="ct-card">
+        <div className="ct-card-head">
+          <h1 className="ct-title-h2">Administration</h1>
+          <p className="ct-text-gray-small">Réservé à la gestion du catalogue.</p>
         </div>
 
-        <form className="nr-card-body" onSubmit={handleLogin}>
-          <label className="nr-label" htmlFor="login-user">Nom d’utilisateur</label>
+        <form className="ct-card-body" onSubmit={handleLogin}>
+          <label className="ct-label" htmlFor="login-user">Nom d’utilisateur</label>
           <input
             id="login-user"
-            className="nr-input"
+            className="ct-input"
             style={{ width: '100%', marginBottom: 12 }}
             type="text"
             value={username}
@@ -46,10 +46,10 @@ function LoginPage() {
             autoComplete="username"
           />
 
-          <label className="nr-label" htmlFor="login-pass">Mot de passe</label>
+          <label className="ct-label" htmlFor="login-pass">Mot de passe</label>
           <input
             id="login-pass"
-            className="nr-input"
+            className="ct-input"
             style={{ width: '100%', marginBottom: 16 }}
             type="password"
             value={password}
@@ -57,7 +57,7 @@ function LoginPage() {
             autoComplete="current-password"
           />
 
-          <button className="nr-btn" type="submit" disabled={loading} style={{ width: '100%' }}>
+          <button className="ct-btn" type="submit" disabled={loading} style={{ width: '100%' }}>
             {loading ? 'Connexion…' : 'Se connecter'}
           </button>
         </form>

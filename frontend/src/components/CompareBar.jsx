@@ -26,7 +26,7 @@ function CompareBar({ selectedItems, productType, onClear, onRemove }) {
     if (!node) return undefined;
 
     const apply = () => {
-      document.body.style.setProperty('--nr-compare-bar-h', `${node.offsetHeight}px`);
+      document.body.style.setProperty('--ct-compare-bar-h', `${node.offsetHeight}px`);
     };
     apply();
 
@@ -35,7 +35,7 @@ function CompareBar({ selectedItems, productType, onClear, onRemove }) {
 
     return () => {
       observer.disconnect();
-      document.body.style.removeProperty('--nr-compare-bar-h');
+      document.body.style.removeProperty('--ct-compare-bar-h');
     };
   }, []);
 
@@ -45,12 +45,12 @@ function CompareBar({ selectedItems, productType, onClear, onRemove }) {
   };
 
   return (
-    <div className="nr-compare-bar" ref={barRef}>
-      <div className="nr-compare-bar-inner">
-        <span className="nr-text-gray-small">Comparaison :</span>
+    <div className="ct-compare-bar" ref={barRef}>
+      <div className="ct-compare-bar-inner">
+        <span className="ct-text-gray-small">Comparaison :</span>
 
         {selectedItems.map(item => (
-          <span key={item._id} className="nr-compare-bar-tag">
+          <span key={item._id} className="ct-compare-bar-tag">
             {item.name}
             {onRemove && (
               <button onClick={() => onRemove(item)} aria-label={`Retirer ${item.name}`}>
@@ -62,12 +62,12 @@ function CompareBar({ selectedItems, productType, onClear, onRemove }) {
 
         <div style={{ marginLeft: 'auto', display: 'flex', gap: 8, alignItems: 'center' }}>
           {!ready && (
-            <span className="nr-text-gray-small">Sélectionnez au moins deux produits.</span>
+            <span className="ct-text-gray-small">Sélectionnez au moins deux produits.</span>
           )}
-          <button className="nr-btn nr-btn-ghost nr-btn-sm" onClick={onClear}>
+          <button className="ct-btn ct-btn-ghost ct-btn-sm" onClick={onClear}>
             Tout effacer
           </button>
-          <button className="nr-btn" onClick={compare} disabled={!ready}>
+          <button className="ct-btn" onClick={compare} disabled={!ready}>
             Comparer ({selectedItems.length})
           </button>
         </div>

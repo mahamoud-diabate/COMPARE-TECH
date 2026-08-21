@@ -34,13 +34,13 @@ function BenchmarkBars({ products = [], productType, title = 'Benchmarks', subti
   if (groups.length === 0) return null;
 
   return (
-    <section className="nr-card">
-      <div className="nr-card-head">
-        <h2 className="nr-title-h2">{title}</h2>
-        {subtitle ? <p className="nr-text-gray-small" style={{ marginBottom: 12 }}>{subtitle}</p> : null}
+    <section className="ct-card">
+      <div className="ct-card-head">
+        <h2 className="ct-title-h2">{title}</h2>
+        {subtitle ? <p className="ct-text-gray-small" style={{ marginBottom: 12 }}>{subtitle}</p> : null}
       </div>
-      <div className="nr-card-body" style={{ paddingTop: 0 }}>
-        <div className="nr-two-col">
+      <div className="ct-card-body" style={{ paddingTop: 0 }}>
+        <div className="ct-two-col">
           {groups.map(bench => {
             const present = bench.values.filter(v => v !== null && v > 0);
             const best = Math.max(...present);
@@ -53,7 +53,7 @@ function BenchmarkBars({ products = [], productType, title = 'Benchmarks', subti
 
             return (
               <div key={bench.key} style={{ marginBottom: 18 }}>
-                <div className="nr-title-h4">{bench.label}</div>
+                <div className="ct-title-h4">{bench.label}</div>
                 {list.map((product, i) => {
                   const value = bench.values[i];
                   const isLeader = value !== null && value === best && present.length > 1;

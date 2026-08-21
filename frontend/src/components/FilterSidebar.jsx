@@ -21,19 +21,19 @@ function FilterSidebar({
   );
 
   return (
-    <aside className="nr-card" style={{ position: 'sticky', top: 68 }}>
-      <div className="nr-toolbar">
+    <aside className="ct-card" style={{ position: 'sticky', top: 68 }}>
+      <div className="ct-toolbar">
         <span style={{ fontWeight: 600 }}>Filtres</span>
         {activeCount > 0 && (
-          <button className="nr-btn nr-btn-ghost nr-btn-sm" onClick={onReset}>
+          <button className="ct-btn ct-btn-ghost ct-btn-sm" onClick={onReset}>
             Réinitialiser ({activeCount})
           </button>
         )}
       </div>
 
-      <div className="nr-card-body-tight">
+      <div className="ct-card-body-tight">
         <input
-          className="nr-input"
+          className="ct-input"
           style={{ width: '100%' }}
           type="search"
           placeholder="Filtrer par nom…"
@@ -45,9 +45,9 @@ function FilterSidebar({
 
       {filters.map(group => (
         <div key={group.id}>
-          <hr className="nr-card-sep" />
-          <div className="nr-card-body-tight">
-            <div className="nr-label" style={{ marginBottom: 6 }}>{group.label}</div>
+          <hr className="ct-card-sep" />
+          <div className="ct-card-body-tight">
+            <div className="ct-label" style={{ marginBottom: 6 }}>{group.label}</div>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
               {group.options.map(option => {
                 const on = selectedFilters[group.id]?.includes(option);
@@ -55,7 +55,7 @@ function FilterSidebar({
                   <button
                     key={option}
                     type="button"
-                    className={`nr-chip${on ? ' is-on' : ''}`}
+                    className={`ct-chip${on ? ' is-on' : ''}`}
                     onClick={() => onFilterChange(group.id, option)}
                     aria-pressed={on}
                   >
