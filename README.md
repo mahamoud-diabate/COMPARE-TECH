@@ -6,7 +6,7 @@ Monorepo réunissant le backend et le frontend dans un seul dépôt, avec l'hist
 
 ## En ligne
 
-- **Frontend** — https://compare-tech-king2mos-projects.vercel.app
+- **Frontend** — https://compare-tech-theta.vercel.app
 - **API backend** — https://mahamoud-compare-tech-api.onrender.com
 
 ## Aperçu
@@ -78,7 +78,7 @@ c'est ce qui évite qu'une même liste soit demandée deux fois par écran.
 
 ## Déploiement
 
-- **Frontend** → Vercel : https://compare-tech-king2mos-projects.vercel.app (`frontend/vercel.json`, root `frontend/`)
+- **Frontend** → Vercel : https://compare-tech-theta.vercel.app (`frontend/vercel.json`, root `frontend/`)
 - **Backend** → Render : https://mahamoud-compare-tech-api.onrender.com (`backend/render.yaml`, root `backend/`)
 
 ## Auteur
