@@ -14,6 +14,15 @@ const Laptop = require('./models/Laptop');
 const Telephone = require('./models/Telephone');
 const User = require('./models/User');
 const { hashPassword, verifyPassword, signToken, verifyToken } = require('./auth');
+const { lecturePaginee } = require('./pagination');
+const {
+  SLUG_VALIDE,
+  estIdentifiant,
+  estSlug,
+  estReference,
+  separeReferences,
+  filtreReferences,
+} = require('./references');
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -48,14 +57,16 @@ if (!ADMIN_PASSWORD) {
   console.warn('ADMIN_PASSWORD courte : utilise au moins 10 caractères.');
 }
 if (!JWT_SECRET || JWT_SECRET.length < 32) {
-  console.warn('JWT_SECRET absente ou trop courte : génère-en une (48+ caractères hex) et définis-la.');
+  console.warn(
+    'JWT_SECRET absente ou trop courte : génère-en une (48+ caractères hex) et définis-la.'
+  );
 }
 
 const genAI = GEMINI_API_KEY ? new GoogleGenerativeAI(GEMINI_API_KEY) : null;
-// Modèle configurable : gemini-1.5-flash est déprécié chez Google ; si la route
-// IA renvoie des erreurs de modèle, passe GEMINI_MODEL à une valeur plus récente
-// (ex. gemini-2.0-flash ou gemini-2.5-flash) dans l'environnement.
-const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-1.5-flash';
+// Modèle configurable. Le défaut doit rester un modèle servi : gemini-1.5-flash,
+// l'ancien défaut, est retiré chez Google et faisait échouer la route IA sur une
+// installation neuve, sans que rien dans la configuration ne l'annonce.
+const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-2.0-flash';
 const aiModel = genAI ? genAI.getGenerativeModel({ model: GEMINI_MODEL }) : null;
 if (!aiModel) {
   console.warn('GEMINI_API_KEY absente : la route /api/ai/verdict renverra 503.');
@@ -74,30 +85,46 @@ const DEFAULT_ORIGINS = [
   'http://localhost:5175',
   'http://localhost:4173',
 ];
-// Origine de production connue : si CORS_ORIGINS n'est pas renseignée
+// Origines de production connues : si CORS_ORIGINS n'est pas renseignée
 // (ex. oubli dans le tableau de bord Render), on autorise au moins le
 // frontend déployé pour ne pas casser la démo en ligne. On reste en liste
-// blanche (une seule origine connue), jamais en wildcard.
-const PROD_FALLBACK = 'https://compare-tech-king2mos-projects.vercel.app';
-const allowedOrigins = [...new Set(
-  (process.env.CORS_ORIGINS || PROD_FALLBACK)
-    .split(',')
-    .map(o => o.trim())
-    .filter(Boolean)
-    .concat(IS_PROD ? [] : DEFAULT_ORIGINS)
-)];
+// blanche (des origines nommées), jamais en wildcard.
+//
+// Les deux domaines comptent : Vercel sert le même déploiement sous le nom
+// court du projet et sous le nom porté par le compte. Le README pointe le
+// premier, l'ancien repli n'autorisait que le second — visiter l'adresse
+// annoncée suffisait alors à se faire refuser par le CORS.
+const PROD_FALLBACK = [
+  'https://compare-tech-theta.vercel.app',
+  'https://compare-tech-king2mos-projects.vercel.app',
+].join(',');
+const allowedOrigins = [
+  ...new Set(
+    (process.env.CORS_ORIGINS || PROD_FALLBACK)
+      .split(',')
+      .map(o => o.trim())
+      .filter(Boolean)
+      .concat(IS_PROD ? [] : DEFAULT_ORIGINS)
+  ),
+];
 
-app.use(cors({
-  origin(origin, callback) {
-    // Pas d'origine = appel serveur-a-serveur ou curl : autorise (lecture seule
-    // de toute facon, les ecritures exigent la cle admin).
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin)) return callback(null, true);
-    return callback(new Error(`Origine non autorisee : ${origin}`));
-  },
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'authorization']
-}));
+app.use(
+  cors({
+    origin(origin, callback) {
+      // Pas d'origine = appel serveur-a-serveur ou curl : autorise (lecture seule
+      // de toute facon, les ecritures exigent la cle admin).
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+      return callback(new Error(`Origine non autorisee : ${origin}`));
+    },
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'authorization'],
+    // Sans cette ligne, X-Total-Count existe dans la reponse mais reste
+    // invisible au JavaScript du navigateur : en cross-origin, seuls les
+    // en-tetes explicitement exposes traversent.
+    exposedHeaders: ['X-Total-Count'],
+  })
+);
 
 // Limite la taille du corps : evite qu'un POST enorme sature la memoire.
 app.use(express.json({ limit: '100kb' }));
@@ -159,17 +186,17 @@ function rateLimit({ windowMs, max, message }) {
 const aiLimiter = rateLimit({
   windowMs: 60 * 60 * 1000,
   max: 20,
-  message: "Trop de requetes vers l'IA. Reessaie dans une heure."
+  message: "Trop de requetes vers l'IA. Reessaie dans une heure.",
 });
 const writeLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
-  message: "Trop d'ecritures. Reessaie plus tard."
+  message: "Trop d'ecritures. Reessaie plus tard.",
 });
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 10,
-  message: 'Trop de tentatives de connexion. Reessaie plus tard.'
+  message: 'Trop de tentatives de connexion. Reessaie plus tard.',
 });
 
 // Empeche l'injection d'operateurs Mongo ($gt, $ne...) via le corps JSON.
@@ -197,11 +224,9 @@ app.use((req, _res, next) => {
 
 const MODELS = { cpus: Cpu, gpus: Gpu, laptops: Laptop, telephones: Telephone };
 
-const isValidId = id => mongoose.Types.ObjectId.isValid(id);
-
-// Forme attendue d'un slug. Le parametre d'URL est une chaine libre : la
-// contraindre ici evite qu'elle parte telle quelle dans une requete Mongo.
-const SLUG_VALIDE = /^[a-z0-9][a-z0-9-]{0,79}$/;
+// Ce qui designe un produit — identifiant Mongo ou slug — est decrit dans
+// `references.js`, partage par la fiche produit et la comparaison.
+const isValidId = estIdentifiant;
 
 // N'expose jamais le message d'erreur brut en production : il peut reveler
 // la structure de la base ou des chemins internes.
@@ -223,7 +248,7 @@ app.get('/', (_req, res) => {
 app.get('/api/health', (_req, res) => {
   res.json({
     status: mongoose.connection.readyState === 1 ? 'ok' : 'degraded',
-    db: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected'
+    db: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
   });
 });
 
@@ -256,14 +281,20 @@ app.get('/api/featured', async (_req, res) => {
       Cpu.findOne().sort({ geekbench_multi: -1 }),
       Gpu.findOne().sort({ benchmark_3dmark: -1 }),
       Laptop.findOne().sort({ geekbench_multi: -1 }),
-      Telephone.findOne().sort({ antutu_score: -1 })
+      Telephone.findOne().sort({ antutu_score: -1 }),
     ]);
 
     const featured = [];
     if (bestCpu) featured.push({ ...bestCpu.toObject(), productType: 'cpu', highlight: 'Top CPU' });
     if (bestGpu) featured.push({ ...bestGpu.toObject(), productType: 'gpu', highlight: 'Top GPU' });
-    if (bestLaptop) featured.push({ ...bestLaptop.toObject(), productType: 'laptop', highlight: 'Top Laptop' });
-    if (bestPhone) featured.push({ ...bestPhone.toObject(), productType: 'telephone', highlight: 'Top Smartphone' });
+    if (bestLaptop)
+      featured.push({ ...bestLaptop.toObject(), productType: 'laptop', highlight: 'Top Laptop' });
+    if (bestPhone)
+      featured.push({
+        ...bestPhone.toObject(),
+        productType: 'telephone',
+        highlight: 'Top Smartphone',
+      });
 
     res.json(featured);
   } catch (err) {
@@ -276,9 +307,25 @@ app.get('/api/featured', async (_req, res) => {
 for (const [segment, Model] of Object.entries(MODELS)) {
   const label = segment.slice(0, -1);
 
-  app.get(`/api/${segment}`, async (_req, res) => {
+  app.get(`/api/${segment}`, async (req, res) => {
+    const page = lecturePaginee(req.query);
+    if (page.erreur) return res.status(400).json({ error: page.erreur });
     try {
-      res.json(await Model.find({}));
+      // Pas de `.lean()` ici, malgre le gain : le plugin `catalogue` convertit
+      // les anciennes mesures stockees en texte (« 6.8 pouces ») dans un hook
+      // `pre('init')`, et `lean()` saute l'hydratation, donc ce hook. Les
+      // fiches perdraient silencieusement ces valeurs.
+      const requete = Model.find({});
+      if (page.limit) requete.skip(page.skip).limit(page.limit);
+      const [documents, total] = await Promise.all([
+        requete,
+        page.limit ? Model.countDocuments({}) : null,
+      ]);
+      // La réponse reste un tableau nu, avec ou sans pagination : le front
+      // consomme directement `await response.json()`. Le total voyage en
+      // en-tête pour ne pas changer cette forme.
+      if (page.limit) res.set('X-Total-Count', String(total));
+      res.json(documents);
     } catch (err) {
       fail(res, 500, `Erreur lors de la lecture des ${segment}.`, err);
     }
@@ -291,13 +338,11 @@ for (const [segment, Model] of Object.entries(MODELS)) {
   // survivent — c'est tout l'interet du champ.
   app.get(`/api/${segment}/:id`, async (req, res) => {
     const cle = req.params.id;
-    if (!isValidId(cle) && !SLUG_VALIDE.test(cle)) {
+    if (!estReference(cle)) {
       return res.status(400).json({ error: 'Identifiant invalide.' });
     }
     try {
-      const doc = isValidId(cle)
-        ? await Model.findById(cle)
-        : await Model.findOne({ slug: cle });
+      const doc = isValidId(cle) ? await Model.findById(cle) : await Model.findOne({ slug: cle });
       if (!doc) return res.status(404).json({ error: `${label} non trouve.` });
       res.json(doc);
     } catch (err) {
@@ -313,12 +358,30 @@ for (const [segment, Model] of Object.entries(MODELS)) {
     if (ids.length > 10) {
       return res.status(400).json({ error: 'Maximum 10 produits par comparaison.' });
     }
-    const valid = ids.filter(isValidId);
-    if (valid.length === 0) {
+    /*
+     * Slugs acceptes au meme titre que les identifiants Mongo, comme sur la
+     * route d'une fiche.
+     *
+     * Sans cela, un lien de comparaison partage ne survivait pas au premier
+     * rechargement de la collection : l'adresse ne portait que des `_id`,
+     * reattribues a l'import, et la page repondait « Comparatif indisponible ».
+     * C'est exactement ce que le champ slug existe pour eviter — il n'etait
+     * simplement pas honore ici.
+     */
+    const cles = ids.filter(cle => typeof cle === 'string');
+    const identifiants = cles.filter(isValidId);
+    const slugs = cles.filter(cle => !isValidId(cle) && SLUG_VALIDE.test(cle));
+
+    if (identifiants.length === 0 && slugs.length === 0) {
       return res.status(400).json({ error: 'Aucun identifiant valide.' });
     }
+
+    const conditions = [];
+    if (identifiants.length > 0) conditions.push({ _id: { $in: identifiants } });
+    if (slugs.length > 0) conditions.push({ slug: { $in: slugs } });
+
     try {
-      res.json(await Model.find({ _id: { $in: valid } }));
+      res.json(await Model.find(conditions.length === 1 ? conditions[0] : { $or: conditions }));
     } catch (err) {
       fail(res, 500, 'Erreur lors de la comparaison.', err);
     }
@@ -347,7 +410,7 @@ for (const [segment, Model] of Object.entries(MODELS)) {
     try {
       const updated = await Model.findByIdAndUpdate(req.params.id, req.body, {
         new: true,
-        runValidators: true
+        runValidators: true,
       });
       if (!updated) return res.status(404).json({ error: `${label} non trouve.` });
       res.json(updated);
@@ -378,10 +441,25 @@ for (const [segment, Model] of Object.entries(MODELS)) {
 // pour ne pas envoyer d'identifiants internes a un service tiers et pour
 // eviter qu'un client injecte du texte arbitraire dans le prompt.
 const AI_FIELDS = [
-  'name', 'brand', 'cores', 'threads', 'max_freq_ghz', 'tdp',
-  'geekbench_single', 'geekbench_multi', 'benchmark_3dmark', 'memory_gb',
-  'cpu_name', 'gpu_name', 'ram_gb', 'storage_gb', 'battery_life_hours',
-  'display_brightness_nits', 'antutu_score', 'battery_mah', 'display_size'
+  'name',
+  'brand',
+  'cores',
+  'threads',
+  'max_freq_ghz',
+  'tdp',
+  'geekbench_single',
+  'geekbench_multi',
+  'benchmark_3dmark',
+  'memory_gb',
+  'cpu_name',
+  'gpu_name',
+  'ram_gb',
+  'storage_gb',
+  'battery_life_hours',
+  'display_brightness_nits',
+  'antutu_score',
+  'battery_mah',
+  'display_size',
 ];
 
 function sanitizeProduct(product) {
@@ -436,7 +514,8 @@ app.use((err, _req, res, _next) => {
   fail(res, 500, 'Erreur serveur.', err);
 });
 
-mongoose.connect(DB_URI)
+mongoose
+  .connect(DB_URI)
   .then(async () => {
     console.log('Connecte a MongoDB.');
 

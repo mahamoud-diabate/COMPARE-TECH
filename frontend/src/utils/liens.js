@@ -18,7 +18,8 @@
  * @returns {string} le chemin de la fiche
  */
 export function cheminProduit(type, produit) {
-  return `/${type}/${produit?.slug || produit?._id}`;
+  const ref = produit?.slug || produit?._id;
+  return ref ? `/${type}/${ref}` : `/${type}`;
 }
 
 export default cheminProduit;

@@ -38,7 +38,7 @@ function FilterSidebar({
           type="search"
           placeholder="Filtrer par nom…"
           value={searchTerm}
-          onChange={(e) => onSearchChange(e.target.value)}
+          onChange={e => onSearchChange(e.target.value)}
           aria-label="Filtrer la liste par nom"
         />
       </div>
@@ -47,7 +47,9 @@ function FilterSidebar({
         <div key={group.id}>
           <hr className="ct-card-sep" />
           <div className="ct-card-body-tight">
-            <div className="ct-label" style={{ marginBottom: 6 }}>{group.label}</div>
+            <div className="ct-label" style={{ marginBottom: 6 }}>
+              {group.label}
+            </div>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
               {group.options.map(option => {
                 const on = selectedFilters[group.id]?.includes(option);

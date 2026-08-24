@@ -87,7 +87,9 @@ function HomePage() {
     };
 
     load();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const total = Object.values(counts).reduce((sum, n) => sum + (n || 0), 0);
@@ -101,9 +103,9 @@ function HomePage() {
           </div>
           <div className="ct-card-body" style={{ paddingTop: 4 }}>
             <p className="ct-text-gray-small" style={{ maxWidth: 620 }}>
-              Processeurs, cartes graphiques, ordinateurs portables et téléphones,
-              notés sur une échelle commune à partir de benchmarks publics —
-              Geekbench 6 et 3DMark. {total > 0 && `${total} modèles référencés.`}
+              Processeurs, cartes graphiques, ordinateurs portables et téléphones, notés sur une
+              échelle commune à partir de benchmarks publics — Geekbench 6 et 3DMark.{' '}
+              {total > 0 && `${total} modèles référencés.`}
             </p>
           </div>
         </section>
@@ -172,9 +174,7 @@ function HomePage() {
                       src={product.imageUrl}
                       alt=""
                       loading="lazy"
-                      onError={() =>
-                        setFailedImages(prev => ({ ...prev, [product._id]: true }))
-                      }
+                      onError={() => setFailedImages(prev => ({ ...prev, [product._id]: true }))}
                     />
                   ) : (
                     <span className="ct-rank-thumb-empty">
@@ -206,18 +206,30 @@ function HomePage() {
           <div className="ct-card-body" style={{ paddingTop: 8 }}>
             <div className="ct-two-col">
               <dl style={{ margin: 0 }}>
-                <div className="ct-kv"><dt>Processeurs</dt><dd>Geekbench 6 · 70 % multi, 30 % mono</dd></div>
-                <div className="ct-kv"><dt>Cartes graphiques</dt><dd>3DMark</dd></div>
+                <div className="ct-kv">
+                  <dt>Processeurs</dt>
+                  <dd>Geekbench 6 · 70 % multi, 30 % mono</dd>
+                </div>
+                <div className="ct-kv">
+                  <dt>Cartes graphiques</dt>
+                  <dd>3DMark</dd>
+                </div>
               </dl>
               <dl style={{ margin: 0 }}>
-                <div className="ct-kv"><dt>Ordinateurs portables</dt><dd>Geekbench 6 multi-cœur</dd></div>
-                <div className="ct-kv"><dt>Téléphones</dt><dd>Geekbench 6 · 70 % multi, 30 % mono</dd></div>
+                <div className="ct-kv">
+                  <dt>Ordinateurs portables</dt>
+                  <dd>Geekbench 6 multi-cœur</dd>
+                </div>
+                <div className="ct-kv">
+                  <dt>Téléphones</dt>
+                  <dd>Geekbench 6 · 70 % multi, 30 % mono</dd>
+                </div>
               </dl>
             </div>
             <p className="ct-text-gray-small" style={{ marginTop: 12 }}>
-              Chaque score est ramené sur 100 par rapport à un plafond de référence propre
-              à la catégorie. Deux produits de catégories différentes ne sont donc pas
-              comparables entre eux par leur score.
+              Chaque score est ramené sur 100 par rapport à un plafond de référence propre à la
+              catégorie. Deux produits de catégories différentes ne sont donc pas comparables entre
+              eux par leur score.
             </p>
           </div>
         </section>

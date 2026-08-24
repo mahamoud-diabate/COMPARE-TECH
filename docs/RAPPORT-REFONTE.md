@@ -53,9 +53,9 @@ Retirés : `bootstrap`, `react-bootstrap`, `react-router-bootstrap`, `chart.js`,
 Restants : `react`, `react-dom`, `react-router-dom`, `react-hot-toast`,
 `lucide-react`.
 
-| | Avant | Après |
-| --- | --- | --- |
-| CSS | 247 Ko | **34 Ko** |
+|          | Avant  | Après      |
+| -------- | ------ | ---------- |
+| CSS      | 247 Ko | **34 Ko**  |
 | JS servi | 809 Ko | **381 Ko** |
 
 Le radar a été **réécrit en SVG à la main** (recharts pesait 319 Ko pour ce seul
@@ -95,12 +95,13 @@ alignée sur les modèles Mongo. Le formulaire d'administration en est dérivé.
   d'abord) et non l'intention du produit. Le classement sert à trouver un
   produit, la comparaison est ce qu'on vient faire : elle passe donc en tête.
   Mise en avant par la graisse et l'espace, jamais par la couleur.
+
 - **Titre et description par page**, dérivés des données.
 
 ### 2.5 Originalité — « CompareTech montre son calcul »
 
-Quatre chantiers exprimant une seule idée : *un comparateur qui affiche 88/100
-sans montrer d'où ça vient demande qu'on lui fasse confiance.*
+Quatre chantiers exprimant une seule idée : _un comparateur qui affiche 88/100
+sans montrer d'où ça vient demande qu'on lui fasse confiance._
 
 1. **Le calcul déplié.** Les formules sont décrites **en données**
    (`FORMULES` dans `scores.js`), pas écrites en code. Le total et son
@@ -129,11 +130,11 @@ sans montrer d'où ça vient demande qu'on lui fasse confiance.*
 Les constantes de couleur ne sont plus empruntées, mais dérivées de la palette
 du projet :
 
-| | Avant (repris) | Après (dérivé) |
-| --- | --- | --- |
+|                  | Avant (repris)                   | Après (dérivé)                                        |
+| ---------------- | -------------------------------- | ----------------------------------------------------- |
 | Échelle de notes | `#028612`, `#467546`, `#6c0180`… | `#1a7f37`, `#4d7c2a`, `#8a6a10`, `#b45309`, `#b42318` |
-| Cellule gagnante | `#eaf9e3` | `#e4f0e7` (vert A+ à 12 %) |
-| Accent | `#3949ab` (indigo) | `#2b333c` (graphite) |
+| Cellule gagnante | `#eaf9e3`                        | `#e4f0e7` (vert A+ à 12 %)                            |
+| Accent           | `#3949ab` (indigo)               | `#2b333c` (graphite)                                  |
 
 L'échelle de la référence était **incohérente** (vert → vert → **violet** →
 orange → rouge). La nouvelle est monotone, et ses **dix contrastes ont été
@@ -148,10 +149,10 @@ et non par un écart de luminosité.
 Système à deux sources : un fichier déposé dans `frontend/src/assets/icons/`,
 un tracé de repli sinon. **Deux techniques d'affichage selon le fichier :**
 
-| Type de fichier | Rendu | Suit le thème |
-| --- | --- | --- |
-| PNG en couleur (`cpu`, `gpu`, `laptop`, `phone`) | `<img>` tel quel | **non** |
-| PNG monochrome (`menu`, `ranking`, `compare`) | masque CSS `.nr-mask-icon` | **oui** |
+| Type de fichier                                  | Rendu                      | Suit le thème |
+| ------------------------------------------------ | -------------------------- | ------------- |
+| PNG en couleur (`cpu`, `gpu`, `laptop`, `phone`) | `<img>` tel quel           | **non**       |
+| PNG monochrome (`menu`, `ranking`, `compare`)    | masque CSS `.nr-mask-icon` | **oui**       |
 
 Le masque n'utilise que le canal alpha : la forme vient du fichier, la couleur
 du contexte. Il ne convient qu'aux fichiers sans couleur propre — un dessin
@@ -181,17 +182,17 @@ affiche un avertissement plutôt qu'une mention incomplète.
 
 Les causes racines valent d'être conservées.
 
-| Bug | Cause |
-| --- | --- |
-| Barre de comparaison à 8 500 px du haut | Un ancêtre avec `transform` devient le **bloc conteneur** des descendants `position: fixed` |
-| Barre de noms qui ne collait pas | `.nr-card` porte `overflow: hidden`, ce qui **annule `position: sticky`** |
-| Barre d'ancres qui disparaissait | Même cause |
-| Un comparatif à égalité annonçait un gagnant | `indexOf(Math.max(...))` renvoie le premier |
-| Un comparatif à 3 produits en ignorait un | `KeyDifferences` et le radar ne traitaient que 2 |
-| Flash de thème au premier rendu | `index.html` forçait le sombre, `App.jsx` le clair |
-| Tiroir fermé atteignable au clavier | React 19 ignore `inert=""` — il faut un **booléen** |
-| Icônes du menu absentes à l'ouverture | `loading="lazy"` repose sur l'intersection ; un tiroir hors écran ne se charge jamais |
-| 403 sur l'API en local | Le CORS de Render exclut `localhost` quand `NODE_ENV=production` |
+| Bug                                          | Cause                                                                                       |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| Barre de comparaison à 8 500 px du haut      | Un ancêtre avec `transform` devient le **bloc conteneur** des descendants `position: fixed` |
+| Barre de noms qui ne collait pas             | `.nr-card` porte `overflow: hidden`, ce qui **annule `position: sticky`**                   |
+| Barre d'ancres qui disparaissait             | Même cause                                                                                  |
+| Un comparatif à égalité annonçait un gagnant | `indexOf(Math.max(...))` renvoie le premier                                                 |
+| Un comparatif à 3 produits en ignorait un    | `KeyDifferences` et le radar ne traitaient que 2                                            |
+| Flash de thème au premier rendu              | `index.html` forçait le sombre, `App.jsx` le clair                                          |
+| Tiroir fermé atteignable au clavier          | React 19 ignore `inert=""` — il faut un **booléen**                                         |
+| Icônes du menu absentes à l'ouverture        | `loading="lazy"` repose sur l'intersection ; un tiroir hors écran ne se charge jamais       |
+| 403 sur l'API en local                       | Le CORS de Render exclut `localhost` quand `NODE_ENV=production`                            |
 
 ---
 
@@ -214,16 +215,16 @@ Tout est commité sur `refonte-interface`. Le préfixe des classes CSS est
 ### 5.1 Les données — bloquant
 
 **C'est le problème dominant.** Le commentaire de
-`backend/scripts/populateRemaining.js` le dit lui-même : *« ces produits sont
-générés, pas scrapés »*. Le catalogue contient des « Sony Phone Pro 21 », et
+`backend/scripts/populateRemaining.js` le dit lui-même : _« ces produits sont
+générés, pas scrapés »_. Le catalogue contient des « Sony Phone Pro 21 », et
 **119 processeurs sur 136 n'ont pas de note** faute de `geekbench_single`.
 
 | Collection | Total | Avec le benchmark clé |
-| --- | --- | --- |
-| CPU | 136 | **17** |
-| GPU | 104 | 104 |
-| Portables | 100 | 100 |
-| Téléphones | 100 | 100 |
+| ---------- | ----- | --------------------- |
+| CPU        | 136   | **17**                |
+| GPU        | 104   | 104                   |
+| Portables  | 100   | 100                   |
+| Téléphones | 100   | 100                   |
 
 `backend/scripts/purge.js` a été écrit pour vider les collections
 (`npm run purge`, sauvegarde JSON automatique, `--yes` obligatoire, ne touche
@@ -246,8 +247,8 @@ jamais `users`). **Il n'a jamais été exécuté.**
 Trois comportements reposent sur du raisonnement, faute d'un volet navigateur
 qui compose des frames :
 
-- le suivi de section au défilement (`IntersectionObserver`) — la *logique de
-  sélection* a été testée en pilotant le rappel à la main, pas le déclenchement ;
+- le suivi de section au défilement (`IntersectionObserver`) — la _logique de
+  sélection_ a été testée en pilotant le rappel à la main, pas le déclenchement ;
 - la réserve de hauteur au redimensionnement (`ResizeObserver`) — mesure
   initiale vérifiée, mise à jour non ;
 - le parcours réel à la touche `Tab` — la règle CSS est vérifiée dans la
@@ -325,6 +326,6 @@ npm --prefix backend test         # 10 tests
 - [`DESIGN.md`](DESIGN.md) — la charte : règle de couleur, formes, typographie,
   accessibilité non négociable, états obligatoires, et le piège du bloc
   conteneur.
-- [`README.md`](README.md) — section « Interface » : les trois fichiers qui
+- [`README.md`](../README.md) — section « Interface » : les trois fichiers qui
   concentrent la connaissance métier.
 - `frontend/src/assets/icons/LISEZ-MOI.md` — procédure d'ajout d'icône.

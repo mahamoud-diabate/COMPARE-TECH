@@ -5,13 +5,13 @@ l'icône correspondante dans toute l'interface — aucun code à modifier.
 
 ## Noms de fichiers attendus
 
-| Fichier | Remplace |
-| --- | --- |
-| `cpu.svg` | Processeurs |
-| `gpu.svg` | Cartes graphiques |
+| Fichier      | Remplace              |
+| ------------ | --------------------- |
+| `cpu.svg`    | Processeurs           |
+| `gpu.svg`    | Cartes graphiques     |
 | `laptop.svg` | Ordinateurs portables |
-| `phone.svg` | Téléphones |
-| `admin.svg` | Administration |
+| `phone.svg`  | Téléphones            |
+| `admin.svg`  | Administration        |
 
 Un fichier absent laisse simplement l'icône actuelle en place : tu peux donc
 n'en remplacer qu'une, ou les cinq, dans l'ordre que tu veux.
@@ -33,7 +33,7 @@ ici, via `frontend/src/components/Footer.jsx`.
 
 Renseigne le nom de l'auteur de chaque icône dans `ATTRIBUTIONS` (même
 fichier) : la page de téléchargement l'indique, sous la forme
-« Icon by *auteur* ». Sans cela, la mention affiche « auteur inconnu », ce qui
+« Icon by _auteur_ ». Sans cela, la mention affiche « auteur inconnu », ce qui
 ne satisfait pas la licence.
 
 Une licence Premium lève cette obligation.

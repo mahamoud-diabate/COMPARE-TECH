@@ -9,7 +9,12 @@ import { RADAR_AXES } from '../utils/radarAxes';
 
 const TYPES = [
   { type: 'telephone', collection: 'telephones', label: 'Téléphones', singular: 'téléphone' },
-  { type: 'laptop', collection: 'laptops', label: 'Ordinateurs portables', singular: 'ordinateur portable' },
+  {
+    type: 'laptop',
+    collection: 'laptops',
+    label: 'Ordinateurs portables',
+    singular: 'ordinateur portable',
+  },
   { type: 'cpu', collection: 'cpus', label: 'Processeurs', singular: 'processeur' },
   { type: 'gpu', collection: 'gpus', label: 'Cartes graphiques', singular: 'carte graphique' },
 ];
@@ -45,9 +50,7 @@ function CompareSelector({ type: initialType }) {
   // Critères annoncés dans l'introduction : lus depuis la définition des axes,
   // pas recopiés à la main. Ajouter un axe met le texte à jour tout seul, et
   // la promesse ne peut pas se désynchroniser de ce que la page affiche.
-  const criteres = (RADAR_AXES[type] || [])
-    .map(axis => axis.label.toLowerCase())
-    .join(', ');
+  const criteres = (RADAR_AXES[type] || []).map(axis => axis.label.toLowerCase()).join(', ');
 
   // Confrontations proposées : les voisins immédiats du classement. C'est là
   // que la question « lequel prendre » se pose vraiment — opposer le premier
@@ -59,19 +62,17 @@ function CompareSelector({ type: initialType }) {
       .sort((a, b) => b.score - a.score)
       .slice(0, 25);
 
-    return ranked
-      .slice(0, -1)
-      .map((entry, i) => [entry.product, ranked[i + 1].product]);
+    return ranked.slice(0, -1).map((entry, i) => [entry.product, ranked[i + 1].product]);
   }, [data, type]);
 
   const ready = first && second && first._id !== second._id;
 
-  const submit = (e) => {
+  const submit = e => {
     e.preventDefault();
     if (ready) navigate(`/compare?type=${type}&ids=${first._id},${second._id}`);
   };
 
-  const switchType = (next) => {
+  const switchType = next => {
     setType(next);
     setFirst(null);
     setSecond(null);
@@ -80,7 +81,9 @@ function CompareSelector({ type: initialType }) {
   return (
     <div className="ct-main">
       <div className="ct-breadcrumb">
-        <span><Link to="/">Accueil</Link></span>
+        <span>
+          <Link to="/">Accueil</Link>
+        </span>
         <span>Comparer</span>
       </div>
 
@@ -90,8 +93,8 @@ function CompareSelector({ type: initialType }) {
           <p className="ct-text-gray-small" style={{ marginBottom: 12 }}>
             {data.length > 0 && `${data.length} ${meta.label.toLowerCase()} au catalogue. `}
             Sélectionnez vos modèles : vous obtiendrez leurs écarts chiffrés
-            {criteres && `, une note sur 100 par critère — ${criteres} —`} et le tableau
-            complet des caractéristiques.
+            {criteres && `, une note sur 100 par critère — ${criteres} —`} et le tableau complet des
+            caractéristiques.
           </p>
         </div>
 

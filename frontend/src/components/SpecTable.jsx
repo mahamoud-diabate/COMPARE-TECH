@@ -25,12 +25,12 @@ function SpecTable({ products = [], showDifferencesOnly = false, productType }) 
 
   const groups = SPEC_GROUPS[type] || [];
 
-  const isIdentical = (key) => {
+  const isIdentical = key => {
     const first = list[0]?.[key];
     return list.every(p => String(p?.[key] ?? '') === String(first ?? ''));
   };
 
-  const hasAnyValue = (key) =>
+  const hasAnyValue = key =>
     list.some(p => p?.[key] !== undefined && p?.[key] !== null && p?.[key] !== '');
 
   const visibleGroups = groups
@@ -60,9 +60,8 @@ function SpecTable({ products = [], showDifferencesOnly = false, productType }) 
               </caption>
               <tbody>
                 {group.rows.map(row => {
-                  const winner = row.numeric && list.length > 1
-                    ? winnerIndex(list, row.key, row.invert)
-                    : -1;
+                  const winner =
+                    row.numeric && list.length > 1 ? winnerIndex(list, row.key, row.invert) : -1;
                   const equal = list.length > 1 && isIdentical(row.key);
 
                   return (

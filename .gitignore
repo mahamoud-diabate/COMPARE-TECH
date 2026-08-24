@@ -1,4 +1,10 @@
-
 .claude/
 node_modules/
 .env
+
+# Sorties des enregistreurs de docs/ : elles se regenerent en une commande
+# (npm run demo:gif / demo:video). Seuls les GIF de l'apercu du README sont
+# versionnes — ce sont les seuls que GitHub sait afficher dans un README.
+docs/.frames/
+docs/*.mp4
+docs/*.webm

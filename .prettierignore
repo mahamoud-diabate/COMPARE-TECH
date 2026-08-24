@@ -1,0 +1,7 @@
+node_modules/
+frontend/dist/
+backend/backup/
+backend/data/*.json
+package-lock.json
+**/package-lock.json
+docs/*.gif

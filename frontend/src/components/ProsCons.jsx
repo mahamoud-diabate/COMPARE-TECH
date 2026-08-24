@@ -22,7 +22,9 @@ function ProsCons({ product, title = 'Points forts et limites' }) {
             <div className="ct-title-h4">Avantages</div>
             {pros.length > 0 ? (
               <ul className="ct-proscons is-plus">
-                {pros.map((item, i) => <li key={i}>{item}</li>)}
+                {pros.map((item, i) => (
+                  <li key={i}>{item}</li>
+                ))}
               </ul>
             ) : (
               <p className="ct-text-gray-small">Non renseignés.</p>
@@ -32,7 +34,9 @@ function ProsCons({ product, title = 'Points forts et limites' }) {
             <div className="ct-title-h4">Inconvénients</div>
             {cons.length > 0 ? (
               <ul className="ct-proscons is-minus">
-                {cons.map((item, i) => <li key={i}>{item}</li>)}
+                {cons.map((item, i) => (
+                  <li key={i}>{item}</li>
+                ))}
               </ul>
             ) : (
               <p className="ct-text-gray-small">Non renseignés.</p>

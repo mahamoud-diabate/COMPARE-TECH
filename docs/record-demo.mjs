@@ -42,7 +42,7 @@ if (!NAVIGATEUR) {
   process.exit(1);
 }
 
-const attendre = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+const attendre = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 /*
  * Curseur factice.
@@ -118,7 +118,9 @@ class Enregistreur {
         const instant = Date.now();
         try {
           const { data } = await this.client.send('Page.captureScreenshot', {
-            format: 'jpeg', quality: 88, captureBeyondViewport: false,
+            format: 'jpeg',
+            quality: 88,
+            captureBeyondViewport: false,
           });
           this.images.push({ t: instant - debut, data });
         } catch {
@@ -135,19 +137,20 @@ class Enregistreur {
     await this.boucle;
   }
 
-  pause(ms) { return attendre(ms); }
+  pause(ms) {
+    return attendre(ms);
+  }
 
   async versSelecteur(selecteur, etapes = 22) {
-    const cible = await this.page.$eval(selecteur, (element) => {
+    const cible = await this.page.$eval(selecteur, element => {
       const rect = element.getBoundingClientRect();
       return { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
     });
     const depart = await this.page.evaluate(() => window.__cur || { x: 0, y: 0 });
     for (let i = 1; i <= etapes; i++) {
       const avancement = i / etapes;
-      const lisse = avancement < 0.5
-        ? 2 * avancement * avancement
-        : 1 - Math.pow(-2 * avancement + 2, 2) / 2;
+      const lisse =
+        avancement < 0.5 ? 2 * avancement * avancement : 1 - Math.pow(-2 * avancement + 2, 2) / 2;
       const x = depart.x + (cible.x - depart.x) * lisse;
       const y = depart.y + (cible.y - depart.y) * lisse;
       await this.page.evaluate((a, b) => window.__curTo(a, b), x, y);
@@ -174,25 +177,32 @@ class Enregistreur {
   // Défilement animé plutôt que saut : le lecteur du GIF doit pouvoir suivre
   // où il se trouve dans la page.
   defiler(distance, duree = 1400) {
-    return this.page.evaluate(async (pixels, ms) => {
-      const depart = window.scrollY;
-      const t0 = performance.now();
-      await new Promise((fini) => {
-        const etape = (maintenant) => {
-          const avancement = Math.min(1, (maintenant - t0) / ms);
-          const lisse = avancement < 0.5
-            ? 2 * avancement * avancement
-            : 1 - Math.pow(-2 * avancement + 2, 2) / 2;
-          window.scrollTo(0, depart + pixels * lisse);
-          avancement < 1 ? requestAnimationFrame(etape) : fini();
-        };
-        requestAnimationFrame(etape);
-      });
-    }, distance, duree);
+    return this.page.evaluate(
+      async (pixels, ms) => {
+        const depart = window.scrollY;
+        const t0 = performance.now();
+        await new Promise(fini => {
+          const etape = maintenant => {
+            const avancement = Math.min(1, (maintenant - t0) / ms);
+            const lisse =
+              avancement < 0.5
+                ? 2 * avancement * avancement
+                : 1 - Math.pow(-2 * avancement + 2, 2) / 2;
+            window.scrollTo(0, depart + pixels * lisse);
+            avancement < 1 ? requestAnimationFrame(etape) : fini();
+          };
+          requestAnimationFrame(etape);
+        });
+      },
+      distance,
+      duree
+    );
   }
 
   async aller(chemin) {
-    await this.page.goto(BASE + chemin, { waitUntil: 'networkidle2', timeout: 20000 }).catch(() => {});
+    await this.page
+      .goto(BASE + chemin, { waitUntil: 'networkidle2', timeout: 20000 })
+      .catch(() => {});
     await this.curseur();
   }
 
@@ -300,14 +310,26 @@ const SCENARIOS = {
  * changent réellement.
  */
 function assembler(dossier, sortie) {
-  execFileSync('ffmpeg', [
-    '-y', '-f', 'concat', '-safe', '0', '-i', join(dossier, 'list.txt'),
-    '-filter_complex',
-    'fps=12,scale=900:-1:flags=lanczos,split[a][b];'
-    + '[a]palettegen=max_colors=128:stats_mode=diff[p];'
-    + '[b][p]paletteuse=dither=bayer:bayer_scale=4:diff_mode=rectangle',
-    '-loop', '0', sortie,
-  ], { stdio: 'ignore' });
+  execFileSync(
+    'ffmpeg',
+    [
+      '-y',
+      '-f',
+      'concat',
+      '-safe',
+      '0',
+      '-i',
+      join(dossier, 'list.txt'),
+      '-filter_complex',
+      'fps=12,scale=900:-1:flags=lanczos,split[a][b];' +
+        '[a]palettegen=max_colors=128:stats_mode=diff[p];' +
+        '[b][p]paletteuse=dither=bayer:bayer_scale=4:diff_mode=rectangle',
+      '-loop',
+      '0',
+      sortie,
+    ],
+    { stdio: 'ignore' }
+  );
 }
 
 const demandes = process.argv.slice(2).filter(nom => SCENARIOS[nom]);

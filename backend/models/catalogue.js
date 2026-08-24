@@ -112,13 +112,16 @@ function catalogue(schema) {
     slug: { type: String, unique: true, sparse: true, trim: true, lowercase: true },
     provenance: {
       type: Map,
-      of: new Schema({
-        url: { type: String, trim: true, required: true },
-        releve_le: { type: Date, required: true },
-        // Le texte exact lu sur la page. C'est lui qui rend la valeur
-        // verifiable plus tard, sans avoir a refaire le releve a la main.
-        extrait: { type: String, trim: true },
-      }, { _id: false }),
+      of: new Schema(
+        {
+          url: { type: String, trim: true, required: true },
+          releve_le: { type: Date, required: true },
+          // Le texte exact lu sur la page. C'est lui qui rend la valeur
+          // verifiable plus tard, sans avoir a refaire le releve a la main.
+          extrait: { type: String, trim: true },
+        },
+        { _id: false }
+      ),
       default: undefined,
     },
   });
@@ -135,17 +138,14 @@ function catalogue(schema) {
   // faut donc traiter le tableau brut. Le `Set` evite qu'un lot contenant deux
   // fois le meme nom produise deux fois le meme slug.
   schema.pre('insertMany', async function attribueSlugsEnLot(next, docs) {
-    if (!Array.isArray(docs)) return next();
-    try {
-      const pris = new Set();
-      for (const doc of docs) {
-        if (!doc || doc.slug) continue;
-        doc.slug = await slugLibre(this, doc.name, pris);
-      }
-      next();
-    } catch (err) {
-      next(err);
+    const list = Array.isArray(next) ? next : docs;
+    if (!Array.isArray(list)) return typeof next === 'function' ? next() : undefined;
+    const pris = new Set();
+    for (const doc of list) {
+      if (!doc || doc.slug) continue;
+      doc.slug = await slugLibre(this, doc.name, pris);
     }
+    if (typeof next === 'function') next();
   });
 }
 

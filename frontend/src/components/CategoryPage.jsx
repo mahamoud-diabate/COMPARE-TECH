@@ -52,7 +52,7 @@ function CategoryPage({ collection, type, filterOptions = [], intro, introSansNo
    * redevient un classement toute seule.
    */
   const noteDisponible = data.some(produit => getProductScore(produit, type) > 0);
-  const introAffichee = noteDisponible ? intro : (introSansNote || intro);
+  const introAffichee = noteDisponible ? intro : introSansNote || intro;
 
   usePageTitle(
     `${BREADCRUMB[type] || collection} : ${noteDisponible ? 'classement par score' : 'catalogue'}`,
@@ -74,7 +74,7 @@ function CategoryPage({ collection, type, filterOptions = [], intro, introSansNo
   const resetFilters = () =>
     setSelectedFilters(Object.fromEntries(filterOptions.map(group => [group.id, []])));
 
-  const handleCompareToggle = (product) => {
+  const handleCompareToggle = product => {
     setCompareList(prev => {
       if (prev.some(item => item._id === product._id)) {
         return prev.filter(item => item._id !== product._id);
@@ -110,12 +110,16 @@ function CategoryPage({ collection, type, filterOptions = [], intro, introSansNo
       <AnimatedPage>
         <div className="ct-main-wide">
           <div className="ct-breadcrumb">
-            <span><Link to="/">Accueil</Link></span>
+            <span>
+              <Link to="/">Accueil</Link>
+            </span>
             <span>{BREADCRUMB[type] || collection}</span>
           </div>
 
           {introAffichee && (
-            <p className="ct-text-gray-small" style={{ padding: '0 4px 8px' }}>{introAffichee}</p>
+            <p className="ct-text-gray-small" style={{ padding: '0 4px 8px' }}>
+              {introAffichee}
+            </p>
           )}
 
           <div className="ct-layout">

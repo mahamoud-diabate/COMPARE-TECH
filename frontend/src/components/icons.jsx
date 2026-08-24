@@ -15,7 +15,7 @@ import { PNG, SVG } from '../utils/iconFiles';
  * `utils/iconFiles.js`.
  *
  * Les fichiers déposés sont affichés TELS QUELS, couleurs comprises. C'est un
- * écart assumé à la règle « la couleur est réservée à la donnée » (DESIGN.md,
+ * écart assumé à la règle « la couleur est réservée à la donnée » (docs/DESIGN.md,
  * section 1) : ces icônes sont choisies pour leur apparence, pas générées.
  * Conséquence à connaître : elles ne suivent pas le thème — un dessin clair
  * restera clair sur fond sombre.
@@ -26,7 +26,7 @@ const dimensionner = (source, size) =>
     .replace(/\s(width|height)="[^"]*"/g, '')
     .replace(/<svg/, `<svg width="${size}" height="${size}" aria-hidden="true" focusable="false"`);
 
-const base = (size) => ({
+const base = size => ({
   xmlns: 'http://www.w3.org/2000/svg',
   width: size,
   height: size,

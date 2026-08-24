@@ -12,7 +12,7 @@ function LoginPage() {
 
   usePageTitle('Administration');
 
-  const handleLogin = async (e) => {
+  const handleLogin = async e => {
     e.preventDefault();
     setLoading(true);
     try {
@@ -35,25 +35,29 @@ function LoginPage() {
         </div>
 
         <form className="ct-card-body" onSubmit={handleLogin}>
-          <label className="ct-label" htmlFor="login-user">Nom d’utilisateur</label>
+          <label className="ct-label" htmlFor="login-user">
+            Nom d’utilisateur
+          </label>
           <input
             id="login-user"
             className="ct-input"
             style={{ width: '100%', marginBottom: 12 }}
             type="text"
             value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={e => setUsername(e.target.value)}
             autoComplete="username"
           />
 
-          <label className="ct-label" htmlFor="login-pass">Mot de passe</label>
+          <label className="ct-label" htmlFor="login-pass">
+            Mot de passe
+          </label>
           <input
             id="login-pass"
             className="ct-input"
             style={{ width: '100%', marginBottom: 16 }}
             type="password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={e => setPassword(e.target.value)}
             autoComplete="current-password"
           />
 

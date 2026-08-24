@@ -34,7 +34,7 @@ const ringPolygon = (total, percent) =>
 // Ancrage du libellé selon sa position sur le cercle : un texte à droite doit
 // partir vers la droite, un texte à gauche vers la gauche, sinon il chevauche
 // le graphique.
-const anchorFor = (x) => {
+const anchorFor = x => {
   if (x > CENTER + 4) return 'start';
   if (x < CENTER - 4) return 'end';
   return 'middle';
@@ -66,8 +66,7 @@ function TechRadar({ products = [], productType }) {
   if (axes.length < 3) {
     return (
       <div className="ct-empty">
-        Les caractéristiques disponibles ne permettent pas de tracer un radar
-        (trois axes minimum).
+        Les caractéristiques disponibles ne permettent pas de tracer un radar (trois axes minimum).
       </div>
     );
   }
@@ -94,14 +93,26 @@ function TechRadar({ products = [], productType }) {
 
         {axes.map((axis, i) => {
           const [x, y] = pointAt(i, total, 100);
-          return <line key={axis.label} className="ct-radar-axis" x1={CENTER} y1={CENTER} x2={x} y2={y} />;
+          return (
+            <line
+              key={axis.label}
+              className="ct-radar-axis"
+              x1={CENTER}
+              y1={CENTER}
+              x2={x}
+              y2={y}
+            />
+          );
         })}
 
         {list.map((product, seriesIndex) => (
           <polygon
             key={`shape-${product._id || seriesIndex}`}
             className={`ct-radar-shape is-${SERIES[seriesIndex] || 'a'}`}
-            points={polygon(total, axes.map(axis => axis.values[seriesIndex] ?? 0))}
+            points={polygon(
+              total,
+              axes.map(axis => axis.values[seriesIndex] ?? 0)
+            )}
           />
         ))}
 

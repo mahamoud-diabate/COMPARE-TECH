@@ -23,7 +23,11 @@ const sourcesSvg = import.meta.glob('../assets/icons/*.svg', {
   import: 'default',
 });
 
-const nomDe = (chemin) => chemin.split('/').pop().replace(/\.(png|svg)$/, '');
+const nomDe = chemin =>
+  chemin
+    .split('/')
+    .pop()
+    .replace(/\.(png|svg)$/, '');
 
 export const PNG = Object.fromEntries(
   Object.entries(imagesPng).map(([chemin, url]) => [nomDe(chemin), url])

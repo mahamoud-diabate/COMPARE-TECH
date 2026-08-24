@@ -24,7 +24,11 @@ const conforme = () => ({
   brand: 'Exemple',
   cores: 24,
   provenance: {
-    cores: { url: 'https://exemple.invalid/fiche', releve_le: '2026-08-20', extrait: 'Total Cores 24' },
+    cores: {
+      url: 'https://exemple.invalid/fiche',
+      releve_le: '2026-08-20',
+      extrait: 'Total Cores 24',
+    },
   },
 });
 
@@ -138,7 +142,9 @@ test('valideProduit refuse une valeur hors de la plage declaree au modele', () =
   const produit = conforme();
   produit.max_freq_ghz = 570;
   produit.provenance.max_freq_ghz = {
-    url: 'https://exemple.invalid/f', releve_le: '2026-08-20', extrait: 'Max Frequency 570 GHz',
+    url: 'https://exemple.invalid/f',
+    releve_le: '2026-08-20',
+    extrait: 'Max Frequency 570 GHz',
   };
   assert.ok(valideProduit(Cpu, produit).some(e => /max_freq_ghz/.test(e)));
 });
@@ -173,7 +179,13 @@ test('valeurPresente n est pas trompee par un nombre plus long', () => {
 
 // --- garde 4 : diff et quarantaine ------------------------------------------
 
-const existant = { _id: '1', name: 'Exemple 9000', brand: 'Exemple', cores: 24, geekbench_multi: 20000 };
+const existant = {
+  _id: '1',
+  name: 'Exemple 9000',
+  brand: 'Exemple',
+  cores: 24,
+  geekbench_multi: 20000,
+};
 
 test('compareAuCatalogue signale un produit absent de la base comme creation', () => {
   const neuf = { name: 'Inedit 1', brand: 'Exemple', cores: 8 };
@@ -183,12 +195,14 @@ test('compareAuCatalogue signale un produit absent de la base comme creation', (
 });
 
 test('compareAuCatalogue applique une variation sous le seuil', () => {
-  const produit = { name: 'Exemple 9000', brand: 'Exemple', geekbench_multi: 20800 };  // +4 %
+  const produit = { name: 'Exemple 9000', brand: 'Exemple', geekbench_multi: 20800 }; // +4 %
   const bilan = compareAuCatalogue(Cpu, [produit], [existant], 10);
   assert.strictEqual(bilan.majs.length, 1);
   assert.strictEqual(bilan.quarantaine.length, 0);
   assert.deepStrictEqual(bilan.majs[0].changements[0], {
-    champ: 'geekbench_multi', vieux: 20000, neuf: 20800,
+    champ: 'geekbench_multi',
+    vieux: 20000,
+    neuf: 20800,
   });
 });
 
@@ -228,9 +242,12 @@ test('compareAuCatalogue rapproche les produits malgre la casse', () => {
 // --- garde 5 : coherence du lot -------------------------------------------
 
 /** Un lot de n produits portant les valeurs donnees sur un champ. */
-const lot = (champ, valeurs) => valeurs.map((v, i) => ({
-  name: `Essai ${i}`, brand: 'Essai', [champ]: v,
-}));
+const lot = (champ, valeurs) =>
+  valeurs.map((v, i) => ({
+    name: `Essai ${i}`,
+    brand: 'Essai',
+    [champ]: v,
+  }));
 
 test('incoherencesDuLot signale la valeur qui detonne dans le lot', () => {
   // Le cas reel : une note de site comparatif (91) prise pour un nombre de
@@ -272,12 +289,17 @@ test('incoherencesDuLot respecte le facteur demande', () => {
   assert.strictEqual(incoherencesDuLot(Cpu, lot('cores', valeurs), 4).length, 0);
 
   const serre = incoherencesDuLot(Cpu, lot('cores', valeurs), 2);
-  assert.deepStrictEqual(serre.map(s => s.valeur).sort((a, b) => a - b), [8, 60]);
+  assert.deepStrictEqual(
+    serre.map(s => s.valeur).sort((a, b) => a - b),
+    [8, 60]
+  );
 });
 
 test('incoherencesDuLot examine chaque champ separement', () => {
   const produits = lot('cores', [24, 20, 16, 24, 8, 12]);
-  produits.forEach((p, i) => { p.geekbench_multi = [20000, 21000, 19000, 22000, 20500, 120000][i]; });
+  produits.forEach((p, i) => {
+    p.geekbench_multi = [20000, 21000, 19000, 22000, 20500, 120000][i];
+  });
   const signalements = incoherencesDuLot(Cpu, produits);
   assert.strictEqual(signalements.length, 1);
   assert.strictEqual(signalements[0].champ, 'geekbench_multi');
@@ -300,7 +322,9 @@ test('valideProduit accepte les champs du modele et la provenance', () => {
   const produit = conforme();
   produit.threads = 32;
   produit.provenance.threads = {
-    url: 'https://exemple.invalid/fiche', releve_le: '2026-08-20', extrait: 'Total Threads 32',
+    url: 'https://exemple.invalid/fiche',
+    releve_le: '2026-08-20',
+    extrait: 'Total Threads 32',
   };
   produit.imageUrl = 'https://exemple.invalid/image.png';
   produit.pros = ['rapide'];

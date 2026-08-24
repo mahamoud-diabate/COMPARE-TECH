@@ -27,19 +27,19 @@ export const RADAR_AXES = {
     { label: 'Multi-cœur', field: 'geekbench_multi', max: 29000 },
     { label: 'Cœurs', field: 'cores', max: 24 },
     { label: 'Threads', field: 'threads', max: 32 },
-    { label: 'Fréquence', field: 'max_freq_ghz', max: 6 }
+    { label: 'Fréquence', field: 'max_freq_ghz', max: 6 },
   ],
   gpu: [
     { label: 'Performance 3D', field: 'benchmark_3dmark', max: 35000 },
     { label: 'VRAM', field: 'memory_gb', max: 24 },
-    { label: 'Unités de calcul', field: 'cores', max: 22000 }
+    { label: 'Unités de calcul', field: 'cores', max: 22000 },
   ],
   laptop: [
     { label: 'Performance', field: 'geekbench_multi', max: 26000 },
     { label: 'Mémoire', field: 'ram_gb', max: 64 },
     { label: 'Stockage', field: 'storage_gb', max: 4096 },
     { label: 'Luminosité', field: 'display_brightness_nits', max: 1600 },
-    { label: 'Autonomie', field: 'battery_life_hours', max: 20 }
+    { label: 'Autonomie', field: 'battery_life_hours', max: 20 },
   ],
   telephone: [
     { label: 'Mono-cœur', field: 'geekbench_single', max: 3600 },
@@ -47,8 +47,8 @@ export const RADAR_AXES = {
     { label: 'Batterie', field: 'battery_mah', max: 6000 },
     { label: 'Mémoire', field: 'ram_gb', max: 24 },
     { label: 'Stockage', field: 'storage_gb', max: 1024 },
-    { label: 'Écran', field: 'display_size', max: 7 }
-  ]
+    { label: 'Écran', field: 'display_size', max: 7 },
+  ],
 };
 
 // `productType` circule sous plusieurs formes selon les pages ('cpu', 'cpus',
@@ -66,19 +66,19 @@ export function resolveType(productType) {
 export const AXIS_HINTS = {
   'Mono-cœur': 'Réactivité sur une tâche unique',
   'Multi-cœur': 'Rendu, compilation, montage vidéo',
-  'Cœurs': 'Nombre de cœurs physiques',
-  'Threads': 'Fils d’exécution simultanés',
-  'Fréquence': 'Fréquence maximale atteinte',
+  Cœurs: 'Nombre de cœurs physiques',
+  Threads: 'Fils d’exécution simultanés',
+  Fréquence: 'Fréquence maximale atteinte',
   'Performance 3D': 'Rendu graphique et jeux',
-  'VRAM': 'Mémoire dédiée à la carte',
+  VRAM: 'Mémoire dédiée à la carte',
   'Unités de calcul': 'Cœurs CUDA (Nvidia) ou Stream (AMD) — non comparables entre marques',
-  'Performance': 'Puissance de calcul générale',
-  'Mémoire': 'Quantité de mémoire vive',
-  'Stockage': 'Capacité de stockage interne',
-  'Luminosité': 'Luminosité maximale de l’écran',
-  'Autonomie': 'Durée d’utilisation annoncée',
-  'Batterie': 'Capacité de la batterie',
-  'Écran': 'Diagonale de l’écran'
+  Performance: 'Puissance de calcul générale',
+  Mémoire: 'Quantité de mémoire vive',
+  Stockage: 'Capacité de stockage interne',
+  Luminosité: 'Luminosité maximale de l’écran',
+  Autonomie: 'Durée d’utilisation annoncée',
+  Batterie: 'Capacité de la batterie',
+  Écran: 'Diagonale de l’écran',
 };
 
 /**

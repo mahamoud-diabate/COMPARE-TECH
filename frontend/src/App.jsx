@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import LoadingSpinner from './components/LoadingSpinner';
 import { Toaster } from 'react-hot-toast';
 
 function App() {
@@ -18,7 +19,14 @@ function App() {
   }, [theme]);
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', background: 'var(--ct-bg)' }}>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: '100vh',
+        background: 'var(--ct-bg)',
+      }}
+    >
       <Toaster
         position="top-center"
         toastOptions={{
@@ -33,7 +41,19 @@ function App() {
       />
       <Header toggleTheme={toggleTheme} theme={theme} />
       <div style={{ flex: 1 }}>
-        <Outlet />
+        {/* Les écrans sont chargés à la demande (voir main.jsx). L'attente est
+            affichée ici, une fois pour toutes les routes : l'en-tête et le
+            pied de page restent en place pendant le téléchargement, la page
+            ne se vide pas. */}
+        <Suspense
+          fallback={
+            <div className="ct-main-wide">
+              <LoadingSpinner message="Chargement de la page…" />
+            </div>
+          }
+        >
+          <Outlet />
+        </Suspense>
       </div>
       <Footer />
     </div>

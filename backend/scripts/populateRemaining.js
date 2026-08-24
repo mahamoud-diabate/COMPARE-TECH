@@ -37,7 +37,7 @@ function makeRng(seed) {
 }
 
 const rand = makeRng(20250815);
-const pick = (arr) => arr[Math.floor(rand() * arr.length)];
+const pick = arr => arr[Math.floor(rand() * arr.length)];
 const between = (min, max) => Math.round(min + rand() * (max - min));
 
 // Vignette SVG encodee en data-URI : aucune requete reseau, jamais cassee.
@@ -49,33 +49,95 @@ function placeholder(label, bg) {
   return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg.replace(/\n/g, ''));
 }
 
-const PHONE_BRANDS = ['Apple', 'Samsung', 'Google', 'Xiaomi', 'Oppo', 'OnePlus', 'Motorola', 'Sony', 'Asus', 'Vivo'];
-const LAPTOP_BRANDS = ['Apple', 'Dell', 'HP', 'Lenovo', 'Asus', 'Acer', 'MSI', 'Microsoft', 'Razer', 'Gigabyte'];
+const PHONE_BRANDS = [
+  'Apple',
+  'Samsung',
+  'Google',
+  'Xiaomi',
+  'Oppo',
+  'OnePlus',
+  'Motorola',
+  'Sony',
+  'Asus',
+  'Vivo',
+];
+const LAPTOP_BRANDS = [
+  'Apple',
+  'Dell',
+  'HP',
+  'Lenovo',
+  'Asus',
+  'Acer',
+  'MSI',
+  'Microsoft',
+  'Razer',
+  'Gigabyte',
+];
 
 const BRAND_COLOR = {
-  Apple: '#4b5563', Samsung: '#1e40af', Google: '#0f766e', Xiaomi: '#c2410c',
-  Oppo: '#15803d', OnePlus: '#b91c1c', Motorola: '#1d4ed8', Sony: '#111827',
-  Vivo: '#6d28d9', Dell: '#075985', HP: '#0e7490', Lenovo: '#9f1239',
-  Acer: '#166534', MSI: '#7f1d1d', Microsoft: '#0369a1', Razer: '#3f6212',
-  Gigabyte: '#4338ca'
+  Apple: '#4b5563',
+  Samsung: '#1e40af',
+  Google: '#0f766e',
+  Xiaomi: '#c2410c',
+  Oppo: '#15803d',
+  OnePlus: '#b91c1c',
+  Motorola: '#1d4ed8',
+  Sony: '#111827',
+  Vivo: '#6d28d9',
+  Dell: '#075985',
+  HP: '#0e7490',
+  Lenovo: '#9f1239',
+  Acer: '#166534',
+  MSI: '#7f1d1d',
+  Microsoft: '#0369a1',
+  Razer: '#3f6212',
+  Gigabyte: '#4338ca',
 };
 
 // Gammes de laptops : chacune a sa propre fourchette de performance,
 // ce qui produit une vraie hierarchie au lieu d'une suite arithmetique.
 const LAPTOP_TIERS = [
-  { suffix: 'Air',      gb: [7000, 11000],  ramPool: [8, 16],       nits: [300, 400], batt: [10, 18], gpuPool: ['Integrated'] },
-  { suffix: 'Pro',      gb: [12000, 19000], ramPool: [16, 32],      nits: [400, 600], batt: [8, 14],  gpuPool: ['Integrated', 'Nvidia RTX 4060'] },
-  { suffix: 'Studio',   gb: [17000, 21500], ramPool: [32, 64],      nits: [500, 700], batt: [7, 12],  gpuPool: ['Nvidia RTX 4070', 'Nvidia RTX 4080'] },
+  {
+    suffix: 'Air',
+    gb: [7000, 11000],
+    ramPool: [8, 16],
+    nits: [300, 400],
+    batt: [10, 18],
+    gpuPool: ['Integrated'],
+  },
+  {
+    suffix: 'Pro',
+    gb: [12000, 19000],
+    ramPool: [16, 32],
+    nits: [400, 600],
+    batt: [8, 14],
+    gpuPool: ['Integrated', 'Nvidia RTX 4060'],
+  },
+  {
+    suffix: 'Studio',
+    gb: [17000, 21500],
+    ramPool: [32, 64],
+    nits: [500, 700],
+    batt: [7, 12],
+    gpuPool: ['Nvidia RTX 4070', 'Nvidia RTX 4080'],
+  },
   // Borne haute sous le diviseur du score (26000) : sinon le haut de gamme
   // sature a 100 et on recree une collision, en haut de classement cette fois.
-  { suffix: 'Extreme',  gb: [21500, 25800], ramPool: [32, 64, 128], nits: [500, 800], batt: [5, 9],   gpuPool: ['Nvidia RTX 4080', 'Nvidia RTX 4090'] }
+  {
+    suffix: 'Extreme',
+    gb: [21500, 25800],
+    ramPool: [32, 64, 128],
+    nits: [500, 800],
+    batt: [5, 9],
+    gpuPool: ['Nvidia RTX 4080', 'Nvidia RTX 4090'],
+  },
 ];
 
 const PHONE_TIERS = [
-  { suffix: 'SE',    antutu: [600000, 950000] },
-  { suffix: '',      antutu: [950000, 1500000] },
-  { suffix: 'Pro',   antutu: [1500000, 2300000] },
-  { suffix: 'Ultra', antutu: [2300000, 3150000] }
+  { suffix: 'SE', antutu: [600000, 950000] },
+  { suffix: '', antutu: [950000, 1500000] },
+  { suffix: 'Pro', antutu: [1500000, 2300000] },
+  { suffix: 'Ultra', antutu: [2300000, 3150000] },
 ];
 
 async function populateRemaining() {
@@ -107,7 +169,7 @@ async function populateRemaining() {
         imageUrl: placeholder(brand, BRAND_COLOR[brand] || '#334155'),
         antutu_score: between(tier.antutu[0], tier.antutu[1]),
         pros: ['Ecran lumineux', 'Charge rapide'],
-        cons: ['Prix eleve', 'Pas de prise jack']
+        cons: ['Prix eleve', 'Pas de prise jack'],
       });
     }
     await Telephone.deleteMany({});
@@ -137,7 +199,7 @@ async function populateRemaining() {
         display_brightness_nits: between(tier.nits[0], tier.nits[1]),
         battery_life_hours: between(tier.batt[0], tier.batt[1]),
         pros: ['Excellente finition', 'Fin et leger'],
-        cons: ['Ventilateurs audibles', 'Connectique limitee']
+        cons: ['Ventilateurs audibles', 'Connectique limitee'],
       });
     }
     await Laptop.deleteMany({});
@@ -145,13 +207,14 @@ async function populateRemaining() {
     console.log(`${laptops.length} laptops inseres.`);
 
     // Controle de qualite : verifie que la distribution est bien etalee.
-    const scores = laptops.map(l => Math.min(100, Math.round(l.geekbench_multi / 26000 * 100)));
+    const scores = laptops.map(l => Math.min(100, Math.round((l.geekbench_multi / 26000) * 100)));
     const uniques = new Set(scores);
-    console.log(`Scores laptops : ${uniques.size} valeurs distinctes, de ${Math.min(...scores)} a ${Math.max(...scores)}.`);
+    console.log(
+      `Scores laptops : ${uniques.size} valeurs distinctes, de ${Math.min(...scores)} a ${Math.max(...scores)}.`
+    );
     if (uniques.size < 30) {
       console.warn('ATTENTION : distribution des scores trop concentree.');
     }
-
   } catch (error) {
     console.error('Erreur :', error.message);
     process.exitCode = 1;

@@ -67,7 +67,8 @@ function ComparePage() {
   const names = products.map(p => p.name).join(' vs ');
   usePageTitle(
     names && `${names} : lequel choisir ?`,
-    names && `Comparatif détaillé : ${names}. Différences clés, notes par critère, benchmarks et tableau complet.`
+    names &&
+      `Comparatif détaillé : ${names}. Différences clés, notes par critère, benchmarks et tableau complet.`
   );
 
   const productType = searchParams.get('type') || '';
@@ -116,7 +117,7 @@ function ComparePage() {
     const visible = new Set();
 
     const observer = new IntersectionObserver(
-      (records) => {
+      records => {
         records.forEach(record => {
           const key = keyByNode.get(record.target);
           if (!key) return;
@@ -135,7 +136,6 @@ function ComparePage() {
     entries.forEach(([, node]) => observer.observe(node));
     return () => observer.disconnect();
   }, [products]);
-
 
   if (loading) {
     return (
@@ -185,13 +185,21 @@ function ComparePage() {
 
   const sections = SECTIONS.filter(section => !section.needsTwo || Boolean(p2));
 
-  const register = (key) => (node) => { sectionsRef.current[key] = node; };
+  const register = key => node => {
+    sectionsRef.current[key] = node;
+  };
 
   return (
     <div className="ct-main">
       <div className="ct-breadcrumb">
-        <span><Link to="/">Accueil</Link></span>
-        {type && <span><Link to={TYPE_PATH[type]}>{TYPE_LABEL[type]}</Link></span>}
+        <span>
+          <Link to="/">Accueil</Link>
+        </span>
+        {type && (
+          <span>
+            <Link to={TYPE_PATH[type]}>{TYPE_LABEL[type]}</Link>
+          </span>
+        )}
         <span>Comparatif</span>
       </div>
 
@@ -210,9 +218,16 @@ function ComparePage() {
                     <ScoreChip score={scores[index]} />
                   </div>
                   {product.imageUrl ? (
-                    <img className="ct-compare-head-img" src={product.imageUrl} alt={product.name} />
+                    <img
+                      className="ct-compare-head-img"
+                      src={product.imageUrl}
+                      alt={product.name}
+                    />
                   ) : (
-                    <div className="ct-compare-head-img" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <div
+                      className="ct-compare-head-img"
+                      style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                    >
                       <ImageOff size={28} strokeWidth={1.5} color="#9aa0a6" />
                     </div>
                   )}
@@ -228,25 +243,23 @@ function ComparePage() {
           {p2 && (
             <p className="ct-text-gray-small" style={{ marginTop: 12 }}>
               Comparatif de {products.length} {TYPE_LABEL[type] || 'produits'}.{' '}
-              {bestScore > 0 && (
-                leaders.length > 1 ? (
+              {bestScore > 0 &&
+                (leaders.length > 1 ? (
                   <>
-                    <strong>{leaders.map(p => p.name).join(' et ')}</strong> obtiennent la même
-                    note globale ({bestScore}/100).
+                    <strong>{leaders.map(p => p.name).join(' et ')}</strong> obtiennent la même note
+                    globale ({bestScore}/100).
                   </>
                 ) : (
                   <>
-                    <strong>{leaders[0].name}</strong> obtient la meilleure note globale
-                    ({bestScore}/100).
+                    <strong>{leaders[0].name}</strong> obtient la meilleure note globale (
+                    {bestScore}/100).
                   </>
-                )
-              )}{' '}
-              Les blocs ci-dessous détaillent les écarts, critère par critère, à partir des
-              seules valeurs mesurées.
+                ))}{' '}
+              Les blocs ci-dessous détaillent les écarts, critère par critère, à partir des seules
+              valeurs mesurées.
             </p>
           )}
         </div>
-
       </section>
 
       {/* Hors de la carte : `.ct-card` porte `overflow: hidden`, qui empêche
@@ -318,21 +331,29 @@ function ComparePage() {
         </div>
 
         <section className="ct-card">
-        <div className="ct-card-head" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 12 }}>
-          <div>
-            <h2 className="ct-title-h2">Spécifications</h2>
-            <p className="ct-text-gray-small" style={{ marginBottom: 12 }}>
-              Cellule verte : valeur la plus favorable de la ligne.
-            </p>
-          </div>
-          <button
-            type="button"
-            className={`ct-chip${showDifferencesOnly ? ' is-on' : ''}`}
-            onClick={() => setShowDifferencesOnly(v => !v)}
+          <div
+            className="ct-card-head"
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'flex-start',
+              gap: 12,
+            }}
           >
-            Différences seulement
-          </button>
-        </div>
+            <div>
+              <h2 className="ct-title-h2">Spécifications</h2>
+              <p className="ct-text-gray-small" style={{ marginBottom: 12 }}>
+                Cellule verte : valeur la plus favorable de la ligne.
+              </p>
+            </div>
+            <button
+              type="button"
+              className={`ct-chip${showDifferencesOnly ? ' is-on' : ''}`}
+              onClick={() => setShowDifferencesOnly(v => !v)}
+            >
+              Différences seulement
+            </button>
+          </div>
           <SpecTable
             products={products}
             productType={productType}

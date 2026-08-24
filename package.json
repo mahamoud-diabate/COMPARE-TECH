@@ -1,0 +1,27 @@
+{
+  "name": "compare-tech",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Monorepo COMPARE-TECH. Ce manifeste ne sert qu'a l'outillage de documentation : les enregistreurs de demonstration de docs/.",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "author": "Mahamoud Diabaté",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mahamoud-diabate/COMPARE-TECH.git"
+  },
+  "scripts": {
+    "format": "prettier --write --end-of-line auto .",
+    "format:check": "prettier --check --end-of-line auto .",
+    "verif:liens": "node scripts/verifie-liens.mjs",
+    "demo:gif": "node docs/record-demo.mjs",
+    "demo:video": "node docs/record-video.mjs"
+  },
+  "devDependencies": {
+    "prettier": "^3.9.6",
+    "puppeteer-core": "^25.8.0"
+  }
+}

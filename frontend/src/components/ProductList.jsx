@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { ImageOff } from 'lucide-react';
 import { ScoreBox } from './Score';
@@ -13,7 +13,7 @@ const TITLES = {
   telephone: 'Téléphones',
 };
 
-const resolveKey = (productType) => {
+const resolveKey = productType => {
   const type = String(productType || '');
   return Object.keys(TITLES).find(key => type.includes(key)) || 'cpu';
 };
@@ -39,8 +39,6 @@ const summarize = (product, key) => {
   return parts.join(' · ');
 };
 
-
-
 /**
  * Liste classée d'une catégorie.
  *
@@ -59,33 +57,55 @@ function ProductList({
   // Trier par score une liste où personne n'est noté ne trie rien : l'ordre
   // affiché serait celui de la base, sans que rien ne l'annonce. On classe
   // alors par nom, ce qui est au moins un ordre lisible.
-  const aucuneNote = cpus.every(p => getProductScore(p, productType) <= 0);
-  const [sortOption, setSortOption] = useState(aucuneNote ? 'name-asc' : 'score-desc');
+  //
+  // Calculé une seule fois, à l'initialisation : ce choix est le point de
+  // départ de l'utilisateur, pas une valeur à recalculer à chaque rendu.
+  const [sortOption, setSortOption] = useState(() =>
+    cpus.every(p => getProductScore(p, productType) <= 0) ? 'name-asc' : 'score-desc'
+  );
   const [failedImages, setFailedImages] = useState({});
 
   const key = resolveKey(productType);
 
-  const sorted = [...cpus].sort((a, b) => {
-    if (sortOption === 'name-asc') return a.name.localeCompare(b.name);
-    if (sortOption === 'name-desc') return b.name.localeCompare(a.name);
-    const sa = getProductScore(a, productType);
-    const sb = getProductScore(b, productType);
-    return sortOption === 'score-asc' ? sa - sb : sb - sa;
-  });
+  /*
+   * La note est calculée une fois par produit, puis transportée avec lui —
+   * jusque dans la ligne affichée, qui n'a plus à la redemander.
+   *
+   * Appelée depuis le comparateur, `getProductScore` était évaluée à chaque
+   * comparaison, soit de l'ordre de n·log n fois pour n produits, puis une
+   * fois de plus par ligne. Elle l'est maintenant n fois.
+   *
+   * Et sans la mémoïsation, tout repartait au moindre rendu : une vignette en
+   * échec suffisait à reclasser la liste, `failedImages` étant un état local.
+   */
+  const classes = useMemo(() => {
+    const parNom = (a, b) => (a.produit?.name || '').localeCompare(b.produit?.name || '');
+    const notes = cpus.map(produit => ({
+      produit,
+      note: getProductScore(produit, productType),
+    }));
+
+    if (sortOption === 'name-asc') return notes.sort(parNom);
+    if (sortOption === 'name-desc') return notes.sort((a, b) => parNom(b, a));
+    if (sortOption === 'score-asc') return notes.sort((a, b) => a.note - b.note);
+    return notes.sort((a, b) => b.note - a.note);
+  }, [cpus, sortOption, productType]);
 
   return (
     <section className="ct-card">
       <div className="ct-toolbar">
         <div>
-          <h1 className="ct-title-h2" style={{ display: 'inline' }}>{TITLES[key]}</h1>
+          <h1 className="ct-title-h2" style={{ display: 'inline' }}>
+            {TITLES[key]}
+          </h1>
           <span className="ct-text-gray-small" style={{ marginLeft: 8 }}>
-            {sorted.length} modèle{sorted.length > 1 ? 's' : ''}
+            {classes.length} modèle{classes.length > 1 ? 's' : ''}
           </span>
         </div>
         <select
           className="ct-select"
           value={sortOption}
-          onChange={(e) => setSortOption(e.target.value)}
+          onChange={e => setSortOption(e.target.value)}
           aria-label="Trier la liste"
         >
           <option value="score-desc">Score décroissant</option>
@@ -95,7 +115,7 @@ function ProductList({
         </select>
       </div>
 
-      {sorted.length === 0 ? (
+      {classes.length === 0 ? (
         <p className="ct-empty">Aucun produit ne correspond aux filtres.</p>
       ) : (
         <>
@@ -108,19 +128,12 @@ function ProductList({
             <span style={{ textAlign: 'center' }}>Comparer</span>
           </div>
 
-          {sorted.map((product, index) => {
+          {classes.map(({ produit: product, note: score }, index) => {
             const isSelected = compareList.includes(product._id);
-            const isDisabled =
-              compareType &&
-              compareList.length > 0 &&
-              productType !== compareType;
-            const score = getProductScore(product, productType);
+            const isDisabled = compareType && compareList.length > 0 && productType !== compareType;
 
             return (
-              <div
-                key={product._id}
-                className={`ct-rank-row${isDisabled ? ' is-disabled' : ''}`}
-              >
+              <div key={product._id} className={`ct-rank-row${isDisabled ? ' is-disabled' : ''}`}>
                 <span className="ct-rank-num">{index + 1}</span>
 
                 {product.imageUrl && !failedImages[product._id] ? (
@@ -129,9 +142,7 @@ function ProductList({
                     src={product.imageUrl}
                     alt=""
                     loading="lazy"
-                    onError={() =>
-                      setFailedImages(prev => ({ ...prev, [product._id]: true }))
-                    }
+                    onError={() => setFailedImages(prev => ({ ...prev, [product._id]: true }))}
                   />
                 ) : (
                   <span className="ct-rank-thumb-empty">

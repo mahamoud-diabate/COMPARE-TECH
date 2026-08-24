@@ -12,8 +12,8 @@ function LoadingSpinner({ message = 'Chargement des données…', coldStart = fa
             plutôt que de laisser croire à une panne. */}
         {coldStart && (
           <p className="ct-text-gray-small" style={{ maxWidth: 460, margin: '10px auto 0' }}>
-            Le serveur était en veille et redémarre — comptez une trentaine de
-            secondes au premier chargement. Les suivants sont immédiats.
+            Le serveur était en veille et redémarre — comptez une trentaine de secondes au premier
+            chargement. Les suivants sont immédiats.
           </p>
         )}
       </div>

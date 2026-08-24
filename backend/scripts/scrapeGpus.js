@@ -32,85 +32,93 @@ const Gpu = require('../models/Gpu');
  */
 
 const SOURCES = [
-    { marque: 'Nvidia', url: 'https://en.wikipedia.org/wiki/List_of_Nvidia_graphics_processing_units' },
-    { marque: 'AMD', url: 'https://en.wikipedia.org/wiki/List_of_AMD_graphics_processing_units' },
+  {
+    marque: 'Nvidia',
+    url: 'https://en.wikipedia.org/wiki/List_of_Nvidia_graphics_processing_units',
+  },
+  { marque: 'AMD', url: 'https://en.wikipedia.org/wiki/List_of_AMD_graphics_processing_units' },
 ];
 
-const DATE = /^(january|february|march|april|may|june|july|august|september|october|november|december)/i;
+const DATE =
+  /^(january|february|march|april|may|june|july|august|september|october|november|december)/i;
 
 // Un modele de carte graphique porte une lettre ET un chiffre, et n'est ni une
 // date, ni un nombre seul, ni un intitule de gamme.
 function nomPlausible(nom) {
-    if (!nom || nom.length < 3 || nom.length > 90) return false;
-    if (DATE.test(nom)) return false;
-    if (!/[a-z]/i.test(nom)) return false;
-    if (!/\d/.test(nom)) return false;
-    if (/series|family|edition/i.test(nom)) return false;
-    return true;
+  if (!nom || nom.length < 3 || nom.length > 90) return false;
+  if (DATE.test(nom)) return false;
+  if (!/[a-z]/i.test(nom)) return false;
+  if (!/\d/.test(nom)) return false;
+  if (/series|family|edition/i.test(nom)) return false;
+  return true;
 }
 
 async function scrapeGpus() {
-    const ignores = { nom: 0 };
+  const ignores = { nom: 0 };
 
-    try {
-        console.log('Connexion a MongoDB...');
-        await mongoose.connect(process.env.DB_URI);
+  try {
+    console.log('Connexion a MongoDB...');
+    await mongoose.connect(process.env.DB_URI);
 
-        const gpus = [];
-        const releve_le = new Date();
+    const gpus = [];
+    const releve_le = new Date();
 
-        for (const source of SOURCES) {
-            console.log(`Lecture de ${source.url}...`);
-            const { data } = await axios.get(source.url, {
-                headers: {
-                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-                }
-            });
-            const $ = cheerio.load(data);
+    for (const source of SOURCES) {
+      console.log(`Lecture de ${source.url}...`);
+      const { data } = await axios.get(source.url, {
+        headers: {
+          'User-Agent':
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        },
+      });
+      const $ = cheerio.load(data);
 
-            $('table.wikitable tr').each((index, element) => {
-                if (gpus.length >= 100) return false;
+      $('table.wikitable tr').each((index, element) => {
+        if (gpus.length >= 100) return false;
 
-                const row = $(element);
-                const cells = row.find('td');
-                if (cells.length < 5) return;
+        const row = $(element);
+        const cells = row.find('td');
+        if (cells.length < 5) return;
 
-                const name = $(cells[0]).text().trim();
-                if (!nomPlausible(name)) { ignores.nom++; return; }
-
-                // La memoire n'est retenue que si la ligne l'annonce. Absente,
-                // elle le reste : le frontend sait afficher une case vide, il
-                // ne sait pas deviner qu'un « 8 Go » est une valeur par defaut.
-                const memMatch = row.text().match(/(\d+)\s*GB/i);
-
-                const gpu = { name, brand: source.marque };
-                if (memMatch) {
-                    gpu.memory_gb = parseInt(memMatch[1], 10);
-                    gpu.provenance = {
-                        memory_gb: { url: source.url, releve_le, extrait: memMatch[0] },
-                    };
-                }
-
-                gpus.push(gpu);
-            });
+        const name = $(cells[0]).text().trim();
+        if (!nomPlausible(name)) {
+          ignores.nom++;
+          return;
         }
 
-        console.log(`${gpus.length} cartes retenues. Ecartes : ${ignores.nom} noms invalides.`);
+        // La memoire n'est retenue que si la ligne l'annonce. Absente,
+        // elle le reste : le frontend sait afficher une case vide, il
+        // ne sait pas deviner qu'un « 8 Go » est une valeur par defaut.
+        const memMatch = row.text().match(/(\d+)\s*GB/i);
 
-        if (gpus.length === 0) {
-            console.log('Rien a inserer — les selecteurs ont probablement change.');
-            return;
+        const gpu = { name, brand: source.marque };
+        if (memMatch) {
+          gpu.memory_gb = parseInt(memMatch[1], 10);
+          gpu.provenance = {
+            memory_gb: { url: source.url, releve_le, extrait: memMatch[0] },
+          };
         }
 
-        await Gpu.insertMany(gpus);
-        console.log(`${gpus.length} cartes inserees, sans benchmark (voir l'en-tete du fichier).`);
-    } catch (error) {
-        console.error('Echec du releve :', error.message);
-        process.exitCode = 1;
-    } finally {
-        await mongoose.disconnect();
-        console.log('Deconnecte de MongoDB.');
+        gpus.push(gpu);
+      });
     }
+
+    console.log(`${gpus.length} cartes retenues. Ecartes : ${ignores.nom} noms invalides.`);
+
+    if (gpus.length === 0) {
+      console.log('Rien a inserer — les selecteurs ont probablement change.');
+      return;
+    }
+
+    await Gpu.insertMany(gpus);
+    console.log(`${gpus.length} cartes inserees, sans benchmark (voir l'en-tete du fichier).`);
+  } catch (error) {
+    console.error('Echec du releve :', error.message);
+    process.exitCode = 1;
+  } finally {
+    await mongoose.disconnect();
+    console.log('Deconnecte de MongoDB.');
+  }
 }
 
 scrapeGpus();

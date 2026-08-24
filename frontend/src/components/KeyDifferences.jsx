@@ -54,7 +54,9 @@ function KeyDifferences({ products = [], productType }) {
 
               {columns[index]?.length > 0 ? (
                 <ul className="ct-proscons is-plus">
-                  {columns[index].map((reason, i) => <li key={i}>{reason}</li>)}
+                  {columns[index].map((reason, i) => (
+                    <li key={i}>{reason}</li>
+                  ))}
                 </ul>
               ) : (
                 <p className="ct-text-gray-small">

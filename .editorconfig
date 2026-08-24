@@ -1,0 +1,14 @@
+# Regles de base, appliquees par l'editeur avant meme le formateur.
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 2
+
+[*.md]
+# Deux espaces en fin de ligne valent un retour a la ligne en Markdown.
+trim_trailing_whitespace = false

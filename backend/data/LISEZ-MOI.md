@@ -64,14 +64,14 @@ n'affirme rien, elle n'a rien à prouver.
 
 ## 2. Les six gardes
 
-| | Garde | Coût | Ce qu'il attrape |
-| --- | --- | --- | --- |
-| 1 | Provenance obligatoire + valeur ⊂ extrait | nul | Le chiffre sorti de nulle part, **et le nombre rattaché au mauvais libellé** |
-| 2 | Champs connus du modèle | nul | La donnée que Mongoose jetterait en silence |
-| 3 | Plages de validité | nul | La faute de frappe (« 570 GHz ») |
-| 4 | Extrait retrouvé sur la page (`--verifier`) | une requête par source | Le chiffre plausible mais faux |
-| 5 | Quarantaine des écarts | nul | La collecte qui a dérapé |
-| 6 | Cohérence du lot | nul | La valeur qui détonne parmi ses voisines |
+|     | Garde                                       | Coût                   | Ce qu'il attrape                                                             |
+| --- | ------------------------------------------- | ---------------------- | ---------------------------------------------------------------------------- |
+| 1   | Provenance obligatoire + valeur ⊂ extrait   | nul                    | Le chiffre sorti de nulle part, **et le nombre rattaché au mauvais libellé** |
+| 2   | Champs connus du modèle                     | nul                    | La donnée que Mongoose jetterait en silence                                  |
+| 3   | Plages de validité                          | nul                    | La faute de frappe (« 570 GHz »)                                             |
+| 4   | Extrait retrouvé sur la page (`--verifier`) | une requête par source | Le chiffre plausible mais faux                                               |
+| 5   | Quarantaine des écarts                      | nul                    | La collecte qui a dérapé                                                     |
+| 6   | Cohérence du lot                            | nul                    | La valeur qui détonne parmi ses voisines                                     |
 
 **Les gardes 1 et 4 forment une chaîne** : `valeur ⊂ extrait ⊂ page`.
 
@@ -98,7 +98,7 @@ bouge, c'est le relevé qui a dérapé. Seuil ajustable par `--seuil=25`.
 
 **Le garde 6** compare chaque valeur à la médiane du fichier et signale ce qui
 s'en écarte de plus d'un facteur 4. C'est le seul qui regarde les produits
-*ensemble* : un `cores: 91` au milieu de 24, 20, 16 et 8 ne viole aucune règle
+_ensemble_ : un `cores: 91` au milieu de 24, 20, 16 et 8 ne viole aucune règle
 prise isolément, mais il détonne. Réglable par `--coherence=2`.
 
 Il **signale sans jamais bloquer** — certains champs s'étalent légitimement sur
@@ -149,10 +149,10 @@ C'est le premier avertissement de la consigne, gardez-le en tête en relisant.
 
 ## 5. Fichiers
 
-| Fichier | Rôle |
-| --- | --- |
-| `cpus.json`, `gpus.json`… | Le catalogue, versionné avec le code |
-| `demonstration.json` | Montre les gardes en action. **Ne jamais l'importer** — ses URL pointent sur `exemple.invalid`, réservé aux exemples |
+| Fichier                   | Rôle                                                                                                                 |
+| ------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `cpus.json`, `gpus.json`… | Le catalogue, versionné avec le code                                                                                 |
+| `demonstration.json`      | Montre les gardes en action. **Ne jamais l'importer** — ses URL pointent sur `exemple.invalid`, réservé aux exemples |
 
 ---
 

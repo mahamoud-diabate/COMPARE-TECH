@@ -150,7 +150,6 @@ export const KEY_METRICS = {
   gpu: [
     { key: 'benchmark_3dmark', label: 'de performances 3D' },
     { key: 'memory_gb', label: 'de mémoire vidéo', unit: 'Go' },
-
   ],
   laptop: [
     { key: 'geekbench_multi', label: 'de performances' },
@@ -211,16 +210,14 @@ export function winnerIndex(products, key, invert = false) {
   const values = products.map(p => toNumber(p?.[key]));
   const present = values.filter(v => v !== null && v > 0);
   if (present.length < 2) return -1;
-  if (present.every(v => v === present[0])) return -1;
 
-  let best = -1;
+  const bestVal = invert ? Math.min(...present) : Math.max(...present);
+  const bestIndices = [];
   values.forEach((v, i) => {
-    if (v === null || v <= 0) return;
-    if (best === -1) { best = i; return; }
-    const isBetter = invert ? v < values[best] : v > values[best];
-    if (isBetter) best = i;
+    if (v === bestVal) bestIndices.push(i);
   });
-  return best;
+
+  return bestIndices.length === 1 ? bestIndices[0] : -1;
 }
 
 /**
@@ -287,9 +284,7 @@ export function buildStrengths(products, productType) {
       const delta = Math.round(((mine - bestRival) / bestRival) * 100);
       if (delta < 3) return;
 
-      lines.push(
-        `${delta} % ${label} de plus que son meilleur rival (${formatValue(mine, unit)})`
-      );
+      lines.push(`${delta} % ${label} de plus que son meilleur rival (${formatValue(mine, unit)})`);
     });
 
     return lines;

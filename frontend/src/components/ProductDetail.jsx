@@ -55,8 +55,12 @@ function ProductDetail({ product, type }) {
   return (
     <div className="ct-main">
       <div className="ct-breadcrumb">
-        <span><Link to="/">Accueil</Link></span>
-        <span><Link to={meta.path}>{meta.label}</Link></span>
+        <span>
+          <Link to="/">Accueil</Link>
+        </span>
+        <span>
+          <Link to={meta.path}>{meta.label}</Link>
+        </span>
         <span>{product.name}</span>
       </div>
 
@@ -101,16 +105,21 @@ function ProductDetail({ product, type }) {
 
             <div style={{ flex: '1 1 300px', minWidth: 0 }}>
               <p className="ct-text-gray-small" style={{ marginBottom: 12 }}>
-                {product.brand} · {meta.label.toLowerCase()}. La note, son calcul et la
-                position de ce modèle dans le classement figurent juste en dessous.
+                {product.brand} · {meta.label.toLowerCase()}. La note, son calcul et la position de
+                ce modèle dans le classement figurent juste en dessous.
               </p>
 
               <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
                 <Link className="ct-btn ct-btn-ghost" to={meta.path}>
                   Voir tous les {meta.label.toLowerCase()}
                 </Link>
-                {product.buyUrl && (
-                  <a className="ct-btn" href={product.buyUrl} target="_blank" rel="noreferrer">
+                {product.buyUrl && /^https?:\/\//i.test(product.buyUrl) && (
+                  <a
+                    className="ct-btn"
+                    href={product.buyUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     Voir l’offre
                   </a>
                 )}

@@ -11,8 +11,6 @@ import React from 'react';
  * L'animation est neutralisée si l'utilisateur a demandé de réduire les
  * animations (voir `prefers-reduced-motion` dans index.css).
  */
-const AnimatedPage = ({ children }) => (
-  <div className="ct-page-enter">{children}</div>
-);
+const AnimatedPage = ({ children }) => <div className="ct-page-enter">{children}</div>;
 
 export default AnimatedPage;

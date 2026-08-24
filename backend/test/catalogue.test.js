@@ -15,7 +15,7 @@ const modeleAvec = (...slugs) => {
   return { exists: async ({ slug }) => (pris.has(slug) ? { _id: 1 } : null) };
 };
 
-test('sluggify transforme un nom de produit en segment d\'URL', () => {
+test("sluggify transforme un nom de produit en segment d'URL", () => {
   assert.strictEqual(sluggify('AMD Ryzen 7 7800X3D'), 'amd-ryzen-7-7800x3d');
 });
 

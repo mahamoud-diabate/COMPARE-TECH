@@ -43,12 +43,14 @@ const GROUPES = [
      * « Comparer deux produits » répéterait le même mot deux fois.
      */
     id: 'comparer',
-    liens: [{
-      to: '/compare',
-      label: 'Comparer',
-      marqueur: balance,
-      principal: true,
-    }],
+    liens: [
+      {
+        to: '/compare',
+        label: 'Comparer',
+        marqueur: balance,
+        principal: true,
+      },
+    ],
   },
   {
     id: 'classements',
@@ -94,7 +96,7 @@ function Sidebar({ ouvert, onClose, boutonRef, theme, toggleTheme }) {
     // déjà pointer ailleurs, et le focus reviendrait sur le mauvais élément.
     const declencheur = boutonRef?.current;
 
-    const onKeyDown = (e) => {
+    const onKeyDown = e => {
       if (e.key === 'Escape') onClose();
     };
 
@@ -127,7 +129,9 @@ function Sidebar({ ouvert, onClose, boutonRef, theme, toggleTheme }) {
         inert={!ouvert}
       >
         <div className="ct-drawer-head">
-          <span className="ct-logo">Compare<em>Tech</em></span>
+          <span className="ct-logo">
+            Compare<em>Tech</em>
+          </span>
           <button className="ct-icon-btn" onClick={onClose} aria-label="Fermer le menu">
             <X size={16} strokeWidth={2} />
           </button>
@@ -135,16 +139,18 @@ function Sidebar({ ouvert, onClose, boutonRef, theme, toggleTheme }) {
 
         {GROUPES.map(groupe => (
           <div key={groupe.id} className="ct-drawer-group">
-            {groupe.titre && <p className="ct-drawer-group-title">
-              {groupe.marqueur && (
-                <span
-                  className="ct-mask-icon"
-                  style={{ '--src': `url(${groupe.marqueur})`, width: 13, height: 13 }}
-                  aria-hidden="true"
-                />
-              )}
-              {groupe.titre}
-            </p>}
+            {groupe.titre && (
+              <p className="ct-drawer-group-title">
+                {groupe.marqueur && (
+                  <span
+                    className="ct-mask-icon"
+                    style={{ '--src': `url(${groupe.marqueur})`, width: 13, height: 13 }}
+                    aria-hidden="true"
+                  />
+                )}
+                {groupe.titre}
+              </p>
+            )}
             {groupe.liens.map(lien => (
               <NavLink
                 key={lien.to}
@@ -191,8 +197,9 @@ function estCourant(to, location) {
   const [chemin, requete] = to.split('?');
   if (chemin !== location.pathname) return false;
   if (!requete) return true;
-  return new URLSearchParams(location.search).get('type') ===
-    new URLSearchParams(requete).get('type');
+  return (
+    new URLSearchParams(location.search).get('type') === new URLSearchParams(requete).get('type')
+  );
 }
 
 export default Sidebar;

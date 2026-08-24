@@ -23,10 +23,13 @@ const CANDIDATS = [
   'C:/Program Files/Google/Chrome/Application/chrome.exe',
   'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe',
 ].filter(Boolean);
-const NAVIGATEUR = CANDIDATS.find((c) => existsSync(c));
-if (!NAVIGATEUR) { console.error('Aucun Chromium trouvé.'); process.exit(1); }
+const NAVIGATEUR = CANDIDATS.find(c => existsSync(c));
+if (!NAVIGATEUR) {
+  console.error('Aucun Chromium trouvé.');
+  process.exit(1);
+}
 
-const attendre = (ms) => new Promise((r) => setTimeout(r, ms));
+const attendre = ms => new Promise(r => setTimeout(r, ms));
 
 const CURSEUR = `
 (() => {
@@ -56,10 +59,15 @@ const CURSEUR = `
 
 class Enregistreur {
   constructor(page, client, dossier) {
-    this.page = page; this.client = client; this.dossier = dossier;
-    this.images = []; this.actif = false;
+    this.page = page;
+    this.client = client;
+    this.dossier = dossier;
+    this.images = [];
+    this.actif = false;
   }
-  async curseur() { await this.page.evaluate(CURSEUR).catch(() => {}); }
+  async curseur() {
+    await this.page.evaluate(CURSEUR).catch(() => {});
+  }
   demarrer() {
     this.actif = true;
     const debut = Date.now();
@@ -67,7 +75,11 @@ class Enregistreur {
       while (this.actif) {
         const instant = Date.now();
         try {
-          const { data } = await this.client.send('Page.captureScreenshot', { format: 'jpeg', quality: 92, captureBeyondViewport: false });
+          const { data } = await this.client.send('Page.captureScreenshot', {
+            format: 'jpeg',
+            quality: 92,
+            captureBeyondViewport: false,
+          });
           this.images.push({ t: instant - debut, data });
         } catch {}
         const passe = Date.now() - instant;
@@ -75,10 +87,15 @@ class Enregistreur {
       }
     })();
   }
-  async arreter() { this.actif = false; await this.boucle; }
-  pause(ms) { return attendre(ms); }
+  async arreter() {
+    this.actif = false;
+    await this.boucle;
+  }
+  pause(ms) {
+    return attendre(ms);
+  }
   async versSelecteur(selecteur, etapes = 22) {
-    const cible = await this.page.$eval(selecteur, (el) => {
+    const cible = await this.page.$eval(selecteur, el => {
       const r = el.getBoundingClientRect();
       return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
     });
@@ -97,28 +114,41 @@ class Enregistreur {
     await this.versSelecteur(selecteur);
     await attendre(160);
     await this.page.evaluate(() => window.__curDown());
-    await this.page.mouse.down(); await attendre(90); await this.page.mouse.up();
+    await this.page.mouse.down();
+    await attendre(90);
+    await this.page.mouse.up();
     await this.page.evaluate(() => window.__curUp());
     await attendre(repos);
   }
-  saisir(selecteur, texte, delai = 70) { return this.page.type(selecteur, texte, { delay: delai }); }
+  saisir(selecteur, texte, delai = 70) {
+    return this.page.type(selecteur, texte, { delay: delai });
+  }
   defiler(distance, duree = 1400) {
-    return this.page.evaluate(async (pixels, ms) => {
-      const depart = window.scrollY;
-      const t0 = performance.now();
-      await new Promise((fini) => {
-        const etape = (maintenant) => {
-          const avancement = Math.min(1, (maintenant - t0) / ms);
-          const lisse = avancement < 0.5 ? 2 * avancement * avancement : 1 - Math.pow(-2 * avancement + 2, 2) / 2;
-          window.scrollTo(0, depart + pixels * lisse);
-          avancement < 1 ? requestAnimationFrame(etape) : fini();
-        };
-        requestAnimationFrame(etape);
-      });
-    }, distance, duree);
+    return this.page.evaluate(
+      async (pixels, ms) => {
+        const depart = window.scrollY;
+        const t0 = performance.now();
+        await new Promise(fini => {
+          const etape = maintenant => {
+            const avancement = Math.min(1, (maintenant - t0) / ms);
+            const lisse =
+              avancement < 0.5
+                ? 2 * avancement * avancement
+                : 1 - Math.pow(-2 * avancement + 2, 2) / 2;
+            window.scrollTo(0, depart + pixels * lisse);
+            avancement < 1 ? requestAnimationFrame(etape) : fini();
+          };
+          requestAnimationFrame(etape);
+        });
+      },
+      distance,
+      duree
+    );
   }
   async aller(chemin) {
-    await this.page.goto(BASE + chemin, { waitUntil: 'networkidle2', timeout: 25000 }).catch(() => {});
+    await this.page
+      .goto(BASE + chemin, { waitUntil: 'networkidle2', timeout: 25000 })
+      .catch(() => {});
     await this.curseur();
   }
   ecrire() {
@@ -174,24 +204,43 @@ function assembler(dossier, nom) {
     ['mp4', 'libx264', ['-pix_fmt', 'yuv420p', '-crf', '20', '-preset', 'medium']],
     ['webm', 'libvpx-vp9', ['-pix_fmt', 'yuv420p', '-crf', '34', '-b:v', '0']],
   ]) {
-    execFileSync('ffmpeg', [
-      '-y', '-f', 'concat', '-safe', '0', '-i', manifest,
-      '-vf', 'fps=30,scale=1920:1080:flags=lanczos',
-      '-c:v', vcodec, ...extra, '-an',
-      join(ICI, `demo-${nom}.${ext}`),
-    ], { stdio: 'ignore' });
+    execFileSync(
+      'ffmpeg',
+      [
+        '-y',
+        '-f',
+        'concat',
+        '-safe',
+        '0',
+        '-i',
+        manifest,
+        '-vf',
+        'fps=30,scale=1920:1080:flags=lanczos',
+        '-c:v',
+        vcodec,
+        ...extra,
+        '-an',
+        join(ICI, `demo-${nom}.${ext}`),
+      ],
+      { stdio: 'ignore' }
+    );
   }
   console.log(`  → demo-${nom}.mp4 + .webm`);
 }
 
-const demandes = process.argv.slice(2).filter((n) => SCENARIOS[n]);
+const demandes = process.argv.slice(2).filter(n => SCENARIOS[n]);
 const liste = demandes.length ? demandes : Object.keys(SCENARIOS);
 
 const navigateur = await puppeteer.launch({
   executablePath: NAVIGATEUR,
   headless: true,
   defaultViewport: { width: 1280, height: 720, deviceScaleFactor: 1.5 },
-  args: ['--no-sandbox', '--disable-setuid-sandbox', '--hide-scrollbars', '--font-render-hinting=none'],
+  args: [
+    '--no-sandbox',
+    '--disable-setuid-sandbox',
+    '--hide-scrollbars',
+    '--font-render-hinting=none',
+  ],
 });
 
 for (const nom of liste) {

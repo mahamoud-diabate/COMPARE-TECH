@@ -47,7 +47,7 @@ const FORMULES = {
   },
 };
 
-const typeDe = (productType) => {
+const typeDe = productType => {
   const type = String(productType || '');
   return Object.keys(FORMULES).find(cle => type.includes(cle)) || null;
 };
@@ -97,10 +97,10 @@ export const getProductScore = (product, typeOverride) => {
 };
 
 // --- Compatibilité : les quatre formules nommées, dérivées de la même table.
-export const calculateCpuScore = (cpu) => explainScore(cpu, 'cpu').total;
-export const calculateGpuScore = (gpu) => explainScore(gpu, 'gpu').total;
-export const calculateLaptopScore = (laptop) => explainScore(laptop, 'laptop').total;
-export const calculateTelephoneScore = (tel) => explainScore(tel, 'telephone').total;
+export const calculateCpuScore = cpu => explainScore(cpu, 'cpu').total;
+export const calculateGpuScore = gpu => explainScore(gpu, 'gpu').total;
+export const calculateLaptopScore = laptop => explainScore(laptop, 'laptop').total;
+export const calculateTelephoneScore = tel => explainScore(tel, 'telephone').total;
 
 /*
  * Note-lettre associée à un score.
@@ -120,16 +120,16 @@ const GRADES = [
 
 const NO_GRADE = { letter: null, variable: 'var(--ct-g-none)' };
 
-export const scoreGrade = (score) => {
+export const scoreGrade = score => {
   if (!score || score <= 0) return NO_GRADE;
   return GRADES.find(grade => score >= grade.min) || NO_GRADE;
 };
 
 /** Raccourci : la seule couleur, pour un fond ou une bordure. */
-export const scoreVar = (score) => scoreGrade(score).variable;
+export const scoreVar = score => scoreGrade(score).variable;
 
 /** Conservé pour les appelants historiques (variantes Bootstrap). */
-export const getScoreColor = (score) => {
+export const getScoreColor = score => {
   if (!score || score === 0) return 'secondary';
   if (score >= 90) return 'success';
   if (score >= 70) return 'primary';
@@ -159,9 +159,8 @@ export function rankInCategory(product, peers, productType) {
   if (note <= 0 || notes.length < 2) return null;
 
   const milieu = Math.floor(notes.length / 2);
-  const mediane = notes.length % 2
-    ? notes[milieu]
-    : Math.round((notes[milieu - 1] + notes[milieu]) / 2);
+  const mediane =
+    notes.length % 2 ? notes[milieu] : Math.round((notes[milieu - 1] + notes[milieu]) / 2);
 
   // Rang au sens sportif : deux produits à égalité partagent le même rang.
   const rang = notes.filter(n => n > note).length + 1;

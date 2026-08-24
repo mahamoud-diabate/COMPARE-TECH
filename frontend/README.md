@@ -1,13 +1,15 @@
-﻿# Frontend — CompareTech
+# Frontend — COMPARE-TECH
 
-Interface web de la plateforme CompareTech développée avec React 19 et Vite.
+Interface web de la plateforme COMPARE-TECH développée avec React 19 et Vite.
 
 ## Architecture technique
 
 - **Framework** : React 19, React Router 7
-- **Style** : CSS natif modulaire (`src/index.css`) sans framework lourd (Bootstrap supprimé)
+- **Style** : une seule feuille, `src/index.css`, sans framework CSS. Classes `.ct-*`,
+  couleurs par variables `--ct-*` redéfinies sous `[data-theme="dark"]` — une couleur
+  en dur dans une règle de composant casserait le thème sombre. La charte : [`../docs/DESIGN.md`](../docs/DESIGN.md)
 - **Graphiques** : Tracé radar SVG natif (`src/components/TechRadar.jsx`) sans bibliothèque externe
-- **Tests** : 60 tests unitaires exécutés via `node --test`
+- **Tests** : 60 tests unitaires exécutés via `node --test`, sans dépendance
 
 ## Installation et commandes
 

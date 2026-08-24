@@ -1,10 +1,9 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
 // API visée par le proxy de développement. Même valeur de repli que
 // `src/api.js` : les deux doivent rester alignées.
-const API_TARGET =
-  process.env.VITE_API_BASE || 'https://mahamoud-compare-tech-api.onrender.com'
+const API_TARGET = process.env.VITE_API_BASE || 'https://mahamoud-compare-tech-api.onrender.com';
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -33,9 +32,9 @@ export default defineConfig({
         target: API_TARGET,
         changeOrigin: true,
         configure(proxy) {
-          proxy.on('proxyReq', proxyReq => proxyReq.removeHeader('origin'))
+          proxy.on('proxyReq', proxyReq => proxyReq.removeHeader('origin'));
         },
       },
     },
   },
-})
+});

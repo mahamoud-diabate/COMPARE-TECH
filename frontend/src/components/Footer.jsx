@@ -46,9 +46,13 @@ function Footer() {
 
         <nav style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
           {LINKS.map(link => (
-            <Link key={link.to} className="ct-text-small" to={link.to}>{link.label}</Link>
+            <Link key={link.to} className="ct-text-small" to={link.to}>
+              {link.label}
+            </Link>
           ))}
-          <Link className="ct-text-small" to="/login">Administration</Link>
+          <Link className="ct-text-small" to="/login">
+            Administration
+          </Link>
         </nav>
 
         <span className="ct-text-gray-small" style={{ marginLeft: 'auto' }}>
@@ -59,7 +63,7 @@ function Footer() {
           <span className="ct-text-gray-small" style={{ flex: '1 1 100%' }}>
             {ATTRIBUTIONS.length > 0 ? (
               <>
-                Remerciements a : {' '}
+                Remerciements a :{' '}
                 {ATTRIBUTIONS.map((a, i) => (
                   <React.Fragment key={a.auteur}>
                     {i > 0 && ', '}
@@ -93,8 +97,8 @@ function Footer() {
             ) : (
               <strong>
                 Attribution à renseigner pour {iconesFournies.length} icône
-                {iconesFournies.length > 1 ? 's' : ''} ({iconesFournies.join(', ')})
-                {' '}— voir src/assets/icons/LISEZ-MOI.md
+                {iconesFournies.length > 1 ? 's' : ''} ({iconesFournies.join(', ')}) — voir
+                src/assets/icons/LISEZ-MOI.md
               </strong>
             )}
           </span>

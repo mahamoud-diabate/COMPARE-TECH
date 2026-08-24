@@ -1,8 +1,8 @@
-import js from '@eslint/js'
-import globals from 'globals'
-import reactHooks from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
-import { defineConfig, globalIgnores } from 'eslint/config'
+import js from '@eslint/js';
+import globals from 'globals';
+import reactHooks from 'eslint-plugin-react-hooks';
+import reactRefresh from 'eslint-plugin-react-refresh';
+import { defineConfig, globalIgnores } from 'eslint/config';
 
 export default defineConfig([
   globalIgnores(['dist']),
@@ -38,7 +38,7 @@ export default defineConfig([
    * ignorer la sortie du linter.
    */
   {
-    files: ['*.config.js', 'capture_demo.js', 'test/**/*.js'],
+    files: ['*.config.js', 'test/**/*.js'],
     extends: [js.configs.recommended],
     languageOptions: {
       ecmaVersion: 'latest',
@@ -46,4 +46,4 @@ export default defineConfig([
       parserOptions: { sourceType: 'module' },
     },
   },
-])
+]);

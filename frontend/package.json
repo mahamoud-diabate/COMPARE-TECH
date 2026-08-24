@@ -1,8 +1,19 @@
 {
   "name": "compare-tech-frontend",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "Interface web de COMPARE-TECH : navigation du catalogue, comparaison chiffree et radar de profil.",
   "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "author": "Mahamoud Diabaté",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mahamoud-diabate/COMPARE-TECH.git",
+    "directory": "frontend"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",

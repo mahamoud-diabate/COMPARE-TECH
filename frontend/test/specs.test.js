@@ -87,6 +87,11 @@ test('winnerIndex inversé désigne la plus petite valeur', () => {
 test('winnerIndex ne désigne personne à égalité', () => {
   // Surligner une égalité laisserait croire à un avantage.
   assert.equal(winnerIndex([{ ram_gb: 16 }, { ram_gb: 16 }], 'ram_gb'), -1);
+  assert.equal(
+    winnerIndex([{ ram_gb: 32 }, { ram_gb: 32 }, { ram_gb: 16 }], 'ram_gb'),
+    -1,
+    'ex-aequo en tête'
+  );
 });
 
 test('winnerIndex ne désigne personne s’il manque un point de comparaison', () => {
@@ -108,8 +113,14 @@ const intel = { name: 'Intel', geekbench_multi: 21000, geekbench_single: 3100, c
 test('buildKeyDifferences range chaque écart du côté du gagnant', () => {
   const diff = buildKeyDifferences(ryzen, intel, 'cpu');
 
-  assert.ok(diff.a.some(line => line.includes('multi-cœur')), 'le multi-cœur revient au premier');
-  assert.ok(diff.b.some(line => line.includes('de cœurs')), 'le nombre de cœurs revient au second');
+  assert.ok(
+    diff.a.some(line => line.includes('multi-cœur')),
+    'le multi-cœur revient au premier'
+  );
+  assert.ok(
+    diff.b.some(line => line.includes('de cœurs')),
+    'le nombre de cœurs revient au second'
+  );
   assert.ok(diff.a.every(line => !line.includes('de cœurs')));
 });
 
@@ -193,9 +204,18 @@ test('buildStrengths ne retient que les critères où le produit devance tous le
 
   const [sa, sb, sc] = buildStrengths([a, b, c], 'cpu');
 
-  assert.ok(sa.some(line => line.includes('multi-cœur')), 'A mène en multi-cœur');
-  assert.ok(sa.every(line => !line.includes('de cœurs')), 'A ne mène pas sur les cœurs');
-  assert.ok(sb.some(line => line.includes('de cœurs')), 'B mène sur les cœurs');
+  assert.ok(
+    sa.some(line => line.includes('multi-cœur')),
+    'A mène en multi-cœur'
+  );
+  assert.ok(
+    sa.every(line => !line.includes('de cœurs')),
+    'A ne mène pas sur les cœurs'
+  );
+  assert.ok(
+    sb.some(line => line.includes('de cœurs')),
+    'B mène sur les cœurs'
+  );
   assert.deepEqual(sc, [], 'C ne mène sur rien');
 });
 
@@ -229,9 +249,7 @@ test('les unités de calcul GPU ne désignent pas de gagnant', () => {
   // RTX 4080 SUPER, et la devance pourtant de 9 % en Time Spy. Marquer cette
   // ligne `numeric` surlignerait le plus grand nombre comme vainqueur, ce qui
   // est faux. Le classement, lui, repose sur Time Spy — qui est comparable.
-  const ligne = SPEC_GROUPS.gpu
-    .flatMap(groupe => groupe.rows)
-    .find(r => r.key === 'cores');
+  const ligne = SPEC_GROUPS.gpu.flatMap(groupe => groupe.rows).find(r => r.key === 'cores');
 
   assert.ok(ligne, 'la ligne doit rester affichée');
   assert.notEqual(ligne.numeric, true, 'aucun gagnant ne doit être désigné sur cette ligne');

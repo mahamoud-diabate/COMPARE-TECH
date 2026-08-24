@@ -1,18 +1,32 @@
 {
-  "name": "backend-api",
+  "name": "compare-tech-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "API REST de COMPARE-TECH : catalogue CPU/GPU/portables/telephones, authentification admin et verdict genere par IA.",
   "main": "server.js",
+  "type": "commonjs",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "start": "node server.js",
     "test": "node --test \"test/*.test.js\"",
     "purge": "node scripts/purge.js",
     "import": "node scripts/import.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
+  "keywords": [
+    "api",
+    "express",
+    "mongodb",
+    "comparateur",
+    "hardware"
+  ],
+  "author": "Mahamoud Diabaté",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mahamoud-diabate/COMPARE-TECH.git",
+    "directory": "backend"
+  },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
     "axios": "^1.18.0",

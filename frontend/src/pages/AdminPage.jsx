@@ -17,9 +17,27 @@ const COLLECTIONS = [
 // fois à choisir le type d'input et à convertir avant l'envoi : une chaîne
 // "16" enregistrée dans un champ Number casse ensuite tous les tris.
 const NUMERIC_FIELDS = new Set([
-  'cores', 'threads', 'ram_gb', 'storage_gb', 'battery_mah', 'memory_gb',
-  'geekbench_single', 'geekbench_multi', 'benchmark_3dmark', 'antutu_score',
-  'display_brightness_nits', 'battery_life_hours',
+  'cores',
+  'threads',
+  'ram_gb',
+  'storage_gb',
+  'battery_mah',
+  'memory_gb',
+  'geekbench_single',
+  'geekbench_multi',
+  'benchmark_3dmark',
+  'antutu_score',
+  'display_brightness_nits',
+  'battery_life_hours',
+  'max_freq_ghz',
+  'base_freq_ghz',
+  'base_freq_mhz',
+  'boost_freq_mhz',
+  'compute_units',
+  'tdp',
+  'display_size',
+  'refresh_rate_hz',
+  'charging_watt',
 ]);
 
 const EMPTY = { name: '', brand: '', imageUrl: '', pros: '', cons: '' };
@@ -68,10 +86,9 @@ function AdminPage() {
     setFormData(EMPTY);
   }, [fetchProducts]);
 
-  const handleChange = (e) =>
-    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  const handleChange = e => setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
 
-  const handleEdit = (product) => {
+  const handleEdit = product => {
     setEditingId(product._id);
     setFormData({
       ...EMPTY,
@@ -103,7 +120,7 @@ function AdminPage() {
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
 
     // Verrou de soumission : sans lui, trois clics impatients sur « Ajouter »
@@ -121,7 +138,10 @@ function AdminPage() {
 
     ['pros', 'cons'].forEach(field => {
       if (typeof payload[field] === 'string') {
-        payload[field] = payload[field].split(',').map(s => s.trim()).filter(Boolean);
+        payload[field] = payload[field]
+          .split(',')
+          .map(s => s.trim())
+          .filter(Boolean);
       }
     });
 
@@ -177,34 +197,52 @@ function AdminPage() {
         </div>
 
         <form className="ct-card-body" onSubmit={handleSubmit}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12, marginBottom: 14 }}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              gap: 12,
+              marginBottom: 14,
+            }}
+          >
             <div className="ct-title-h4" style={{ paddingBottom: 0 }}>
               {editingId ? 'Modifier un produit' : 'Ajouter un produit'}
             </div>
             {editingId && (
-              <button type="button" className="ct-btn ct-btn-ghost ct-btn-sm" onClick={handleCancel}>
+              <button
+                type="button"
+                className="ct-btn ct-btn-ghost ct-btn-sm"
+                onClick={handleCancel}
+              >
                 Annuler l’édition
               </button>
             )}
           </div>
 
-          <label className="ct-label" htmlFor="admin-collection">Catégorie</label>
+          <label className="ct-label" htmlFor="admin-collection">
+            Catégorie
+          </label>
           <select
             id="admin-collection"
             className="ct-select"
             style={{ width: '100%', marginBottom: 14 }}
             value={collection}
-            onChange={(e) => setCollection(e.target.value)}
+            onChange={e => setCollection(e.target.value)}
             disabled={Boolean(editingId)}
           >
             {COLLECTIONS.map(item => (
-              <option key={item.value} value={item.value}>{item.label}</option>
+              <option key={item.value} value={item.value}>
+                {item.label}
+              </option>
             ))}
           </select>
 
           <div className="ct-two-col">
             <div style={{ marginBottom: 12 }}>
-              <label className="ct-label" htmlFor="admin-name">Nom</label>
+              <label className="ct-label" htmlFor="admin-name">
+                Nom
+              </label>
               <input
                 id="admin-name"
                 className="ct-input"
@@ -216,7 +254,9 @@ function AdminPage() {
               />
             </div>
             <div style={{ marginBottom: 12 }}>
-              <label className="ct-label" htmlFor="admin-brand">Marque</label>
+              <label className="ct-label" htmlFor="admin-brand">
+                Marque
+              </label>
               <input
                 id="admin-brand"
                 className="ct-input"
@@ -229,7 +269,9 @@ function AdminPage() {
             </div>
           </div>
 
-          <label className="ct-label" htmlFor="admin-image">URL de l’image</label>
+          <label className="ct-label" htmlFor="admin-image">
+            URL de l’image
+          </label>
           <input
             id="admin-image"
             className="ct-input"
@@ -247,7 +289,8 @@ function AdminPage() {
             {specFields.map(field => (
               <div key={field.key} style={{ marginBottom: 12 }}>
                 <label className="ct-label" htmlFor={`admin-${field.key}`}>
-                  {field.label}{field.unit ? ` (${field.unit})` : ''}
+                  {field.label}
+                  {field.unit ? ` (${field.unit})` : ''}
                 </label>
                 <input
                   id={`admin-${field.key}`}
@@ -270,7 +313,9 @@ function AdminPage() {
             Un élément par virgule.
           </p>
 
-          <label className="ct-label" htmlFor="admin-pros">Avantages</label>
+          <label className="ct-label" htmlFor="admin-pros">
+            Avantages
+          </label>
           <textarea
             id="admin-pros"
             className="ct-input"
@@ -282,7 +327,9 @@ function AdminPage() {
             placeholder="Écran lumineux, Autonomie confortable"
           />
 
-          <label className="ct-label" htmlFor="admin-cons">Inconvénients</label>
+          <label className="ct-label" htmlFor="admin-cons">
+            Inconvénients
+          </label>
           <textarea
             id="admin-cons"
             className="ct-input"
@@ -347,10 +394,7 @@ function AdminPage() {
                     <td className="cell-v">{product.brand}</td>
                     <td>
                       <div style={{ display: 'flex', gap: 6 }}>
-                        <button
-                          className="ct-chip"
-                          onClick={() => handleEdit(product)}
-                        >
+                        <button className="ct-chip" onClick={() => handleEdit(product)}>
                           Modifier
                         </button>
                         <button

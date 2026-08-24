@@ -25,9 +25,9 @@ function CompareWith({ product, type, others = [] }) {
     .sort((a, b) => Math.abs(a.score - score) - Math.abs(b.score - score))
     .slice(0, 3);
 
-  const compareUrl = (otherId) => `/compare?type=${type}&ids=${product._id},${otherId}`;
+  const compareUrl = otherId => `/compare?type=${type}&ids=${product._id},${otherId}`;
 
-  const submit = (e) => {
+  const submit = e => {
     e.preventDefault();
     if (choice) navigate(compareUrl(choice));
   };
@@ -61,11 +61,13 @@ function CompareWith({ product, type, others = [] }) {
             className="ct-select"
             style={{ flex: '1 1 240px' }}
             value={choice}
-            onChange={(e) => setChoice(e.target.value)}
+            onChange={e => setChoice(e.target.value)}
           >
             <option value="">Sélectionner un modèle…</option>
             {others.map(other => (
-              <option key={other._id} value={other._id}>{other.name}</option>
+              <option key={other._id} value={other._id}>
+                {other.name}
+              </option>
             ))}
           </select>
           <button className="ct-btn" type="submit" disabled={!choice}>

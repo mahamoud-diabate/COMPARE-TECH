@@ -45,7 +45,7 @@ export async function login(username, password) {
   const response = await fetch(`${API_BASE}/auth/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username, password })
+    body: JSON.stringify({ username, password }),
   });
   const data = await response.json().catch(() => ({}));
   if (!response.ok) {
@@ -68,7 +68,7 @@ function authHeaders(extra = {}) {
 export async function adminFetch(url, options = {}) {
   const response = await fetch(url, {
     ...options,
-    headers: authHeaders(options.headers || {})
+    headers: authHeaders(options.headers || {}),
   });
 
   if (response.status === 401) {

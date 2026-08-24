@@ -1,4 +1,0 @@
-PAGE(PRODUCT LIST)
-import React {useState} from 'react';: est un framework est une librairie javascript il utile le jsx 
-
-le jsx est une syntaxe html

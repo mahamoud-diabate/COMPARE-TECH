@@ -92,7 +92,11 @@ function champsMesures(Model) {
 
 /** Cle de rapprochement avec l'existant. Un produit, c'est un nom chez une marque. */
 function cleNaturelle(produit) {
-  const norme = v => String(v || '').trim().toLowerCase().replace(/\s+/g, ' ');
+  const norme = v =>
+    String(v || '')
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, ' ');
   return `${norme(produit.brand)}::${norme(produit.name)}`;
 }
 
@@ -103,7 +107,7 @@ function cleNaturelle(produit) {
 function valideProduit(Model, produit) {
   const erreurs = [];
 
-  if (!produit || typeof produit !== 'object') return ['entree qui n\'est pas un objet'];
+  if (!produit || typeof produit !== 'object') return ["entree qui n'est pas un objet"];
   if (!produit.name) erreurs.push('nom absent');
   if (!produit.brand) erreurs.push('marque absente');
 
@@ -116,7 +120,7 @@ function valideProduit(Model, produit) {
     if (!connus.has(champ)) {
       erreurs.push(
         `${champ} : champ inconnu du modele — il serait perdu a l'ecriture. ` +
-        `Ajoutez-le au schema, ou retirez-le du fichier.`
+          `Ajoutez-le au schema, ou retirez-le du fichier.`
       );
     }
   }
@@ -126,8 +130,8 @@ function valideProduit(Model, produit) {
   const erreurSchema = new Model(produit).validateSync();
   if (erreurSchema) {
     for (const [champ, detail] of Object.entries(erreurSchema.errors)) {
-      if (champ === 'slug') continue;                 // attribue a l'ecriture
-      if (champ.startsWith('provenance.')) continue;  // message plus clair plus bas
+      if (champ === 'slug') continue; // attribue a l'ecriture
+      if (champ.startsWith('provenance.')) continue; // message plus clair plus bas
       erreurs.push(`${champ} : ${detail.message}`);
     }
   }
@@ -158,7 +162,7 @@ function valideProduit(Model, produit) {
     } else if (!valeurPresente(source.extrait, valeur)) {
       erreurs.push(
         `${champ} = ${valeur} absent de son propre extrait (« ${source.extrait} ») : ` +
-        `le nombre et le libelle ne se rapportent pas a la meme chose`
+          `le nombre et le libelle ne se rapportent pas a la meme chose`
       );
     }
   }
@@ -267,9 +271,8 @@ function incoherencesDuLot(Model, produits, facteur = FACTEUR_DEFAUT) {
 
     const triees = [...valeurs].sort((a, b) => a - b);
     const milieu = Math.floor(triees.length / 2);
-    const mediane = triees.length % 2 === 1
-      ? triees[milieu]
-      : (triees[milieu - 1] + triees[milieu]) / 2;
+    const mediane =
+      triees.length % 2 === 1 ? triees[milieu] : (triees[milieu - 1] + triees[milieu]) / 2;
     if (!(mediane > 0)) continue;
 
     for (const produit of produits) {
@@ -298,7 +301,10 @@ function compareAuCatalogue(Model, produits, existants, seuilPct = SEUIL_DEFAUT)
 
   for (const produit of produits) {
     const ancien = index.get(cleNaturelle(produit));
-    if (!ancien) { creations.push(produit); continue; }
+    if (!ancien) {
+      creations.push(produit);
+      continue;
+    }
 
     const changements = [];
     const suspects = [];
@@ -307,13 +313,16 @@ function compareAuCatalogue(Model, produits, existants, seuilPct = SEUIL_DEFAUT)
       const neuf = produit[champ];
       if (neuf === undefined || neuf === null) continue;
       const vieux = ancien[champ];
-      if (vieux === undefined || vieux === null) { changements.push({ champ, vieux, neuf }); continue; }
+      if (vieux === undefined || vieux === null) {
+        changements.push({ champ, vieux, neuf });
+        continue;
+      }
       if (vieux === neuf) continue;
 
       // Garde 4. Un ecart relatif au-dela du seuil n'est pas applique : il est
       // signale. Le denominateur ne peut pas etre nul, `vieux` etant non nul
       // des lors qu'il differe de `neuf` et qu'aucune mesure n'est negative.
-      const ecart = vieux === 0 ? Infinity : Math.abs(neuf - vieux) / Math.abs(vieux) * 100;
+      const ecart = vieux === 0 ? Infinity : (Math.abs(neuf - vieux) / Math.abs(vieux)) * 100;
       if (ecart > seuilPct) suspects.push({ champ, vieux, neuf, ecart });
       else changements.push({ champ, vieux, neuf });
     }
@@ -364,7 +373,7 @@ async function verifieEnLigne(Model, produits) {
   const pages = new Map();
   const echecs = [];
 
-  const texteDe = async (url) => {
+  const texteDe = async url => {
     if (pages.has(url)) return pages.get(url);
     try {
       const { data } = await axios.get(url, {
@@ -388,10 +397,11 @@ async function verifieEnLigne(Model, produits) {
     for (const champ of mesures) {
       const valeur = produit[champ];
       const source = produit.provenance && produit.provenance[champ];
-      if (valeur === undefined || valeur === null || !source || !source.url || !source.extrait) continue;
+      if (valeur === undefined || valeur === null || !source || !source.url || !source.extrait)
+        continue;
 
       const texte = await texteDe(source.url);
-      if (texte === null) continue;   // deja signale par texteDe
+      if (texte === null) continue; // deja signale par texteDe
 
       // On cherche l'EXTRAIT, pas seulement la valeur. Combine au controle
       // hors ligne (valeur incluse dans l'extrait), cela forme une chaine
@@ -425,7 +435,7 @@ function etiquette(produit) {
 function affiche({ creations, majs, quarantaine }) {
   console.log(
     `\n  ${creations.length} creation(s), ${majs.length} mise(s) a jour, ` +
-    `${quarantaine.length} en quarantaine.\n`
+      `${quarantaine.length} en quarantaine.\n`
   );
 
   for (const p of creations) console.log(`  + ${etiquette(p)}`);
@@ -457,7 +467,9 @@ function afficheIncoherences(signalements) {
   console.log('');
   for (const s of signalements) {
     console.log(`  ? ${etiquette(s.produit)}`);
-    console.log(`      ${s.champ} = ${s.valeur}  (mediane du lot : ${s.mediane}, ecart x${s.rapport.toFixed(1)})`);
+    console.log(
+      `      ${s.champ} = ${s.valeur}  (mediane du lot : ${s.mediane}, ecart x${s.rapport.toFixed(1)})`
+    );
   }
   console.log('');
   console.log("  Ce n'est pas un refus : certains champs varient legitimement beaucoup.");
@@ -502,7 +514,9 @@ async function main() {
   const facteur = cohArg ? Number(cohArg.split('=')[1]) : FACTEUR_DEFAUT;
 
   if (!chemin) {
-    console.error('Usage : node scripts/import.js <fichier.json> [--verifier] [--ecrire] [--seuil=10] [--coherence=4]');
+    console.error(
+      'Usage : node scripts/import.js <fichier.json> [--verifier] [--ecrire] [--seuil=10] [--coherence=4]'
+    );
     process.exitCode = 1;
     return;
   }

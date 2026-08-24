@@ -90,8 +90,8 @@ function Verdict({ products, productType }) {
             'Aucun benchmark exploitable pour départager ces produits.'
           ) : winners.length > 1 ? (
             <>
-              <strong>{winners.map(p => p.name).join(' et ')}</strong> terminent à égalité
-              sur le score global.
+              <strong>{winners.map(p => p.name).join(' et ')}</strong> terminent à égalité sur le
+              score global.
             </>
           ) : (
             <>
@@ -99,7 +99,11 @@ function Verdict({ products, productType }) {
             </>
           )}
           {rawDelta !== null && (
-            <> Sur {metric.label}, l’écart est de {rawDelta} % ({formatValue(rawBest)} contre {formatValue(rawWorst)}).</>
+            <>
+              {' '}
+              Sur {metric.label}, l’écart est de {rawDelta} % ({formatValue(rawBest)} contre{' '}
+              {formatValue(rawWorst)}).
+            </>
           )}
         </p>
       </div>
@@ -110,8 +114,8 @@ function Verdict({ products, productType }) {
         {!aiAnalysis ? (
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
             <span className="ct-text-gray-small" style={{ flex: '1 1 240px' }}>
-              Un commentaire rédigé peut compléter les chiffres. Il est généré par un
-              modèle de langage et n’est pas une mesure.
+              Un commentaire rédigé peut compléter les chiffres. Il est généré par un modèle de
+              langage et n’est pas une mesure.
             </span>
             <button className="ct-btn" onClick={askGemini} disabled={loading}>
               {loading ? 'Analyse en cours…' : 'Demander une analyse'}

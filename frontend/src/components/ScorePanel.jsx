@@ -2,7 +2,7 @@ import React from 'react';
 import { explainScore, scoreGrade, rankInCategory, getProductScore } from '../utils/scores';
 import { dataCompleteness, formatValue } from '../utils/specs';
 
-const nombre = (valeur) => formatValue(valeur) ?? '—';
+const nombre = valeur => formatValue(valeur) ?? '—';
 
 /**
  * Position du produit sur l'échelle des notes de sa catégorie.
@@ -74,7 +74,8 @@ function ScorePanel({ product, type, peers = [] }) {
             <span className="ct-text-gray-small">sur 100</span>
             {rang && (
               <strong className="ct-score-rank">
-                {rang.rang}<sup>{rang.rang === 1 ? 'er' : 'e'}</sup> sur {rang.total} notés
+                {rang.rang}
+                <sup>{rang.rang === 1 ? 'er' : 'e'}</sup> sur {rang.total} notés
               </strong>
             )}
           </span>
@@ -84,8 +85,8 @@ function ScorePanel({ product, type, peers = [] }) {
 
         {note === 0 && (
           <p className="ct-text-gray-small">
-            Non mesurable : les benchmarks nécessaires au calcul ne sont pas renseignés
-            pour ce modèle. Ce n’est pas une contre-performance, c’est une donnée absente.
+            Non mesurable : les benchmarks nécessaires au calcul ne sont pas renseignés pour ce
+            modèle. Ce n’est pas une contre-performance, c’est une donnée absente.
           </p>
         )}
 
@@ -119,20 +120,21 @@ function ScorePanel({ product, type, peers = [] }) {
             </table>
 
             <p className="ct-text-gray-small" style={{ marginTop: 10 }}>
-              Chaque mesure est ramenée sur 100 par rapport à un plafond de référence
-              propre à la catégorie, puis pondérée. Le plafond fixe l’échelle, il ne
-              change pas l’ordre entre deux produits.
+              Chaque mesure est ramenée sur 100 par rapport à un plafond de référence propre à la
+              catégorie, puis pondérée. Le plafond fixe l’échelle, il ne change pas l’ordre entre
+              deux produits.
             </p>
           </details>
         )}
 
         {completude.total > 0 && (
           <p className="ct-coverage">
-            <strong className="ct-num">{completude.remplies}</strong> caractéristiques
-            renseignées sur {completude.total}
+            <strong className="ct-num">{completude.remplies}</strong> caractéristiques renseignées
+            sur {completude.total}
             {completude.manquantes.length > 0 && (
               <span className="ct-text-gray-small">
-                {' '}— manque : {completude.manquantes.join(', ').toLowerCase()}
+                {' '}
+                — manque : {completude.manquantes.join(', ').toLowerCase()}
               </span>
             )}
           </p>

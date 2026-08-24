@@ -51,15 +51,15 @@ export function useProduct(collection, id, type) {
       .catch(err => {
         if (cancelled) return;
         setError(
-          err.message === 'Failed to fetch'
-            ? 'Impossible de joindre le serveur.'
-            : err.message
+          err.message === 'Failed to fetch' ? 'Impossible de joindre le serveur.' : err.message
         );
-        setStatut(err.statut ?? null);   // null = panne réseau, pas de réponse
+        setStatut(err.statut ?? null); // null = panne réseau, pas de réponse
         setLoading(false);
       });
 
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [collection, id, type, attempt]);
 
   return { product, loading, error, statut, retry };

@@ -1,0 +1,91 @@
+# Integration continue : le depot porte deux suites de tests et un linter,
+# rien ne les executait. Ce workflow les lance a chaque poussee et a chaque
+# pull request, sur les deux versions de Node declarees dans les manifestes.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+# Une nouvelle poussee annule l'execution precedente sur la meme branche :
+# inutile de payer un aller-retour complet pour un commit deja remplace.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Ni installation ni cache : le controle des liens n'utilise que Node et git.
+  docs:
+    name: Liens de la documentation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Liens Markdown
+        run: node scripts/verifie-liens.mjs
+
+  backend:
+    name: Backend (Node ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ['20', '22']
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Installation
+        run: npm ci
+
+      # Les tests du backend sont volontairement purs : ni base, ni reseau.
+      # Aucun service MongoDB n'a donc a etre demarre ici.
+      - name: Tests
+        run: npm test
+
+  frontend:
+    name: Frontend (Node ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ['20', '22']
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Installation
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Tests
+        run: npm test
+
+      # Le build compte autant que les tests : une erreur d'import ou de JSX
+      # ne se voit dans aucune des deux suites, qui ne testent que les utils.
+      - name: Build
+        run: npm run build

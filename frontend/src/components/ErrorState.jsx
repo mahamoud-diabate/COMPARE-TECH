@@ -38,7 +38,9 @@ function ErrorState({ message, onRetry, statut }) {
         </p>
 
         {onRetry && transitoire && (
-          <button className="ct-btn" onClick={onRetry}>Réessayer</button>
+          <button className="ct-btn" onClick={onRetry}>
+            Réessayer
+          </button>
         )}
       </div>
     </div>

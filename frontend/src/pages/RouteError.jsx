@@ -33,8 +33,8 @@ function RouteError() {
             Cette page n’a pas pu s’afficher
           </p>
           <p style={{ maxWidth: 460, margin: '0 auto 16px' }}>
-            Le défaut vient du site, pas de vous. Revenir à l’accueil ou recharger
-            la page suffit généralement.
+            Le défaut vient du site, pas de vous. Revenir à l’accueil ou recharger la page suffit
+            généralement.
           </p>
 
           {import.meta.env.DEV && (
@@ -57,7 +57,9 @@ function RouteError() {
           )}
 
           <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link className="ct-btn" to="/">Accueil</Link>
+            <Link className="ct-btn" to="/">
+              Accueil
+            </Link>
             <button className="ct-btn ct-btn-ghost" onClick={() => window.location.reload()}>
               Recharger
             </button>

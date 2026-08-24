@@ -2,7 +2,7 @@ import React from 'react';
 import { ScoreBar } from './Score';
 import { BENCHMARKS, resolveType, toNumber, formatValue } from '../utils/specs';
 
-const shortName = (product) => {
+const shortName = product => {
   const name = product?.name || '';
   return name.length > 26 ? `${name.slice(0, 25)}…` : name;
 };
@@ -37,7 +37,11 @@ function BenchmarkBars({ products = [], productType, title = 'Benchmarks', subti
     <section className="ct-card">
       <div className="ct-card-head">
         <h2 className="ct-title-h2">{title}</h2>
-        {subtitle ? <p className="ct-text-gray-small" style={{ marginBottom: 12 }}>{subtitle}</p> : null}
+        {subtitle ? (
+          <p className="ct-text-gray-small" style={{ marginBottom: 12 }}>
+            {subtitle}
+          </p>
+        ) : null}
       </div>
       <div className="ct-card-body" style={{ paddingTop: 0 }}>
         <div className="ct-two-col">

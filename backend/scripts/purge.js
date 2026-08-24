@@ -41,7 +41,11 @@ const withBackup = !has('--no-backup');
 
 const onlyArg = args.find(a => a.startsWith('--only='));
 const selected = onlyArg
-  ? onlyArg.slice('--only='.length).split(',').map(s => s.trim()).filter(Boolean)
+  ? onlyArg
+      .slice('--only='.length)
+      .split(',')
+      .map(s => s.trim())
+      .filter(Boolean)
   : Object.keys(COLLECTIONS);
 
 const unknown = selected.filter(name => !COLLECTIONS[name]);
@@ -91,11 +95,7 @@ async function main() {
 
     for (const name of selected) {
       const docs = await COLLECTIONS[name].find().lean();
-      fs.writeFileSync(
-        path.join(dir, `${name}.json`),
-        JSON.stringify(docs, null, 2),
-        'utf8'
-      );
+      fs.writeFileSync(path.join(dir, `${name}.json`), JSON.stringify(docs, null, 2), 'utf8');
     }
     console.log(`\nSauvegarde ecrite dans backup/${stamp}/`);
   } else {

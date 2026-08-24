@@ -3,7 +3,7 @@ import { ScoreBar, ScoreSquare } from './Score';
 import { buildCategoryScores } from '../utils/radarAxes';
 import { getProductScore } from '../utils/scores';
 
-const shortName = (product) => {
+const shortName = product => {
   const name = product?.name || '';
   return name.length > 26 ? `${name.slice(0, 25)}…` : name;
 };
@@ -34,8 +34,14 @@ function CategoryScores({ products = [], productType }) {
 
     return (
       <div key={key} style={{ marginBottom: 18 }}>
-        <div className="ct-title-h4" style={{ paddingBottom: 2 }}>{label}</div>
-        {hint ? <div className="ct-text-gray-small" style={{ marginBottom: 8 }}>{hint}</div> : null}
+        <div className="ct-title-h4" style={{ paddingBottom: 2 }}>
+          {label}
+        </div>
+        {hint ? (
+          <div className="ct-text-gray-small" style={{ marginBottom: 8 }}>
+            {hint}
+          </div>
+        ) : null}
         {list.map((product, i) => (
           <ScoreBar
             key={product._id || i}

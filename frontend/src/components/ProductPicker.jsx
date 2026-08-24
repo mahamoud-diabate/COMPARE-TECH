@@ -26,7 +26,7 @@ function ProductPicker({ label, products = [], value, onChange, exclude, placeho
   }, [value]);
 
   useEffect(() => {
-    const onClickOutside = (e) => {
+    const onClickOutside = e => {
       if (wrapRef.current && !wrapRef.current.contains(e.target)) setOpen(false);
     };
     document.addEventListener('mousedown', onClickOutside);
@@ -46,13 +46,13 @@ function ProductPicker({ label, products = [], value, onChange, exclude, placeho
           )
           .slice(0, 8);
 
-  const select = (product) => {
+  const select = product => {
     onChange(product);
     setTerm(product.name);
     setOpen(false);
   };
 
-  const onKeyDown = (e) => {
+  const onKeyDown = e => {
     if (!open || matches.length === 0) return;
     if (e.key === 'ArrowDown') {
       e.preventDefault();
@@ -85,7 +85,7 @@ function ProductPicker({ label, products = [], value, onChange, exclude, placeho
           autoComplete="off"
           placeholder={placeholder}
           value={term}
-          onChange={(e) => {
+          onChange={e => {
             setTerm(e.target.value);
             setHighlight(0);
             setOpen(true);
@@ -108,7 +108,10 @@ function ProductPicker({ label, products = [], value, onChange, exclude, placeho
             aria-selected={i === highlight}
             className={i === highlight ? 'is-active' : undefined}
             onMouseEnter={() => setHighlight(i)}
-            onMouseDown={(e) => { e.preventDefault(); select(product); }}
+            onMouseDown={e => {
+              e.preventDefault();
+              select(product);
+            }}
           >
             <strong>{product.name}</strong>
             <span className="ct-text-gray-small">{product.brand}</span>

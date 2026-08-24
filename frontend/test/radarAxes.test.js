@@ -19,8 +19,8 @@ const ryzen = {
   name: 'Ryzen',
   geekbench_single: 3500, // plafond
   geekbench_multi: 14500, // ~50 %
-  cores: 12,              // 50 % de 24
-  threads: 32,            // plafond
+  cores: 12, // 50 % de 24
+  threads: 32, // plafond
   max_freq_ghz: '5.7',
 };
 
@@ -95,7 +95,10 @@ test('buildCategoryScores lit les valeurs stockées en texte', () => {
 
 test('buildCategoryScores retire les axes qu’aucun produit ne renseigne', () => {
   const rows = buildCategoryScores([{ cores: 8 }, { cores: 16 }], 'cpu');
-  assert.deepEqual(rows.map(row => row.label), ['Cœurs']);
+  assert.deepEqual(
+    rows.map(row => row.label),
+    ['Cœurs']
+  );
 });
 
 // --- forme du résultat ------------------------------------------------------

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Search } from 'lucide-react';
 import Sidebar from './Sidebar';
@@ -16,7 +16,6 @@ const TYPE_LABEL = { cpu: 'CPU', gpu: 'GPU', laptop: 'Portable', telephone: 'Té
  */
 function Header({ toggleTheme, theme }) {
   const [searchTerm, setSearchTerm] = useState('');
-  const [suggestions, setSuggestions] = useState([]);
   const [allProducts, setAllProducts] = useState([]);
   const [open, setOpen] = useState(false);
   const [menuOuvert, setMenuOuvert] = useState(false);
@@ -35,10 +34,12 @@ function Header({ toggleTheme, theme }) {
         ];
         // Passe par le cache partagé : les pages catégorie et les fiches
         // produit demandent les mêmes collections, une seule requête suffit.
-        const responses = await Promise.all(endpoints.map(([path]) => loadCatalog(path)));
+        const results = await Promise.allSettled(endpoints.map(([path]) => loadCatalog(path)));
         setAllProducts(
-          responses.flatMap((list, i) =>
-            (Array.isArray(list) ? list : []).map(p => ({ ...p, productType: endpoints[i][1] }))
+          results.flatMap((res, i) =>
+            res.status === 'fulfilled' && Array.isArray(res.value)
+              ? res.value.map(p => ({ ...p, productType: endpoints[i][1] }))
+              : []
           )
         );
       } catch {
@@ -48,39 +49,46 @@ function Header({ toggleTheme, theme }) {
     fetchAll();
   }, []);
 
-  useEffect(() => {
-    if (searchTerm.trim().length < 2) {
-      setSuggestions([]);
-      setOpen(false);
-      return;
-    }
-    const needle = searchTerm.toLowerCase();
-    setSuggestions(
-      allProducts
-        .filter(p =>
+  /*
+   * Les suggestions se deduisent de la saisie et du catalogue : elles n'ont
+   * donc pas a etre rangees dans un etat. Un effet qui appelle setSuggestions
+   * demandait un rendu de plus a chaque frappe, et laissait la liste en retard
+   * d'un rendu sur la saisie. L'ouverture du menu, elle, est bien un etat :
+   * un clic a l'exterieur la referme sans que la saisie change.
+   */
+  const suggestions = useMemo(() => {
+    const needle = searchTerm.trim().toLowerCase();
+    if (needle.length < 2) return [];
+    return allProducts
+      .filter(
+        p =>
           (p.name && p.name.toLowerCase().includes(needle)) ||
           (p.brand && p.brand.toLowerCase().includes(needle))
-        )
-        .slice(0, 7)
-    );
-    setOpen(true);
+      )
+      .slice(0, 7);
   }, [searchTerm, allProducts]);
 
+  const onSearchChange = event => {
+    const valeur = event.target.value;
+    setSearchTerm(valeur);
+    setOpen(valeur.trim().length >= 2);
+  };
+
   useEffect(() => {
-    const onClickOutside = (e) => {
+    const onClickOutside = e => {
       if (searchRef.current && !searchRef.current.contains(e.target)) setOpen(false);
     };
     document.addEventListener('mousedown', onClickOutside);
     return () => document.removeEventListener('mousedown', onClickOutside);
   }, []);
 
-  const select = (product) => {
+  const select = product => {
     navigate(cheminProduit(product.productType || 'cpu', product));
     setSearchTerm('');
     setOpen(false);
   };
 
-  const onSubmit = (e) => {
+  const onSubmit = e => {
     e.preventDefault();
     if (suggestions.length > 0) select(suggestions[0]);
   };
@@ -104,12 +112,14 @@ function Header({ toggleTheme, theme }) {
 
         <div className="ct-search" ref={searchRef}>
           <form onSubmit={onSubmit}>
-            <span className="ct-search-icon"><Search size={14} strokeWidth={2} /></span>
+            <span className="ct-search-icon">
+              <Search size={14} strokeWidth={2} />
+            </span>
             <input
               type="search"
               placeholder="Rechercher un produit…"
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={onSearchChange}
               onFocus={() => suggestions.length > 0 && setOpen(true)}
               autoComplete="off"
               aria-label="Rechercher un produit"
