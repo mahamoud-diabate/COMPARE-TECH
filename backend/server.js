@@ -94,27 +94,27 @@ const DEFAULT_ORIGINS = [
 // court du projet et sous le nom porté par le compte. Le README pointe le
 // premier, l'ancien repli n'autorisait que le second — visiter l'adresse
 // annoncée suffisait alors à se faire refuser par le CORS.
-const PROD_FALLBACK = [
+const PROD_ORIGINS = [
   'https://compare-tech-theta.vercel.app',
   'https://compare-tech-king2mos-projects.vercel.app',
-].join(',');
+];
+const customOrigins = (process.env.CORS_ORIGINS || '')
+  .split(',')
+  .map(o => o.trim())
+  .filter(Boolean);
+
 const allowedOrigins = [
-  ...new Set(
-    (process.env.CORS_ORIGINS || PROD_FALLBACK)
-      .split(',')
-      .map(o => o.trim())
-      .filter(Boolean)
-      .concat(IS_PROD ? [] : DEFAULT_ORIGINS)
-  ),
+  ...new Set([...PROD_ORIGINS, ...customOrigins, ...(IS_PROD ? [] : DEFAULT_ORIGINS)]),
 ];
 
 app.use(
   cors({
     origin(origin, callback) {
-      // Pas d'origine = appel serveur-a-serveur ou curl : autorise (lecture seule
-      // de toute facon, les ecritures exigent la cle admin).
       if (!origin) return callback(null, true);
       if (allowedOrigins.includes(origin)) return callback(null, true);
+      if (/^https:\/\/compare-tech[a-z0-9-]*\.vercel\.app$/.test(origin)) {
+        return callback(null, true);
+      }
       return callback(new Error(`Origine non autorisee : ${origin}`));
     },
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
