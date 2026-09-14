@@ -15,6 +15,7 @@ const Telephone = require('./models/Telephone');
 const User = require('./models/User');
 const { hashPassword, verifyPassword, signToken, verifyToken } = require('./auth');
 const { lecturePaginee } = require('./pagination');
+const { construitListeBlanche, origineAutorisee } = require('./origines');
 const {
   SLUG_VALIDE,
   estIdentifiant,
@@ -76,45 +77,24 @@ if (!aiModel) {
  * CORS : liste blanche configurable
  * ------------------------------------------------------------------ */
 
-// Ports de developpement autorises. 5174 et 5175 comptent : Vite passe au port
-// suivant des que 5173 est occupe — deux instances, ou un serveur oublie — et
-// le CORS echouait alors sans que rien n'indique pourquoi.
-const DEFAULT_ORIGINS = [
-  'http://localhost:5173',
-  'http://localhost:5174',
-  'http://localhost:5175',
-  'http://localhost:4173',
-];
-// Origines de production connues : si CORS_ORIGINS n'est pas renseignée
-// (ex. oubli dans le tableau de bord Render), on autorise au moins le
-// frontend déployé pour ne pas casser la démo en ligne. On reste en liste
-// blanche (des origines nommées), jamais en wildcard.
-//
-// Les deux domaines comptent : Vercel sert le même déploiement sous le nom
-// court du projet et sous le nom porté par le compte. Le README pointe le
-// premier, l'ancien repli n'autorisait que le second — visiter l'adresse
-// annoncée suffisait alors à se faire refuser par le CORS.
-const PROD_ORIGINS = [
-  'https://compare-tech-theta.vercel.app',
-  'https://compare-tech-king2mos-projects.vercel.app',
-];
-const customOrigins = (process.env.CORS_ORIGINS || '')
-  .split(',')
-  .map(o => o.trim())
-  .filter(Boolean);
-
-const allowedOrigins = [
-  ...new Set([...PROD_ORIGINS, ...customOrigins, ...(IS_PROD ? [] : DEFAULT_ORIGINS)]),
-];
+/*
+ * Liste blanche CORS. Les origines et la regle de decision vivent dans
+ * `origines.js` — notamment la raison pour laquelle aucun motif n'est
+ * applique sur *.vercel.app, ou un nom d'hote s'obtient au premier demandeur.
+ */
+const allowedOrigins = construitListeBlanche({
+  corsOrigins: process.env.CORS_ORIGINS,
+  enProduction: IS_PROD,
+});
 
 app.use(
   cors({
     origin(origin, callback) {
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.includes(origin)) return callback(null, true);
-      if (/^https:\/\/compare-tech[a-z0-9-]*\.vercel\.app$/.test(origin)) {
-        return callback(null, true);
-      }
+      if (origineAutorisee(origin, allowedOrigins)) return callback(null, true);
+      // Journalise la marche a suivre : une URL de previsualisation Vercel
+      // change a chaque deploiement, et sans cette ligne le refus se lisait
+      // seulement comme un echec reseau muet cote navigateur.
+      console.warn(`CORS refuse : ${origin}. Ajoute-la a CORS_ORIGINS si elle est legitime.`);
       return callback(new Error(`Origine non autorisee : ${origin}`));
     },
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],

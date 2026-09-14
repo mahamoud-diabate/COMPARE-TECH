@@ -23,10 +23,18 @@ ADMIN_PASSWORD=votre_mot_de_passe_admin
 JWT_SECRET=votre_secret_jwt
 GEMINI_API_KEY=votre_cle_gemini
 GEMINI_MODEL=gemini-2.0-flash
-CORS_ORIGINS=http://localhost:5173
+CORS_ORIGINS=
 NODE_ENV=development
 PORT=3001
 ```
+
+`CORS_ORIGINS` n'est qu'un **complément** : les domaines de production connus
+sont déjà autorisés dans [`origines.js`](origines.js). La variable sert aux
+origines imprévisibles — une URL de prévisualisation Vercel, un domaine
+personnalisé. Aucun motif n'est appliqué sur `*.vercel.app` : sur un domaine
+partagé, un nom d'hôte s'obtient au premier demandeur, et un motif reviendrait
+à autoriser des origines appartenant à des tiers. Une origine refusée est
+journalisée avec la marche à suivre.
 
 Sans `ADMIN_PASSWORD` ni `JWT_SECRET`, les routes d'écriture répondent 503
 plutôt que de s'ouvrir : un oubli de configuration ne doit jamais aboutir à une
