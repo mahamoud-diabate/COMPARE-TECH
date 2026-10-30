@@ -10,6 +10,7 @@ const gpuSchema = new Schema({
   cores: { type: Number, required: false, min: 1, max: 100000 },
   memory_gb: { type: Number, required: false, min: 0, max: 256 },
   memory_type: { type: String, required: false, trim: true },
+  tdp_w: { type: Number, required: false, min: 1, max: 1000 },
   imageUrl: { type: String, required: false },
   benchmark_3dmark: { type: Number, required: false, min: 0, max: 200000 },
   pros: [String],

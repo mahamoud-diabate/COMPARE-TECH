@@ -261,3 +261,30 @@ test('les différences clés GPU ne chiffrent pas un écart d’unités de calcu
   const criteres = KEY_METRICS.gpu || [];
   assert.ok(!criteres.some(c => c.key === 'cores'));
 });
+
+test('la consommation CPU et GPU couronne la valeur la plus basse', () => {
+  for (const type of ['cpu', 'gpu']) {
+    const ligne = SPEC_GROUPS[type].flatMap(groupe => groupe.rows).find(r => r.key === 'tdp_w');
+    assert.ok(ligne, `${type} : tdp_w doit figurer dans SPEC_GROUPS`);
+    assert.equal(ligne.numeric, true);
+    assert.equal(ligne.invert, true);
+  }
+  assert.equal(winnerIndex([{ tdp_w: 170 }, { tdp_w: 120 }], 'tdp_w', true), 1);
+});
+
+test('buildKeyDifferences et buildStrengths avantagent le produit qui consomme le moins', () => {
+  const sobre = { name: 'Sobre', tdp_w: 120 };
+  const moyen = { name: 'Moyen', tdp_w: 170 };
+  const gourmand = { name: 'Gourmand', tdp_w: 200 };
+
+  const diff = buildKeyDifferences(sobre, gourmand, 'gpu');
+  assert.equal(diff.b.length, 0);
+  assert.equal(diff.a.length, 1);
+  assert.match(diff.a[0], /^40 % de consommation en moins \(120 W contre 200 W\)$/);
+
+  const [sSobre, sMoyen, sGourmand] = buildStrengths([sobre, moyen, gourmand], 'cpu');
+  assert.equal(sSobre.length, 1);
+  assert.match(sSobre[0], /^29 % de consommation en moins que son meilleur rival \(120 W\)$/);
+  assert.deepEqual(sMoyen, []);
+  assert.deepEqual(sGourmand, []);
+});

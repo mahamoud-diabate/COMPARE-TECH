@@ -108,14 +108,15 @@ vérifiées : une valeur en dehors est rejetée.
 
 ### `cpus`
 
-| Champ              | Type   | Bornes      |                         |
-| ------------------ | ------ | ----------- | ----------------------- |
-| `cores`            | nombre | 1 – 512     | **obligatoire**         |
-| `threads`          | nombre | 1 – 1024    |                         |
-| `base_freq_ghz`    | nombre | 0 – 10      | en GHz, sans l'unité    |
-| `max_freq_ghz`     | nombre | 0 – 10      | en GHz, sans l'unité    |
-| `geekbench_single` | nombre | 0 – 20 000  | Geekbench 6, mono-cœur  |
-| `geekbench_multi`  | nombre | 0 – 200 000 | Geekbench 6, multi-cœur |
+| Champ              | Type   | Bornes      |                                 |
+| ------------------ | ------ | ----------- | ------------------------------- |
+| `cores`            | nombre | 1 – 512     | **obligatoire**                 |
+| `threads`          | nombre | 1 – 1024    |                                 |
+| `base_freq_ghz`    | nombre | 0 – 10      | en GHz, sans l'unité            |
+| `max_freq_ghz`     | nombre | 0 – 10      | en GHz, sans l'unité            |
+| `tdp_w`            | nombre | 1 – 1000    | consommation en W, sans l'unité |
+| `geekbench_single` | nombre | 0 – 20 000  | Geekbench 6, mono-cœur          |
+| `geekbench_multi`  | nombre | 0 – 200 000 | Geekbench 6, multi-cœur         |
 
 ### `gpus`
 
@@ -124,6 +125,7 @@ vérifiées : une valeur en dehors est rejetée.
 | `cores`            | nombre | 1 – 100 000 | unités de calcul (CUDA, stream processors) |
 | `memory_gb`        | nombre | 0 – 256     | mémoire vidéo                              |
 | `memory_type`      | texte  |             | ex. `GDDR6X`                               |
+| `tdp_w`            | nombre | 1 – 1000    | consommation en W, sans l'unité            |
 | `benchmark_3dmark` | nombre | 0 – 200 000 |                                            |
 
 ### `laptops`

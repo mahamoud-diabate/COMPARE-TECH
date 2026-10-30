@@ -16,6 +16,7 @@ const cpuSchema = new Schema({
   threads: { type: Number, required: false, min: 1, max: 1024 },
   max_freq_ghz: { type: Number, required: false, min: 0, max: 10 },
   base_freq_ghz: { type: Number, required: false, min: 0, max: 10 },
+  tdp_w: { type: Number, required: false, min: 1, max: 1000 },
   imageUrl: { type: String, required: false },
   geekbench_single: { type: Number, required: false, min: 0, max: 20000 },
   geekbench_multi: { type: Number, required: false, min: 0, max: 200000 },

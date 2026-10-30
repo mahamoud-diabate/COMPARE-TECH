@@ -17,6 +17,8 @@ const {
   incoherencesDuLot,
 } = require('../scripts/import');
 const Cpu = require('../models/Cpu');
+const Gpu = require('../models/Gpu');
+const Laptop = require('../models/Laptop');
 
 /** Produit minimal qui passe tous les gardes. */
 const conforme = () => ({
@@ -329,4 +331,51 @@ test('valideProduit accepte les champs du modele et la provenance', () => {
   produit.imageUrl = 'https://exemple.invalid/image.png';
   produit.pros = ['rapide'];
   assert.deepStrictEqual(valideProduit(Cpu, produit), []);
+});
+
+test('tdp_w est reconnu comme mesure sourcee sur Cpu et Gpu avec ses bornes', () => {
+  assert.ok(champsMesures(Cpu).includes('tdp_w'));
+  assert.ok(champsMesures(Gpu).includes('tdp_w'));
+
+  const cpu = conforme();
+  cpu.tdp_w = 120;
+  assert.ok(valideProduit(Cpu, cpu).some(e => /tdp_w = 120 sans provenance/.test(e)));
+
+  cpu.provenance.tdp_w = {
+    url: 'https://exemple.invalid/fiche',
+    releve_le: '2026-10-29',
+    extrait: 'Default TDP 120W',
+  };
+  assert.deepStrictEqual(valideProduit(Cpu, cpu), []);
+
+  const gpu = {
+    name: 'Essai GPU',
+    brand: 'Essai',
+    tdp_w: 250,
+    provenance: {
+      tdp_w: {
+        url: 'https://exemple.invalid/gpu',
+        releve_le: '2026-10-29',
+        extrait: 'TDP 250 W',
+      },
+    },
+  };
+  assert.deepStrictEqual(valideProduit(Gpu, gpu), []);
+
+  gpu.tdp_w = 1500;
+  gpu.provenance.tdp_w.extrait = 'TDP 1500 W';
+  assert.ok(valideProduit(Gpu, gpu).some(e => /tdp_w/.test(e)));
+});
+
+test('laptops.json passe la validation hors ligne et renseigne geekbench_multi partout', () => {
+  const fs = require('node:fs');
+  const path = require('node:path');
+  const lotPortables = JSON.parse(
+    fs.readFileSync(path.join(__dirname, '..', 'data', 'laptops.json'), 'utf8')
+  );
+  assert.strictEqual(lotPortables.produits.length, 8);
+  for (const portable of lotPortables.produits) {
+    assert.deepStrictEqual(valideProduit(Laptop, portable), [], portable.name);
+    assert.ok(portable.geekbench_multi > 0, `${portable.name} : geekbench_multi manquant`);
+  }
 });

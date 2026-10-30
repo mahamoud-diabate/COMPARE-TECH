@@ -27,6 +27,7 @@ export const SPEC_GROUPS = {
         { label: 'Threads', key: 'threads', numeric: true },
         { label: 'Fréquence de base', key: 'base_freq_ghz', unit: 'GHz', numeric: true },
         { label: 'Fréquence maximale', key: 'max_freq_ghz', unit: 'GHz', numeric: true },
+        { label: 'Consommation', key: 'tdp_w', unit: 'W', numeric: true, invert: true },
       ],
     },
     {
@@ -52,6 +53,7 @@ export const SPEC_GROUPS = {
         { label: 'Unités de calcul', key: 'cores' },
         { label: 'Mémoire vidéo', key: 'memory_gb', unit: 'Go', numeric: true },
         { label: 'Type de mémoire', key: 'memory_type' },
+        { label: 'Consommation', key: 'tdp_w', unit: 'W', numeric: true, invert: true },
       ],
     },
     {
@@ -146,10 +148,12 @@ export const KEY_METRICS = {
     { key: 'cores', label: 'de cœurs' },
     { key: 'threads', label: 'de threads' },
     { key: 'max_freq_ghz', label: 'de fréquence maximale', unit: 'GHz' },
+    { key: 'tdp_w', label: 'de consommation', unit: 'W', invert: true },
   ],
   gpu: [
     { key: 'benchmark_3dmark', label: 'de performances 3D' },
     { key: 'memory_gb', label: 'de mémoire vidéo', unit: 'Go' },
+    { key: 'tdp_w', label: 'de consommation', unit: 'W', invert: true },
   ],
   laptop: [
     { key: 'geekbench_multi', label: 'de performances' },
@@ -231,14 +235,24 @@ export function buildKeyDifferences(a, b, productType) {
 
   const result = { a: [], b: [] };
 
-  (KEY_METRICS[type] || []).forEach(({ key, label, unit }) => {
+  (KEY_METRICS[type] || []).forEach(({ key, label, unit, invert }) => {
     const va = toNumber(a[key]);
     const vb = toNumber(b[key]);
     if (va === null || vb === null || va <= 0 || vb <= 0 || va === vb) return;
 
-    const winner = va > vb ? 'a' : 'b';
     const high = Math.max(va, vb);
     const low = Math.min(va, vb);
+    if (invert) {
+      const winner = va < vb ? 'a' : 'b';
+      const delta = Math.round(((high - low) / high) * 100);
+      if (delta < 3) return;
+      result[winner].push(
+        `${delta} % ${label} en moins (${formatValue(low, unit)} contre ${formatValue(high, unit)})`
+      );
+      return;
+    }
+
+    const winner = va > vb ? 'a' : 'b';
     const delta = Math.round(((high - low) / low) * 100);
     if (delta < 3) return;
 
@@ -270,13 +284,26 @@ export function buildStrengths(products, productType) {
   return products.map((product, index) => {
     const lines = [];
 
-    metrics.forEach(({ key, label, unit }) => {
+    metrics.forEach(({ key, label, unit, invert }) => {
       const values = products.map(p => toNumber(p?.[key]));
       const mine = values[index];
       if (mine === null || mine <= 0) return;
 
       const rivals = values.filter((value, i) => i !== index && value !== null && value > 0);
       if (rivals.length === 0) return;
+
+      if (invert) {
+        const bestRival = Math.min(...rivals);
+        if (mine >= bestRival) return;
+
+        const delta = Math.round(((bestRival - mine) / bestRival) * 100);
+        if (delta < 3) return;
+
+        lines.push(
+          `${delta} % ${label} en moins que son meilleur rival (${formatValue(mine, unit)})`
+        );
+        return;
+      }
 
       const bestRival = Math.max(...rivals);
       if (mine <= bestRival) return;
