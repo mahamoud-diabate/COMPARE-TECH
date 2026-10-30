@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ImageOff } from 'lucide-react';
 import { ScoreBox } from './Score';
 import { getProductScore } from '../utils/scores';
+import { classer, texteRang } from '../utils/marche';
 import { formatValue } from '../utils/specs';
 import { cheminProduit } from '../utils/liens';
 
@@ -51,6 +52,7 @@ const summarize = (product, key) => {
  */
 function ProductList({
   cpus = [],
+  catalogue = [],
   compareList = [],
   onCompareToggle = () => {},
   productType = 'cpu',
@@ -82,16 +84,29 @@ function ProductList({
    */
   const classes = useMemo(() => {
     const parNom = (a, b) => (a.produit?.name || '').localeCompare(b.produit?.name || '');
-    const notes = cpus.map(produit => ({
-      produit,
-      note: getProductScore(produit, productType),
-    }));
+    // Le rang est calculé sur la catégorie entière, pas sur la liste filtrée :
+    // filtrer sur AMD ne doit pas transformer le 4e processeur du site en 1er.
+    // Sans `catalogue`, on retombe sur la liste reçue.
+    const reference = (catalogue.length ? catalogue : cpus).map(produit =>
+      getProductScore(produit, productType)
+    );
+
+    const notes = cpus.map(produit => {
+      const note = getProductScore(produit, productType);
+      return { produit, note, rang: classer(reference, note) };
+    });
 
     if (sortOption === 'name-asc') return notes.sort(parNom);
     if (sortOption === 'name-desc') return notes.sort((a, b) => parNom(b, a));
     if (sortOption === 'score-asc') return notes.sort((a, b) => a.note - b.note);
     return notes.sort((a, b) => b.note - a.note);
-  }, [cpus, sortOption, productType]);
+  }, [cpus, catalogue, sortOption, productType]);
+
+  const effectif = useMemo(
+    () =>
+      (catalogue.length ? catalogue : cpus).filter(p => getProductScore(p, productType) > 0).length,
+    [catalogue, cpus, productType]
+  );
 
   return (
     <section className="ct-card">
@@ -102,6 +117,7 @@ function ProductList({
           </h1>
           <span className="ct-text-gray-small" style={{ marginLeft: 8 }}>
             {classes.length} modèle{classes.length > 1 ? 's' : ''}
+            {effectif > 0 && ` · rang sur les ${effectif} de la catégorie`}
           </span>
         </div>
         <select
@@ -122,7 +138,7 @@ function ProductList({
       ) : (
         <>
           <div className="ct-rank-head">
-            <span>#</span>
+            <span>Rang</span>
             <span />
             <span>Modèle</span>
             <span>Caractéristiques</span>
@@ -130,13 +146,19 @@ function ProductList({
             <span style={{ textAlign: 'center' }}>Comparer</span>
           </div>
 
-          {classes.map(({ produit: product, note: score }, index) => {
+          {classes.map(({ produit: product, note: score, rang }) => {
             const isSelected = compareList.includes(product._id);
             const isDisabled = compareType && compareList.length > 0 && productType !== compareType;
+            const libelleRang = rang ? `${rang.rang}${rang.rang === 1 ? 'er' : 'e'}` : '—';
+            const titreRang = rang
+              ? `${texteRang(rang)}${rang.mot ? ` · ${rang.mot}` : ''}`
+              : 'Pas encore noté';
 
             return (
               <div key={product._id} className={`ct-rank-row${isDisabled ? ' is-disabled' : ''}`}>
-                <span className="ct-rank-num">{index + 1}</span>
+                <span className="ct-rank-num" title={titreRang}>
+                  {libelleRang}
+                </span>
 
                 {product.imageUrl && !failedImages[product._id] ? (
                   <img
