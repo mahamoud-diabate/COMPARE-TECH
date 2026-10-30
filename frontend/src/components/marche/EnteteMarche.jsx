@@ -97,7 +97,7 @@ function AxeNotes({ notes, produits }) {
         strokeDasharray="3,3"
       />
       <text x={x(axe.milieu / 100)} y="105" textAnchor="middle" className="ct-marche-axe-milieu">
-        milieu : {Math.round(axe.milieu)}
+        milieu du catalogue : {Math.round(axe.milieu)}
       </text>
 
       {xs.length >= 2 && Math.max(...xs) - Math.min(...xs) > 1 && (
@@ -258,7 +258,9 @@ function EnteteMarche({ produits, catalogue, productType, type, libelleCategorie
                     ))}
                   </ul>
                 ) : (
-                  <p className="ct-marche-synthese-vide">Aucun avantage mesuré.</p>
+                  <p className="ct-marche-synthese-vide">
+                    Aucun des critères mesurés ne le met en avant.
+                  </p>
                 )}
               </div>
             ))}

@@ -140,6 +140,7 @@ function CategoryPage({ collection, type, filterOptions = [], intro, introSansNo
               ) : (
                 <ProductList
                   cpus={filtered}
+                  catalogue={data}
                   compareList={compareIds}
                   onCompareToggle={handleCompareToggle}
                   productType={type}
