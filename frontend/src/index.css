@@ -1913,3 +1913,507 @@ body:has(.ct-compare-bar) {
   color: var(--ct-muted);
   font-weight: 600;
 }
+
+/* ===================================================================
+   16. COMPARATIF « DANS LE MARCHÉ »
+   Page comparative : chaque produit situé parmi toute sa catégorie.
+   Couleurs uniquement par variables (thème sombre inclus), rayons 3/4 px,
+   identité des produits comparés codée par couleur ET par forme
+   (● plein, ○ anneau, ◆ losange — voir docs/DESIGN.md).
+   Les cartes de ce comparatif n'ont pas d'en-tête collant : l'`overflow:
+   hidden` de .ct-card ne gêne donc rien ici.
+   =================================================================== */
+.ct-glyphe {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  flex: none;
+  vertical-align: -1px;
+}
+.ct-glyphe-0 {
+  border-radius: 50%;
+  background: var(--ct-serie-a);
+}
+.ct-glyphe-1 {
+  border-radius: 50%;
+  background: var(--ct-card);
+  border: 2.5px solid var(--ct-serie-b);
+}
+.ct-glyphe-2 {
+  width: 9px;
+  height: 9px;
+  background: var(--ct-serie-c);
+  transform: rotate(45deg);
+  border-radius: 1px;
+}
+
+.ct-marche-tete {
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid var(--ct-line);
+}
+.ct-marche-perimetre {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  padding: 3px 10px;
+  margin-bottom: 8px;
+  border: 1px solid var(--ct-line-strong);
+  border-radius: 4px;
+  background: var(--ct-card-alt);
+  color: var(--ct-muted);
+  font-size: 12.5px;
+}
+.ct-marche-perimetre strong {
+  color: var(--ct-text);
+  font-weight: 600;
+}
+
+.ct-marche-fiches {
+  display: grid;
+  grid-template-columns: repeat(var(--ct-nb-produits, 2), minmax(0, 1fr));
+  gap: 10px;
+  padding: 16px 20px 12px;
+}
+.ct-marche-fiche {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 14px;
+  border: 1px solid var(--ct-line);
+  border-radius: 4px;
+  background: var(--ct-card);
+}
+.ct-marche-fiche.is-lead {
+  border-color: var(--ct-line-strong);
+  background: var(--ct-card-alt);
+}
+.ct-marche-fiche-haut {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+.ct-marche-fiche-marque {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--ct-muted);
+}
+.ct-marche-badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 1px 6px;
+  border-radius: 3px;
+  background: var(--ct-win);
+  color: var(--ct-plus);
+}
+.ct-marche-fiche-nom {
+  display: block;
+  margin-top: 3px;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--ct-text);
+}
+.ct-marche-fiche-bas {
+  padding-top: 8px;
+  border-top: 1px solid var(--ct-line);
+  font-size: 12.5px;
+  color: var(--ct-muted);
+}
+.ct-marche-fiche-bas strong {
+  color: var(--ct-text);
+  font-weight: 600;
+}
+
+.ct-marche-synthese {
+  margin: 0 20px 14px;
+  padding: 12px 14px;
+  background: var(--ct-card-alt);
+  border: 1px solid var(--ct-line);
+  border-radius: 4px;
+  display: grid;
+  gap: 8px;
+}
+.ct-marche-synthese-titre {
+  font-size: 14px;
+  font-weight: 600;
+}
+.ct-marche-synthese-colonnes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 8px 16px;
+}
+.ct-marche-synthese-nom {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 3px;
+  font-size: 12px;
+  font-weight: 600;
+}
+.ct-marche-synthese-liste {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 2px;
+  font-size: 12.5px;
+  color: var(--ct-muted);
+}
+.ct-marche-synthese-vide {
+  font-size: 12.5px;
+  color: var(--ct-muted);
+}
+
+.ct-marche-global {
+  padding: 2px 20px 16px;
+}
+.ct-marche-global-tete {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 4px 12px;
+  margin-bottom: 4px;
+  font-size: 12px;
+  color: var(--ct-muted);
+}
+.ct-marche-global-tete strong {
+  color: var(--ct-text);
+  font-weight: 600;
+}
+.ct-marche-axe {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.ct-marche-axe-graduation {
+  font-family: var(--ct-font-num);
+  font-size: 10.5px;
+  fill: var(--ct-muted);
+}
+.ct-marche-axe-milieu {
+  font-size: 10px;
+  fill: var(--ct-muted);
+}
+.ct-marche-axe-etiquette {
+  font-size: 11.5px;
+  font-weight: 600;
+  fill: var(--ct-text);
+}
+
+.ct-marche-classement {
+  margin-top: 12px;
+  border: 1px solid var(--ct-line);
+  border-radius: 4px;
+  background: var(--ct-card-alt);
+}
+.ct-marche-classement > summary {
+  cursor: pointer;
+  padding: 10px 14px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.ct-marche-classement ol {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 6px;
+}
+.ct-marche-classement li {
+  display: grid;
+  grid-template-columns: 36px 1fr 48px;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-top: 1px solid var(--ct-line);
+  font-size: 13px;
+  color: var(--ct-muted);
+}
+.ct-marche-classement li a {
+  color: inherit;
+}
+.ct-marche-classement li.is-compare {
+  background: var(--ct-accent-soft);
+  color: var(--ct-text);
+  font-weight: 600;
+}
+.ct-marche-classement-nom {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.ct-marche-classement li > span:last-child {
+  text-align: right;
+  font-weight: 600;
+}
+
+.ct-marche-section-tete {
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid var(--ct-line);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px 16px;
+}
+.ct-marche-filtres {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.ct-marche-legende {
+  padding: 8px 20px;
+  background: var(--ct-card-alt);
+  border-bottom: 1px solid var(--ct-line);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 16px;
+  font-size: 12px;
+  color: var(--ct-muted);
+}
+.ct-marche-legende-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.ct-marche-legende-milieu {
+  display: inline-block;
+  height: 12px;
+  border-left: 1.5px dashed var(--ct-muted);
+}
+.ct-marche-legende-sens {
+  margin-left: auto;
+  font-weight: 500;
+  color: var(--ct-text);
+}
+
+.ct-marche-lignes {
+  padding: 0 20px;
+}
+.ct-marche-groupe {
+  padding: 14px 0 4px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ct-muted);
+}
+.ct-marche-ligne {
+  display: grid;
+  grid-template-columns: 184px minmax(200px, 1fr) repeat(
+      var(--ct-nb-produits, 2),
+      minmax(110px, 134px)
+    );
+  gap: 0 12px;
+  align-items: center;
+  padding: 10px 0;
+  border-top: 1px solid var(--ct-line);
+}
+.ct-marche-ligne-libelle b {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1.3;
+}
+.ct-marche-ligne-libelle small {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  line-height: 1.35;
+  color: var(--ct-muted);
+}
+.ct-marche-ligne-piste {
+  min-width: 0;
+}
+.ct-marche-piste {
+  display: block;
+  width: 100%;
+  height: 38px;
+  overflow: visible;
+}
+.ct-marche-ligne-bornes {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  margin-top: 1px;
+  font-size: 10.5px;
+  color: var(--ct-muted);
+}
+.ct-marche-ligne-vide {
+  min-height: 36px;
+  padding: 6px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 12px;
+  color: var(--ct-muted);
+  background: repeating-linear-gradient(-45deg, transparent 0 6px, var(--ct-line) 6px 7px);
+  border: 1px dashed var(--ct-line-strong);
+  border-radius: 3px;
+}
+.ct-marche-cellule {
+  text-align: right;
+  padding: 6px 8px;
+  border-radius: 3px;
+}
+.ct-marche-cellule.is-win {
+  background: var(--ct-win);
+}
+.ct-marche-cellule.is-absent {
+  opacity: 0.65;
+}
+.ct-marche-cellule-nom {
+  display: none;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 2px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ct-muted);
+}
+.ct-marche-cellule-valeur {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 5px;
+  font-size: 14px;
+  color: var(--ct-muted);
+}
+.ct-marche-cellule.is-win .ct-marche-cellule-valeur {
+  color: var(--ct-text);
+  font-weight: 700;
+}
+.ct-marche-cellule-gain {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ct-plus);
+}
+.ct-marche-cellule-rang {
+  display: block;
+  margin-top: 1px;
+  font-size: 11px;
+  color: var(--ct-muted);
+}
+.ct-marche-pied {
+  padding: 12px 20px 15px;
+  border-top: 1px solid var(--ct-line);
+  background: var(--ct-card-alt);
+  display: grid;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--ct-muted);
+}
+.ct-marche-pied strong {
+  color: var(--ct-text);
+  font-weight: 600;
+}
+
+.ct-marche-tiroir > summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.ct-marche-tiroir > summary::-webkit-details-marker {
+  display: none;
+}
+.ct-marche-tiroir-bouton {
+  padding: 4px 9px;
+  border: 1px solid var(--ct-line-strong);
+  border-radius: 3px;
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ct-muted);
+}
+.ct-marche-tiroir[open] > summary {
+  border-bottom: 1px solid var(--ct-line);
+}
+.ct-marche-tiroir-corps {
+  padding: 16px 20px 20px;
+  display: grid;
+  gap: 14px;
+}
+.ct-marche-methode {
+  padding: 11px 14px;
+  background: var(--ct-card-alt);
+  border: 1px solid var(--ct-line);
+  border-radius: 3px;
+  font-size: 12.5px;
+}
+.ct-marche-tableau-defile {
+  overflow-x: auto;
+}
+.ct-marche-tableau {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+.ct-marche-tableau th,
+.ct-marche-tableau td {
+  padding: 8px 10px;
+  text-align: right;
+  vertical-align: top;
+  border-top: 1px solid var(--ct-line);
+}
+.ct-marche-tableau th[scope='row'],
+.ct-marche-tableau thead th:first-child {
+  text-align: left;
+  font-weight: 600;
+}
+.ct-marche-tableau thead th {
+  border-top: 0;
+  font-size: 12px;
+  color: var(--ct-muted);
+}
+.ct-marche-tableau td.is-win {
+  background: var(--ct-win);
+  font-weight: 600;
+}
+.ct-marche-source {
+  display: block;
+  margin-top: 2px;
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--ct-muted);
+}
+
+/* Volet étroit et mobile : chaque critère passe sur plusieurs rangées,
+   la cellule de chaque produit porte alors son propre nom. */
+@media (max-width: 767.98px) {
+  .ct-marche-fiches {
+    grid-template-columns: 1fr;
+  }
+  .ct-marche-legende-sens {
+    margin-left: 0;
+  }
+  .ct-marche-ligne {
+    grid-template-columns: repeat(var(--ct-nb-produits, 2), minmax(0, 1fr));
+    gap: 8px;
+    padding: 14px 0;
+  }
+  .ct-marche-ligne-libelle,
+  .ct-marche-ligne-piste {
+    grid-column: 1 / -1;
+  }
+  .ct-marche-cellule {
+    text-align: left;
+    border: 1px solid var(--ct-line);
+  }
+  .ct-marche-cellule-nom {
+    display: flex;
+  }
+  .ct-marche-cellule-valeur {
+    justify-content: flex-start;
+  }
+}
