@@ -15,6 +15,7 @@ const Telephone = require('./models/Telephone');
 const User = require('./models/User');
 const { hashPassword, verifyPassword, signToken, verifyToken } = require('./auth');
 const { lecturePaginee } = require('./pagination');
+const { CHAMPS_MARCHE, resumeMarche } = require('./marche');
 const { construitListeBlanche, origineAutorisee } = require('./origines');
 const {
   SLUG_VALIDE,
@@ -217,6 +218,39 @@ function fail(res, status, publicMessage, err) {
   return res.status(status).json(body);
 }
 
+/*
+ * Resume « dans le marche » : distribution de chaque critere sur toute la
+ * collection, pour situer un produit parmi ses pairs sans envoyer le
+ * catalogue entier au navigateur.
+ *
+ * Cache d'une heure, en memoire du processus : la distribution ne bouge qu'a
+ * l'import, jamais a la visite. Sans ce cache, le premier visiteur de chaque
+ * page comparative paierait la lecture complete de la collection.
+ */
+const DUREE_CACHE_MARCHE = 60 * 60 * 1000;
+const cacheMarche = new Map();
+
+async function lectureMarche(segment, Model, champs) {
+  const enCache = cacheMarche.get(segment);
+  if (enCache && enCache.expire > Date.now()) return enCache.resume;
+
+  // Projection reduite aux criteres : un catalogue de 10 000 fiches ne fait
+  // transiter que les quelques nombres utiles, pas les noms, images et
+  // descriptions.
+  const projection = champs.map(champ => champ.key).join(' ');
+  const [documents, total] = await Promise.all([
+    // `.lean()` ici, contrairement a la route de liste : le plugin `catalogue`
+    // ne convertit que des mesures stockees en texte, et `marche.js` les
+    // relit lui-meme avec tolerance. Aucune fiche n'est renvoyee telle quelle.
+    Model.find({}).select(projection).lean(),
+    Model.estimatedDocumentCount(),
+  ]);
+
+  const resume = resumeMarche(documents, champs, total);
+  cacheMarche.set(segment, { resume, expire: Date.now() + DUREE_CACHE_MARCHE });
+  return resume;
+}
+
 /* ------------------------------------------------------------------ *
  * Routes publiques (lecture)
  * ------------------------------------------------------------------ */
@@ -308,6 +342,28 @@ for (const [segment, Model] of Object.entries(MODELS)) {
       res.json(documents);
     } catch (err) {
       fail(res, 500, `Erreur lors de la lecture des ${segment}.`, err);
+    }
+  });
+
+  /*
+   * Resume statistique de la collection, critere par critere.
+   *
+   * Declare avant `/api/:segment/:id` : sinon Express lirait « marche » comme
+   * un identifiant de fiche et repondrait « non trouve ».
+   */
+  app.get(`/api/${segment}/marche`, async (_req, res) => {
+    const champs = CHAMPS_MARCHE[segment] || [];
+    if (champs.length === 0) {
+      return res.status(404).json({ error: 'Resume indisponible pour cette collection.' });
+    }
+    try {
+      const resume = await lectureMarche(segment, Model, champs);
+      // Le cache serveur d'une heure suffit ; l'en-tete laisse aussi les
+      // caches intermediaires (Render, navigateur) servir la meme reponse.
+      res.set('Cache-Control', 'public, max-age=600');
+      res.json(resume);
+    } catch (err) {
+      fail(res, 500, `Erreur lors du calcul du marche des ${segment}.`, err);
     }
   });
 

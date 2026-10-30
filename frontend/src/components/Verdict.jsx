@@ -18,7 +18,12 @@ const MAIN_METRIC = {
  * pas, donc le chiffre passe en premier et l'IA reste explicitement une
  * option que le lecteur déclenche.
  */
-function Verdict({ products, productType }) {
+/*
+ * `analyseSeule` : sur la page comparative, les notes et l'écart sont déjà
+ * affichés en tête ; le bloc ne garde alors que l'analyse rédigée, pour ne
+ * pas répéter les mêmes chiffres une troisième fois.
+ */
+function Verdict({ products, productType, analyseSeule = false }) {
   const [aiAnalysis, setAiAnalysis] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -63,6 +68,41 @@ function Verdict({ products, productType }) {
     usable.length > 1 && rawWorst > 0 && rawBest !== rawWorst
       ? Math.round(((rawBest - rawWorst) / rawWorst) * 100)
       : null;
+
+  const analyse = (
+    <div className="ct-card-body">
+      {!aiAnalysis ? (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
+          <span className="ct-text-gray-small" style={{ flex: '1 1 240px' }}>
+            Un commentaire rédigé peut compléter les chiffres. Il est généré par un modèle de
+            langage et n’est pas une mesure.
+          </span>
+          <button className="ct-btn" onClick={askGemini} disabled={loading}>
+            {loading ? 'Analyse en cours…' : 'Demander une analyse'}
+          </button>
+        </div>
+      ) : (
+        <>
+          <div className="ct-title-h4">Analyse générée</div>
+          <p style={{ whiteSpace: 'pre-line' }}>{aiAnalysis}</p>
+          <p className="ct-text-gray-small" style={{ marginTop: 8 }}>
+            Texte produit automatiquement : à recouper avec le tableau de spécifications.
+          </p>
+        </>
+      )}
+    </div>
+  );
+
+  if (analyseSeule) {
+    return (
+      <section className="ct-card">
+        <div className="ct-card-head">
+          <h2 className="ct-title-h2">Avis rédigé (optionnel)</h2>
+        </div>
+        {analyse}
+      </section>
+    );
+  }
 
   return (
     <section className="ct-card">
@@ -110,27 +150,7 @@ function Verdict({ products, productType }) {
 
       <hr className="ct-card-sep" />
 
-      <div className="ct-card-body">
-        {!aiAnalysis ? (
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
-            <span className="ct-text-gray-small" style={{ flex: '1 1 240px' }}>
-              Un commentaire rédigé peut compléter les chiffres. Il est généré par un modèle de
-              langage et n’est pas une mesure.
-            </span>
-            <button className="ct-btn" onClick={askGemini} disabled={loading}>
-              {loading ? 'Analyse en cours…' : 'Demander une analyse'}
-            </button>
-          </div>
-        ) : (
-          <>
-            <div className="ct-title-h4">Analyse générée</div>
-            <p style={{ whiteSpace: 'pre-line' }}>{aiAnalysis}</p>
-            <p className="ct-text-gray-small" style={{ marginTop: 8 }}>
-              Texte produit automatiquement : à recouper avec le tableau de spécifications.
-            </p>
-          </>
-        )}
-      </div>
+      {analyse}
     </section>
   );
 }
