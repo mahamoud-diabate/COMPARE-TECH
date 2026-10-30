@@ -29,6 +29,11 @@ Positionnement : à l'opposé d'UserBenchmark (formules opaques et partisanes) e
 | Base     | MongoDB Atlas                                  | via `DB_URI`                                                                                      |
 | Dépôt    | GitHub                                         | `mahamoud-diabate/COMPARE-TECH`                                                                   |
 
+**Réglages imposés par `shared/`** (en place depuis le 30 octobre 2026) :
+
+- **Render** : aucun Root Directory ; build `cd backend && npm ci`, démarrage `cd backend && npm start` ; filtres de build `backend/**` et `shared/**` ; variable `NODE_VERSION=22`. Un Root Directory `backend` rendrait `shared/` invisible et l'API ne démarrerait plus. Voir `backend/render.yaml`.
+- **Vercel** : Root Directory `frontend`, avec « Include files outside the root directory in the Build Step » activé.
+
 L'offre gratuite de Render met l'API en veille : le premier appel peut prendre 20 à 50 secondes. Le frontend attend jusqu'à 75 secondes (`utils/catalog.js`).
 
 ---
@@ -364,7 +369,7 @@ Les 15 CPU et 15 GPU de la production n'existent dans aucun fichier du dépôt. 
 - La RTX 4090 (36 309 points 3DMark) dépasse le plafond GPU de 35 000 : elle est bloquée à 100/100, et toute carte plus rapide serait déclarée à égalité.
 - L'autonomie des laptops est une **mesure** Notebookcheck (test Wi-Fi), mais elle est étiquetée « Autonomie annoncée » dans `specs.js` et `radarAxes.js`.
 - Plafonds fixes : deux produits au-dessus du plafond obtiennent tous deux 100.
-- Déploiement de `shared/` : le frontend (Vercel) et l'API (Render) lisent un dossier situé hors de leur dossier racine. Vercel doit inclure les fichiers hors du dossier racine dans le build, et Render doit redéployer l'API quand `shared/` change (filtre de build).
+- Le frontend et l'API lisent `shared/`, situé hors de leur dossier : ne pas remettre de Root Directory sur Render (voir section 2).
 - La note GPU ne précise pas quel test 3DMark est utilisé.
 - L'API exige **Node ≥ 20.19** (chargement de `shared/`, en ESM, depuis du CommonJS).
 - Les contrôles `--verifier` (page source téléchargée) et de quarantaine ne s'appliquent qu'à l'import, pas aux écritures de l'admin.

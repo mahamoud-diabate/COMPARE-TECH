@@ -155,7 +155,7 @@ avant de cliquer.
 ## Déploiement
 
 - **Frontend** → Vercel : https://compare-tech-theta.vercel.app (`frontend/vercel.json`, root `frontend/`)
-- **Backend** → Render : https://mahamoud-compare-tech-api.onrender.com (`backend/render.yaml`, root `backend/`)
+- **Backend** → Render : https://mahamoud-compare-tech-api.onrender.com (`backend/render.yaml` ; service lancé depuis la racine du dépôt, car l'API lit `shared/`)
 
 ## Licence
 
