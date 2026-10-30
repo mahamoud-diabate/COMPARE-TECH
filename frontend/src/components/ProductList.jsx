@@ -84,12 +84,11 @@ function ProductList({
    */
   const classes = useMemo(() => {
     const parNom = (a, b) => (a.produit?.name || '').localeCompare(b.produit?.name || '');
-    // Le rang est calculé sur la catégorie entière, pas sur la liste filtrée :
-    // filtrer sur AMD ne doit pas transformer le 4e processeur du site en 1er.
-    // Sans `catalogue`, on retombe sur la liste reçue.
-    const reference = (catalogue.length ? catalogue : cpus).map(produit =>
-      getProductScore(produit, productType)
-    );
+    // Le rang porte sur ce que le visiteur a sous les yeux : filtrer sur AMD
+    // classe les AMD entre eux. Un rang calculé sur la catégorie entière y
+    // afficherait « 2e, 4e, 8e, 11e », ce qui ressemble à une liste cassée.
+    // Le tri, lui, ne change pas le rang : il ne change que l'ordre des lignes.
+    const reference = cpus.map(produit => getProductScore(produit, productType));
 
     const notes = cpus.map(produit => {
       const note = getProductScore(produit, productType);
@@ -100,9 +99,10 @@ function ProductList({
     if (sortOption === 'name-desc') return notes.sort((a, b) => parNom(b, a));
     if (sortOption === 'score-asc') return notes.sort((a, b) => a.note - b.note);
     return notes.sort((a, b) => b.note - a.note);
-  }, [cpus, catalogue, sortOption, productType]);
+  }, [cpus, sortOption, productType]);
 
-  const effectif = useMemo(
+  const effectifAffiche = useMemo(() => classes.filter(c => c.note > 0).length, [classes]);
+  const effectifCategorie = useMemo(
     () =>
       (catalogue.length ? catalogue : cpus).filter(p => getProductScore(p, productType) > 0).length,
     [catalogue, cpus, productType]
@@ -117,7 +117,10 @@ function ProductList({
           </h1>
           <span className="ct-text-gray-small" style={{ marginLeft: 8 }}>
             {classes.length} modèle{classes.length > 1 ? 's' : ''}
-            {effectif > 0 && ` · rang sur les ${effectif} de la catégorie`}
+            {effectifAffiche > 0 &&
+              (effectifAffiche === effectifCategorie
+                ? ` · rang sur les ${effectifAffiche} de la catégorie`
+                : ` · rang sur ces ${effectifAffiche}`)}
           </span>
         </div>
         <select
