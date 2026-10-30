@@ -66,7 +66,10 @@ function DetailSkeleton() {
               </div>
               <div style={{ padding: '12px 18px' }}>
                 {[0, 1, 2, 3].map(r => (
-                  <div key={r} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 12 }}>
+                  <div
+                    key={r}
+                    style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 12 }}
+                  >
                     <Line w="35%" h={14} mb={0} />
                     <Line w="20%" h={14} mb={0} />
                     <Line w="15%" h={12} mb={0} />
@@ -81,7 +84,10 @@ function DetailSkeleton() {
           <div className="ct-fiche-side-card">
             <Line w="50%" h={14} mb={12} />
             {[0, 1, 2, 3].map(i => (
-              <div key={i} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+              <div
+                key={i}
+                style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}
+              >
                 <Line w="40%" h={13} mb={0} />
                 <Line w="25%" h={15} mb={0} />
               </div>

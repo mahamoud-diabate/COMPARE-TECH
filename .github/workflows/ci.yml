@@ -29,7 +29,7 @@ jobs:
 
       - name: Liens Markdown
         run: node scripts/verifie-liens.mjs
-        
+
   shared:
     name: Regles partagees (Node ${{ matrix.node }})
     runs-on: ubuntu-latest

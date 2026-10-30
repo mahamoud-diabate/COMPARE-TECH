@@ -5,7 +5,11 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { genererUsages, genererSpecsSynthese, genererDatasheet } from '../src/utils/ficheProduit.js';
+import {
+  genererUsages,
+  genererSpecsSynthese,
+  genererDatasheet,
+} from '../src/utils/ficheProduit.js';
 
 const FAUX_CPU = {
   name: 'AMD Ryzen 7 7800X3D',

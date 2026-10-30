@@ -42,7 +42,8 @@ function ProductDetail({ product, type }) {
 
   usePageTitle(
     product && `${product.name} : fiche technique et spécifications`,
-    product && `Caractéristiques détaillées, usages concrets et fiche technique de ${product.name} (${product.brand}).`
+    product &&
+      `Caractéristiques détaillées, usages concrets et fiche technique de ${product.name} (${product.brand}).`
   );
 
   if (!product) return null;
@@ -94,12 +95,7 @@ function ProductDetail({ product, type }) {
               Spécifications complètes ↓
             </a>
             {product.buyUrl && /^https?:\/\//i.test(product.buyUrl) && (
-              <a
-                className="ct-btn"
-                href={product.buyUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <a className="ct-btn" href={product.buyUrl} target="_blank" rel="noopener noreferrer">
                 Voir l’offre <ExternalLink size={13} style={{ marginLeft: 4 }} />
               </a>
             )}
@@ -112,9 +108,12 @@ function ProductDetail({ product, type }) {
         <section className="ct-card" style={{ marginBottom: 20 }}>
           <div className="ct-fiche-usage-header">
             <div>
-              <div className="ct-fiche-usage-title">Étage 1 · Impact pratique & Usages concrets</div>
+              <div className="ct-fiche-usage-title">
+                Étage 1 · Impact pratique & Usages concrets
+              </div>
               <div className="ct-fiche-usage-subtitle">
-                Ce que les caractéristiques matérielles changent concrètement dans vos logiciels et jeux
+                Ce que les caractéristiques matérielles changent concrètement dans vos logiciels et
+                jeux
               </div>
             </div>
             <span style={{ fontSize: 12, color: 'var(--ct-muted)' }}>
@@ -200,7 +199,8 @@ function ProductDetail({ product, type }) {
               ))}
             </div>
             <p className="ct-fiche-side-info">
-              Valeurs certifiées issues des documentations techniques et protocoles de test standardisés.
+              Valeurs certifiées issues des documentations techniques et protocoles de test
+              standardisés.
             </p>
             <a href="#" className="ct-fiche-side-link">
               Haut de page ↑
@@ -210,7 +210,8 @@ function ProductDetail({ product, type }) {
           <div className="ct-fiche-side-card" style={{ background: 'var(--ct-card-alt)' }}>
             <div className="ct-fiche-side-title">Comparer ce modèle</div>
             <p className="ct-fiche-side-info">
-              Opposez ce modèle à un rival direct pour révéler les différences de spécifications et d’usages.
+              Opposez ce modèle à un rival direct pour révéler les différences de spécifications et
+              d’usages.
             </p>
             <Link
               to={`/compare?type=${type}&p1=${product._id}${others[0] ? `&p2=${others[0]._id}` : ''}`}
