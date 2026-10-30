@@ -64,10 +64,11 @@ test('getProductScore lit le type porté par le produit à défaut d’argument'
   assert.equal(getProductScore(phone), 50);
 });
 
-test('getProductScore préfère un score déjà enregistré sur le produit', () => {
-  // Permet d'imposer une note éditoriale sans toucher aux formules.
+test('getProductScore ignore un score imposé sur le document', () => {
+  // La note publiée doit toujours être celle de la formule affichée : un
+  // champ `score` posé à la main ne la remplace pas.
   const cpu = { score: 42, geekbench_multi: 29000, geekbench_single: 3500 };
-  assert.equal(getProductScore(cpu, 'cpu'), 42);
+  assert.equal(getProductScore(cpu, 'cpu'), 100);
 });
 
 test('getProductScore renvoie 0 pour un type inconnu', () => {

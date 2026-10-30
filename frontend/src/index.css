@@ -807,7 +807,7 @@ body:has(.ct-compare-bar) {
   justify-content: center;
   background: var(--ct-media);
   border-radius: 3px;
-  color: #9aa0a6;
+  color: var(--ct-muted);
 }
 
 .ct-rank-name {
@@ -2794,4 +2794,43 @@ body:has(.ct-compare-bar) {
   .ct-fiche-spec-src {
     text-align: left;
   }
+}
+
+/* ---------- Administration : source de chaque mesure ---------- */
+
+/* Les trois champs de source se rangent sous la valeur qu'ils prouvent. Bloc
+   discret : il ne doit pas concurrencer la valeur elle-même. */
+.ct-admin-source {
+  display: grid;
+  grid-template-columns: 1fr 9.5em;
+  gap: 6px;
+  margin: 6px 0 0;
+  padding: 8px;
+  border: 1px solid var(--ct-line);
+  border-radius: 3px;
+}
+.ct-admin-source legend {
+  padding: 0 4px;
+}
+.ct-admin-source input:nth-of-type(3),
+.ct-admin-source span {
+  grid-column: 1 / -1;
+}
+.ct-admin-source .is-ok {
+  color: var(--ct-plus);
+}
+.ct-admin-source .is-ko {
+  color: var(--ct-minus);
+}
+
+.ct-admin-refus {
+  margin: 0 0 14px;
+  padding: 10px 12px;
+  border: 1px solid var(--ct-minus);
+  border-radius: 3px;
+  color: var(--ct-text);
+}
+.ct-admin-refus ul {
+  margin: 6px 0 0;
+  padding-left: 18px;
 }

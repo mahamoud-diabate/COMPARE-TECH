@@ -17,24 +17,59 @@
  *   invert   — plus petit = meilleur (consommation, poids…)
  */
 
+import { critere, resolveType as resolveTypePartage } from '../../../shared/criteres.js';
+
+/*
+ * Les trois aides ci-dessous lisent l'unité, le sens de lecture et le plafond
+ * de chaque critère dans `shared/criteres.js`. Ce fichier ne garde que ce qui
+ * relève de l'affichage : intitulés, groupes et ordre des lignes.
+ */
+
+/** Ligne de tableau : `numeric` vaut `comparable`, `invert` vaut `inverse`. */
+function ligne(type, key, label) {
+  const cr = critere(type, key);
+  const row = { label, key };
+  if (cr.unite) row.unit = cr.unite;
+  if (cr.comparable) row.numeric = true;
+  if (cr.inverse) row.invert = true;
+  return row;
+}
+
+/** Barre de benchmark : l'échelle est le plafond du critère. */
+function barre(type, key, label) {
+  const cr = critere(type, key);
+  const row = { label, key, max: cr.plafond };
+  if (cr.nature !== 'benchmark' && cr.unite) row.unit = cr.unite;
+  return row;
+}
+
+/** Métrique des synthèses (« 50 % de cœurs »). */
+function metrique(type, key, label) {
+  const cr = critere(type, key);
+  const row = { key, label };
+  if (cr.unite) row.unit = cr.unite;
+  if (cr.inverse) row.invert = true;
+  return row;
+}
+
 export const SPEC_GROUPS = {
   cpu: [
     {
       group: 'Général',
       rows: [
         { label: 'Marque', key: 'brand' },
-        { label: 'Cœurs', key: 'cores', numeric: true },
-        { label: 'Threads', key: 'threads', numeric: true },
-        { label: 'Fréquence de base', key: 'base_freq_ghz', unit: 'GHz', numeric: true },
-        { label: 'Fréquence maximale', key: 'max_freq_ghz', unit: 'GHz', numeric: true },
-        { label: 'Consommation', key: 'tdp_w', unit: 'W', numeric: true, invert: true },
+        ligne('cpu', 'cores', 'Cœurs'),
+        ligne('cpu', 'threads', 'Threads'),
+        ligne('cpu', 'base_freq_ghz', 'Fréquence de base'),
+        ligne('cpu', 'max_freq_ghz', 'Fréquence maximale'),
+        ligne('cpu', 'tdp_w', 'Consommation'),
       ],
     },
     {
       group: 'Performances',
       rows: [
-        { label: 'Geekbench 6 (mono-cœur)', key: 'geekbench_single', numeric: true },
-        { label: 'Geekbench 6 (multi-cœur)', key: 'geekbench_multi', numeric: true },
+        ligne('cpu', 'geekbench_single', 'Geekbench 6 (mono-cœur)'),
+        ligne('cpu', 'geekbench_multi', 'Geekbench 6 (multi-cœur)'),
       ],
     },
   ],
@@ -50,15 +85,15 @@ export const SPEC_GROUPS = {
         // 6 144 contre 10 240 à la RTX 4080 SUPER, et devance pourtant cette
         // dernière de 9 % en Time Spy. Surligner le plus grand nombre
         // affirmerait quelque chose de faux.
-        { label: 'Unités de calcul', key: 'cores' },
-        { label: 'Mémoire vidéo', key: 'memory_gb', unit: 'Go', numeric: true },
+        ligne('gpu', 'cores', 'Unités de calcul'),
+        ligne('gpu', 'memory_gb', 'Mémoire vidéo'),
         { label: 'Type de mémoire', key: 'memory_type' },
-        { label: 'Consommation', key: 'tdp_w', unit: 'W', numeric: true, invert: true },
+        ligne('gpu', 'tdp_w', 'Consommation'),
       ],
     },
     {
       group: 'Performances',
-      rows: [{ label: '3DMark', key: 'benchmark_3dmark', numeric: true }],
+      rows: [ligne('gpu', 'benchmark_3dmark', '3DMark')],
     },
   ],
 
@@ -69,20 +104,20 @@ export const SPEC_GROUPS = {
         { label: 'Marque', key: 'brand' },
         { label: 'Processeur', key: 'cpu_name' },
         { label: 'Carte graphique', key: 'gpu_name' },
-        { label: 'Mémoire vive', key: 'ram_gb', unit: 'Go', numeric: true },
-        { label: 'Stockage', key: 'storage_gb', unit: 'Go', numeric: true },
+        ligne('laptop', 'ram_gb', 'Mémoire vive'),
+        ligne('laptop', 'storage_gb', 'Stockage'),
       ],
     },
     {
       group: 'Écran et autonomie',
       rows: [
-        { label: 'Luminosité', key: 'display_brightness_nits', unit: 'nits', numeric: true },
-        { label: 'Autonomie annoncée', key: 'battery_life_hours', unit: 'h', numeric: true },
+        ligne('laptop', 'display_brightness_nits', 'Luminosité'),
+        ligne('laptop', 'battery_life_hours', 'Autonomie annoncée'),
       ],
     },
     {
       group: 'Performances',
-      rows: [{ label: 'Geekbench 6 (multi-cœur)', key: 'geekbench_multi', numeric: true }],
+      rows: [ligne('laptop', 'geekbench_multi', 'Geekbench 6 (multi-cœur)')],
     },
   ],
 
@@ -91,22 +126,22 @@ export const SPEC_GROUPS = {
       group: 'Général',
       rows: [
         { label: 'Marque', key: 'brand' },
-        { label: 'Taille de l’écran', key: 'display_size', unit: 'pouces', numeric: true },
+        ligne('telephone', 'display_size', 'Taille de l’écran'),
         { label: 'Processeur', key: 'cpu_name' },
-        { label: 'Mémoire vive', key: 'ram_gb', unit: 'Go', numeric: true },
-        { label: 'Stockage', key: 'storage_gb', unit: 'Go', numeric: true },
+        ligne('telephone', 'ram_gb', 'Mémoire vive'),
+        ligne('telephone', 'storage_gb', 'Stockage'),
       ],
     },
     {
       group: 'Batterie',
-      rows: [{ label: 'Capacité', key: 'battery_mah', unit: 'mAh', numeric: true }],
+      rows: [ligne('telephone', 'battery_mah', 'Capacité')],
     },
     {
       group: 'Performances',
       rows: [
-        { label: 'Geekbench 6 (mono-cœur)', key: 'geekbench_single', numeric: true },
-        { label: 'Geekbench 6 (multi-cœur)', key: 'geekbench_multi', numeric: true },
-        { label: 'AnTuTu', key: 'antutu_score', numeric: true },
+        ligne('telephone', 'geekbench_single', 'Geekbench 6 (mono-cœur)'),
+        ligne('telephone', 'geekbench_multi', 'Geekbench 6 (multi-cœur)'),
+        ligne('telephone', 'antutu_score', 'AnTuTu'),
       ],
     },
   ],
@@ -119,19 +154,19 @@ export const SPEC_GROUPS = {
  */
 export const BENCHMARKS = {
   cpu: [
-    { label: 'Geekbench 6 (mono-cœur)', key: 'geekbench_single', max: 3500 },
-    { label: 'Geekbench 6 (multi-cœur)', key: 'geekbench_multi', max: 29000 },
+    barre('cpu', 'geekbench_single', 'Geekbench 6 (mono-cœur)'),
+    barre('cpu', 'geekbench_multi', 'Geekbench 6 (multi-cœur)'),
   ],
-  gpu: [{ label: '3DMark', key: 'benchmark_3dmark', max: 35000 }],
+  gpu: [barre('gpu', 'benchmark_3dmark', '3DMark')],
   laptop: [
-    { label: 'Geekbench 6 (multi-cœur)', key: 'geekbench_multi', max: 26000 },
-    { label: 'Luminosité maximale', key: 'display_brightness_nits', max: 1600, unit: 'nits' },
-    { label: 'Autonomie', key: 'battery_life_hours', max: 20, unit: 'h' },
+    barre('laptop', 'geekbench_multi', 'Geekbench 6 (multi-cœur)'),
+    barre('laptop', 'display_brightness_nits', 'Luminosité maximale'),
+    barre('laptop', 'battery_life_hours', 'Autonomie'),
   ],
   telephone: [
-    { label: 'Geekbench 6 mono-cœur', key: 'geekbench_single', max: 3600 },
-    { label: 'Geekbench 6 multi-cœur', key: 'geekbench_multi', max: 9500 },
-    { label: 'Batterie', key: 'battery_mah', max: 6000, unit: 'mAh' },
+    barre('telephone', 'geekbench_single', 'Geekbench 6 mono-cœur'),
+    barre('telephone', 'geekbench_multi', 'Geekbench 6 multi-cœur'),
+    barre('telephone', 'battery_mah', 'Batterie'),
   ],
 };
 
@@ -143,40 +178,37 @@ export const BENCHMARKS = {
  */
 export const KEY_METRICS = {
   cpu: [
-    { key: 'geekbench_multi', label: 'de performances multi-cœur' },
-    { key: 'geekbench_single', label: 'de performances mono-cœur' },
-    { key: 'cores', label: 'de cœurs' },
-    { key: 'threads', label: 'de threads' },
-    { key: 'max_freq_ghz', label: 'de fréquence maximale', unit: 'GHz' },
-    { key: 'tdp_w', label: 'de consommation', unit: 'W', invert: true },
+    metrique('cpu', 'geekbench_multi', 'de performances multi-cœur'),
+    metrique('cpu', 'geekbench_single', 'de performances mono-cœur'),
+    metrique('cpu', 'cores', 'de cœurs'),
+    metrique('cpu', 'threads', 'de threads'),
+    metrique('cpu', 'max_freq_ghz', 'de fréquence maximale'),
+    metrique('cpu', 'tdp_w', 'de consommation'),
   ],
   gpu: [
-    { key: 'benchmark_3dmark', label: 'de performances 3D' },
-    { key: 'memory_gb', label: 'de mémoire vidéo', unit: 'Go' },
-    { key: 'tdp_w', label: 'de consommation', unit: 'W', invert: true },
+    metrique('gpu', 'benchmark_3dmark', 'de performances 3D'),
+    metrique('gpu', 'memory_gb', 'de mémoire vidéo'),
+    metrique('gpu', 'tdp_w', 'de consommation'),
   ],
   laptop: [
-    { key: 'geekbench_multi', label: 'de performances' },
-    { key: 'battery_life_hours', label: 'd’autonomie', unit: 'h' },
-    { key: 'display_brightness_nits', label: 'de luminosité', unit: 'nits' },
-    { key: 'ram_gb', label: 'de mémoire vive', unit: 'Go' },
-    { key: 'storage_gb', label: 'de stockage', unit: 'Go' },
+    metrique('laptop', 'geekbench_multi', 'de performances'),
+    metrique('laptop', 'battery_life_hours', 'd’autonomie'),
+    metrique('laptop', 'display_brightness_nits', 'de luminosité'),
+    metrique('laptop', 'ram_gb', 'de mémoire vive'),
+    metrique('laptop', 'storage_gb', 'de stockage'),
   ],
   telephone: [
-    { key: 'geekbench_multi', label: 'de puissance multi-cœur' },
-    { key: 'geekbench_single', label: 'de réactivité (mono-cœur)' },
-    { key: 'battery_mah', label: 'de capacité de batterie', unit: 'mAh' },
-    { key: 'ram_gb', label: 'de mémoire vive', unit: 'Go' },
-    { key: 'storage_gb', label: 'de stockage', unit: 'Go' },
-    { key: 'display_size', label: 'de diagonale d’écran', unit: 'pouces' },
+    metrique('telephone', 'geekbench_multi', 'de puissance multi-cœur'),
+    metrique('telephone', 'geekbench_single', 'de réactivité (mono-cœur)'),
+    metrique('telephone', 'battery_mah', 'de capacité de batterie'),
+    metrique('telephone', 'ram_gb', 'de mémoire vive'),
+    metrique('telephone', 'storage_gb', 'de stockage'),
+    metrique('telephone', 'display_size', 'de diagonale d’écran'),
   ],
 };
 
 /** Ramène 'cpus', 'telephone', 'laptops'… à la clé canonique du catalogue. */
-export function resolveType(productType) {
-  const type = String(productType || '');
-  return Object.keys(SPEC_GROUPS).find(key => type.includes(key)) || null;
-}
+export const resolveType = resolveTypePartage;
 
 /**
  * Extrait un nombre d'une valeur qui peut être stockée en texte
