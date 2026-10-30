@@ -29,24 +29,26 @@ jobs:
 
       - name: Liens Markdown
         run: node scripts/verifie-liens.mjs
+        
+  shared:
+    name: Regles partagees (Node ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ['20', '22']
+    defaults:
+      run:
+        working-directory: shared
+    steps:
+      - uses: actions/checkout@v4
 
-shared:
-       name: Regles partagees (Node ${{ matrix.node }})
-       runs-on: ubuntu-latest
-       strategy:
-         fail-fast: false
-         matrix:
-           node: ['20', '22']
-       defaults:
-         run:
-           working-directory: shared
-       steps:
-         - uses: actions/checkout@v4
-         - uses: actions/setup-node@v4
-           with:
-             node-version: ${{ matrix.node }}
-         - name: Tests
-           run: node --test
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Tests
+        run: node --test
 
   backend:
     name: Backend (Node ${{ matrix.node }})
