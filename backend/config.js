@@ -9,10 +9,12 @@
  * fabriquer une configuration sans toucher a `process.env`.
  */
 
-// Modele par defaut. Il doit rester un modele servi : gemini-1.5-flash,
-// l'ancien defaut, est retire chez Google et faisait echouer la route IA sur
-// une installation neuve, sans que rien dans la configuration ne l'annonce.
-const MODELE_IA_DEFAUT = 'gemini-2.0-flash';
+// Modele par defaut. Il doit rester un modele servi : gemini-2.0-flash, l'ancien
+// defaut, a ete arrete par Google le 1er juin 2026, et gemini-1.5-flash avant
+// lui. Un defaut mort fait echouer la route IA sur une installation neuve, sans
+// que rien dans la configuration ne l'annonce. Verifier avant de changer :
+// https://ai.google.dev/gemini-api/docs/deprecations
+const MODELE_IA_DEFAUT = 'gemini-3.8-flash';
 
 /**
  * @param {Record<string, string|undefined>} env  en pratique `process.env`

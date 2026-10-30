@@ -114,7 +114,7 @@ La CI (`.github/workflows/ci.yml`) lance, sur Node 20 et 22 : tests de `shared/`
 | `ADMIN_PASSWORD` | Mot de passe admin (10 caractères minimum conseillés)                     | Connexion et écritures désactivées (503)                       |
 | `JWT_SECRET`     | Signature des jetons (32 caractères minimum)                              | Écritures désactivées (503)                                    |
 | `GEMINI_API_KEY` | Verdict IA                                                                | `/api/ai/verdict` renvoie 503                                  |
-| `GEMINI_MODEL`   | Modèle Gemini (défaut `gemini-2.0-flash`)                                 | Défaut utilisé                                                 |
+| `GEMINI_MODEL`   | Modèle Gemini (défaut `gemini-3.8-flash`)                                 | Défaut utilisé                                                 |
 | `CORS_ORIGINS`   | Origines **supplémentaires**, séparées par des virgules                   | Seules les origines de production codées en dur sont acceptées |
 | `NODE_ENV`       | `production` masque les détails d'erreur et retire les origines localhost | Mode développement                                             |
 | `PORT`           | Port d'écoute (défaut 3001)                                               | —                                                              |
