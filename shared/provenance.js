@@ -10,6 +10,26 @@
  * figure-t-il sur la page ?) reste dans l'importateur, seul à télécharger.
  */
 
+import { ORIGINES } from './criteres.js';
+
+/*
+ * Clés admises dans l'entrée de provenance d'une mesure. Mongoose supprime
+ * sans un mot une clé que le sous-schéma ne connaît pas : une faute de frappe
+ * (« protocol » pour « protocole ») ferait disparaître l'information à
+ * l'écriture. On refuse plutôt que de perdre.
+ */
+export const CLES_SOURCE = Object.freeze([
+  'url',
+  'releve_le',
+  'extrait',
+  'origine',
+  'protocole',
+  'version',
+  'archive',
+]);
+
+const vide = v => v === undefined || v === null || v === '';
+
 /**
  * Compare deux textes en ignorant TOUTE espace.
  *
@@ -118,6 +138,79 @@ export function controleProvenance(champs, produit) {
         `${champ} = ${valeur} absent de son propre extrait (« ${source.extrait} ») : ` +
           `le nombre et le libelle ne se rapportent pas a la meme chose`
       );
+    }
+  }
+
+  return erreurs;
+}
+
+/**
+ * Contrôle la qualification de chaque source : origine, protocole, version,
+ * archive (docs/PROPOSITION-MESURE.md, phase 1).
+ *
+ * Phase 1 : ces champs sont FACULTATIFS. Absents, rien n'est exigé ; présents,
+ * ils doivent être valables. Les fiches existantes restent donc modifiables,
+ * et une information saisie ne peut pas être fausse.
+ *
+ * @param {Array<{key: string, protocoles: string[]}>} criteres  critères de la catégorie (criteres.js)
+ * @param {object} produit  le document, avec son objet `provenance`
+ * @returns {string[]} les motifs de refus, vide si tout est valable
+ */
+export function controleQualification(criteres, produit) {
+  const erreurs = [];
+  const provenance = (produit && produit.provenance) || {};
+  const parCle = new Map(criteres.map(cr => [cr.key, cr]));
+
+  for (const [champ, source] of Object.entries(provenance)) {
+    if (!source || typeof source !== 'object') continue;
+
+    const inconnues = Object.keys(source).filter(cle => !CLES_SOURCE.includes(cle));
+    if (inconnues.length) {
+      erreurs.push(
+        `${champ} : clé de source inconnue (${inconnues.join(', ')}) — elle serait perdue ` +
+          `à l'écriture. Clés admises : ${CLES_SOURCE.join(', ')}.`
+      );
+    }
+
+    if (!vide(source.origine) && !Object.hasOwn(ORIGINES, source.origine)) {
+      erreurs.push(
+        `${champ} : origine « ${source.origine} » inconnue. ` +
+          `Valeurs admises : ${Object.keys(ORIGINES).join(', ')}.`
+      );
+    }
+
+    if (!vide(source.protocole)) {
+      const acceptes = parCle.get(champ)?.protocoles || [];
+      if (acceptes.length === 0) {
+        erreurs.push(
+          `${champ} : protocole « ${source.protocole} » sur une caractéristique de fiche ` +
+            `technique, qui n'est le résultat d'aucun test. Retirez-le.`
+        );
+      } else if (!acceptes.includes(source.protocole)) {
+        erreurs.push(
+          `${champ} : protocole « ${source.protocole} » non accepté pour ce critère. ` +
+            `Acceptés : ${acceptes.join(', ')} (à déclarer dans shared/criteres.js).`
+        );
+      } else if (
+        source.protocole === 'annonce-constructeur' &&
+        !vide(source.origine) &&
+        source.origine !== 'constructeur'
+      ) {
+        erreurs.push(
+          `${champ} : une valeur annoncée par le constructeur ne peut pas avoir l'origine ` +
+            `« ${source.origine} ».`
+        );
+      }
+    }
+
+    if (!vide(source.version)) {
+      if (typeof source.version !== 'string' || source.version.length > 40) {
+        erreurs.push(`${champ} : version illisible (texte de 40 caractères au plus).`);
+      }
+    }
+
+    if (!vide(source.archive) && !/^https?:\/\/\S+$/.test(String(source.archive))) {
+      erreurs.push(`${champ} : archive « ${source.archive} » n'est pas une URL.`);
     }
   }
 

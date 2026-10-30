@@ -27,7 +27,7 @@ const CATEGORIES = [
     key: 'laptops',
     type: 'laptop',
     title: 'Ordinateurs portables',
-    desc: 'Performances, luminosité, autonomie annoncée',
+    desc: 'Performances, luminosité, autonomie',
     icon: 'laptop',
   },
   {

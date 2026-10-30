@@ -79,13 +79,19 @@ function SourcesMarche({ produits, productType }) {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 title={
-                                  source.extrait
-                                    ? `Extrait relevé : « ${source.extrait} »`
-                                    : undefined
+                                  [
+                                    source.extrait && `Extrait relevé : « ${source.extrait} »`,
+                                    source.version && `Version du test : ${source.version}`,
+                                    source.archive && `Copie archivée : ${source.archive}`,
+                                  ]
+                                    .filter(Boolean)
+                                    .join('\n') || undefined
                                 }
                               >
                                 {source.site}
                                 {source.date ? `, relevé le ${source.date}` : ''}
+                                {source.protocole ? ` · ${source.protocole}` : ''}
+                                {source.origine ? ` · ${source.origine}` : ''}
                               </a>
                             )}
                           </td>

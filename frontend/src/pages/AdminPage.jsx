@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { SPEC_GROUPS } from '../utils/specs';
-import { toutesLesCles } from '../../../shared/criteres.js';
+import { ORIGINES, criteresDe, libelleProtocole, toutesLesCles } from '../../../shared/criteres.js';
 import { valeurPresente } from '../../../shared/provenance.js';
 import { invalidateCatalog } from '../utils/catalog';
 import { usePageTitle } from '../hooks/usePageTitle';
@@ -23,6 +23,16 @@ const NUMERIC_FIELDS = new Set(toutesLesCles());
 
 const aujourdHui = () => new Date().toISOString().slice(0, 10);
 
+const SOURCE_VIDE = {
+  url: '',
+  releve_le: '',
+  extrait: '',
+  origine: '',
+  protocole: '',
+  version: '',
+  archive: '',
+};
+
 /** Provenance reçue de l'API -> valeurs de formulaire (date au format AAAA-MM-JJ). */
 function provenanceEnFormulaire(provenance) {
   const resultat = {};
@@ -32,6 +42,10 @@ function provenanceEnFormulaire(provenance) {
       url: source.url || '',
       releve_le: source.releve_le ? String(source.releve_le).slice(0, 10) : '',
       extrait: source.extrait || '',
+      origine: source.origine || '',
+      protocole: source.protocole || '',
+      version: source.version || '',
+      archive: source.archive || '',
     };
   }
   return resultat;
@@ -47,11 +61,11 @@ const EMPTY = { name: '', brand: '', imageUrl: '', pros: '', cons: '', provenanc
  * avec la même fonction que le serveur (`shared/provenance.js`) : le verdict
  * affiché pendant la saisie est celui qui tombera à l'enregistrement.
  */
-function ChampsSource({ cle, valeur, source, onChange }) {
+function ChampsSource({ cle, valeur, source, protocoles, onChange }) {
   const renseignee = valeur !== undefined && valeur !== null && valeur !== '';
   if (!renseignee) return null;
 
-  const s = source || { url: '', releve_le: '', extrait: '' };
+  const s = { ...SOURCE_VIDE, ...source };
   const nombre = Number(valeur);
   const prouvee = s.extrait && Number.isFinite(nombre) ? valeurPresente(s.extrait, nombre) : null;
 
@@ -74,11 +88,59 @@ function ChampsSource({ cle, valeur, source, onChange }) {
         onChange={e => onChange(cle, 'releve_le', e.target.value)}
       />
       <input
-        className="ct-input"
+        className="ct-input is-large"
         placeholder="Extrait exact contenant la valeur, ex. « Total Cores 24 »"
         aria-label={`Extrait de la source (${cle})`}
         value={s.extrait}
         onChange={e => onChange(cle, 'extrait', e.target.value)}
+      />
+      {/* Qualification : facultative pour l'instant, mais contrôlée si remplie.
+          Les choix proposés sont exactement ceux qu'accepte le serveur. */}
+      <select
+        className="ct-input is-large"
+        aria-label={`Origine de la valeur (${cle})`}
+        value={s.origine}
+        onChange={e => onChange(cle, 'origine', e.target.value)}
+      >
+        <option value="">Origine : non précisée</option>
+        {Object.entries(ORIGINES).map(([id, libelle]) => (
+          <option key={id} value={id}>
+            {libelle.charAt(0).toUpperCase() + libelle.slice(1)}
+          </option>
+        ))}
+      </select>
+      {protocoles.length > 0 && (
+        <>
+          <select
+            className="ct-input"
+            aria-label={`Test ou protocole (${cle})`}
+            value={s.protocole}
+            onChange={e => onChange(cle, 'protocole', e.target.value)}
+          >
+            <option value="">Test : non précisé</option>
+            {protocoles.map((id, i) => (
+              <option key={id} value={id}>
+                {libelleProtocole(id)}
+                {i === 0 ? ' (référence)' : ''}
+              </option>
+            ))}
+          </select>
+          <input
+            className="ct-input"
+            placeholder="Version, ex. 6.3"
+            aria-label={`Version du test (${cle})`}
+            value={s.version}
+            onChange={e => onChange(cle, 'version', e.target.value)}
+          />
+        </>
+      )}
+      <input
+        className="ct-input is-large"
+        type="url"
+        placeholder="Copie archivée (facultatif), ex. web.archive.org/…"
+        aria-label={`Copie archivée de la source (${cle})`}
+        value={s.archive}
+        onChange={e => onChange(cle, 'archive', e.target.value)}
       />
       {prouvee !== null && (
         <span className={`ct-text-gray-small ${prouvee ? 'is-ok' : 'is-ko'}`}>
@@ -145,7 +207,7 @@ function AdminPage() {
   // d'une URL : c'est presque toujours le jour du relevé.
   const handleSource = (cle, champ, valeur) =>
     setFormData(prev => {
-      const actuelle = prev.provenance?.[cle] || { url: '', releve_le: '', extrait: '' };
+      const actuelle = { ...SOURCE_VIDE, ...prev.provenance?.[cle] };
       const suivante = { ...actuelle, [champ]: valeur };
       if (champ === 'url' && valeur && !actuelle.releve_le) suivante.releve_le = aujourdHui();
       return { ...prev, provenance: { ...prev.provenance, [cle]: suivante } };
@@ -210,7 +272,12 @@ function AdminPage() {
     for (const cle of NUMERIC_FIELDS) {
       const source = formData.provenance?.[cle];
       if (payload[cle] === undefined || payload[cle] === null || !source) continue;
-      if (source.url || source.extrait) provenance[cle] = source;
+      if (!source.url && !source.extrait) continue;
+      // Champs facultatifs laissés vides : absents, et non chaînes vides, que
+      // le serveur refuserait comme origine ou protocole inconnus.
+      provenance[cle] = Object.fromEntries(
+        Object.entries(source).filter(([, v]) => v !== '' && v !== null && v !== undefined)
+      );
     }
     payload.provenance = provenance;
 
@@ -387,6 +454,7 @@ function AdminPage() {
                     cle={field.key}
                     valeur={formData[field.key]}
                     source={formData.provenance?.[field.key]}
+                    protocoles={criteresDe(type).find(cr => cr.key === field.key)?.protocoles || []}
                     onChange={handleSource}
                   />
                 )}

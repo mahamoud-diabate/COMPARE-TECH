@@ -475,6 +475,39 @@ test('une creation prouvee est acceptee', async () => {
   assert.strictEqual(r.status, 201);
 });
 
+test('une creation qualifiee (origine, protocole) est acceptee, une mauvaise refusee', async () => {
+  const fiche = protocole => ({
+    name: `Qualifie ${protocole}`,
+    brand: 'AMD',
+    cores: 8,
+    geekbench_multi: 15000,
+    provenance: {
+      cores: source('Total Cores 8'),
+      geekbench_multi: {
+        ...source('Geekbench 6 (Multi-Core) 15000'),
+        origine: 'agregat',
+        protocole,
+      },
+    },
+  });
+
+  const ok = await apiAuth.appel('/api/cpus', {
+    method: 'POST',
+    headers: AUTH(),
+    body: fiche('geekbench-6'),
+  });
+  assert.strictEqual(ok.status, 201);
+
+  const ko = await apiAuth.appel('/api/cpus', {
+    method: 'POST',
+    headers: AUTH(),
+    body: fiche('3dmark-time-spy'),
+  });
+  assert.strictEqual(ko.status, 400);
+  const { erreurs } = await ko.json();
+  assert.match(erreurs.join(' '), /3dmark-time-spy.*non accepté/);
+});
+
 test('un lot avec une seule fiche invalide n ecrit rien', async () => {
   const avant = apiAuth.modeles.laptops.docs.length;
   const r = await apiAuth.appel('/api/laptops', {

@@ -17,6 +17,7 @@
 
 import { SPEC_GROUPS, resolveType, toNumber } from './specs.js';
 import { MAX_PALIERS, NB_BACS, SEUIL_BORNAGE, quantile } from '../../../shared/marche.js';
+import { ORIGINES, libelleProtocole } from '../../../shared/criteres.js';
 
 /*
  * Les seuils de découpage sont ceux du résumé serveur (`shared/marche.js`) :
@@ -343,5 +344,29 @@ export function decrireSource(provenance) {
     date && !Number.isNaN(date.getTime())
       ? `${date.getUTCDate()} ${MOIS[date.getUTCMonth()]} ${date.getUTCFullYear()}`
       : null;
-  return { site, url: provenance.url, date: dateTexte, extrait: provenance.extrait || null };
+  return {
+    site,
+    url: provenance.url,
+    date: dateTexte,
+    extrait: provenance.extrait || null,
+    // Qualification (facultative en phase 1 : absente des fiches de test).
+    origine: provenance.origine ? ORIGINES[provenance.origine] || null : null,
+    protocole: provenance.protocole ? libelleProtocole(provenance.protocole) : null,
+    version: provenance.version || null,
+    archive: provenance.archive || null,
+  };
+}
+
+/**
+ * Qualificatif court d'une valeur selon son origine : « mesurée »,
+ * « annoncée », « moyenne d'utilisateurs », ou null si la source ne le dit
+ * pas. Sert aux intitulés : une autonomie n'est dite « mesurée » que si sa
+ * source l'établit, jamais par défaut.
+ */
+export function qualificatifOrigine(provenance) {
+  const origine = provenance && provenance.origine;
+  if (origine === 'laboratoire') return 'mesurée';
+  if (origine === 'constructeur') return 'annoncée';
+  if (origine === 'agregat') return 'moyenne d’utilisateurs';
+  return null;
 }

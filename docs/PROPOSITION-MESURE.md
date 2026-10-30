@@ -1,6 +1,6 @@
 # Proposition : le format d'une mesure
 
-> **Statut : proposition, rien n'est implémenté.** Ce document sert à décider avant d'écrire du code. Les questions à trancher sont regroupées en section 6.
+> **Statut : décidé le 30 octobre 2026. Phase 1 implémentée** (champs facultatifs, contrôlés s'ils sont présents) ; phases 2 et 3 à venir. Les cinq décisions sont en section 6, les phases en section 5.
 >
 > Rédigé le 30 octobre 2026, à partir du code réel (`shared/criteres.js`, `backend/models/catalogue.js`, `shared/provenance.js`) et de l'étude stratégique.
 
@@ -96,15 +96,15 @@ Un document par relevé (produit, critère, valeur, source, protocole…), plusi
 
 ### 4.1 Les champs
 
-| Champ       | Obligatoire           | Valeurs                                  | Rôle                                                           |
-| ----------- | --------------------- | ---------------------------------------- | -------------------------------------------------------------- |
-| `url`       | oui (déjà)            | URL                                      | Page d'où vient la valeur                                      |
-| `releve_le` | oui (déjà)            | date                                     | Date du relevé                                                 |
-| `extrait`   | oui (déjà)            | texte                                    | Phrase de la page qui contient la valeur                       |
-| `origine`   | oui                   | `constructeur`, `laboratoire`, `agregat` | Qui a produit le chiffre                                       |
-| `protocole` | oui pour un benchmark | identifiant d'une liste fermée (4.2)     | Test exact. C'est lui qui décide si deux valeurs se comparent  |
-| `version`   | à décider (Q2)        | texte libre (« 6.3 », « 1.2 »)           | Version du test ou du protocole du laboratoire                 |
-| `archive`   | non                   | URL (archive.org, archive.today)         | Copie figée de la page, pour que la preuve survive à la source |
+| Champ       | Obligatoire           | Valeurs                                  | Rôle                                                                          |
+| ----------- | --------------------- | ---------------------------------------- | ----------------------------------------------------------------------------- |
+| `url`       | oui (déjà)            | URL                                      | Page d'où vient la valeur                                                     |
+| `releve_le` | oui (déjà)            | date                                     | Date du relevé                                                                |
+| `extrait`   | oui (déjà)            | texte                                    | Phrase de la page qui contient la valeur                                      |
+| `origine`   | oui                   | `constructeur`, `laboratoire`, `agregat` | Qui a produit le chiffre                                                      |
+| `protocole` | oui pour un benchmark | identifiant d'une liste fermée (4.2)     | Test exact. C'est lui qui décide si deux valeurs se comparent                 |
+| `version`   | non (Q2)              | texte libre (« 6.3 », « 1.2 »)           | Sous-version, si la source la donne ; la version majeure est dans `protocole` |
+| `archive`   | non (Q4)              | URL (archive.org, archive.today)         | Copie figée de la page, pour que la preuve survive à la source                |
 
 **Pourquoi `origine` et pas `nature`** : `nature` existe déjà dans `shared/criteres.js` et répond à une autre question, « qu'est-ce que ce critère » (un benchmark, une mesure de laboratoire, une caractéristique). `origine` répond à « qui a produit **cette** valeur ». Les deux se croisent : une autonomie (critère de nature `mesure`) peut avoir une origine `constructeur` (« jusqu'à 20 h ») ou `laboratoire` (Notebookcheck, test Wi-Fi). C'est exactement le cas de l'étiquette « Autonomie annoncée » erronée.
 
@@ -141,29 +141,17 @@ C'est le point qui change le comportement du site, et la vraie raison de ce trav
 
 **Pas de rétro-remplissage automatique.** Déduire `protocole: "3dmark-time-spy-graphics"` de l'extrait « Time Spy 36309 » serait affirmer ce que la source ne dit pas. Les fiches de test restent sans protocole jusqu'à leur remplacement. Elles s'affichent normalement en phase 1 et 2, et sont remplacées avant la phase 3.
 
-## 6. Questions à trancher
+## 6. Décisions (30 octobre 2026)
 
-**Q1. Option A, B ou C ?** Recommandation : A.
+| Question                               | Décision                                                                                                                                            | Écartée, et pourquoi                                                                               |
+| -------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| **Q1.** Option A, B ou C ?             | **A** : enrichir l'entrée de provenance.                                                                                                            | B réécrit tous les lecteurs pour un gain marginal ; C est prématurée à cette taille de catalogue.  |
+| **Q2.** Version du test obligatoire ?  | **Non.** La version majeure fait partie du protocole (`geekbench-6`, pas `geekbench`) ; `version` reste facultative.                                | L'exiger bloquerait des données valables : beaucoup de sources ne donnent pas la sous-version.     |
+| **Q3.** Valeur d'un autre protocole ?  | **Affichée avec sa source, sans gagnant, rang ni note** (4.3, règle 3).                                                                             | La refuser ferait perdre des données réelles.                                                      |
+| **Q4.** Archive obligatoire ?          | **Non pour l'instant.** À ajouter automatiquement par `import.js --verifier`, qui télécharge déjà la page.                                          | Une archive obligatoire à la main imposerait un appel réseau par source, sans outil pour le faire. |
+| **Q5.** Plusieurs sources par valeur ? | **Non pour l'instant.** À reconsidérer au-delà de quelques centaines de fiches, ou si des écarts entre sites apparaissent régulièrement (option C). | —                                                                                                  |
 
-**Q2. La version du test est-elle obligatoire ?**
-
-- Oui : rigueur maximale, mais beaucoup de sources ne la donnent pas (NanoReview n'affiche pas la sous-version de Geekbench).
-- Non, mais le protocole porte la version majeure (`geekbench-6`, pas `geekbench`) : c'est le changement de version majeure qui casse l'échelle. **Recommandé.**
-
-**Q3. Que faire d'une valeur d'un autre protocole ?**
-
-- L'afficher sans la comparer (4.3, règle 3). **Recommandé.**
-- La refuser à l'écriture : plus simple, mais on perd des données réelles.
-
-**Q4. L'archive est-elle obligatoire ?**
-
-- Non pour l'instant : archiver demande un appel réseau par source. À rendre obligatoire avec `import.js --verifier`, qui télécharge déjà la page.
-
-**Q5. Plusieurs sources par valeur ?**
-
-- Pas maintenant. À reconsidérer quand le catalogue dépassera quelques centaines de fiches, ou si des écarts entre sites apparaissent régulièrement (option C).
-
-## 7. Fichiers touchés si l'option A est retenue
+## 7. Fichiers touchés
 
 Pour estimer l'effort. Aucun n'est modifié par ce document.
 

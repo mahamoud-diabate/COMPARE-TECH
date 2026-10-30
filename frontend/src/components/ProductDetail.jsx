@@ -20,7 +20,7 @@ const META = {
  * Fiche produit (Refonte unifiée Piste A & Piste C).
  *
  * Étage 1 (Piste C) : Usages concrets & impact pratique avec sélecteur interactif d'onglets.
- * Étage 2 (Piste A) : Datasheet asymétrique exhaustive avec sources certifiées et volet sticky.
+ * Étage 2 (Piste A) : Datasheet asymétrique exhaustive, chaque valeur avec sa source, et volet sticky.
  *
  * Exclut tout classement relatif ou jauge invasive pour se concentrer sur les spécifications.
  */
@@ -81,13 +81,13 @@ function ProductDetail({ product, type }) {
             {product.name}
           </h1>
           <div className="ct-fiche-sub">
-            Spécifications officielles certifiées · Fiche technique détaillée
+            Fiche technique détaillée · chaque valeur avec sa source
           </div>
         </div>
 
         <div className="ct-fiche-actions">
           <div className="ct-fiche-score-badge">
-            <span>Données certifiées</span>
+            <span>Données sourcées</span>
             <strong>{new Date().getFullYear()}</strong>
           </div>
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
@@ -172,12 +172,22 @@ function ProductDetail({ product, type }) {
                     <div className="ct-fiche-spec-val">{ligne.val}</div>
                     <div className="ct-fiche-spec-src">
                       {ligne.source?.url ? (
-                        <a href={ligne.source.url} target="_blank" rel="noopener noreferrer">
+                        <a
+                          href={ligne.source.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          title={
+                            ligne.source.extrait
+                              ? `Extrait relevé : « ${ligne.source.extrait} »`
+                              : undefined
+                          }
+                        >
                           {ligne.source.site}
+                          {ligne.source.origine ? ` · ${ligne.source.origine}` : ''}
                         </a>
-                      ) : (
-                        <span>{ligne.source?.site || 'Constructeur'}</span>
-                      )}
+                      ) : ligne.sourceAttendue ? (
+                        <span>Source non renseignée</span>
+                      ) : null}
                     </div>
                   </div>
                 ))}
@@ -199,8 +209,8 @@ function ProductDetail({ product, type }) {
               ))}
             </div>
             <p className="ct-fiche-side-info">
-              Valeurs certifiées issues des documentations techniques et protocoles de test
-              standardisés.
+              Chaque valeur renvoie à la page d’où elle a été relevée. Survolez une source pour lire
+              l’extrait.
             </p>
             <a href="#" className="ct-fiche-side-link">
               Haut de page ↑

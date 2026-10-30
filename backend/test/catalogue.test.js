@@ -92,3 +92,28 @@ test('une valeur deja numerique traverse le crochet sans changer', () => {
   const doc = Telephone.hydrate({ name: 'Essai', brand: 'X', display_size: 6.1 });
   assert.strictEqual(doc.display_size, 6.1);
 });
+
+test('le schema conserve origine, protocole, version et archive de chaque source', () => {
+  // Un sous-schema strict SUPPRIME sans un mot les cles qu'il ne connait pas :
+  // sans ces champs declares, la qualification passerait les controles et
+  // disparaitrait a l'ecriture.
+  const source = {
+    url: 'https://nanoreview.net/x',
+    releve_le: new Date('2026-10-01'),
+    extrait: 'Geekbench 6 (Multi-Core) 2842',
+    origine: 'agregat',
+    protocole: 'geekbench-6',
+    version: '6.3',
+    archive: 'https://web.archive.org/web/2026/https://nanoreview.net/x',
+  };
+  const doc = new Telephone({
+    name: 'T',
+    brand: 'B',
+    geekbench_multi: 2842,
+    provenance: { geekbench_multi: source },
+  });
+  const relu = doc.toObject({ flattenMaps: true }).provenance.geekbench_multi;
+  for (const cle of ['origine', 'protocole', 'version', 'archive']) {
+    assert.strictEqual(relu[cle], source[cle], cle);
+  }
+});

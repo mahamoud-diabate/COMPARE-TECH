@@ -119,6 +119,14 @@ function catalogue(schema) {
           // Le texte exact lu sur la page. C'est lui qui rend la valeur
           // verifiable plus tard, sans avoir a refaire le releve a la main.
           extrait: { type: String, trim: true },
+          // Qualification de la valeur (docs/PROPOSITION-MESURE.md). Les
+          // listes de valeurs admises vivent dans shared/criteres.js, et sont
+          // controlees par shared/provenance.js avant toute ecriture : un enum
+          // ici en ferait une seconde copie a tenir a jour.
+          origine: { type: String, trim: true },
+          protocole: { type: String, trim: true },
+          version: { type: String, trim: true, maxlength: 40 },
+          archive: { type: String, trim: true },
         },
         { _id: false }
       ),

@@ -26,6 +26,9 @@
  *   comparable  false si deux valeurs ne se comparent pas entre marques : la
  *               valeur s'affiche, mais aucun gagnant ni rang n'est calculé
  *   plafond     valeur ramenée à 100 dans les notes et le radar, ou null
+ *   protocoles  identifiants des tests acceptés pour cette mesure (voir
+ *               PROTOCOLES), le premier étant la RÉFÉRENCE ; liste vide pour
+ *               une caractéristique de fiche technique, qui n'a pas de test
  *
  * Aucune dépendance, aucun accès réseau : ce fichier est importé tel quel par
  * le navigateur (via Vite) et par Node (backend et tests).
@@ -41,6 +44,47 @@ export const SEGMENTS = {
 
 export const TYPES = Object.keys(SEGMENTS);
 
+/*
+ * Qui a produit une valeur. Distinct de la `nature` d'un critère : une
+ * autonomie (critère de nature « mesure ») peut être annoncée par le
+ * constructeur ou mesurée par un laboratoire, et les deux ne se valent pas.
+ * Voir docs/PROPOSITION-MESURE.md.
+ */
+export const ORIGINES = Object.freeze({
+  constructeur: 'annoncée par le constructeur',
+  laboratoire: 'mesurée par un laboratoire',
+  agregat: 'moyenne de relevés d’utilisateurs',
+});
+
+/*
+ * Tests et protocoles de mesure reconnus. Un identifiant porte la version
+ * MAJEURE du test (`geekbench-6`, pas `geekbench`) : c'est elle qui change
+ * l'échelle des scores. La sous-version, quand la source la donne, va dans le
+ * champ `version` de la provenance.
+ *
+ * Accepter un nouveau test demande une ligne ici ET dans la liste `protocoles`
+ * du critère : une décision explicite, jamais une faute de frappe saisie dans
+ * un formulaire.
+ */
+export const PROTOCOLES = Object.freeze({
+  'geekbench-6': 'Geekbench 6',
+  'geekbench-5': 'Geekbench 5',
+  '3dmark-time-spy-graphics': '3DMark Time Spy (score graphique)',
+  '3dmark-time-spy': '3DMark Time Spy (score global)',
+  '3dmark-time-spy-extreme-graphics': '3DMark Time Spy Extreme (score graphique)',
+  '3dmark-steel-nomad': '3DMark Steel Nomad',
+  'antutu-11': 'AnTuTu 11',
+  'antutu-10': 'AnTuTu 10',
+  'notebookcheck-wifi': 'Notebookcheck, navigation Wi-Fi',
+  'notebookcheck-luminance-moyenne': 'Notebookcheck, moyenne de 9 points',
+  'annonce-constructeur': 'Valeur annoncée par le constructeur',
+});
+
+/** Libellé lisible d'un protocole, ou l'identifiant brut s'il est inconnu. */
+export function libelleProtocole(id) {
+  return PROTOCOLES[id] || id;
+}
+
 const c = (key, options = {}) =>
   Object.freeze({
     key,
@@ -49,7 +93,11 @@ const c = (key, options = {}) =>
     inverse: Boolean(options.inverse),
     comparable: options.comparable !== false,
     plafond: options.plafond ?? null,
+    protocoles: Object.freeze([...(options.protocoles || [])]),
   });
+
+// Listes réutilisées : le premier élément est le test de référence.
+const GEEKBENCH = ['geekbench-6', 'geekbench-5'];
 
 /*
  * L'ordre de chaque liste est l'ordre d'affichage par défaut.
@@ -65,8 +113,8 @@ export const CRITERES = Object.freeze({
     c('base_freq_ghz', { unite: 'GHz' }),
     c('max_freq_ghz', { unite: 'GHz', plafond: 6 }),
     c('tdp_w', { unite: 'W', inverse: true }),
-    c('geekbench_single', { nature: 'benchmark', plafond: 3500 }),
-    c('geekbench_multi', { nature: 'benchmark', plafond: 29000 }),
+    c('geekbench_single', { nature: 'benchmark', plafond: 3500, protocoles: GEEKBENCH }),
+    c('geekbench_multi', { nature: 'benchmark', plafond: 29000, protocoles: GEEKBENCH }),
   ]),
 
   gpu: Object.freeze([
@@ -76,15 +124,34 @@ export const CRITERES = Object.freeze({
     c('cores', { comparable: false, plafond: 22000 }),
     c('memory_gb', { unite: 'Go', plafond: 24 }),
     c('tdp_w', { unite: 'W', inverse: true }),
-    c('benchmark_3dmark', { nature: 'benchmark', plafond: 35000 }),
+    c('benchmark_3dmark', {
+      nature: 'benchmark',
+      plafond: 35000,
+      protocoles: [
+        '3dmark-time-spy-graphics',
+        '3dmark-time-spy',
+        '3dmark-time-spy-extreme-graphics',
+        '3dmark-steel-nomad',
+      ],
+    }),
   ]),
 
   laptop: Object.freeze([
     c('ram_gb', { unite: 'Go', plafond: 64 }),
     c('storage_gb', { unite: 'Go', plafond: 4096 }),
-    c('display_brightness_nits', { nature: 'mesure', unite: 'nits', plafond: 1600 }),
-    c('battery_life_hours', { nature: 'mesure', unite: 'h', plafond: 20 }),
-    c('geekbench_multi', { nature: 'benchmark', plafond: 26000 }),
+    c('display_brightness_nits', {
+      nature: 'mesure',
+      unite: 'nits',
+      plafond: 1600,
+      protocoles: ['notebookcheck-luminance-moyenne', 'annonce-constructeur'],
+    }),
+    c('battery_life_hours', {
+      nature: 'mesure',
+      unite: 'h',
+      plafond: 20,
+      protocoles: ['notebookcheck-wifi', 'annonce-constructeur'],
+    }),
+    c('geekbench_multi', { nature: 'benchmark', plafond: 26000, protocoles: GEEKBENCH }),
   ]),
 
   telephone: Object.freeze([
@@ -92,10 +159,10 @@ export const CRITERES = Object.freeze({
     c('ram_gb', { unite: 'Go', plafond: 24 }),
     c('storage_gb', { unite: 'Go', plafond: 1024 }),
     c('battery_mah', { unite: 'mAh', plafond: 6000 }),
-    c('geekbench_single', { nature: 'benchmark', plafond: 3600 }),
-    c('geekbench_multi', { nature: 'benchmark', plafond: 9500 }),
+    c('geekbench_single', { nature: 'benchmark', plafond: 3600, protocoles: GEEKBENCH }),
+    c('geekbench_multi', { nature: 'benchmark', plafond: 9500, protocoles: GEEKBENCH }),
     // Pas de plafond : AnTuTu est affiché, mais ne compte dans aucune note.
-    c('antutu_score', { nature: 'benchmark' }),
+    c('antutu_score', { nature: 'benchmark', protocoles: ['antutu-11', 'antutu-10'] }),
   ]),
 });
 
