@@ -26,9 +26,11 @@ const summarize = (product, key) => {
     if (product.cores) parts.push(`${product.cores} cœurs`);
     if (product.threads) parts.push(`${product.threads} threads`);
     if (product.max_freq_ghz) parts.push(formatValue(product.max_freq_ghz, 'GHz'));
+    if (product.tdp_w) parts.push(formatValue(product.tdp_w, 'W'));
   } else if (key === 'gpu') {
     if (product.memory_gb) parts.push(formatValue(product.memory_gb, 'Go'));
     if (product.memory_type) parts.push(product.memory_type);
+    if (product.tdp_w) parts.push(formatValue(product.tdp_w, 'W'));
   } else if (key === 'laptop') {
     if (product.cpu_name) parts.push(product.cpu_name);
     if (product.ram_gb) parts.push(`${product.ram_gb} Go RAM`);

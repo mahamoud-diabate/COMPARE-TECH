@@ -34,6 +34,7 @@ const NUMERIC_FIELDS = new Set([
   'base_freq_mhz',
   'boost_freq_mhz',
   'compute_units',
+  'tdp_w',
   'tdp',
   'display_size',
   'refresh_rate_hz',

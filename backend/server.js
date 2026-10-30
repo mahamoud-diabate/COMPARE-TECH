@@ -426,6 +426,8 @@ const AI_FIELDS = [
   'cores',
   'threads',
   'max_freq_ghz',
+  'base_freq_ghz',
+  'tdp_w',
   'tdp',
   'geekbench_single',
   'geekbench_multi',
