@@ -3,9 +3,18 @@ services:
     name: compare-tech-api
     runtime: node
     plan: free
-    buildCommand: npm install
-    startCommand: npm start
+    # Pas de rootDir : Render rend invisible tout ce qui est hors du dossier
+    # racine, au build comme a l'execution, et l'API lit ../shared. Le service
+    # part donc de la racine du depot et entre dans backend/ a chaque commande.
+    buildCommand: cd backend && npm ci
+    startCommand: cd backend && npm start
     autoDeploy: true
+    # Chemins relatifs a la racine du depot : un changement dans shared/
+    # redeploie l'API, un changement du seul frontend non.
+    buildFilter:
+      paths:
+        - backend/**
+        - shared/**
     healthCheckPath: /api/health
     envVars:
       # sync: false => la valeur se saisit dans le tableau de bord Render,
@@ -26,3 +35,7 @@ services:
         sync: false
       - key: NODE_ENV
         value: production
+      # Sans rootDir, Render ne lit plus `engines` de backend/package.json.
+      # require(esm) de shared/ exige Node >= 20.19.
+      - key: NODE_VERSION
+        value: '22'
