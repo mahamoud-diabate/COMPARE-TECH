@@ -9,15 +9,15 @@ pour qu'un écart se voie en relecture.
 C'est la règle qui commande toutes les autres.
 
 L'interface — navigation, cartes, filets, boutons, liens, onglet actif — est
-**achromatique** : `--nr-accent` est un graphite `#2b333c`. La couleur
+**achromatique** : `--ct-accent` est un graphite `#2b333c`. La couleur
 n'apparaît que là où elle **encode une mesure** :
 
 | Couleur                                   | Ce qu'elle signifie                                      |
 | ----------------------------------------- | -------------------------------------------------------- |
-| Échelle `--nr-g-*` (vert → ambre → rouge) | note du produit, A+ à D                                  |
-| `--nr-win` (vert pâle)                    | valeur la plus favorable d'une ligne de tableau          |
-| `--nr-plus` / `--nr-minus`                | avantage / inconvénient                                  |
-| `--nr-serie-*`                            | identité d'un produit sur le radar — **pas** une qualité |
+| Échelle `--ct-g-*` (vert → ambre → rouge) | note du produit, A+ à D                                  |
+| `--ct-win` (vert pâle)                    | valeur la plus favorable d'une ligne de tableau          |
+| `--ct-plus` / `--ct-minus`                | avantage / inconvénient                                  |
+| `--ct-serie-*`                            | identité d'un produit sur le radar — **pas** une qualité |
 
 L'échelle de notes est **monotone** : chaque palier se déduit du précédent par
 une rotation de teinte, sans rupture. Les cinq contrastes sur fond blanc sont
@@ -55,7 +55,7 @@ et suivent le thème.
 
 ## 2. Aucune couleur en dur dans une règle de composant
 
-Toute couleur passe par une variable `--nr-*`, redéfinie sous
+Toute couleur passe par une variable `--ct-*`, redéfinie sous
 `[data-theme="dark"]`. Une valeur écrite en dur casse le thème sombre sans
 prévenir.
 
@@ -73,10 +73,10 @@ Pile système, 14 px, interligne 1,7. Échelle courte et fixe :
 
 | Classe         | Taille | Usage                        |
 | -------------- | ------ | ---------------------------- |
-| `.nr-title-h1` | 25 px  | titre de page                |
-| `.nr-title-h2` | 21 px  | titre de section             |
-| `.nr-title-h3` | 18 px  | groupe dans un tableau       |
-| `.nr-title-h4` | 16 px  | intitulé d'un bloc de mesure |
+| `.ct-title-h1` | 25 px  | titre de page                |
+| `.ct-title-h2` | 21 px  | titre de section             |
+| `.ct-title-h3` | 18 px  | groupe dans un tableau       |
+| `.ct-title-h4` | 16 px  | intitulé d'un bloc de mesure |
 
 Pas de `clamp()`, pas de police display, pas de mot en italique serif au milieu
 d'un titre.

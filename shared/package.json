@@ -1,0 +1,15 @@
+{
+  "name": "compare-tech-shared",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Regles metier communes au backend et au frontend de COMPARE-TECH : criteres, formules de note, statistiques de marche. Aucune dependance.",
+  "type": "module",
+  "engines": {
+    "node": ">=20.19"
+  },
+  "author": "Mahamoud Diabaté",
+  "license": "MIT",
+  "scripts": {
+    "test": "node --test"
+  }
+}

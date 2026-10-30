@@ -9,6 +9,8 @@ const Cpu = require('../models/Cpu');
 const Gpu = require('../models/Gpu');
 const Laptop = require('../models/Laptop');
 const Telephone = require('../models/Telephone');
+const { champsMesures, valideProduit } = require('../controles');
+const { memeTexte, normaliseTexte, valeurPresente } = require('../../shared/provenance.js');
 
 /*
  * Porte d'entree unique du catalogue.
@@ -70,10 +72,6 @@ const Telephone = require('../models/Telephone');
 
 const MODELES = { cpus: Cpu, gpus: Gpu, laptops: Laptop, telephones: Telephone };
 
-// Champs numeriques ajoutes par le socle ou par Mongo, qui ne sont pas des
-// mesures relevees et n'ont donc pas a declarer de source.
-const HORS_MESURE = new Set(['__v']);
-
 const SEUIL_DEFAUT = 10;
 
 // Garde 5 : ecart a la mediane du lot au-dela duquel une valeur est signalee.
@@ -83,13 +81,6 @@ const FACTEUR_DEFAUT = 4;
  * Fonctions pures — testables sans base ni reseau
  * ------------------------------------------------------------------ */
 
-/** Les champs d'un modele qui constituent des mesures relevees. */
-function champsMesures(Model) {
-  return Object.entries(Model.schema.paths)
-    .filter(([nom, chemin]) => chemin.instance === 'Number' && !HORS_MESURE.has(nom))
-    .map(([nom]) => nom);
-}
-
 /** Cle de rapprochement avec l'existant. Un produit, c'est un nom chez une marque. */
 function cleNaturelle(produit) {
   const norme = v =>
@@ -98,143 +89,6 @@ function cleNaturelle(produit) {
       .toLowerCase()
       .replace(/\s+/g, ' ');
   return `${norme(produit.brand)}::${norme(produit.name)}`;
-}
-
-/**
- * Controle un produit du fichier avant tout contact avec la base.
- * @returns {string[]} la liste des motifs de refus, vide si le produit passe.
- */
-function valideProduit(Model, produit) {
-  const erreurs = [];
-
-  if (!produit || typeof produit !== 'object') return ["entree qui n'est pas un objet"];
-  if (!produit.name) erreurs.push('nom absent');
-  if (!produit.brand) erreurs.push('marque absente');
-
-  // Un champ que le modele ne connait pas est SUPPRIME sans un mot par
-  // Mongoose. Un fichier entier de mesures peut ainsi etre accepte, ecrit, et
-  // ne rien laisser en base. Perdre une donnee en silence est pire que la
-  // refuser : on refuse.
-  const connus = new Set(Object.keys(Model.schema.paths).map(chemin => chemin.split('.')[0]));
-  for (const champ of Object.keys(produit)) {
-    if (!connus.has(champ)) {
-      erreurs.push(
-        `${champ} : champ inconnu du modele — il serait perdu a l'ecriture. ` +
-          `Ajoutez-le au schema, ou retirez-le du fichier.`
-      );
-    }
-  }
-
-  // Garde 2 : les plages declarees par le modele. `validateSync` n'ouvre pas
-  // de connexion — le controle reste utilisable hors ligne.
-  const erreurSchema = new Model(produit).validateSync();
-  if (erreurSchema) {
-    for (const [champ, detail] of Object.entries(erreurSchema.errors)) {
-      if (champ === 'slug') continue; // attribue a l'ecriture
-      if (champ.startsWith('provenance.')) continue; // message plus clair plus bas
-      erreurs.push(`${champ} : ${detail.message}`);
-    }
-  }
-
-  // Garde 1 : la provenance. Le coeur du dispositif.
-  const provenance = produit.provenance || {};
-  for (const champ of champsMesures(Model)) {
-    const valeur = produit[champ];
-    if (valeur === undefined || valeur === null) continue;
-
-    const source = provenance[champ];
-    if (!source) {
-      erreurs.push(`${champ} = ${valeur} sans provenance : d'ou vient ce chiffre ?`);
-      continue;
-    }
-    if (!source.url) erreurs.push(`${champ} : provenance sans URL`);
-    if (!source.releve_le) erreurs.push(`${champ} : provenance sans date de releve`);
-    else if (Number.isNaN(Date.parse(source.releve_le))) {
-      erreurs.push(`${champ} : date de releve illisible (« ${source.releve_le} »)`);
-    }
-
-    // L'extrait rattache le nombre a son libelle, et c'est ce qui manquait au
-    // dispositif. Verifier que 91 figure quelque part sur une page ne prouve
-    // rien ; verifier que 91 figure dans « Total Cores 24 » est impossible.
-    // Ce controle ne coute aucune requete : il se fait sur le fichier seul.
-    if (!source.extrait) {
-      erreurs.push(`${champ} : provenance sans extrait — il faut la ligne qui prouve la valeur`);
-    } else if (!valeurPresente(source.extrait, valeur)) {
-      erreurs.push(
-        `${champ} = ${valeur} absent de son propre extrait (« ${source.extrait} ») : ` +
-          `le nombre et le libelle ne se rapportent pas a la meme chose`
-      );
-    }
-  }
-
-  return erreurs;
-}
-
-/**
- * Compare deux textes en ignorant TOUTE espace.
- *
- * L'extraction HTML colle les cellules voisines : Notebookcheck rend
- * « Memory128 GB » la ou l'oeil lit « Memory 128 GB ». Exiger l'espacement
- * exact testerait la qualite de l'extracteur, pas l'honnetete du releveur.
- */
-function memeTexte(page, extrait) {
-  const compacte = t => normaliseTexte(t).replace(/\s+/g, '');
-  return compacte(page).includes(compacte(extrait));
-}
-
-/** Reduit un texte de page a une forme comparable : minuscules, espaces normalises. */
-function normaliseTexte(texte) {
-  return String(texte || '')
-    .replace(/\u00a0/g, ' ')
-    .replace(/\s+/g, ' ')
-    .toLowerCase();
-}
-
-/**
- * Une duree ecrite « 19h 19min » vaut-elle `valeur` heures ?
- *
- * Notebookcheck publie ses autonomies en heures et minutes ; le modele les
- * stocke en heures decimales. Interdire la conversion rendrait le champ
- * incollectable ; l'accepter sur parole viderait le controle de son sens.
- *
- * La sortie choisie : le garde REFAIT le calcul. Il ne croit pas la conversion,
- * il la verifie. La tolerance couvre l'arrondi a deux decimales, rien de plus.
- */
-function dureeConcordante(texte, valeur) {
-  const motif = /(\d+)\s*h\s*(\d+)\s*min/gi;
-  let m;
-  while ((m = motif.exec(texte)) !== null) {
-    const heures = parseInt(m[1], 10) + parseInt(m[2], 10) / 60;
-    if (Math.abs(heures - valeur) <= 0.01) return true;
-  }
-  return false;
-}
-
-function valeurPresente(textePage, valeur) {
-  const texte = normaliseTexte(textePage);
-  const brut = String(valeur);
-  const graphies = new Set([brut]);
-
-  // Une fiche technique ecrit volontiers « 6.0 GHz » la ou la valeur vaut 6.
-  if (Number.isInteger(valeur)) graphies.add(brut + '.0').add(brut + ',0');
-
-  if (Number.isInteger(valeur) && Math.abs(valeur) >= 1000) {
-    const avec = sep => brut.replace(/\B(?=(\d{3})+(?!\d))/g, sep);
-    graphies.add(avec(',')).add(avec(' ')).add(avec('.'));
-  }
-  if (!Number.isInteger(valeur)) graphies.add(brut.replace('.', ','));
-
-  const trouve = [...graphies].some(graphie => {
-    const motif = graphie.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    // Le nombre doit etre ISOLE dans la page. Sans ces bornes, un simple
-    // `includes` validerait la valeur 23500 sur une page qui ne contient que
-    // « 235009 », et la valeur 6 sur une page qui dit « 6.7 » — le controle
-    // dirait alors oui a peu pres a n'importe quoi.
-    const borne = new RegExp('(?<![\\d.,])' + motif + '(?![\\d])(?![.,]\\d)');
-    return borne.test(texte);
-  });
-
-  return trouve || dureeConcordante(texte, valeur);
 }
 
 /**

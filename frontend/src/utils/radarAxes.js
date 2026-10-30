@@ -8,9 +8,11 @@
  *
  * `max` est un plafond de référence servant à ramener une valeur brute sur une
  * échelle de 0 à 100. Il ne change pas le classement entre deux produits — il
- * fixe seulement l'échelle. Les plafonds sont alignés sur ceux de `scores.js`
- * pour qu'un même produit n'obtienne pas deux notes différentes selon l'écran.
+ * fixe seulement l'échelle. Il est lu dans `shared/criteres.js`, comme celui
+ * des notes : un même produit ne peut pas obtenir deux échelles selon l'écran.
  */
+
+import { plafond, resolveType as resolveTypePartage } from '../../../shared/criteres.js';
 
 // Certains champs sont stockés en texte ("5.7", "6.7 pouces") : on en extrait
 // le nombre au lieu de laisser une multiplication produire NaN.
@@ -23,40 +25,49 @@ const num = value => {
 
 export const RADAR_AXES = {
   cpu: [
-    { label: 'Mono-cœur', field: 'geekbench_single', max: 3500 },
-    { label: 'Multi-cœur', field: 'geekbench_multi', max: 29000 },
-    { label: 'Cœurs', field: 'cores', max: 24 },
-    { label: 'Threads', field: 'threads', max: 32 },
-    { label: 'Fréquence', field: 'max_freq_ghz', max: 6 },
+    { label: 'Mono-cœur', field: 'geekbench_single', max: plafond('cpu', 'geekbench_single') },
+    { label: 'Multi-cœur', field: 'geekbench_multi', max: plafond('cpu', 'geekbench_multi') },
+    { label: 'Cœurs', field: 'cores', max: plafond('cpu', 'cores') },
+    { label: 'Threads', field: 'threads', max: plafond('cpu', 'threads') },
+    { label: 'Fréquence', field: 'max_freq_ghz', max: plafond('cpu', 'max_freq_ghz') },
   ],
   gpu: [
-    { label: 'Performance 3D', field: 'benchmark_3dmark', max: 35000 },
-    { label: 'VRAM', field: 'memory_gb', max: 24 },
-    { label: 'Unités de calcul', field: 'cores', max: 22000 },
+    { label: 'Performance 3D', field: 'benchmark_3dmark', max: plafond('gpu', 'benchmark_3dmark') },
+    { label: 'VRAM', field: 'memory_gb', max: plafond('gpu', 'memory_gb') },
+    { label: 'Unités de calcul', field: 'cores', max: plafond('gpu', 'cores') },
   ],
   laptop: [
-    { label: 'Performance', field: 'geekbench_multi', max: 26000 },
-    { label: 'Mémoire', field: 'ram_gb', max: 64 },
-    { label: 'Stockage', field: 'storage_gb', max: 4096 },
-    { label: 'Luminosité', field: 'display_brightness_nits', max: 1600 },
-    { label: 'Autonomie', field: 'battery_life_hours', max: 20 },
+    { label: 'Performance', field: 'geekbench_multi', max: plafond('laptop', 'geekbench_multi') },
+    { label: 'Mémoire', field: 'ram_gb', max: plafond('laptop', 'ram_gb') },
+    { label: 'Stockage', field: 'storage_gb', max: plafond('laptop', 'storage_gb') },
+    {
+      label: 'Luminosité',
+      field: 'display_brightness_nits',
+      max: plafond('laptop', 'display_brightness_nits'),
+    },
+    {
+      label: 'Autonomie',
+      field: 'battery_life_hours',
+      max: plafond('laptop', 'battery_life_hours'),
+    },
   ],
   telephone: [
-    { label: 'Mono-cœur', field: 'geekbench_single', max: 3600 },
-    { label: 'Multi-cœur', field: 'geekbench_multi', max: 9500 },
-    { label: 'Batterie', field: 'battery_mah', max: 6000 },
-    { label: 'Mémoire', field: 'ram_gb', max: 24 },
-    { label: 'Stockage', field: 'storage_gb', max: 1024 },
-    { label: 'Écran', field: 'display_size', max: 7 },
+    {
+      label: 'Mono-cœur',
+      field: 'geekbench_single',
+      max: plafond('telephone', 'geekbench_single'),
+    },
+    { label: 'Multi-cœur', field: 'geekbench_multi', max: plafond('telephone', 'geekbench_multi') },
+    { label: 'Batterie', field: 'battery_mah', max: plafond('telephone', 'battery_mah') },
+    { label: 'Mémoire', field: 'ram_gb', max: plafond('telephone', 'ram_gb') },
+    { label: 'Stockage', field: 'storage_gb', max: plafond('telephone', 'storage_gb') },
+    { label: 'Écran', field: 'display_size', max: plafond('telephone', 'display_size') },
   ],
 };
 
 // `productType` circule sous plusieurs formes selon les pages ('cpu', 'cpus',
 // 'telephones'…). On se ramène à la clé canonique.
-export function resolveType(productType) {
-  const type = String(productType || '');
-  return Object.keys(RADAR_AXES).find(key => type.includes(key)) || null;
-}
+export const resolveType = resolveTypePartage;
 
 /*
  * Libellés secondaires du bloc « Évaluation » : une ligne d'axe sans

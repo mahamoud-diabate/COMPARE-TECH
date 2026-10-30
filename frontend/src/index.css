@@ -807,7 +807,7 @@ body:has(.ct-compare-bar) {
   justify-content: center;
   background: var(--ct-media);
   border-radius: 3px;
-  color: #9aa0a6;
+  color: var(--ct-muted);
 }
 
 .ct-rank-name {
@@ -2416,4 +2416,421 @@ body:has(.ct-compare-bar) {
   .ct-marche-cellule-valeur {
     justify-content: flex-start;
   }
+}
+
+/* ==========================================================================
+   FICHE PRODUIT (Refonte combinée Pistes A & C)
+   ========================================================================== */
+
+/* Hero produit */
+.ct-fiche-hero {
+  display: grid;
+  grid-template-columns: 140px 1fr auto;
+  gap: 24px;
+  padding: 22px 24px;
+  align-items: center;
+}
+
+.ct-fiche-thumb {
+  width: 140px;
+  height: 140px;
+  background: var(--ct-media);
+  border-radius: var(--ct-radius, 4px);
+  display: grid;
+  place-items: center;
+  color: var(--ct-muted);
+  font-size: 12px;
+  border: 1px solid var(--ct-line);
+  overflow: hidden;
+}
+
+.ct-fiche-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 8px;
+}
+
+.ct-fiche-meta {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.ct-fiche-tag {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ct-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.ct-fiche-sub {
+  font-size: 13.5px;
+  color: var(--ct-muted);
+}
+
+.ct-fiche-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.ct-fiche-score-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: var(--ct-radius-sm, 3px);
+  background: var(--ct-card-alt);
+  border: 1px solid var(--ct-line);
+  font-size: 12px;
+  color: var(--ct-muted);
+}
+
+.ct-fiche-score-badge strong {
+  font-family: var(--ct-font-num, monospace);
+  color: var(--ct-text);
+}
+
+/* Étage 1 : Bloc Usages interactif avec SWITCH (Piste C) */
+.ct-fiche-usage-header {
+  padding: 14px 20px;
+  background: var(--ct-card-alt);
+  border-bottom: 1px solid var(--ct-line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.ct-fiche-usage-title {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ct-muted);
+}
+
+.ct-fiche-usage-subtitle {
+  font-size: 12px;
+  color: var(--ct-muted);
+}
+
+.ct-fiche-usage-wrap {
+  padding: 18px 20px;
+  display: grid;
+  gap: 16px;
+}
+
+.ct-fiche-usage-tabs {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+}
+
+.ct-fiche-usage-tab-btn {
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: var(--ct-radius-sm, 3px);
+  border: 1px solid var(--ct-line-strong);
+  background: var(--ct-card-alt);
+  color: var(--ct-muted);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.ct-fiche-usage-tab-btn:hover {
+  color: var(--ct-text);
+  border-color: var(--ct-accent);
+}
+
+.ct-fiche-usage-tab-btn[aria-selected='true'] {
+  background: var(--ct-accent-soft);
+  color: var(--ct-text);
+  border-color: var(--ct-accent);
+  font-weight: 700;
+}
+
+.ct-fiche-usage-detail-box {
+  background: var(--ct-card-alt);
+  border: 1px solid var(--ct-line);
+  border-radius: var(--ct-radius, 4px);
+  padding: 22px;
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 24px;
+  align-items: center;
+}
+
+.ct-fiche-usage-spec-side {
+  display: grid;
+  gap: 6px;
+}
+
+.ct-fiche-usage-spec-tag {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--ct-muted);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.ct-fiche-usage-spec-value {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--ct-text);
+  font-family: var(--ct-font-num, monospace);
+}
+
+.ct-fiche-usage-spec-summary {
+  font-size: 12.5px;
+  color: var(--ct-muted);
+  line-height: 1.45;
+}
+
+.ct-fiche-usage-impact-side {
+  border-left: 2px solid var(--ct-line-strong);
+  padding-left: 22px;
+  display: grid;
+  gap: 8px;
+}
+
+.ct-fiche-usage-impact-side h4 {
+  font-size: 14px;
+  font-weight: 650;
+  color: var(--ct-text);
+  margin: 0;
+}
+
+.ct-fiche-usage-impact-side p {
+  font-size: 13.5px;
+  color: var(--ct-muted);
+  line-height: 1.55;
+  margin: 0;
+}
+
+.ct-fiche-usage-impact-side p strong {
+  color: var(--ct-text);
+}
+
+/* Étage 2 : Datasheet asymétrique (Piste A) */
+.ct-fiche-datasheet-layout {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 20px;
+  align-items: start;
+}
+
+.ct-fiche-spec-group {
+  border: 1px solid var(--ct-line);
+  border-radius: var(--ct-radius, 4px);
+  background: var(--ct-card);
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.ct-fiche-spec-group:last-child {
+  margin-bottom: 0;
+}
+
+.ct-fiche-spec-group-head {
+  padding: 12px 18px;
+  background: var(--ct-card-alt);
+  border-bottom: 1px solid var(--ct-line);
+  font-size: 12.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ct-muted);
+}
+
+.ct-fiche-spec-row {
+  display: grid;
+  grid-template-columns: 220px 1fr 160px;
+  gap: 16px;
+  padding: 11px 18px;
+  border-bottom: 1px solid var(--ct-line);
+  align-items: center;
+}
+
+.ct-fiche-spec-row:last-child {
+  border-bottom: 0;
+}
+
+.ct-fiche-spec-meta b {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ct-text);
+  display: block;
+}
+
+.ct-fiche-spec-meta small {
+  font-size: 11.5px;
+  color: var(--ct-muted);
+  display: block;
+  margin-top: 1px;
+}
+
+.ct-fiche-spec-val {
+  font-size: 14.5px;
+  font-weight: 650;
+  color: var(--ct-text);
+  font-family: var(--ct-font-num, monospace);
+}
+
+.ct-fiche-spec-src {
+  font-size: 11.5px;
+  color: var(--ct-muted);
+  text-align: right;
+}
+
+.ct-fiche-spec-src a {
+  color: var(--ct-muted);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.ct-fiche-spec-src a:hover {
+  color: var(--ct-text);
+}
+
+/* Barre latérale sticky */
+.ct-fiche-sidebar-sticky {
+  position: sticky;
+  top: 70px;
+  display: grid;
+  gap: 16px;
+}
+
+.ct-fiche-side-card {
+  background: var(--ct-card);
+  border: 1px solid var(--ct-line);
+  border-radius: var(--ct-radius, 4px);
+  padding: 16px 18px;
+  display: grid;
+  gap: 12px;
+}
+
+.ct-fiche-side-title {
+  font-size: 12.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ct-muted);
+  border-bottom: 1px solid var(--ct-line);
+  padding-bottom: 8px;
+}
+
+.ct-fiche-side-metric {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.ct-fiche-side-metric-label {
+  font-size: 12.5px;
+  color: var(--ct-muted);
+}
+
+.ct-fiche-side-metric-val {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ct-text);
+  font-family: var(--ct-font-num, monospace);
+}
+
+.ct-fiche-side-info {
+  font-size: 12px;
+  color: var(--ct-muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.ct-fiche-side-link {
+  font-size: 12px;
+  color: var(--ct-text);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+@media (max-width: 860px) {
+  .ct-fiche-hero {
+    grid-template-columns: 1fr;
+    text-align: center;
+    justify-items: center;
+  }
+  .ct-fiche-actions {
+    align-items: center;
+  }
+  .ct-fiche-usage-detail-box {
+    grid-template-columns: 1fr;
+  }
+  .ct-fiche-usage-impact-side {
+    border-left: 0;
+    padding-left: 0;
+    border-top: 1px solid var(--ct-line);
+    padding-top: 16px;
+  }
+  .ct-fiche-datasheet-layout {
+    grid-template-columns: 1fr;
+  }
+  .ct-fiche-sidebar-sticky {
+    position: static;
+  }
+  .ct-fiche-spec-row {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+  .ct-fiche-spec-src {
+    text-align: left;
+  }
+}
+
+/* ---------- Administration : source de chaque mesure ---------- */
+
+/* Les trois champs de source se rangent sous la valeur qu'ils prouvent. Bloc
+   discret : il ne doit pas concurrencer la valeur elle-même. */
+.ct-admin-source {
+  display: grid;
+  grid-template-columns: 1fr 9.5em;
+  gap: 6px;
+  margin: 6px 0 0;
+  padding: 8px;
+  border: 1px solid var(--ct-line);
+  border-radius: 3px;
+}
+.ct-admin-source legend {
+  padding: 0 4px;
+}
+.ct-admin-source input:nth-of-type(3),
+.ct-admin-source span {
+  grid-column: 1 / -1;
+}
+.ct-admin-source .is-ok {
+  color: var(--ct-plus);
+}
+.ct-admin-source .is-ko {
+  color: var(--ct-minus);
+}
+
+.ct-admin-refus {
+  margin: 0 0 14px;
+  padding: 10px 12px;
+  border: 1px solid var(--ct-minus);
+  border-radius: 3px;
+  color: var(--ct-text);
+}
+.ct-admin-refus ul {
+  margin: 6px 0 0;
+  padding-left: 18px;
 }

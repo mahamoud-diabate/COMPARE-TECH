@@ -16,16 +16,21 @@
  */
 
 import { SPEC_GROUPS, resolveType, toNumber } from './specs.js';
+import { MAX_PALIERS, NB_BACS, SEUIL_BORNAGE, quantile } from '../../../shared/marche.js';
 
-// Au-delà de 40 valeurs, des points individuels se chevauchent sur une piste
-// de 300 px : on passe à des colonnes qui comptent les produits.
-export const SEUIL_POINTS = 40;
-
-// Jusqu'à 12 valeurs distinctes, une mesure est lue par paliers réels (cœurs,
-// mémoire) : un histogramme y inventerait des positions qui n'existent pas.
-export const MAX_PALIERS = 12;
-
-export const NB_COLONNES = 32;
+/*
+ * Les seuils de découpage sont ceux du résumé serveur (`shared/marche.js`) :
+ * client et serveur tracent une même mesure de la même façon.
+ *
+ *  - au-delà de 40 valeurs, des points individuels se chevauchent sur une
+ *    piste de 300 px : on passe à des colonnes qui comptent les produits ;
+ *  - jusqu'à 12 valeurs distinctes, une mesure est lue par paliers réels
+ *    (cœurs, mémoire) : un histogramme y inventerait des positions qui
+ *    n'existent pas.
+ */
+export const SEUIL_POINTS = SEUIL_BORNAGE;
+export { MAX_PALIERS, quantile };
+export const NB_COLONNES = NB_BACS;
 
 // Couleur de chaque produit comparé, toujours doublée d'une forme (Repere.jsx).
 export const SERIES = ['var(--ct-serie-a)', 'var(--ct-serie-b)', 'var(--ct-serie-c)'];
@@ -148,16 +153,6 @@ export function texteRang(classement) {
   const suffixe = classement.rang === 1 ? 'er' : 'e';
   const egalite = classement.exAequo ? ' ex æquo' : '';
   return `${classement.rang}${suffixe}${egalite} sur ${classement.total}`;
-}
-
-/** Quantile par interpolation linéaire sur une série triée. */
-export function quantile(trie, q) {
-  if (!trie.length) return null;
-  const position = (trie.length - 1) * q;
-  const bas = Math.floor(position);
-  const haut = Math.ceil(position);
-  if (bas === haut) return trie[bas];
-  return trie[bas] + (trie[haut] - trie[bas]) * (position - bas);
 }
 
 /**

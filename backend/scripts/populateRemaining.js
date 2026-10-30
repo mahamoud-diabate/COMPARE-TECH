@@ -8,7 +8,20 @@ const Telephone = require('../models/Telephone');
 const Laptop = require('../models/Laptop');
 
 /*
- * Jeu de donnees de demonstration.
+ * Jeu de donnees de demonstration — DONNEES FICTIVES.
+ *
+ * ATTENTION : ce script VIDE les collections `laptops` et `telephones`, puis y
+ * ecrit 100 fiches inventees chacune. Il est verrouille par deux conditions,
+ * toutes deux obligatoires :
+ *
+ *   1. l'option --donnees-fictives sur la ligne de commande ;
+ *   2. une base dont le nom contient « demo », « test » ou « local ».
+ *
+ * La seconde est celle qui protege vraiment : une base de production ne
+ * s'appelle pas ainsi, et une option se tape par reflexe. Le nom est lu sur la
+ * connexion etablie, pas dans l'URI, pour ne dependre d'aucun format.
+ *
+ *   node scripts/populateRemaining.js --donnees-fictives
  *
  * NOTE : ces produits sont generes, pas scrapes. Les valeurs sont calibrees
  * pour rester plausibles (gammes reelles de Geekbench / AnTuTu 2025) et pour
@@ -146,9 +159,23 @@ async function populateRemaining() {
       throw new Error('DB_URI absent : cree un fichier .env a partir de .env.example');
     }
 
+    if (!process.argv.includes('--donnees-fictives')) {
+      throw new Error(
+        'Ce script ecrit des donnees FICTIVES et vide deux collections. ' +
+          'Relancez avec --donnees-fictives si c est bien voulu.'
+      );
+    }
+
     console.log('Connexion a MongoDB...');
     await mongoose.connect(process.env.DB_URI);
-    console.log('Connecte.');
+    const base = mongoose.connection.name || '';
+    if (!/demo|test|local/i.test(base)) {
+      throw new Error(
+        `Base « ${base} » refusee : ce script ne s'execute que sur une base dont le nom ` +
+          'contient « demo », « test » ou « local ». Rien n a ete modifie.'
+      );
+    }
+    console.log(`Connecte a la base de demonstration « ${base} ».`);
 
     // ---------- Telephones ----------
     const phones = [];

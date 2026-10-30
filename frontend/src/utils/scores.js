@@ -1,100 +1,24 @@
 /*
- * Note sur 100 d'un produit, et le détail de son calcul.
+ * Note sur 100 d'un produit.
  *
- * Les formules sont décrites en données plutôt qu'écrites en code. C'est ce
- * qui permet au site d'afficher le calcul, terme par terme, sous chaque note :
- * le total et son explication sortent de la même table, ils ne peuvent donc
- * pas diverger. Un comparateur qui montre « 88/100 » sans montrer d'où ça
- * vient demande qu'on lui fasse confiance ; celui-ci s'en dispense.
- *
- * `max` est le plafond de référence de la catégorie : la valeur au-delà de
- * laquelle on considère le critère saturé. Il ne change pas le classement
- * entre deux produits, il fixe l'échelle. Les mêmes plafonds servent aux axes
- * du radar (voir radarAxes.js).
+ * Les formules et leur calcul détaillé (`explainScore`) vivent dans
+ * `shared/formules.js`, partagé avec le backend. Ce fichier garde ce qui ne
+ * concerne que l'affichage : notes-lettres, couleurs, rang dans la catégorie.
  */
 
-const FORMULES = {
-  cpu: {
-    // Le multi-cœur pèse plus lourd : c'est lui qui décide sur les usages qui
-    // saturent un processeur (rendu, compilation). Les deux sont exigés — une
-    // note calculée sur 70 % de la formule ne serait pas comparable aux autres.
-    exigeTout: true,
-    termes: [
-      { key: 'geekbench_multi', label: 'Geekbench 6 multi-cœur', max: 29000, poids: 0.7 },
-      { key: 'geekbench_single', label: 'Geekbench 6 mono-cœur', max: 3500, poids: 0.3 },
-    ],
-  },
-  gpu: {
-    termes: [{ key: 'benchmark_3dmark', label: '3DMark', max: 35000, poids: 1 }],
-  },
-  laptop: {
-    termes: [{ key: 'geekbench_multi', label: 'Geekbench 6 multi-cœur', max: 26000, poids: 1 }],
-  },
-  telephone: {
-    // Geekbench 6 plutôt qu'AnTuTu, pour une raison de mesure et non de goût :
-    // AnTuTu teste Android en Vulkan et iOS en Metal, deux API graphiques
-    // différentes — les scores ne sont pas comparables d'une plateforme à
-    // l'autre. Sur le catalogue relevé, l'A18 Pro sortait 7e derrière quatre
-    // Snapdragon, ce qui est faux. Geekbench exécute les mêmes charges partout.
-    //
-    // Même pondération que les processeurs, et pour la même raison : le
-    // multi-cœur décide sur les usages qui saturent la puce.
-    exigeTout: true,
-    termes: [
-      { key: 'geekbench_multi', label: 'Geekbench 6 multi-cœur', max: 9500, poids: 0.7 },
-      { key: 'geekbench_single', label: 'Geekbench 6 mono-cœur', max: 3600, poids: 0.3 },
-    ],
-  },
-};
+import { explainScore } from '../../../shared/formules.js';
 
-const typeDe = productType => {
-  const type = String(productType || '');
-  return Object.keys(FORMULES).find(cle => type.includes(cle)) || null;
-};
-
-/**
- * Détail du calcul d'une note.
- *
- * @returns {{total: number, termes: Array, complet: boolean, formule: object|null}}
- *   `termes` porte, pour chaque critère : la valeur mesurée, le plafond, le
- *   poids et les points effectivement apportés. `complet` dit si tous les
- *   critères exigés sont renseignés.
- */
-export function explainScore(product, productType) {
-  const type = typeDe(productType || product?.productType);
-  const formule = type ? FORMULES[type] : null;
-
-  if (!product || !formule) {
-    return { total: 0, termes: [], complet: false, formule: null };
-  }
-
-  const termes = formule.termes.map(terme => {
-    const valeur = Number(product[terme.key]);
-    const mesuree = Number.isFinite(valeur) && valeur > 0 ? valeur : null;
-    const points = mesuree === null ? 0 : (mesuree / terme.max) * 100 * terme.poids;
-    return { ...terme, valeur: mesuree, points };
-  });
-
-  const manquants = termes.filter(t => t.valeur === null);
-  const complet = manquants.length === 0;
-
-  // Une donnée manquante ne vaut pas zéro : sans elle, la note n'est pas
-  // calculable, et un 0 la ferait passer pour une contre-performance mesurée.
-  const calculable = formule.exigeTout ? complet : manquants.length < termes.length;
-  const brut = termes.reduce((somme, t) => somme + t.points, 0);
-  const total = calculable ? Math.min(100, Math.round(brut)) : 0;
-
-  return { total, termes, complet, formule };
-}
+export { explainScore, FORMULES } from '../../../shared/formules.js';
 
 /**
  * Note d'un produit, sur 100. 0 signifie « non mesurable », jamais « mauvais ».
- * Un `score` déjà porté par le document l'emporte sur le calcul.
+ *
+ * Toujours calculée, jamais lue sur le document : un champ `score` imposé à la
+ * main contournerait la formule publiée — exactement ce qu'on reproche aux
+ * comparateurs opaques. (Ce raccourci existait ; aucun schéma ne stockait ce
+ * champ, il n'était donc jamais utilisé.)
  */
-export const getProductScore = (product, typeOverride) => {
-  if (product?.score) return product.score;
-  return explainScore(product, typeOverride).total;
-};
+export const getProductScore = (product, typeOverride) => explainScore(product, typeOverride).total;
 
 // --- Compatibilité : les quatre formules nommées, dérivées de la même table.
 export const calculateCpuScore = cpu => explainScore(cpu, 'cpu').total;
