@@ -55,7 +55,9 @@ littéralement. Une valeur que tu n'as pas lue sera rejetée.
         "geekbench_multi": {
           "url": "https://…la page précise où tu as lu 23500",
           "releve_le": "2026-08-20",
-          "extrait": "Multi-Core Score 23500"
+          "extrait": "Multi-Core Score 23500",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
         }
       }
     }
@@ -77,6 +79,34 @@ rejetée.
 | `url`       | La page **exacte** où figure la valeur — pas l'accueil du site, pas une page de recherche |
 | `releve_le` | La date du jour, format `AAAA-MM-JJ`                                                      |
 | `extrait`   | La ligne où tu as lu la valeur, recopiée telle quelle                                     |
+
+### Qualifier la valeur : origine et test (recommandé)
+
+Quatre champs de plus, **facultatifs pour l'instant**, mais refusés s'ils sont
+faux. Remplis-les chaque fois que la page te permet de le faire sans deviner.
+
+| Champ       | Contenu                                                                                                                                                                             |
+| ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `origine`   | Qui a produit le chiffre : `constructeur` (fiche officielle), `laboratoire` (test d'un site comme Notebookcheck), `agregat` (moyenne de résultats d'utilisateurs, comme NanoReview) |
+| `protocole` | Le test exact, **uniquement pour un benchmark ou une mesure de laboratoire**, choisi dans la liste ci-dessous                                                                       |
+| `version`   | La sous-version du test si la page l'indique (`6.3`), sinon rien                                                                                                                    |
+| `archive`   | L'URL d'une copie archivée de la page (web.archive.org), si tu en as une                                                                                                            |
+
+Protocoles acceptés (liste complète et à jour : `PROTOCOLES` dans
+`shared/criteres.js`) :
+
+| Champ                                 | Protocoles, le premier étant la référence                                                               |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `geekbench_single`, `geekbench_multi` | `geekbench-6`, `geekbench-5`                                                                            |
+| `benchmark_3dmark`                    | `3dmark-time-spy-graphics`, `3dmark-time-spy`, `3dmark-time-spy-extreme-graphics`, `3dmark-steel-nomad` |
+| `antutu_score`                        | `antutu-11`, `antutu-10`                                                                                |
+| `battery_life_hours`                  | `notebookcheck-wifi`, `annonce-constructeur`                                                            |
+| `display_brightness_nits`             | `notebookcheck-luminance-moyenne`, `annonce-constructeur`                                               |
+
+**Ne devine jamais un protocole.** « Time Spy 36309 » ne dit pas s'il s'agit du
+score graphique ou du score global : dans ce cas, laisse `protocole` vide. Une
+caractéristique de fiche technique (cœurs, Go, GHz) ne prend **pas** de
+protocole : elle ne sort d'aucun test.
 
 ### Deux règles vérifiées automatiquement sur l'`extrait`
 

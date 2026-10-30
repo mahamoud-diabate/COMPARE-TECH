@@ -56,6 +56,13 @@ nombre à son libellé. `91` peut se trouver quelque part sur une page ; il ne
 peut pas se trouver dans `"Total Cores 24"`. Ce contrôle ne coûte aucune
 requête — il se fait sur le fichier seul.
 
+**Qualification facultative** : chaque source peut aussi porter `origine`
+(`constructeur`, `laboratoire`, `agregat`), `protocole` (le test exact, choisi
+dans la liste du critère dans `shared/criteres.js`), `version` et `archive`.
+Absents, rien n'est exigé ; présents, ils sont contrôlés. Détails et liste des
+protocoles : [`CONSIGNE-AGENT.md`](CONSIGNE-AGENT.md) et
+[`docs/PROPOSITION-MESURE.md`](../../docs/PROPOSITION-MESURE.md).
+
 Les champs qui ne sont pas des mesures — `name`, `brand`, `imageUrl`, `pros`,
 `cons` — n'en demandent pas. Une valeur laissée à `null` non plus : elle
 n'affirme rien, elle n'a rien à prouver.

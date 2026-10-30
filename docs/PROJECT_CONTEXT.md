@@ -244,7 +244,14 @@ Chaque mesure chiffrée porte une entrée dans `provenance`, indexée par le nom
 }
 ```
 
-Les noms des champs sont `url`, `releve_le` et `extrait`.
+Les champs obligatoires sont `url`, `releve_le` et `extrait`. Quatre champs **facultatifs** qualifient la valeur (phase 1 de [`PROPOSITION-MESURE.md`](PROPOSITION-MESURE.md)) :
+
+- `origine` : `constructeur`, `laboratoire` ou `agregat` (liste `ORIGINES` de `shared/criteres.js`) ;
+- `protocole` : le test exact, pris dans la liste `protocoles` du critère, dont le premier est la référence. Une caractéristique de fiche technique n'en a pas ;
+- `version` : la sous-version du test, si la source la donne ;
+- `archive` : l'URL d'une copie archivée de la page.
+
+Absents, rien n'est exigé ; présents, ils sont contrôlés (`controleQualification`, `shared/provenance.js`), et une clé de source inconnue est refusée plutôt que perdue. Les règles de comparaison par protocole ne s'appliqueront qu'en phase 3, une fois le catalogue de test remplacé.
 
 **Où c'est vérifié** : toute écriture passe par `valideProduit` (`backend/controles.js`), qui applique les trois contrôles hors ligne :
 
@@ -264,7 +271,7 @@ Ils s'appliquent à `scripts/import.js` **et** aux routes d'écriture de l'API (
 
 **Formulaire admin** : chaque mesure renseignée a ses champs URL, date (pré-remplie au jour) et extrait, avec une vérification en direct (« ✓ La valeur figure dans l'extrait » / « ✗ … le serveur refusera ») ; les motifs de refus du serveur s'affichent sous le formulaire. Les 53 fiches de production passent ces contrôles (vérifié le 30 octobre 2026).
 
-Côté interface, `SourcesMarche.jsx` affiche pour chaque valeur le site, la date de relevé et l'extrait (`decrireSource` dans `utils/marche.js`).
+Côté interface, `SourcesMarche.jsx` et la fiche produit affichent pour chaque valeur le site, la date de relevé, le test et l'origine, avec l'extrait au survol (`decrireSource` dans `utils/marche.js`). **Une valeur sans provenance affiche « Source non renseignée » : aucune source n'est attribuée par défaut.** Les intitulés ne disent « mesurée » ou « annoncée » que si l'origine de la source l'établit (`qualificatifOrigine`).
 
 ### 7.4 Comparateur « Dans le marché » (`pages/ComparePage.jsx`)
 
@@ -334,7 +341,7 @@ Issues de l'étude stratégique. Ne pas les présenter comme existantes.
 5. **Moyenne géométrique pondérée** pour combiner plusieurs tests.
 6. **Tests de cohérence** : dominance, direction de chaque critère, version du barème.
 7. **Verdict IA contraint** : gagnant calculé par des règles, l'IA ne fait que rédiger, chiffres vérifiés, cache par paire.
-8. **Provenance enrichie** : nature de la donnée (constructeur, laboratoire, agrégat), version du benchmark, archive de la page source.
+8. **Provenance enrichie** : origine de la donnée (constructeur, laboratoire, agrégat), protocole exact du test, archive de la page source. Format décidé le 30 octobre 2026 : voir [`PROPOSITION-MESURE.md`](PROPOSITION-MESURE.md).
 
 ---
 
@@ -367,7 +374,6 @@ Les 15 CPU et 15 GPU de la production n'existent dans aucun fichier du dépôt. 
 
 - `scripts/populateRemaining.js` génère des laptops et téléphones **fictifs** et vide d'abord ces deux collections. Il refuse de tourner sans l'option `--donnees-fictives` **et** sans une base dont le nom contient `demo`, `test` ou `local`.
 - La RTX 4090 (36 309 points 3DMark) dépasse le plafond GPU de 35 000 : elle est bloquée à 100/100, et toute carte plus rapide serait déclarée à égalité.
-- L'autonomie des laptops est une **mesure** Notebookcheck (test Wi-Fi), mais elle est étiquetée « Autonomie annoncée » dans `specs.js` et `radarAxes.js`.
 - Plafonds fixes : deux produits au-dessus du plafond obtiennent tous deux 100.
 - Le frontend et l'API lisent `shared/`, situé hors de leur dossier : ne pas remettre de Root Directory sur Render (voir section 2).
 - La note GPU ne précise pas quel test 3DMark est utilisé.

@@ -92,7 +92,59 @@ test('genererDatasheet découpe les caractéristiques par groupe avec source', (
   const premiereLigne = premierGroupe.lignes[0];
   assert.ok(premiereLigne.nom);
   assert.ok(premiereLigne.val);
-  assert.ok(premiereLigne.source.site);
+});
+
+test('genererDatasheet cite la source relevée, et n’en invente aucune', () => {
+  const produit = {
+    ...FAUX_CPU,
+    provenance: {
+      geekbench_multi: {
+        url: 'https://nanoreview.net/en/cpu/x',
+        releve_le: '2026-10-01',
+        extrait: 'Geekbench 6 (Multi-Core) 15000',
+        origine: 'agregat',
+        protocole: 'geekbench-6',
+      },
+    },
+  };
+  const lignes = genererDatasheet(produit, 'cpu').flatMap(g => g.lignes);
+
+  const sourcee = lignes.find(l => l.cle === 'geekbench_multi');
+  assert.equal(sourcee.source.site, 'nanoreview.net');
+  assert.equal(sourcee.source.protocole, 'Geekbench 6');
+  assert.match(sourcee.source.origine, /utilisateurs/);
+
+  // Une valeur sans provenance n'est attribuée à personne : ni à NanoReview,
+  // ni au « constructeur officiel ».
+  for (const ligne of lignes.filter(l => l.cle !== 'geekbench_multi')) {
+    assert.equal(ligne.source, null, ligne.cle);
+  }
+});
+
+test('l’autonomie n’est dite « mesurée » que si sa source l’établit', () => {
+  const portable = {
+    name: 'Portable',
+    brand: 'X',
+    battery_life_hours: 12,
+    provenance: {
+      battery_life_hours: {
+        url: 'https://notebookcheck.net/x',
+        releve_le: '2026-10-01',
+        extrait: 'WiFi Websurfing 12h 0min',
+      },
+    },
+  };
+  const titre = p => genererUsages(p, 'laptop').find(u => u.id === 'mobilite').specTitre;
+
+  assert.equal(titre(portable), 'Autonomie');
+  const qualifie = origine => ({
+    ...portable,
+    provenance: {
+      battery_life_hours: { ...portable.provenance.battery_life_hours, origine },
+    },
+  });
+  assert.equal(titre(qualifie('laboratoire')), 'Autonomie mesurée');
+  assert.equal(titre(qualifie('constructeur')), 'Autonomie annoncée');
 });
 
 test('les utilitaires gèrent les types inconnus ou les valeurs manquantes sans planter', () => {

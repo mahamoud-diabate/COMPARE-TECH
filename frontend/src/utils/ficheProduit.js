@@ -10,7 +10,8 @@
  */
 
 import { SPEC_GROUPS, resolveType, formatValue, toNumber } from './specs.js';
-import { decrireSource } from './marche.js';
+import { decrireSource, qualificatifOrigine } from './marche.js';
+import { criteresDe } from '../../../shared/criteres.js';
 
 const AIDES_SPEC = {
   geekbench_multi: 'Mesure standardisée en calcul parallèle lourd (montage, compression)',
@@ -27,8 +28,9 @@ const AIDES_SPEC = {
   gpu_name: 'Modèle du circuit graphique intégré ou dédié',
   ram_gb: 'Mémoire vive système allouée aux applications',
   storage_gb: 'Capacité de stockage interne haute vitesse',
-  display_brightness_nits: 'Luminance maximale mesurée en nits au spectromètre',
-  battery_life_hours: 'Autonomie réelle mesurée en navigation web continue',
+  display_brightness_nits:
+    'Luminance de l’écran en nits ; la source précise comment elle a été obtenue',
+  battery_life_hours: 'Durée sur batterie ; la source précise si elle est annoncée ou mesurée',
   display_size: 'Diagonale de la dalle tactile en pouces',
   battery_mah: 'Capacité nominale de la batterie interne',
   antutu_score: 'Score global mesurant processeur, graphique et mémoire',
@@ -167,9 +169,16 @@ export function genererUsages(product, productType) {
       {
         id: 'mobilite',
         titre: 'Mobilité & Travail nomade',
-        specTitre: 'Autonomie mesurée sur batterie',
-        specVal: bat ? `${bat} heures` : 'Autonomie journée',
-        resume: 'Endurance mesurée sur banc d’essai en navigation web continue sur Wi-Fi.',
+        specTitre: ['Autonomie', qualificatifOrigine(product.provenance?.battery_life_hours)]
+          .filter(Boolean)
+          .join(' '),
+        specVal: bat ? `${bat} heures` : 'Non communiquée',
+        // La phrase ne décrit le protocole que si la source le nomme : sans
+        // cela, « mesurée en navigation Wi-Fi » serait une affirmation de plus.
+        resume:
+          product.provenance?.battery_life_hours?.protocole === 'notebookcheck-wifi'
+            ? 'Endurance mesurée par Notebookcheck en navigation web continue sur Wi-Fi.'
+            : 'Durée sur batterie, telle que donnée par la source citée.',
         impact:
           bat && bat >= 14
             ? 'Permet une <strong>journée complète de travail loin de toute prise</strong> sans transporter de chargeur.'
@@ -287,7 +296,9 @@ export function genererSpecsSynthese(product, productType) {
   if (type === 'laptop') {
     return [
       {
-        label: 'Autonomie mesurée',
+        label: ['Autonomie', qualificatifOrigine(product.provenance?.battery_life_hours)]
+          .filter(Boolean)
+          .join(' '),
         val: product.battery_life_hours ? `${product.battery_life_hours} h` : '—',
       },
       {
@@ -342,29 +353,19 @@ export function genererDatasheet(product, productType) {
       const prov = product.provenance?.[r.key];
       const sourceDecrite = decrireSource(prov);
 
-      let source = sourceDecrite;
-      if (!source) {
-        if (
-          ['geekbench_single', 'geekbench_multi', 'antutu_score', 'benchmark_3dmark'].includes(
-            r.key
-          )
-        ) {
-          source = { site: 'NanoReview (Banc certifié)', url: 'https://nanoreview.net' };
-        } else if (['battery_life_hours', 'display_brightness_nits'].includes(r.key)) {
-          source = { site: 'Notebookcheck (Test standardisé)', url: 'https://notebookcheck.net' };
-        } else {
-          source = {
-            site: `${product.brand || 'Constructeur'} officiel`,
-            url: product.buyUrl || 'https://google.com',
-          };
-        }
-      }
+      // Pas de source par défaut : attribuer une valeur à NanoReview ou au
+      // constructeur sans l'avoir relevée là serait inventer une provenance.
+      // Une valeur sans source le dit.
+      const source = sourceDecrite;
 
       return {
         cle: r.key,
         nom: r.label,
-        aide: AIDES_SPEC[r.key] || 'Caractéristique certifiée issue de la fiche technique.',
+        aide: AIDES_SPEC[r.key] || 'Caractéristique issue de la fiche technique.',
         val: valFormatee || 'Non communiqué',
+        // Une source est attendue pour une mesure chiffrée renseignée ; ni le
+        // nom d'un processeur, ni une valeur absente n'en portent.
+        sourceAttendue: Boolean(valFormatee) && criteresDe(type).some(cr => cr.key === r.key),
         source,
       };
     }),

@@ -2812,7 +2812,9 @@ body:has(.ct-compare-bar) {
 .ct-admin-source legend {
   padding: 0 4px;
 }
-.ct-admin-source input:nth-of-type(3),
+/* Ligne entière : extrait, origine, archive, verdict. URL et date, puis
+   protocole et version, se partagent une ligne (champ long, champ court). */
+.ct-admin-source .is-large,
 .ct-admin-source span {
   grid-column: 1 / -1;
 }

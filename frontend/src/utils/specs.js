@@ -112,7 +112,7 @@ export const SPEC_GROUPS = {
       group: 'Écran et autonomie',
       rows: [
         ligne('laptop', 'display_brightness_nits', 'Luminosité'),
-        ligne('laptop', 'battery_life_hours', 'Autonomie annoncée'),
+        ligne('laptop', 'battery_life_hours', 'Autonomie sur batterie'),
       ],
     },
     {

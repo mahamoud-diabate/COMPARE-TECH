@@ -10,7 +10,8 @@
  * n'avoir aucune source.
  */
 
-const { controleProvenance } = require('../shared/provenance.js');
+const { controleProvenance, controleQualification } = require('../shared/provenance.js');
+const { criteresDe } = require('../shared/criteres.js');
 
 // Champs numeriques ajoutes par le socle ou par Mongo, qui ne sont pas des
 // mesures relevees et n'ont donc pas a declarer de source.
@@ -60,6 +61,9 @@ function valideProduit(Model, produit) {
   }
 
   erreurs.push(...controleProvenance(champsMesures(Model), produit));
+  // Origine, protocole, version, archive : facultatifs, mais valables s'ils
+  // sont donnes. `modelName` (« Laptop ») designe la categorie dans criteres.js.
+  erreurs.push(...controleQualification(criteresDe(Model.modelName.toLowerCase()), produit));
 
   return erreurs;
 }

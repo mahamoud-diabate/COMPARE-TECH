@@ -87,7 +87,7 @@ export const AXIS_HINTS = {
   Mémoire: 'Quantité de mémoire vive',
   Stockage: 'Capacité de stockage interne',
   Luminosité: 'Luminosité maximale de l’écran',
-  Autonomie: 'Durée d’utilisation annoncée',
+  Autonomie: 'Durée d’utilisation sur batterie',
   Batterie: 'Capacité de la batterie',
   Écran: 'Diagonale de l’écran',
 };

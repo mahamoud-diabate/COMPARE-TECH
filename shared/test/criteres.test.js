@@ -6,6 +6,8 @@ import assert from 'node:assert/strict';
 
 import {
   CRITERES,
+  ORIGINES,
+  PROTOCOLES,
   SEGMENTS,
   TYPES,
   critere,
@@ -133,4 +135,29 @@ test('CHAMPS_MARCHE conserve le sens de lecture de chaque critère', () => {
       assert.equal(champ.inverse, critere(type, champ.key).inverse, `${segment} : ${champ.key}`);
     }
   }
+});
+
+test('chaque protocole cité par un critère est déclaré, et seuls les tests en ont', () => {
+  for (const type of TYPES) {
+    for (const cr of CRITERES[type]) {
+      for (const id of cr.protocoles) {
+        assert.ok(Object.hasOwn(PROTOCOLES, id), `${type}.${cr.key} : protocole ${id} inconnu`);
+      }
+      assert.equal(new Set(cr.protocoles).size, cr.protocoles.length, `${type}.${cr.key}`);
+      // Une caractéristique de fiche technique ne sort d'aucun test ; un
+      // benchmark sans protocole de référence ne dirait pas quel test le note.
+      if (cr.nature === 'caracteristique') assert.equal(cr.protocoles.length, 0, cr.key);
+      if (cr.nature === 'benchmark') assert.ok(cr.protocoles.length > 0, cr.key);
+    }
+  }
+});
+
+test('un protocole porte sa version majeure dans son identifiant', () => {
+  for (const id of Object.keys(PROTOCOLES)) {
+    if (/geekbench|antutu/.test(id)) assert.match(id, /-\d+$/, id);
+  }
+});
+
+test('les origines sont les trois de la proposition', () => {
+  assert.deepEqual(Object.keys(ORIGINES), ['constructeur', 'laboratoire', 'agregat']);
 });
