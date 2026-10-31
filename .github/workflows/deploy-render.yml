@@ -1,0 +1,79 @@
+# Déploiement de l'API sur Render, déclenché par la CI plutôt que par le webhook.
+#
+# Pourquoi ce détour : l'app GitHub de Render est installée sur le dépôt, mais
+# aucun webhook n'arrive au service — le dépôt n'en porte aucun et Render →
+# Events ne montre que des déploiements manuels. Le service tire toujours son
+# code par l'ancienne autorisation personnelle, qui ne notifie plus les push.
+# Ce workflow rétablit l'automatisme par l'autre bout : la CI valide `main`,
+# puis on appelle le deploy hook du service.
+#
+# Prérequis, une seule fois (côté dépôt GitHub) :
+#   Settings → Secrets and variables → Actions → New repository secret
+#   Nom : RENDER_DEPLOY_HOOK
+#   Valeur : l'URL du Deploy Hook du service (Render → Settings → Deploy Hook)
+#
+# Sans ce secret, le workflow ne casse rien : il s'arrête sur un avertissement
+# et le déploiement reste manuel (Render → Manual Deploy → Deploy latest commit).
+name: Déploiement Render
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  # Un seul déploiement à la fois, et le plus récent gagne : deux pushs
+  # rapprochés ne doivent pas lancer deux builds qui se marchent dessus.
+  group: deploy-render-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Déployer l'API si l'API a changé
+    # Une CI rouge ne déploie jamais.
+    if: github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Le commit que la CI vient de valider, et son parent : le diff des
+          # deux dit si le changement touche le serveur.
+          ref: ${{ github.event.workflow_run.head_sha }}
+          fetch-depth: 2
+
+      - name: Le changement touche-t-il `backend/` ou `shared/` ?
+        id: portee
+        run: |
+          set -eu
+          fichiers=$(git diff --name-only HEAD~1 HEAD || true)
+          echo "Fichiers du commit :"
+          echo "$fichiers"
+          if echo "$fichiers" | grep -qE '^(backend|shared)/'; then
+            echo "touche=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "touche=false" >> "$GITHUB_OUTPUT"
+            echo "Aucun fichier du serveur : rien à déployer (le site React est servi par Vercel)."
+          fi
+
+      - name: Déclencher le deploy hook de Render
+        if: steps.portee.outputs.touche == 'true'
+        env:
+          HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
+        run: |
+          set -eu
+          if [ -z "${HOOK:-}" ]; then
+            echo "::warning::RENDER_DEPLOY_HOOK absent : déploiement Render non déclenché. Ajoute le secret (Settings → Secrets and variables → Actions), ou lance Manual Deploy dans Render."
+            exit 0
+          fi
+          code=$(curl -sS -o /tmp/hook.out -w '%{http_code}' -X POST "$HOOK")
+          echo "Réponse du deploy hook : HTTP $code"
+          head -c 300 /tmp/hook.out || true
+          echo
+          case "$code" in
+            2*) echo "Déploiement demandé. Suivi : Render → Deploys." ;;
+            *) echo "::error::Le deploy hook a répondu HTTP $code"; exit 1 ;;
+          esac
