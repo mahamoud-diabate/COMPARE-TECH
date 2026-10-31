@@ -69,8 +69,11 @@ export const SPEC_GROUPS = {
       group: 'Général',
       rows: [
         { label: 'Marque', key: 'brand' },
+        { label: 'Socket', key: 'socket' },
+        ligne('cpu', 'annee_sortie', 'Année de sortie'),
         ligne('cpu', 'cores', 'Cœurs'),
         ligne('cpu', 'threads', 'Threads'),
+        ligne('cpu', 'cache_l3_mo', 'Cache L3'),
         ligne('cpu', 'base_freq_ghz', 'Fréquence de base'),
         ligne('cpu', 'max_freq_ghz', 'Fréquence maximale'),
         ligne('cpu', 'tdp_w', 'Consommation'),
@@ -81,6 +84,7 @@ export const SPEC_GROUPS = {
       rows: [
         ligne('cpu', 'geekbench_single', 'Geekbench 6 (mono-cœur)'),
         ligne('cpu', 'geekbench_multi', 'Geekbench 6 (multi-cœur)'),
+        ligne('cpu', 'cinebench_2024_multi', 'Cinebench 2024 (multi-cœur)'),
       ],
     },
   ],
@@ -191,6 +195,7 @@ export const KEY_METRICS = {
   cpu: [
     metrique('cpu', 'geekbench_multi', 'de performances multi-cœur'),
     metrique('cpu', 'geekbench_single', 'de performances mono-cœur'),
+    metrique('cpu', 'cinebench_2024_multi', 'de performances en rendu (Cinebench)'),
     metrique('cpu', 'tdp_w', 'de consommation'),
   ],
   gpu: [
