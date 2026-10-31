@@ -93,6 +93,7 @@ export const ORIGINES = Object.freeze({
 export const PROTOCOLES = Object.freeze({
   'geekbench-6': 'Geekbench 6',
   'geekbench-5': 'Geekbench 5',
+  'cinebench-2024': 'Cinebench 2024',
   '3dmark-time-spy-graphics': '3DMark Time Spy (score graphique)',
   '3dmark-time-spy': '3DMark Time Spy (score global)',
   '3dmark-time-spy-extreme-graphics': '3DMark Time Spy Extreme (score graphique)',
@@ -141,9 +142,18 @@ export const CRITERES = Object.freeze({
     c('threads', { plafond: 32, departage: false }),
     c('base_freq_ghz', { unite: 'GHz', departage: false }),
     c('max_freq_ghz', { unite: 'GHz', plafond: 6, departage: false }),
+    // Davantage de cache aide surtout en jeu (puces X3D), pas partout : une
+    // spec papier de plus, située mais jamais départagée.
+    c('cache_l3_mo', { unite: 'Mo', departage: false }),
+    // Plus récent ne veut pas dire meilleur : ni rang, ni gagnant. Sert au
+    // futur profil « Longévité ».
+    c('annee_sortie', { comparable: false }),
     c('tdp_w', { unite: 'W', inverse: true }),
     c('geekbench_single', { nature: 'benchmark', plafond: 3500, protocoles: GEEKBENCH }),
     c('geekbench_multi', { nature: 'benchmark', plafond: 29000, protocoles: GEEKBENCH }),
+    // Affiché et départagé, mais hors de la note sur 100 tant que la formule
+    // n'est pas revue (profils d'usage) : pas de plafond.
+    c('cinebench_2024_multi', { nature: 'benchmark', protocoles: ['cinebench-2024'] }),
   ]),
 
   gpu: Object.freeze([

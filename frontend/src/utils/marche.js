@@ -54,6 +54,8 @@ const AIDES = {
   max_freq_ghz: 'Vitesse de pointe, sur un effort court',
   base_freq_ghz: 'Vitesse garantie en continu',
   tdp_w: 'Énergie consommée en pleine charge',
+  cache_l3_mo: 'Mémoire cache partagée ; aide surtout en jeu',
+  cinebench_2024_multi: 'Rendu 3D, charge longue sur tous les cœurs',
   benchmark_3dmark: 'Performances en jeu (test 3D)',
   memory_gb: 'Mémoire propre à la carte graphique',
   ram_gb: 'Mémoire de travail',

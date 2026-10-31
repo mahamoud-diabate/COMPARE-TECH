@@ -138,15 +138,19 @@ vérifiées : une valeur en dehors est rejetée.
 
 ### `cpus`
 
-| Champ              | Type   | Bornes      |                                 |
-| ------------------ | ------ | ----------- | ------------------------------- |
-| `cores`            | nombre | 1 – 512     | **obligatoire**                 |
-| `threads`          | nombre | 1 – 1024    |                                 |
-| `base_freq_ghz`    | nombre | 0 – 10      | en GHz, sans l'unité            |
-| `max_freq_ghz`     | nombre | 0 – 10      | en GHz, sans l'unité            |
-| `tdp_w`            | nombre | 1 – 1000    | consommation en W, sans l'unité |
-| `geekbench_single` | nombre | 0 – 20 000  | Geekbench 6, mono-cœur          |
-| `geekbench_multi`  | nombre | 0 – 200 000 | Geekbench 6, multi-cœur         |
+| Champ                  | Type   | Bornes      |                                            |
+| ---------------------- | ------ | ----------- | ------------------------------------------ |
+| `cores`                | nombre | 1 – 512     | **obligatoire**                            |
+| `threads`              | nombre | 1 – 1024    |                                            |
+| `base_freq_ghz`        | nombre | 0 – 10      | en GHz, sans l'unité                       |
+| `max_freq_ghz`         | nombre | 0 – 10      | en GHz, sans l'unité                       |
+| `tdp_w`                | nombre | 1 – 1000    | consommation en W, sans l'unité            |
+| `socket`               | texte  | 40 car. max | ex. `AM5`, `LGA 1851` ; sans source exigée |
+| `annee_sortie`         | nombre | 1990 – 2100 | année de commercialisation                 |
+| `cache_l3_mo`          | nombre | 0 – 4096    | cache L3 en Mo, sans l'unité               |
+| `geekbench_single`     | nombre | 0 – 20 000  | Geekbench 6, mono-cœur                     |
+| `geekbench_multi`      | nombre | 0 – 200 000 | Geekbench 6, multi-cœur                    |
+| `cinebench_2024_multi` | nombre | 0 – 50 000  | Cinebench 2024, multi-cœur                 |
 
 ### `gpus`
 
@@ -196,17 +200,17 @@ davantage** — sans elles, le téléphone n'a pas de note.
 Ces sources ont été testées : elles répondent aux requêtes automatisées, donc
 les valeurs que tu y relèves pourront être vérifiées. **Cherche d'abord ici.**
 
-| Ce que tu cherches                      | Où                                                              |
-| --------------------------------------- | --------------------------------------------------------------- |
-| CPU — cœurs, threads, fréquences        | `techpowerup.com/cpu-specs/…` ou `nanoreview.net/en/cpu/…`      |
-| CPU — scores Geekbench 6                | `nanoreview.net/en/cpu/…`                                       |
-| GPU — unités de calcul, mémoire, type   | `techpowerup.com/gpu-specs/…`                                   |
-| GPU — score 3DMark                      | `nanoreview.net/en/gpu/…`                                       |
-| Téléphones — tout                       | `gsmarena.com/…`                                                |
-| Téléphones — Geekbench 6                | `nanoreview.net/en/phone/…`                                     |
-| Téléphones — score AnTuTu               | `nanoreview.net/en/phone/…` ou `antutu.com/en/ranking/…` (lent) |
-| Gammes, dates de sortie, vue d'ensemble | `en.wikipedia.org/…`                                            |
-| Fiches constructeur                     | `amd.com/…`                                                     |
+| Ce que tu cherches                                             | Où                                                              |
+| -------------------------------------------------------------- | --------------------------------------------------------------- |
+| CPU — cœurs, threads, fréquences, TDP, socket, année, cache L3 | `techpowerup.com/cpu-specs/…` ou `nanoreview.net/en/cpu/…`      |
+| CPU — scores Geekbench 6 et Cinebench 2024                     | `nanoreview.net/en/cpu/…`                                       |
+| GPU — unités de calcul, mémoire, type                          | `techpowerup.com/gpu-specs/…`                                   |
+| GPU — score 3DMark                                             | `nanoreview.net/en/gpu/…`                                       |
+| Téléphones — tout                                              | `gsmarena.com/…`                                                |
+| Téléphones — Geekbench 6                                       | `nanoreview.net/en/phone/…`                                     |
+| Téléphones — score AnTuTu                                      | `nanoreview.net/en/phone/…` ou `antutu.com/en/ranking/…` (lent) |
+| Gammes, dates de sortie, vue d'ensemble                        | `en.wikipedia.org/…`                                            |
+| Fiches constructeur                                            | `amd.com/…`                                                     |
 
 **Deux sources refusent les requêtes automatisées** et sont donc inutilisables,
 même si tu y trouves l'information :

@@ -32,7 +32,9 @@ Positionnement : à l'opposé d'UserBenchmark (formules opaques et partisanes) e
 **Réglages imposés par `shared/`** (en place depuis le 30 octobre 2026) :
 
 - **Render** : aucun Root Directory ; build `cd backend && npm ci`, démarrage `cd backend && npm start` ; filtres de build `backend/**` et `shared/**` ; variable `NODE_VERSION=22`. Un Root Directory `backend` rendrait `shared/` invisible et l'API ne démarrerait plus. Voir `backend/render.yaml`.
-- **Vercel** : Root Directory `frontend`, avec « Include files outside the root directory in the Build Step » activé.
+- **Vercel** : dépôt `mahamoud-diabate/COMPARE-TECH` connecté (Settings → Git), branche de production `main` ; Root Directory `frontend`, avec « Include files outside the root directory in the Build Step » activé et « Skip deployments when there are no changes to the root directory » désactivé ; préréglage Vite (build et sortie par défaut) ; Node.js 22.x.
+
+> **Incident du 30 octobre 2026.** Du 23 août au 30 octobre, aucun commit n'a été déployé : le lien Vercel ↔ GitHub était cassé (« Project Link not found » dans Settings → Git), sans aucune alerte. Le site servait une version d'août pendant que `main` avançait. Réparé en reconnectant le dépôt. **Après chaque fusion, vérifier qu'un déploiement apparaît dans l'onglet Deployments de Vercel**, et non seulement que la CI est verte.
 
 L'offre gratuite de Render met l'API en veille : le premier appel peut prendre 20 à 50 secondes. Le frontend attend jusqu'à 75 secondes (`utils/catalog.js`).
 
@@ -201,16 +203,18 @@ COMPARE-TECH/
 
 Une caractéristique n'existe sur le site que si elle existe dans le modèle Mongoose.
 
-| Catégorie | Champs chiffrés                                                                                              | Autres champs                                                                          |
-| --------- | ------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------- |
-| CPU       | `cores`, `threads`, `base_freq_ghz`, `max_freq_ghz`, `tdp_w`, `geekbench_single`, `geekbench_multi`          | `name`, `brand`, `imageUrl`, `pros`, `cons`                                            |
-| GPU       | `cores` (unités de calcul), `memory_gb`, `tdp_w`, `benchmark_3dmark`                                         | `memory_type`, `name`, `brand`, …                                                      |
-| Laptop    | `ram_gb`, `storage_gb`, `geekbench_multi`, `display_brightness_nits`, `battery_life_hours`                   | `cpu_name`, `gpu_name`, `cpu` et `gpu` (références vers les collections CPU et GPU), … |
-| Téléphone | `display_size`, `ram_gb`, `storage_gb`, `battery_mah`, `antutu_score`, `geekbench_single`, `geekbench_multi` | `cpu_name`, `cpu` (référence), …                                                       |
+| Catégorie | Champs chiffrés                                                                                                                                            | Autres champs                                                                          |
+| --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| CPU       | `cores`, `threads`, `base_freq_ghz`, `max_freq_ghz`, `tdp_w`, `cache_l3_mo`, `annee_sortie`, `geekbench_single`, `geekbench_multi`, `cinebench_2024_multi` | `name`, `brand`, `socket`, `imageUrl`, `pros`, `cons`                                  |
+| GPU       | `cores` (unités de calcul), `memory_gb`, `tdp_w`, `benchmark_3dmark`                                                                                       | `memory_type`, `name`, `brand`, …                                                      |
+| Laptop    | `ram_gb`, `storage_gb`, `geekbench_multi`, `display_brightness_nits`, `battery_life_hours`                                                                 | `cpu_name`, `gpu_name`, `cpu` et `gpu` (références vers les collections CPU et GPU), … |
+| Téléphone | `display_size`, `ram_gb`, `storage_gb`, `battery_mah`, `antutu_score`, `geekbench_single`, `geekbench_multi`                                               | `cpu_name`, `cpu` (référence), …                                                       |
 
 Le plugin `catalogue.js` ajoute à chaque modèle `slug` (unique, dérivé du nom) et `provenance`.
 
-**N'existent pas** (ne pas les afficher ni les supposer) : cache L3, bus mémoire et bande passante GPU, TGP, taille d'écran et poids des laptops, batterie en Wh, fréquence d'écran, luminosité et capteur photo des téléphones, puissance de charge.
+**N'existent pas** (ne pas les afficher ni les supposer) : bus mémoire et bande passante GPU, TGP, taille d'écran et poids des laptops, batterie en Wh, fréquence d'écran, luminosité et capteur photo des téléphones, puissance de charge.
+
+Ajoutés le 30 octobre 2026 pour préparer les notes par usage (vides tant que le vrai catalogue n'est pas importé) : `socket`, `annee_sortie` (affichée sans rang ni gagnant), `cache_l3_mo` (spec papier : située, jamais départagée) et `cinebench_2024_multi` (benchmark départagé, protocole `cinebench-2024`, **hors de la note sur 100** tant que la formule n'est pas revue).
 
 Les unités de calcul GPU (`cores`) s'affichent sans gagnant : un cœur CUDA et un stream processor ne se comparent pas.
 

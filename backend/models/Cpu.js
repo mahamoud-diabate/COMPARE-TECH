@@ -17,6 +17,14 @@ const cpuSchema = new Schema({
   max_freq_ghz: { type: Number, required: false, min: 0, max: 10 },
   base_freq_ghz: { type: Number, required: false, min: 0, max: 10 },
   tdp_w: { type: Number, required: false, min: 1, max: 1000 },
+  // Plateforme et age : ce qui dit combien de temps on pourra faire evoluer la
+  // machine (notes par usage, profil « Longevite », docs/PROJECT_CONTEXT.md §9).
+  socket: { type: String, required: false, trim: true, maxlength: 40 },
+  annee_sortie: { type: Number, required: false, min: 1990, max: 2100 },
+  cache_l3_mo: { type: Number, required: false, min: 0, max: 4096 },
+  // Second test de calcul, centre sur le rendu 3D : il departage la ou
+  // Geekbench, plus generaliste, peut se tromper sur les charges longues.
+  cinebench_2024_multi: { type: Number, required: false, min: 0, max: 50000 },
   imageUrl: { type: String, required: false },
   geekbench_single: { type: Number, required: false, min: 0, max: 20000 },
   geekbench_multi: { type: Number, required: false, min: 0, max: 200000 },
