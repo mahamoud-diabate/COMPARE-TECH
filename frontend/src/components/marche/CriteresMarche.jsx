@@ -263,8 +263,8 @@ function CriteresMarche({ produits, catalogue, productType, libelleCategorie }) 
       <div className="ct-marche-pied">
         <p>
           <strong>Comment lire :</strong> sur chaque ligne, plus un repère est à droite, meilleur il
-          est. Pour la consommation, le plus sobre est donc à droite. Pour les fréquences, cœurs et
-          threads, la piste situe seulement la valeur dans le catalogue.
+          est. Pour le TDP, le plus bas est donc à droite. Pour les fréquences, cœurs et threads, la
+          piste situe seulement la valeur dans le catalogue.
         </p>
         <p>
           <strong>Égalités :</strong> deux produits à valeur égale partagent le même rang (« ex æquo

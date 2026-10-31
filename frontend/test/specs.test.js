@@ -306,7 +306,7 @@ test('la consommation CPU et GPU couronne la valeur la plus basse', () => {
   assert.equal(winnerIndex([{ tdp_w: 170 }, { tdp_w: 120 }], 'tdp_w', true), 1);
 });
 
-test('buildKeyDifferences et buildStrengths avantagent le produit qui consomme le moins', () => {
+test('buildKeyDifferences et buildStrengths avantagent la puissance annoncée la plus basse', () => {
   const sobre = { name: 'Sobre', tdp_w: 120 };
   const moyen = { name: 'Moyen', tdp_w: 170 };
   const gourmand = { name: 'Gourmand', tdp_w: 200 };
@@ -314,11 +314,11 @@ test('buildKeyDifferences et buildStrengths avantagent le produit qui consomme l
   const diff = buildKeyDifferences(sobre, gourmand, 'gpu');
   assert.equal(diff.b.length, 0);
   assert.equal(diff.a.length, 1);
-  assert.match(diff.a[0], /^40 % de consommation en moins \(120 W contre 200 W\)$/);
+  assert.match(diff.a[0], /^40 % de puissance annoncée en moins \(120 W contre 200 W\)$/);
 
   const [sSobre, sMoyen, sGourmand] = buildStrengths([sobre, moyen, gourmand], 'cpu');
   assert.equal(sSobre.length, 1);
-  assert.match(sSobre[0], /^29 % de consommation en moins que son meilleur rival \(120 W\)$/);
+  assert.match(sSobre[0], /^29 % de TDP en moins que son meilleur rival \(120 W\)$/);
   assert.deepEqual(sMoyen, []);
   assert.deepEqual(sGourmand, []);
 });

@@ -76,7 +76,7 @@ export const SPEC_GROUPS = {
         ligne('cpu', 'cache_l3_mo', 'Cache L3'),
         ligne('cpu', 'base_freq_ghz', 'Fréquence de base'),
         ligne('cpu', 'max_freq_ghz', 'Fréquence maximale'),
-        ligne('cpu', 'tdp_w', 'Consommation'),
+        ligne('cpu', 'tdp_w', 'TDP (enveloppe thermique)'),
       ],
     },
     {
@@ -103,7 +103,7 @@ export const SPEC_GROUPS = {
         ligne('gpu', 'cores', 'Unités de calcul'),
         ligne('gpu', 'memory_gb', 'Mémoire vidéo'),
         { label: 'Type de mémoire', key: 'memory_type' },
-        ligne('gpu', 'tdp_w', 'Consommation'),
+        ligne('gpu', 'tdp_w', 'Puissance de la carte (TGP)'),
       ],
     },
     {
@@ -196,12 +196,12 @@ export const KEY_METRICS = {
     metrique('cpu', 'geekbench_multi', 'de performances multi-cœur'),
     metrique('cpu', 'geekbench_single', 'de performances mono-cœur'),
     metrique('cpu', 'cinebench_2024_multi', 'de performances en rendu (Cinebench)'),
-    metrique('cpu', 'tdp_w', 'de consommation'),
+    metrique('cpu', 'tdp_w', 'de TDP'),
   ],
   gpu: [
     metrique('gpu', 'benchmark_3dmark', 'de performances 3D'),
     metrique('gpu', 'memory_gb', 'de mémoire vidéo'),
-    metrique('gpu', 'tdp_w', 'de consommation'),
+    metrique('gpu', 'tdp_w', 'de puissance annoncée'),
   ],
   laptop: [
     metrique('laptop', 'geekbench_multi', 'de performances'),

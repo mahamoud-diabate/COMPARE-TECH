@@ -1,0 +1,530 @@
+{
+  "type": "gpus",
+  "produits": [
+    {
+      "name": "Nvidia GeForce RTX 4090",
+      "brand": "Nvidia",
+      "memory_type": "GDDR6X",
+      "cores": 16384,
+      "memory_gb": 24,
+      "tdp_w": 450,
+      "benchmark_3dmark": 36299,
+      "provenance": {
+        "cores": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-4090",
+          "releve_le": "2026-10-30",
+          "extrait": "Shading Units 16384",
+          "origine": "constructeur"
+        },
+        "memory_gb": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-4090",
+          "releve_le": "2026-10-30",
+          "extrait": "Memory Size 24 GB",
+          "origine": "constructeur"
+        },
+        "tdp_w": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-4090",
+          "releve_le": "2026-10-30",
+          "extrait": "TGP 450 W",
+          "origine": "constructeur"
+        },
+        "benchmark_3dmark": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-4090",
+          "releve_le": "2026-10-30",
+          "extrait": "Time Spy 36299",
+          "origine": "agregat"
+        }
+      }
+    },
+    {
+      "name": "AMD Radeon RX 7900 XTX",
+      "brand": "AMD",
+      "memory_type": "GDDR6",
+      "cores": 6144,
+      "memory_gb": 24,
+      "tdp_w": 355,
+      "benchmark_3dmark": 30804,
+      "provenance": {
+        "cores": {
+          "url": "https://nanoreview.net/en/gpu/radeon-rx-7900-xtx",
+          "releve_le": "2026-10-30",
+          "extrait": "Shading Units 6144",
+          "origine": "constructeur"
+        },
+        "memory_gb": {
+          "url": "https://nanoreview.net/en/gpu/radeon-rx-7900-xtx",
+          "releve_le": "2026-10-30",
+          "extrait": "Memory Size 24 GB",
+          "origine": "constructeur"
+        },
+        "tdp_w": {
+          "url": "https://nanoreview.net/en/gpu/radeon-rx-7900-xtx",
+          "releve_le": "2026-10-30",
+          "extrait": "TGP 355 W",
+          "origine": "constructeur"
+        },
+        "benchmark_3dmark": {
+          "url": "https://nanoreview.net/en/gpu/radeon-rx-7900-xtx",
+          "releve_le": "2026-10-30",
+          "extrait": "Time Spy 30804",
+          "origine": "agregat"
+        }
+      }
+    },
+    {
+      "name": "Nvidia GeForce RTX 4080 SUPER",
+      "brand": "Nvidia",
+      "memory_type": "GDDR6X",
+      "cores": 10240,
+      "memory_gb": 16,
+      "tdp_w": 320,
+      "benchmark_3dmark": 28271,
+      "provenance": {
+        "cores": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-4080-super",
+          "releve_le": "2026-10-30",
+          "extrait": "Shading Units 10240",
+          "origine": "constructeur"
+        },
+        "memory_gb": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-4080-super",
+          "releve_le": "2026-10-30",
+          "extrait": "Memory Size 16 GB",
+          "origine": "constructeur"
+        },
+        "tdp_w": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-4080-super",
+          "releve_le": "2026-10-30",
+          "extrait": "TGP 320 W",
+          "origine": "constructeur"
+        },
+        "benchmark_3dmark": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-4080-super",
+          "releve_le": "2026-10-30",
+          "extrait": "Time Spy 28271",
+          "origine": "agregat"
+        }
+      }
+    },
+    {
+      "name": "AMD Radeon RX 7900 XT",
+      "brand": "AMD",
+      "memory_type": "GDDR6",
+      "cores": 5376,
+      "memory_gb": 20,
+      "tdp_w": 300,
+      "benchmark_3dmark": 27106,
+      "provenance": {
+        "cores": {
+          "url": "https://nanoreview.net/en/gpu/radeon-rx-7900-xt",
+          "releve_le": "2026-10-30",
+          "extrait": "Shading Units 5376",
+          "origine": "constructeur"
+        },
+        "memory_gb": {
+          "url": "https://nanoreview.net/en/gpu/radeon-rx-7900-xt",
+          "releve_le": "2026-10-30",
+          "extrait": "Memory Size 20 GB",
+          "origine": "constructeur"
+        },
+        "tdp_w": {
+          "url": "https://nanoreview.net/en/gpu/radeon-rx-7900-xt",
+          "releve_le": "2026-10-30",
+          "extrait": "TGP 300 W",
+          "origine": "constructeur"
+        },
+        "benchmark_3dmark": {
+          "url": "https://nanoreview.net/en/gpu/radeon-rx-7900-xt",
+          "releve_le": "2026-10-30",
+          "extrait": "Time Spy 27106",
+          "origine": "agregat"
+        }
+      }
+    },
+    {
+      "name": "Nvidia GeForce RTX 4070 Ti SUPER",
+      "brand": "Nvidia",
+      "memory_type": "GDDR6X",
+      "cores": 8448,
+      "memory_gb": 16,
+      "tdp_w": 285,
+      "benchmark_3dmark": 24220,
+      "provenance": {
+        "cores": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-4070-ti-super",
+          "releve_le": "2026-10-30",
+          "extrait": "Shading Units 8448",
+          "origine": "constructeur"
+        },
+        "memory_gb": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-4070-ti-super",
+          "releve_le": "2026-10-30",
+          "extrait": "Memory Size 16 GB",
+          "origine": "constructeur"
+        },
+        "tdp_w": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-4070-ti-super",
+          "releve_le": "2026-10-30",
+          "extrait": "TGP 285 W",
+          "origine": "constructeur"
+        },
+        "benchmark_3dmark": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-4070-ti-super",
+          "releve_le": "2026-10-30",
+          "extrait": "Time Spy 24220",
+          "origine": "agregat"
+        }
+      }
+    },
+    {
+      "name": "Nvidia GeForce RTX 4070 SUPER",
+      "brand": "Nvidia",
+      "memory_type": "GDDR6X",
+      "cores": 7168,
+      "memory_gb": 12,
+      "tdp_w": 220,
+      "benchmark_3dmark": 20879,
+      "provenance": {
+        "cores": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-4070-super",
+          "releve_le": "2026-10-30",
+          "extrait": "Shading Units 7168",
+          "origine": "constructeur"
+        },
+        "memory_gb": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-4070-super",
+          "releve_le": "2026-10-30",
+          "extrait": "Memory Size 12 GB",
+          "origine": "constructeur"
+        },
+        "tdp_w": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-4070-super",
+          "releve_le": "2026-10-30",
+          "extrait": "TGP 220 W",
+          "origine": "constructeur"
+        },
+        "benchmark_3dmark": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-4070-super",
+          "releve_le": "2026-10-30",
+          "extrait": "Time Spy 20879",
+          "origine": "agregat"
+        }
+      }
+    },
+    {
+      "name": "AMD Radeon RX 7800 XT",
+      "brand": "AMD",
+      "memory_type": "GDDR6",
+      "cores": 3840,
+      "memory_gb": 16,
+      "tdp_w": 263,
+      "benchmark_3dmark": 20095,
+      "provenance": {
+        "cores": {
+          "url": "https://nanoreview.net/en/gpu/radeon-rx-7800-xt",
+          "releve_le": "2026-10-30",
+          "extrait": "Shading Units 3840",
+          "origine": "constructeur"
+        },
+        "memory_gb": {
+          "url": "https://nanoreview.net/en/gpu/radeon-rx-7800-xt",
+          "releve_le": "2026-10-30",
+          "extrait": "Memory Size 16 GB",
+          "origine": "constructeur"
+        },
+        "tdp_w": {
+          "url": "https://nanoreview.net/en/gpu/radeon-rx-7800-xt",
+          "releve_le": "2026-10-30",
+          "extrait": "TGP 263 W",
+          "origine": "constructeur"
+        },
+        "benchmark_3dmark": {
+          "url": "https://nanoreview.net/en/gpu/radeon-rx-7800-xt",
+          "releve_le": "2026-10-30",
+          "extrait": "Time Spy 20095",
+          "origine": "agregat"
+        }
+      }
+    },
+    {
+      "name": "Nvidia GeForce RTX 3090",
+      "brand": "Nvidia",
+      "memory_type": "GDDR6X",
+      "cores": 10496,
+      "memory_gb": 24,
+      "tdp_w": 350,
+      "benchmark_3dmark": 19896,
+      "provenance": {
+        "cores": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-3090",
+          "releve_le": "2026-10-30",
+          "extrait": "Shading Units 10496",
+          "origine": "constructeur"
+        },
+        "memory_gb": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-3090",
+          "releve_le": "2026-10-30",
+          "extrait": "Memory Size 24 GB",
+          "origine": "constructeur"
+        },
+        "tdp_w": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-3090",
+          "releve_le": "2026-10-30",
+          "extrait": "TGP 350 W",
+          "origine": "constructeur"
+        },
+        "benchmark_3dmark": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-3090",
+          "releve_le": "2026-10-30",
+          "extrait": "Time Spy 19896",
+          "origine": "agregat"
+        }
+      }
+    },
+    {
+      "name": "AMD Radeon RX 6800 XT",
+      "brand": "AMD",
+      "memory_type": "GDDR6",
+      "cores": 4608,
+      "memory_gb": 16,
+      "tdp_w": 300,
+      "benchmark_3dmark": 19379,
+      "provenance": {
+        "cores": {
+          "url": "https://nanoreview.net/en/gpu/radeon-rx-6800-xt",
+          "releve_le": "2026-10-30",
+          "extrait": "Shading Units 4608",
+          "origine": "constructeur"
+        },
+        "memory_gb": {
+          "url": "https://nanoreview.net/en/gpu/radeon-rx-6800-xt",
+          "releve_le": "2026-10-30",
+          "extrait": "Memory Size 16 GB",
+          "origine": "constructeur"
+        },
+        "tdp_w": {
+          "url": "https://nanoreview.net/en/gpu/radeon-rx-6800-xt",
+          "releve_le": "2026-10-30",
+          "extrait": "TGP 300 W",
+          "origine": "constructeur"
+        },
+        "benchmark_3dmark": {
+          "url": "https://nanoreview.net/en/gpu/radeon-rx-6800-xt",
+          "releve_le": "2026-10-30",
+          "extrait": "Time Spy 19379",
+          "origine": "agregat"
+        }
+      }
+    },
+    {
+      "name": "Nvidia GeForce RTX 4070",
+      "brand": "Nvidia",
+      "memory_type": "GDDR6X",
+      "cores": 5888,
+      "memory_gb": 12,
+      "tdp_w": 200,
+      "benchmark_3dmark": 17799,
+      "provenance": {
+        "cores": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-4070",
+          "releve_le": "2026-10-30",
+          "extrait": "Shading Units 5888",
+          "origine": "constructeur"
+        },
+        "memory_gb": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-4070",
+          "releve_le": "2026-10-30",
+          "extrait": "Memory Size 12 GB",
+          "origine": "constructeur"
+        },
+        "tdp_w": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-4070",
+          "releve_le": "2026-10-30",
+          "extrait": "TGP 200 W",
+          "origine": "constructeur"
+        },
+        "benchmark_3dmark": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-4070",
+          "releve_le": "2026-10-30",
+          "extrait": "Time Spy 17799",
+          "origine": "agregat"
+        }
+      }
+    },
+    {
+      "name": "Nvidia GeForce RTX 3080",
+      "brand": "Nvidia",
+      "memory_type": "GDDR6X",
+      "cores": 8704,
+      "memory_gb": 10,
+      "tdp_w": 320,
+      "benchmark_3dmark": 17664,
+      "provenance": {
+        "cores": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-3080",
+          "releve_le": "2026-10-30",
+          "extrait": "Shading Units 8704",
+          "origine": "constructeur"
+        },
+        "memory_gb": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-3080",
+          "releve_le": "2026-10-30",
+          "extrait": "Memory Size 10 GB",
+          "origine": "constructeur"
+        },
+        "tdp_w": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-3080",
+          "releve_le": "2026-10-30",
+          "extrait": "TGP 320 W",
+          "origine": "constructeur"
+        },
+        "benchmark_3dmark": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-3080",
+          "releve_le": "2026-10-30",
+          "extrait": "Time Spy 17664",
+          "origine": "agregat"
+        }
+      }
+    },
+    {
+      "name": "AMD Radeon RX 7700 XT",
+      "brand": "AMD",
+      "memory_type": "GDDR6",
+      "cores": 3456,
+      "memory_gb": 12,
+      "tdp_w": 245,
+      "benchmark_3dmark": 17109,
+      "provenance": {
+        "cores": {
+          "url": "https://nanoreview.net/en/gpu/radeon-rx-7700-xt",
+          "releve_le": "2026-10-30",
+          "extrait": "Shading Units 3456",
+          "origine": "constructeur"
+        },
+        "memory_gb": {
+          "url": "https://nanoreview.net/en/gpu/radeon-rx-7700-xt",
+          "releve_le": "2026-10-30",
+          "extrait": "Memory Size 12 GB",
+          "origine": "constructeur"
+        },
+        "tdp_w": {
+          "url": "https://nanoreview.net/en/gpu/radeon-rx-7700-xt",
+          "releve_le": "2026-10-30",
+          "extrait": "TGP 245 W",
+          "origine": "constructeur"
+        },
+        "benchmark_3dmark": {
+          "url": "https://nanoreview.net/en/gpu/radeon-rx-7700-xt",
+          "releve_le": "2026-10-30",
+          "extrait": "Time Spy 17109",
+          "origine": "agregat"
+        }
+      }
+    },
+    {
+      "name": "Nvidia GeForce RTX 4060 Ti 8GB",
+      "brand": "Nvidia",
+      "memory_type": "GDDR6",
+      "cores": 4352,
+      "memory_gb": 8,
+      "tdp_w": 160,
+      "benchmark_3dmark": 13479,
+      "provenance": {
+        "cores": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-4060-ti-8gb",
+          "releve_le": "2026-10-30",
+          "extrait": "Shading Units 4352",
+          "origine": "constructeur"
+        },
+        "memory_gb": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-4060-ti-8gb",
+          "releve_le": "2026-10-30",
+          "extrait": "Memory Size 8 GB",
+          "origine": "constructeur"
+        },
+        "tdp_w": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-4060-ti-8gb",
+          "releve_le": "2026-10-30",
+          "extrait": "TGP 160 W",
+          "origine": "constructeur"
+        },
+        "benchmark_3dmark": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-4060-ti-8gb",
+          "releve_le": "2026-10-30",
+          "extrait": "Time Spy 13479",
+          "origine": "agregat"
+        }
+      }
+    },
+    {
+      "name": "AMD Radeon RX 7600",
+      "brand": "AMD",
+      "memory_type": "GDDR6",
+      "cores": 2048,
+      "memory_gb": 8,
+      "tdp_w": 165,
+      "benchmark_3dmark": 10931,
+      "provenance": {
+        "cores": {
+          "url": "https://nanoreview.net/en/gpu/radeon-rx-7600",
+          "releve_le": "2026-10-30",
+          "extrait": "Shading Units 2048",
+          "origine": "constructeur"
+        },
+        "memory_gb": {
+          "url": "https://nanoreview.net/en/gpu/radeon-rx-7600",
+          "releve_le": "2026-10-30",
+          "extrait": "Memory Size 8 GB",
+          "origine": "constructeur"
+        },
+        "tdp_w": {
+          "url": "https://nanoreview.net/en/gpu/radeon-rx-7600",
+          "releve_le": "2026-10-30",
+          "extrait": "TGP 165 W",
+          "origine": "constructeur"
+        },
+        "benchmark_3dmark": {
+          "url": "https://nanoreview.net/en/gpu/radeon-rx-7600",
+          "releve_le": "2026-10-30",
+          "extrait": "Time Spy 10931",
+          "origine": "agregat"
+        }
+      }
+    },
+    {
+      "name": "Nvidia GeForce RTX 4060",
+      "brand": "Nvidia",
+      "memory_type": "GDDR6",
+      "cores": 3072,
+      "memory_gb": 8,
+      "tdp_w": 115,
+      "benchmark_3dmark": 10615,
+      "provenance": {
+        "cores": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-4060",
+          "releve_le": "2026-10-30",
+          "extrait": "Shading Units 3072",
+          "origine": "constructeur"
+        },
+        "memory_gb": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-4060",
+          "releve_le": "2026-10-30",
+          "extrait": "Memory Size 8 GB",
+          "origine": "constructeur"
+        },
+        "tdp_w": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-4060",
+          "releve_le": "2026-10-30",
+          "extrait": "TGP 115 W",
+          "origine": "constructeur"
+        },
+        "benchmark_3dmark": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-4060",
+          "releve_le": "2026-10-30",
+          "extrait": "Time Spy 10615",
+          "origine": "agregat"
+        }
+      }
+    }
+  ]
+}

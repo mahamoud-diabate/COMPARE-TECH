@@ -20,7 +20,7 @@ const AIDES_SPEC = {
   threads: 'Fils d’exécution simultanés (multithreading)',
   max_freq_ghz: 'Fréquence d’horloge maximale sous charge brève (Boost)',
   base_freq_ghz: 'Fréquence d’horloge garantie en utilisation continue',
-  tdp_w: 'Enveloppe thermique et consommation maximale en watts',
+  tdp_w: 'Puissance annoncée par le constructeur ; la consommation réelle n’est pas mesurée',
   socket: 'Plateforme de la carte mère : détermine les évolutions possibles',
   annee_sortie: 'Année de commercialisation annoncée par le constructeur',
   cache_l3_mo: 'Mémoire cache partagée ; aide surtout en jeu, pas partout',
@@ -95,7 +95,8 @@ export function genererUsages(product, productType) {
         titre: 'Refroidissement & Boîtier',
         specTitre: 'Enveloppe thermique continue',
         specVal: tdp ? `${tdp} W TDP` : 'Standard',
-        resume: 'Consommation électrique et dégagement thermique sous forte sollicitation.',
+        resume:
+          'Enveloppe thermique annoncée par le constructeur (TDP), et non une consommation mesurée.',
         impact: impactTdp,
       },
     ];
@@ -157,7 +158,8 @@ export function genererUsages(product, productType) {
         titre: 'Alimentation & Encombrement',
         specTitre: 'Enveloppe thermique continue',
         specVal: tdp ? `${tdp} W TDP` : 'Puissance standard',
-        resume: 'Consommation maximale absorbée sous pleine charge 3D continue.',
+        resume:
+          'Puissance de la carte annoncée par le constructeur (TGP), et non une consommation mesurée.',
         impact: impactGpuTdp,
       },
     ];
@@ -272,7 +274,7 @@ export function genererSpecsSynthese(product, productType) {
     return [
       { label: 'Cœurs / Threads', val: `${product.cores || '—'} / ${product.threads || '—'}` },
       { label: 'Fréquence turbo', val: product.max_freq_ghz ? `${product.max_freq_ghz} GHz` : '—' },
-      { label: 'Consommation (TDP)', val: product.tdp_w ? `${product.tdp_w} W` : '—' },
+      { label: 'TDP annoncé', val: product.tdp_w ? `${product.tdp_w} W` : '—' },
       {
         label: 'Geekbench 6 Multi',
         val: product.geekbench_multi ? `${formatValue(product.geekbench_multi)} pts` : '—',
@@ -289,7 +291,7 @@ export function genererSpecsSynthese(product, productType) {
           : '—',
       },
       { label: 'Unités de calcul', val: product.cores ? `${formatValue(product.cores)}` : '—' },
-      { label: 'Consommation (TDP)', val: product.tdp_w ? `${product.tdp_w} W` : '—' },
+      { label: 'TDP annoncé', val: product.tdp_w ? `${product.tdp_w} W` : '—' },
       {
         label: '3DMark Time Spy',
         val: product.benchmark_3dmark ? `${formatValue(product.benchmark_3dmark)} pts` : '—',
