@@ -21,8 +21,11 @@ DB_URI=mongodb://localhost:27017/compare-tech
 ADMIN_USERNAME=admin
 ADMIN_PASSWORD=votre_mot_de_passe_admin
 JWT_SECRET=votre_secret_jwt
+# Un seul fournisseur d'IA suffit. Gemini passe en premier, DeepSeek sinon.
 GEMINI_API_KEY=votre_cle_gemini
 GEMINI_MODEL=gemini-3.8-flash
+DEEPSEEK_API_KEY=votre_cle_deepseek
+DEEPSEEK_MODEL=deepseek-flash
 CORS_ORIGINS=
 NODE_ENV=development
 PORT=3001
@@ -38,8 +41,10 @@ journalisée avec la marche à suivre.
 
 Sans `ADMIN_PASSWORD` ni `JWT_SECRET`, les routes d'écriture répondent 503
 plutôt que de s'ouvrir : un oubli de configuration ne doit jamais aboutir à une
-API sans protection. Sans `GEMINI_API_KEY`, seule la route IA répond 503, le
-reste fonctionne normalement.
+API sans protection. Sans `GEMINI_API_KEY` ni `DEEPSEEK_API_KEY`, seule la route
+IA répond 503, le reste fonctionne normalement. DeepSeek est joint par
+[`ia-deepseek.js`](ia-deepseek.js), qui présente à la route la même interface
+que Gemini : mêmes garde-fous, même cache de 24 h.
 
 ## Endpoints publics
 
