@@ -1,6 +1,6 @@
 # Proposition : les notes par usage
 
-> **Statut : décidé le 31 octobre 2026, pas encore implémenté.** Les quatre décisions sont en section 6. Première étape : relever les FPS des GPU (section 4).
+> **Statut : décidé et implémenté le 31 octobre 2026** (`shared/usages.js`) : six profils, barème v1, affichés sur la fiche produit et dans le comparatif. Les FPS des GPU ont été relevés (section 4) ; restent la Création GPU et l'Autonomie des téléphones.
 
 ---
 

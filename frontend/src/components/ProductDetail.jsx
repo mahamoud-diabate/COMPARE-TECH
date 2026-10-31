@@ -108,17 +108,12 @@ function ProductDetail({ product, type }) {
         <section className="ct-card" style={{ marginBottom: 20 }}>
           <div className="ct-fiche-usage-header">
             <div>
-              <div className="ct-fiche-usage-title">
-                Étage 1 · Impact pratique & Usages concrets
-              </div>
+              <div className="ct-fiche-usage-title">Notes par usage</div>
               <div className="ct-fiche-usage-subtitle">
-                Ce que les caractéristiques matérielles changent concrètement dans vos logiciels et
-                jeux
+                Une note par usage, calculée uniquement sur des mesures sourcées
               </div>
             </div>
-            <span style={{ fontSize: 12, color: 'var(--ct-muted)' }}>
-              Sélectionnez un profil d’usage :
-            </span>
+            <span style={{ fontSize: 12, color: 'var(--ct-muted)' }}>Choisissez un usage :</span>
           </div>
 
           <div className="ct-fiche-usage-wrap">

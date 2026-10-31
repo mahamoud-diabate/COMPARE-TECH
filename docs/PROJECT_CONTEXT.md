@@ -133,6 +133,7 @@ COMPARE-TECH/
 │   ├── criteres.js        # Chaque critère chiffré : nature, unité, sens, comparable, plafond
 │   ├── formules.js        # Formules de note sur 100 et explainScore
 │   ├── marche.js          # CHAMPS_MARCHE, quantiles, histogrammes, resumeMarche
+│   ├── usages.js          # Notes par usage : profils, barème v1, moyenne géométrique
 │   ├── provenance.js      # Contrôle « chaque mesure a une source qui la contient » (backend ET formulaire admin)
 │   ├── index.js
 │   └── test/              # node --test : cohérence des critères et des formules, provenance
@@ -233,6 +234,16 @@ Chaque terme vaut `(valeur / plafond) × 100 × poids`, et le total est plafonn�
 - Les téléphones sont notés sur Geekbench et non sur AnTuTu, qui n'utilise pas la même API graphique sur Android et iOS. AnTuTu reste affiché.
 - Les plafonds sont déclarés une seule fois, dans `shared/criteres.js` ; les notes, le radar et les barres de benchmark les y lisent.
 - Notes-lettres : A+ ≥ 90, A ≥ 70, B ≥ 50, C ≥ 30, D ≥ 1.
+
+### 7.2 bis Notes par usage (`shared/usages.js`)
+
+Six profils, calculés uniquement sur des mesures : CPU **Création** (Cinebench 2024 multi 50 %, Geekbench 6 multi 50 %) et **Réactivité** (Geekbench 6 mono) ; GPU **Jeu** (FPS 1440p 50 %, 1080p 25 %, 4K 25 %) ; portable **Mobilité** (autonomie Wi-Fi 70 %, luminosité 30 %) et **Performance** (Geekbench multi) ; téléphone **Performance** (Geekbench 6 multi 70 %, mono 30 %).
+
+- Chaque mesure est divisée par la référence du **barème v1** (meilleure valeur du catalogue du 31 octobre 2026), puis combinée par **moyenne géométrique pondérée**. Une note peut dépasser 100 : c'est le signal de publier un barème v2. La version est affichée sous chaque note.
+- Mesure absente, ou relevée avec un autre test que la référence du critère : profil « non noté », jamais 0.
+- Les profils sans mesure (Jeu CPU et portable, Création GPU, Autonomie et Photo téléphone) ne sont pas affichés.
+- La note globale de 7.2 reste affichée en résumé secondaire.
+- Affichage : onglets « Notes par usage » de la fiche (`genererUsages`, `ficheProduit.js`) et ligne sous chaque carte du comparatif (`EnteteMarche`).
 
 ### 7.3 Provenance des données
 
@@ -337,12 +348,9 @@ Pistes (`preparerPiste`) : `paliers` jusqu'à 12 valeurs distinctes, `points` ju
 
 Issues de l'étude stratégique. Ne pas les présenter comme existantes.
 
-1. **Notes par profil d'usage** (Jeu, Création, Efficacité, Mobilité, Longévité) ; la note globale devient un résumé secondaire.
-2. **Normalisation contre une référence versionnée** au lieu de plafonds fixes qui saturent ; barème numéroté affiché sur chaque note.
-3. **Moyenne géométrique pondérée** pour combiner plusieurs tests.
-4. **Tests de cohérence** : dominance, direction de chaque critère, version du barème.
-5. **Verdict IA contraint** : gagnant calculé par des règles, l'IA ne fait que rédiger, chiffres vérifiés, cache par paire.
-6. **Provenance enrichie** : origine de la donnée (constructeur, laboratoire, agrégat), protocole exact du test, archive de la page source. Format décidé le 30 octobre 2026, phase 1 faite (champs facultatifs) ; restent les phases 2 et 3 : voir [`PROPOSITION-MESURE.md`](PROPOSITION-MESURE.md).
+1. **Tests de cohérence** : dominance, direction de chaque critère, version du barème.
+2. **Verdict IA contraint** : gagnant calculé par des règles, l'IA ne fait que rédiger, chiffres vérifiés, cache par paire.
+3. **Provenance enrichie** : origine de la donnée (constructeur, laboratoire, agrégat), protocole exact du test, archive de la page source. Format décidé le 30 octobre 2026, phase 1 faite (champs facultatifs) ; restent les phases 2 et 3 : voir [`PROPOSITION-MESURE.md`](PROPOSITION-MESURE.md).
 
 ---
 

@@ -16,3 +16,4 @@ export * from './criteres.js';
 export * from './formules.js';
 export * from './marche.js';
 export * from './provenance.js';
+export * from './usages.js';

@@ -9,9 +9,10 @@
  * Fonctions pures, sans DOM, testables directement sous Node.
  */
 
-import { SPEC_GROUPS, resolveType, formatValue, toNumber } from './specs.js';
+import { SPEC_GROUPS, resolveType, formatValue } from './specs.js';
 import { decrireSource, qualificatifOrigine } from './marche.js';
-import { criteresDe } from '../../../shared/criteres.js';
+import { critere, criteresDe } from '../../../shared/criteres.js';
+import { notesParUsage } from '../../../shared/usages.js';
 
 const AIDES_SPEC = {
   geekbench_multi: 'Mesure standardisée en calcul parallèle lourd (montage, compression)',
@@ -43,227 +44,51 @@ const AIDES_SPEC = {
   antutu_score: 'Score global mesurant processeur, graphique et mémoire',
 };
 
+/** Intitulé affiché d'une mesure, lu dans SPEC_GROUPS (une seule source). */
+function intituleDe(type, key) {
+  for (const groupe of SPEC_GROUPS[type] || []) {
+    const ligne = groupe.rows.find(r => r.key === key);
+    if (ligne) return ligne.label;
+  }
+  return key;
+}
+
 /**
- * Génère les 3 profils d'usage commutables pour un produit donné.
+ * Profils d'usage de la fiche, calculés par `shared/usages.js`.
+ *
+ * Remplace les anciens textes, qui déduisaient « images par seconde élevées »
+ * d'une fréquence turbo ou « 4K sans compromis » d'un score Time Spy, et
+ * comblaient les manques par des valeurs par défaut. Désormais, chaque profil
+ * affiche une note calculée sur des mesures sourcées, et les mesures qui la
+ * composent ; sans mesure, il le dit.
  */
 export function genererUsages(product, productType) {
   const type = resolveType(productType || product?.productType);
   if (!type || !product) return [];
 
-  if (type === 'cpu') {
-    const multi = toNumber(product.geekbench_multi);
-    const maxFreq = toNumber(product.max_freq_ghz);
-    const tdp = toNumber(product.tdp_w);
-    const cores = product.cores || 8;
-    const threads = product.threads || 16;
+  return notesParUsage(product, type).map(n => {
+    const detail = n.termes
+      .map(t => {
+        const nom = intituleDe(type, t.key);
+        const poids = n.termes.length > 1 ? ` (${Math.round(t.poids * 100)} %)` : '';
+        return t.valeur === null
+          ? `${nom} : non relevé${poids}`
+          : `${nom} : <strong>${formatValue(t.valeur, critere(type, t.key).unite)}</strong>${poids}`;
+      })
+      .join('<br/>');
 
-    let impactTdp =
-      'Un <strong>bon ventirad classique suffit</strong> ; aucun kit de refroidissement liquide encombrant n’est imposé.';
-    if (tdp && tdp > 150) {
-      impactTdp =
-        'Exige un <strong>refroidissement liquide performant (AIO 280/360 mm)</strong> et un boîtier spacieux pour dissiper la chaleur.';
-    } else if (tdp && tdp <= 65) {
-      impactTdp =
-        'Très sobre thermiquement : un <strong>refroidisseur compact et silencieux suffit</strong>, parfait pour petit boîtier.';
-    }
-
-    return [
-      {
-        id: 'gaming',
-        titre: 'Jeu vidéo & Réactivité',
-        specTitre: 'Fréquence turbo & Vitesse de pointe',
-        specVal: maxFreq
-          ? `${maxFreq} GHz`
-          : product.geekbench_single
-            ? `${formatValue(product.geekbench_single)} pts`
-            : `${cores} cœurs`,
-        resume:
-          'Fréquence de crête pour l’exécution rapide des instructions sur les cœurs principaux.',
-        impact:
-          'Maintient des <strong>taux d’images par seconde élevés et stables</strong> sur les titres exigeants et une réactivité instantanée en bureautique.',
-      },
-      {
-        id: 'creation',
-        titre: 'Calcul lourd & Multitâche',
-        specTitre: 'Score Geekbench 6 Multi',
-        specVal: multi ? `${formatValue(multi)} pts` : `${cores} cœurs / ${threads} threads`,
-        resume: `${cores} cœurs physiques et ${threads} fils d’exécution pour le rendu parallèle et la compression.`,
-        impact:
-          multi && multi >= 20000
-            ? 'Excellentes prestations en <strong>rendu 3D lourd, montage vidéo 4K et compilation</strong> intensive.'
-            : 'Très fluide pour le travail créatif et la retouche, idéal pour le multitâche quotidien.',
-      },
-      {
-        id: 'thermique',
-        titre: 'Refroidissement & Boîtier',
-        specTitre: 'Enveloppe thermique continue',
-        specVal: tdp ? `${tdp} W TDP` : 'Standard',
-        resume:
-          'Enveloppe thermique annoncée par le constructeur (TDP), et non une consommation mesurée.',
-        impact: impactTdp,
-      },
-    ];
-  }
-
-  if (type === 'gpu') {
-    const mem = toNumber(product.memory_gb);
-    const memType = product.memory_type || 'GDDR6';
-    const score3d = toNumber(product.benchmark_3dmark);
-    const tdp = toNumber(product.tdp_w);
-
-    let impact3d =
-      'Permet de jouer avec <strong>toutes les options graphiques poussées au maximum</strong> de manière parfaitement fluide.';
-    if (score3d && score3d >= 30000) {
-      impact3d =
-        'Délivre une expérience en <strong>4K native avec Ray Tracing maximal</strong> sans aucun compromis de fluidité.';
-    } else if (score3d && score3d >= 18000) {
-      impact3d =
-        'Idéale pour le <strong>jeu en 1440p ultra à haute fréquence de rafraîchissement</strong> et 4K confort.';
-    }
-
-    let impactGpuTdp =
-      'Une <strong>alimentation de 650 W à 750 W</strong> est recommandée avec un boîtier correctement aéré.';
-    if (tdp && tdp >= 350) {
-      impactGpuTdp =
-        'Exige un <strong>bloc d’alimentation d’au moins 850 W à 1000 W</strong> et un grand boîtier avec un flux d’air vigoureux.';
-    } else if (tdp && tdp <= 200) {
-      impactGpuTdp =
-        'Consommation modérée : fonctionne sur une <strong>alimentation standard de 550 W</strong> dans un boîtier compact.';
-    }
-
-    return [
-      {
-        id: 'rendu3d',
-        titre: 'Rendu 3D & Jeu vidéo',
-        specTitre: '3DMark Time Spy & Architecture',
-        specVal: score3d
-          ? `${formatValue(score3d)} pts`
-          : mem
-            ? `${mem} Go ${memType}`
-            : 'Carte dédiée',
-        resume: 'Bande passante mémoire élevée et unités dédiées au calcul géométrique complexe.',
-        impact: impact3d,
-      },
-      {
-        id: 'ia',
-        titre: 'Intelligence Artificielle & Création',
-        specTitre: 'Capacité mémoire vidéo (VRAM)',
-        specVal: mem ? `${mem} Go ${memType}` : 'VRAM dédiée',
-        resume:
-          'Volume de mémoire indispensable pour charger de grands modèles IA ou scènes 3D sans déborder en RAM.',
-        impact:
-          mem && mem >= 16
-            ? 'Adaptée à <strong>l’inférence locale de modèles LLM et au montage 4K/8K</strong> sans étouffement mémoire.'
-            : 'Convient très bien pour la création graphique assistée et le traitement vidéo standard.',
-      },
-      {
-        id: 'alim',
-        titre: 'Alimentation & Encombrement',
-        specTitre: 'Enveloppe thermique continue',
-        specVal: tdp ? `${tdp} W TDP` : 'Puissance standard',
-        resume:
-          'Puissance de la carte annoncée par le constructeur (TGP), et non une consommation mesurée.',
-        impact: impactGpuTdp,
-      },
-    ];
-  }
-
-  if (type === 'laptop') {
-    const bat = toNumber(product.battery_life_hours);
-    const nits = toNumber(product.display_brightness_nits);
-    const multi = toNumber(product.geekbench_multi);
-    const ram = product.ram_gb || 16;
-
-    return [
-      {
-        id: 'mobilite',
-        titre: 'Mobilité & Travail nomade',
-        specTitre: ['Autonomie', qualificatifOrigine(product.provenance?.battery_life_hours)]
-          .filter(Boolean)
-          .join(' '),
-        specVal: bat ? `${bat} heures` : 'Non communiquée',
-        // La phrase ne décrit le protocole que si la source le nomme : sans
-        // cela, « mesurée en navigation Wi-Fi » serait une affirmation de plus.
-        resume:
-          product.provenance?.battery_life_hours?.protocole === 'notebookcheck-wifi'
-            ? 'Endurance mesurée par Notebookcheck en navigation web continue sur Wi-Fi.'
-            : 'Durée sur batterie, telle que donnée par la source citée.',
-        impact:
-          bat && bat >= 14
-            ? 'Permet une <strong>journée complète de travail loin de toute prise</strong> sans transporter de chargeur.'
-            : 'Assure une autonomie confortable pour les cours et réunions en déplacement.',
-      },
-      {
-        id: 'ecran',
-        titre: 'Écran & Confort visuel',
-        specTitre: 'Luminance maximale de la dalle',
-        specVal: nits ? `${nits} nits` : 'Dalle haute définition',
-        resume: 'Luminosité de l’écran pour compenser les reflets de lumière naturelle.',
-        impact:
-          nits && nits >= 400
-            ? 'Garantit une <strong>lecture très confortable en extérieur ou près d’une baie vitrée</strong>.'
-            : 'Confort optimal en environnement intérieur et bureaux éclairés.',
-      },
-      {
-        id: 'polyvalence',
-        titre: 'Bureautique avancée & Multitâche',
-        specTitre: 'Processeur & Mémoire vive',
-        specVal: multi ? `${formatValue(multi)} pts` : `${ram} Go RAM`,
-        resume: `${product.cpu_name || 'Processeur multi-cœur'} combiné à ${ram} Go de RAM pour un système fluide.`,
-        impact: product.gpu_name
-          ? 'Capable d’assumer <strong>le jeu 3D et le montage vidéo</strong> grâce à son circuit graphique dédié.'
-          : 'Fluidité sans faille en multitâche bureautique, navigation lourde et visioconférence.',
-      },
-    ];
-  }
-
-  if (type === 'telephone') {
-    const antutu = toNumber(product.antutu_score);
-    const multi = toNumber(product.geekbench_multi);
-    const bat = toNumber(product.battery_mah);
-    const taille = toNumber(product.display_size);
-    const ram = product.ram_gb || 8;
-
-    return [
-      {
-        id: 'performance',
-        titre: 'Performance globale & Réactivité',
-        specTitre: 'Score AnTuTu / Geekbench',
-        specVal: antutu
-          ? `${formatValue(antutu)} pts`
-          : multi
-            ? `${formatValue(multi)} pts`
-            : `${ram} Go RAM`,
-        resume: `Puce ${product.cpu_name || 'haut de gamme'} associée à ${ram} Go de mémoire vive.`,
-        impact:
-          'Exécute n’importe quelle application ou jeu 3D <strong>sans aucun ralentissement perceptible</strong>.',
-      },
-      {
-        id: 'batterie',
-        titre: 'Autonomie & Batterie',
-        specTitre: 'Capacité énergétique nominale',
-        specVal: bat ? `${formatValue(bat)} mAh` : 'Grande batterie',
-        resume: 'Réserve d’énergie pour alimenter le processeur et la dalle haute fréquence.',
-        impact:
-          bat && bat >= 4800
-            ? 'Assure <strong>plus d’une journée et demie d’utilisation normale</strong> sans recharge intermédiaire.'
-            : 'Couvre amplement une journée de travail et de communication complète.',
-      },
-      {
-        id: 'ecran',
-        titre: 'Format d’écran & Multimédia',
-        specTitre: 'Diagonale de la dalle tactile',
-        specVal: taille ? `${taille} pouces` : 'Grand écran',
-        resume: 'Grande surface d’affichage adaptée à la vidéo, aux jeux et au multitâche.',
-        impact:
-          taille && taille >= 6.7
-            ? 'Idéal pour le <strong>visionnage vidéo et les réseaux</strong>, mais gabarit imposant en poche.'
-            : 'Format <strong>parfaitement maniable et agréable à une main</strong>.',
-      },
-    ];
-  }
-
-  return [];
+    return {
+      id: n.id,
+      titre: n.titre,
+      specTitre: `Note ${n.titre.toLowerCase()}`,
+      specVal: n.note === null ? 'Non noté' : `${n.note} / 100`,
+      resume:
+        n.note === null
+          ? 'Une mesure manque : la note n’est pas calculée plutôt que d’être devinée.'
+          : `${n.description}. 100 = meilleure valeur du ${n.bareme}.`,
+      impact: `Calculée sur :<br/>${detail}`,
+    };
+  });
 }
 
 /**

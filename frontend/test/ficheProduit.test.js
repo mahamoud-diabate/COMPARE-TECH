@@ -52,24 +52,35 @@ const FAUX_TEL = {
   antutu_score: 1810000,
 };
 
-test('genererUsages renvoie 3 usages structurés pour chaque catégorie', () => {
+test('genererUsages affiche les notes par usage calculées sur des mesures', () => {
   const usagesCpu = genererUsages(FAUX_CPU, 'cpu');
-  assert.equal(usagesCpu.length, 3);
-  assert.ok(usagesCpu[0].titre);
-  assert.ok(usagesCpu[0].specVal.includes('5 GHz') || usagesCpu[0].specVal.includes('8'));
-  assert.ok(usagesCpu[2].impact.includes('ventirad'));
+  assert.deepEqual(
+    usagesCpu.map(u => u.id),
+    ['creation', 'reactivite']
+  );
+  // Pas de Cinebench sur la fiche : la note Création n'est pas devinée.
+  assert.equal(usagesCpu[0].specVal, 'Non noté');
+  assert.match(usagesCpu[0].impact, /Cinebench 2024 \(multi-cœur\) : non relevé/);
+  // 2657 / 3418 du barème v1 = 78 %.
+  assert.equal(usagesCpu[1].specVal, '78 / 100');
+  assert.match(usagesCpu[1].resume, /barème v1/);
 
-  const usagesGpu = genererUsages(FAUX_GPU, 'gpu');
-  assert.equal(usagesGpu.length, 3);
-  assert.ok(usagesGpu[0].impact.includes('4K'));
+  // Sans FPS, pas de note Jeu : un score Time Spy ne suffit pas.
+  assert.equal(genererUsages(FAUX_GPU, 'gpu')[0].specVal, 'Non noté');
 
-  const usagesLaptop = genererUsages(FAUX_LAPTOP, 'laptop');
-  assert.equal(usagesLaptop.length, 3);
-  assert.ok(usagesLaptop[0].specVal.includes('16.5'));
+  const [mobilite, performance] = genererUsages(FAUX_LAPTOP, 'laptop');
+  assert.match(mobilite.impact, /16\.5 h/);
+  assert.notEqual(performance.specVal, 'Non noté');
 
-  const usagesTel = genererUsages(FAUX_TEL, 'telephone');
-  assert.equal(usagesTel.length, 3);
-  assert.ok(usagesTel[1].specVal.includes('5000') || usagesTel[1].specVal.includes('5 000'));
+  // Un téléphone sans Geekbench n'est pas noté, quelle que soit sa batterie.
+  assert.equal(genererUsages(FAUX_TEL, 'telephone')[0].specVal, 'Non noté');
+});
+
+test('aucun profil ne cite une spec papier ni ne comble un manque', () => {
+  const texte = JSON.stringify(
+    genererUsages({ name: 'X', brand: 'Y', cores: 24, max_freq_ghz: 6 }, 'cpu')
+  );
+  assert.doesNotMatch(texte, /GHz|cœurs physiques|ventirad/);
 });
 
 test('genererSpecsSynthese renvoie 4 indicateurs majeurs pour la barre latérale', () => {
@@ -134,7 +145,7 @@ test('l’autonomie n’est dite « mesurée » que si sa source l’établit', 
       },
     },
   };
-  const titre = p => genererUsages(p, 'laptop').find(u => u.id === 'mobilite').specTitre;
+  const titre = p => genererSpecsSynthese(p, 'laptop')[0].label;
 
   assert.equal(titre(portable), 'Autonomie');
   const qualifie = origine => ({

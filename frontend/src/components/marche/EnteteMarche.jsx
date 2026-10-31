@@ -12,6 +12,7 @@ import {
 } from '../../utils/marche';
 import { formatValue } from '../../utils/specs';
 import { cheminProduit } from '../../utils/liens';
+import { notesParUsage } from '../../../../shared/usages.js';
 import { Glyphe, RepereSvg } from './Repere';
 
 const LARGEUR = 760;
@@ -179,6 +180,7 @@ function EnteteMarche({ produits, catalogue, productType, type, libelleCategorie
         ''
       ),
       classement: classer(notesCatalogue, note),
+      usages: notesParUsage(produit, productType),
     };
   });
 
@@ -249,6 +251,15 @@ function EnteteMarche({ produits, catalogue, productType, type, libelleCategorie
                   <span>Note non calculable : mesures incomplètes</span>
                 )}
               </div>
+              {l.usages.length > 0 && (
+                <div className="ct-marche-fiche-usages" aria-label="Notes par usage">
+                  {l.usages.map(u => (
+                    <span key={u.id} title={u.description}>
+                      {u.titre} <strong className="ct-num">{u.note ?? '—'}</strong>
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
           );
         })}
