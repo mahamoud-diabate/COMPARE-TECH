@@ -14,37 +14,47 @@
         "display_size": {
           "url": "https://nanoreview.net/en/phone/apple-iphone-16-pro-max",
           "releve_le": "2026-08-20",
-          "extrait": "Screen: 6.9"
+          "extrait": "Screen: 6.9",
+          "origine": "constructeur"
         },
         "battery_mah": {
           "url": "https://nanoreview.net/en/phone/apple-iphone-16-pro-max",
           "releve_le": "2026-08-20",
-          "extrait": "Battery: 4685"
+          "extrait": "Battery: 4685",
+          "origine": "constructeur"
         },
         "storage_gb": {
           "url": "https://nanoreview.net/en/phone/apple-iphone-16-pro-max",
           "releve_le": "2026-08-20",
-          "extrait": "Storage size 256"
+          "extrait": "Storage size 256",
+          "origine": "constructeur"
         },
         "ram_gb": {
           "url": "https://nanoreview.net/en/phone/apple-iphone-16-pro-max",
           "releve_le": "2026-08-20",
-          "extrait": "RAM size 8"
+          "extrait": "RAM size 8",
+          "origine": "constructeur"
         },
         "antutu_score": {
           "url": "https://nanoreview.net/en/phone/apple-iphone-16-pro-max",
           "releve_le": "2026-08-20",
-          "extrait": "AnTuTu Benchmark 11 1750331"
+          "extrait": "AnTuTu Benchmark 11 1750331",
+          "origine": "agregat",
+          "protocole": "antutu-11"
         },
         "geekbench_single": {
           "url": "https://nanoreview.net/en/phone/apple-iphone-16-pro-max",
           "releve_le": "2026-08-20",
-          "extrait": "Geekbench 6 (Single-Core) 3507"
+          "extrait": "Geekbench 6 (Single-Core) 3507",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
         },
         "geekbench_multi": {
           "url": "https://nanoreview.net/en/phone/apple-iphone-16-pro-max",
           "releve_le": "2026-08-20",
-          "extrait": "Geekbench 6 (Multi-Core) 8789"
+          "extrait": "Geekbench 6 (Multi-Core) 8789",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
         }
       },
       "geekbench_single": 3507,
@@ -57,43 +67,53 @@
       "battery_mah": 4441,
       "storage_gb": 256,
       "ram_gb": 8,
-      "antutu_score": 1421780,
+      "antutu_score": 1467470,
       "cpu_name": "Apple A17 Pro",
       "provenance": {
         "display_size": {
           "url": "https://nanoreview.net/en/phone/apple-iphone-15-pro-max",
           "releve_le": "2026-08-20",
-          "extrait": "Screen: 6.7"
+          "extrait": "Screen: 6.7",
+          "origine": "constructeur"
         },
         "battery_mah": {
           "url": "https://nanoreview.net/en/phone/apple-iphone-15-pro-max",
           "releve_le": "2026-08-20",
-          "extrait": "Battery: 4441"
+          "extrait": "Battery: 4441",
+          "origine": "constructeur"
         },
         "storage_gb": {
           "url": "https://nanoreview.net/en/phone/apple-iphone-15-pro-max",
           "releve_le": "2026-08-20",
-          "extrait": "Storage size 256"
+          "extrait": "Storage size 256",
+          "origine": "constructeur"
         },
         "ram_gb": {
           "url": "https://nanoreview.net/en/phone/apple-iphone-15-pro-max",
           "releve_le": "2026-08-20",
-          "extrait": "RAM size 8"
+          "extrait": "RAM size 8",
+          "origine": "constructeur"
         },
         "antutu_score": {
           "url": "https://nanoreview.net/en/phone/apple-iphone-15-pro-max",
-          "releve_le": "2026-08-20",
-          "extrait": "AnTuTu Benchmark 11 1421780"
+          "releve_le": "2026-10-31",
+          "extrait": "AnTuTu Benchmark 11 1467470",
+          "origine": "agregat",
+          "protocole": "antutu-11"
         },
         "geekbench_single": {
           "url": "https://nanoreview.net/en/phone/apple-iphone-15-pro-max",
           "releve_le": "2026-08-20",
-          "extrait": "Geekbench 6 (Single-Core) 2974"
+          "extrait": "Geekbench 6 (Single-Core) 2974",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
         },
         "geekbench_multi": {
           "url": "https://nanoreview.net/en/phone/apple-iphone-15-pro-max",
           "releve_le": "2026-08-20",
-          "extrait": "Geekbench 6 (Multi-Core) 7533"
+          "extrait": "Geekbench 6 (Multi-Core) 7533",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
         }
       },
       "geekbench_single": 2974,
@@ -112,41 +132,51 @@
         "display_size": {
           "url": "https://nanoreview.net/en/phone/apple-iphone-15-pro",
           "releve_le": "2026-08-20",
-          "extrait": "Screen: 6.1"
+          "extrait": "Screen: 6.1",
+          "origine": "constructeur"
         },
         "battery_mah": {
           "url": "https://nanoreview.net/en/phone/apple-iphone-15-pro",
           "releve_le": "2026-08-20",
-          "extrait": "Battery: 3274"
+          "extrait": "Battery: 3274",
+          "origine": "constructeur"
         },
         "storage_gb": {
           "url": "https://nanoreview.net/en/phone/apple-iphone-15-pro",
           "releve_le": "2026-08-20",
-          "extrait": "Storage size 128"
+          "extrait": "Storage size 128",
+          "origine": "constructeur"
         },
         "ram_gb": {
           "url": "https://nanoreview.net/en/phone/apple-iphone-15-pro",
           "releve_le": "2026-08-20",
-          "extrait": "RAM size 8"
+          "extrait": "RAM size 8",
+          "origine": "constructeur"
         },
         "antutu_score": {
           "url": "https://nanoreview.net/en/phone/apple-iphone-15-pro",
           "releve_le": "2026-08-20",
-          "extrait": "AnTuTu Benchmark 11 1452754"
+          "extrait": "AnTuTu Benchmark 11 1452754",
+          "origine": "agregat",
+          "protocole": "antutu-11"
         },
         "geekbench_single": {
           "url": "https://nanoreview.net/en/phone/apple-iphone-15-pro",
-          "releve_le": "2026-08-20",
-          "extrait": "Geekbench 6 (Single-Core) 2927"
+          "releve_le": "2026-10-31",
+          "extrait": "Geekbench 6 (Single-Core) 2915",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
         },
         "geekbench_multi": {
           "url": "https://nanoreview.net/en/phone/apple-iphone-15-pro",
-          "releve_le": "2026-08-20",
-          "extrait": "Geekbench 6 (Multi-Core) 7269"
+          "releve_le": "2026-10-31",
+          "extrait": "Geekbench 6 (Multi-Core) 7115",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
         }
       },
-      "geekbench_single": 2927,
-      "geekbench_multi": 7269
+      "geekbench_single": 2915,
+      "geekbench_multi": 7115
     },
     {
       "name": "Apple iPhone 15",
@@ -160,36 +190,44 @@
         "display_size": {
           "url": "https://nanoreview.net/en/phone/apple-iphone-15",
           "releve_le": "2026-08-20",
-          "extrait": "Screen: 6.1"
+          "extrait": "Screen: 6.1",
+          "origine": "constructeur"
         },
         "battery_mah": {
           "url": "https://nanoreview.net/en/phone/apple-iphone-15",
           "releve_le": "2026-08-20",
-          "extrait": "Battery: 3349"
+          "extrait": "Battery: 3349",
+          "origine": "constructeur"
         },
         "storage_gb": {
           "url": "https://nanoreview.net/en/phone/apple-iphone-15",
           "releve_le": "2026-08-20",
-          "extrait": "Storage size 128"
+          "extrait": "Storage size 128",
+          "origine": "constructeur"
         },
         "ram_gb": {
           "url": "https://nanoreview.net/en/phone/apple-iphone-15",
           "releve_le": "2026-08-20",
-          "extrait": "RAM size 6"
+          "extrait": "RAM size 6",
+          "origine": "constructeur"
         },
         "geekbench_single": {
           "url": "https://nanoreview.net/en/phone/apple-iphone-15",
-          "releve_le": "2026-08-20",
-          "extrait": "Geekbench 6 (Single-Core) 2592"
+          "releve_le": "2026-10-31",
+          "extrait": "Geekbench 6 (Single-Core) 2612",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
         },
         "geekbench_multi": {
           "url": "https://nanoreview.net/en/phone/apple-iphone-15",
-          "releve_le": "2026-08-20",
-          "extrait": "Geekbench 6 (Multi-Core) 6588"
+          "releve_le": "2026-10-31",
+          "extrait": "Geekbench 6 (Multi-Core) 6705",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
         }
       },
-      "geekbench_single": 2592,
-      "geekbench_multi": 6588
+      "geekbench_single": 2612,
+      "geekbench_multi": 6705
     },
     {
       "name": "Apple iPhone 14 Pro",
@@ -203,36 +241,44 @@
         "display_size": {
           "url": "https://nanoreview.net/en/phone/apple-iphone-14-pro",
           "releve_le": "2026-08-20",
-          "extrait": "Screen: 6.1"
+          "extrait": "Screen: 6.1",
+          "origine": "constructeur"
         },
         "battery_mah": {
           "url": "https://nanoreview.net/en/phone/apple-iphone-14-pro",
           "releve_le": "2026-08-20",
-          "extrait": "Battery: 3200"
+          "extrait": "Battery: 3200",
+          "origine": "constructeur"
         },
         "storage_gb": {
           "url": "https://nanoreview.net/en/phone/apple-iphone-14-pro",
           "releve_le": "2026-08-20",
-          "extrait": "Storage size 128"
+          "extrait": "Storage size 128",
+          "origine": "constructeur"
         },
         "ram_gb": {
           "url": "https://nanoreview.net/en/phone/apple-iphone-14-pro",
           "releve_le": "2026-08-20",
-          "extrait": "RAM size 6"
+          "extrait": "RAM size 6",
+          "origine": "constructeur"
         },
         "geekbench_single": {
           "url": "https://nanoreview.net/en/phone/apple-iphone-14-pro",
-          "releve_le": "2026-08-20",
-          "extrait": "Geekbench 6 (Single-Core) 2680"
+          "releve_le": "2026-10-31",
+          "extrait": "Geekbench 6 (Single-Core) 2961",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
         },
         "geekbench_multi": {
           "url": "https://nanoreview.net/en/phone/apple-iphone-14-pro",
-          "releve_le": "2026-08-20",
-          "extrait": "Geekbench 6 (Multi-Core) 7059"
+          "releve_le": "2026-10-31",
+          "extrait": "Geekbench 6 (Multi-Core) 7133",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
         }
       },
-      "geekbench_single": 2680,
-      "geekbench_multi": 7059
+      "geekbench_single": 2961,
+      "geekbench_multi": 7133
     },
     {
       "name": "Samsung Galaxy S24 Ultra",
@@ -247,37 +293,47 @@
         "display_size": {
           "url": "https://nanoreview.net/en/phone/samsung-galaxy-s24-ultra",
           "releve_le": "2026-08-20",
-          "extrait": "Screen: 6.8"
+          "extrait": "Screen: 6.8",
+          "origine": "constructeur"
         },
         "battery_mah": {
           "url": "https://nanoreview.net/en/phone/samsung-galaxy-s24-ultra",
           "releve_le": "2026-08-20",
-          "extrait": "Battery: 5000"
+          "extrait": "Battery: 5000",
+          "origine": "constructeur"
         },
         "storage_gb": {
           "url": "https://nanoreview.net/en/phone/samsung-galaxy-s24-ultra",
           "releve_le": "2026-08-20",
-          "extrait": "Storage size 256"
+          "extrait": "Storage size 256",
+          "origine": "constructeur"
         },
         "ram_gb": {
           "url": "https://nanoreview.net/en/phone/samsung-galaxy-s24-ultra",
           "releve_le": "2026-08-20",
-          "extrait": "RAM size 12"
+          "extrait": "RAM size 12",
+          "origine": "constructeur"
         },
         "antutu_score": {
           "url": "https://nanoreview.net/en/phone/samsung-galaxy-s24-ultra",
           "releve_le": "2026-08-20",
-          "extrait": "AnTuTu Benchmark 11 2341394"
+          "extrait": "AnTuTu Benchmark 11 2341394",
+          "origine": "agregat",
+          "protocole": "antutu-11"
         },
         "geekbench_single": {
           "url": "https://nanoreview.net/en/phone/samsung-galaxy-s24-ultra",
           "releve_le": "2026-08-20",
-          "extrait": "Geekbench 6 (Single-Core) 2259"
+          "extrait": "Geekbench 6 (Single-Core) 2259",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
         },
         "geekbench_multi": {
           "url": "https://nanoreview.net/en/phone/samsung-galaxy-s24-ultra",
           "releve_le": "2026-08-20",
-          "extrait": "Geekbench 6 (Multi-Core) 7330"
+          "extrait": "Geekbench 6 (Multi-Core) 7330",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
         }
       },
       "geekbench_single": 2259,
@@ -290,47 +346,57 @@
       "battery_mah": 4000,
       "storage_gb": 128,
       "ram_gb": 8,
-      "antutu_score": 2291956,
+      "antutu_score": 2292685,
       "cpu_name": "Qualcomm Snapdragon 8 Gen 3",
       "provenance": {
         "display_size": {
           "url": "https://nanoreview.net/en/phone/samsung-galaxy-s24",
           "releve_le": "2026-08-20",
-          "extrait": "Screen: 6.2"
+          "extrait": "Screen: 6.2",
+          "origine": "constructeur"
         },
         "battery_mah": {
           "url": "https://nanoreview.net/en/phone/samsung-galaxy-s24",
           "releve_le": "2026-08-20",
-          "extrait": "Battery: 4000"
+          "extrait": "Battery: 4000",
+          "origine": "constructeur"
         },
         "storage_gb": {
           "url": "https://nanoreview.net/en/phone/samsung-galaxy-s24",
           "releve_le": "2026-08-20",
-          "extrait": "Storage size 128"
+          "extrait": "Storage size 128",
+          "origine": "constructeur"
         },
         "ram_gb": {
           "url": "https://nanoreview.net/en/phone/samsung-galaxy-s24",
           "releve_le": "2026-08-20",
-          "extrait": "RAM size 8"
+          "extrait": "RAM size 8",
+          "origine": "constructeur"
         },
         "antutu_score": {
           "url": "https://nanoreview.net/en/phone/samsung-galaxy-s24",
-          "releve_le": "2026-08-20",
-          "extrait": "AnTuTu Benchmark 11 2291956"
+          "releve_le": "2026-10-31",
+          "extrait": "AnTuTu Benchmark 11 2292685",
+          "origine": "agregat",
+          "protocole": "antutu-11"
         },
         "geekbench_single": {
           "url": "https://nanoreview.net/en/phone/samsung-galaxy-s24",
-          "releve_le": "2026-08-20",
-          "extrait": "Geekbench 6 (Single-Core) 2329"
+          "releve_le": "2026-10-31",
+          "extrait": "Geekbench 6 (Single-Core) 2066",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
         },
         "geekbench_multi": {
           "url": "https://nanoreview.net/en/phone/samsung-galaxy-s24",
-          "releve_le": "2026-08-20",
-          "extrait": "Geekbench 6 (Multi-Core) 7127"
+          "releve_le": "2026-10-31",
+          "extrait": "Geekbench 6 (Multi-Core) 6434",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
         }
       },
-      "geekbench_single": 2329,
-      "geekbench_multi": 7127
+      "geekbench_single": 2066,
+      "geekbench_multi": 6434
     },
     {
       "name": "Samsung Galaxy S23 Ultra",
@@ -345,37 +411,47 @@
         "display_size": {
           "url": "https://nanoreview.net/en/phone/samsung-galaxy-s23-ultra",
           "releve_le": "2026-08-20",
-          "extrait": "Screen: 6.8"
+          "extrait": "Screen: 6.8",
+          "origine": "constructeur"
         },
         "battery_mah": {
           "url": "https://nanoreview.net/en/phone/samsung-galaxy-s23-ultra",
           "releve_le": "2026-08-20",
-          "extrait": "Battery: 5000"
+          "extrait": "Battery: 5000",
+          "origine": "constructeur"
         },
         "storage_gb": {
           "url": "https://nanoreview.net/en/phone/samsung-galaxy-s23-ultra",
           "releve_le": "2026-08-20",
-          "extrait": "Storage size 256"
+          "extrait": "Storage size 256",
+          "origine": "constructeur"
         },
         "ram_gb": {
           "url": "https://nanoreview.net/en/phone/samsung-galaxy-s23-ultra",
           "releve_le": "2026-08-20",
-          "extrait": "RAM size 8"
+          "extrait": "RAM size 8",
+          "origine": "constructeur"
         },
         "antutu_score": {
           "url": "https://nanoreview.net/en/phone/samsung-galaxy-s23-ultra",
           "releve_le": "2026-08-20",
-          "extrait": "AnTuTu Benchmark 11 1762339"
+          "extrait": "AnTuTu Benchmark 11 1762339",
+          "origine": "agregat",
+          "protocole": "antutu-11"
         },
         "geekbench_single": {
           "url": "https://nanoreview.net/en/phone/samsung-galaxy-s23-ultra",
           "releve_le": "2026-08-20",
-          "extrait": "Geekbench 6 (Single-Core) 2010"
+          "extrait": "Geekbench 6 (Single-Core) 2010",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
         },
         "geekbench_multi": {
           "url": "https://nanoreview.net/en/phone/samsung-galaxy-s23-ultra",
           "releve_le": "2026-08-20",
-          "extrait": "Geekbench 6 (Multi-Core) 5245"
+          "extrait": "Geekbench 6 (Multi-Core) 5245",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
         }
       },
       "geekbench_single": 2010,
@@ -388,47 +464,57 @@
       "battery_mah": 5000,
       "storage_gb": 128,
       "ram_gb": 6,
-      "antutu_score": 1031048,
+      "antutu_score": 1021736,
       "cpu_name": "Samsung Exynos 1480",
       "provenance": {
         "display_size": {
           "url": "https://nanoreview.net/en/phone/samsung-galaxy-a55",
           "releve_le": "2026-08-20",
-          "extrait": "Screen: 6.6"
+          "extrait": "Screen: 6.6",
+          "origine": "constructeur"
         },
         "battery_mah": {
           "url": "https://nanoreview.net/en/phone/samsung-galaxy-a55",
           "releve_le": "2026-08-20",
-          "extrait": "Battery: 5000"
+          "extrait": "Battery: 5000",
+          "origine": "constructeur"
         },
         "storage_gb": {
           "url": "https://nanoreview.net/en/phone/samsung-galaxy-a55",
           "releve_le": "2026-08-20",
-          "extrait": "Storage size 128"
+          "extrait": "Storage size 128",
+          "origine": "constructeur"
         },
         "ram_gb": {
           "url": "https://nanoreview.net/en/phone/samsung-galaxy-a55",
           "releve_le": "2026-08-20",
-          "extrait": "RAM size 6"
+          "extrait": "RAM size 6",
+          "origine": "constructeur"
         },
         "antutu_score": {
           "url": "https://nanoreview.net/en/phone/samsung-galaxy-a55",
-          "releve_le": "2026-08-20",
-          "extrait": "AnTuTu Benchmark 11 1031048"
+          "releve_le": "2026-10-31",
+          "extrait": "AnTuTu Benchmark 11 1021736",
+          "origine": "agregat",
+          "protocole": "antutu-11"
         },
         "geekbench_single": {
           "url": "https://nanoreview.net/en/phone/samsung-galaxy-a55",
-          "releve_le": "2026-08-20",
-          "extrait": "Geekbench 6 (Single-Core) 1140"
+          "releve_le": "2026-10-31",
+          "extrait": "Geekbench 6 (Single-Core) 1137",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
         },
         "geekbench_multi": {
           "url": "https://nanoreview.net/en/phone/samsung-galaxy-a55",
-          "releve_le": "2026-08-20",
-          "extrait": "Geekbench 6 (Multi-Core) 3346"
+          "releve_le": "2026-10-31",
+          "extrait": "Geekbench 6 (Multi-Core) 3437",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
         }
       },
-      "geekbench_single": 1140,
-      "geekbench_multi": 3346
+      "geekbench_single": 1137,
+      "geekbench_multi": 3437
     },
     {
       "name": "Google Pixel 9 Pro",
@@ -437,38 +523,46 @@
       "battery_mah": 4700,
       "storage_gb": 128,
       "ram_gb": 16,
-      "antutu_score": 1499601,
+      "antutu_score": 1606238,
       "cpu_name": "Google Tensor G4",
       "provenance": {
         "display_size": {
           "url": "https://nanoreview.net/en/phone/google-pixel-9-pro",
           "releve_le": "2026-08-20",
-          "extrait": "Screen: 6.3"
+          "extrait": "Screen: 6.3",
+          "origine": "constructeur"
         },
         "battery_mah": {
           "url": "https://nanoreview.net/en/phone/google-pixel-9-pro",
           "releve_le": "2026-08-20",
-          "extrait": "Battery: 4700"
+          "extrait": "Battery: 4700",
+          "origine": "constructeur"
         },
         "storage_gb": {
           "url": "https://nanoreview.net/en/phone/google-pixel-9-pro",
           "releve_le": "2026-08-20",
-          "extrait": "Storage size 128"
+          "extrait": "Storage size 128",
+          "origine": "constructeur"
         },
         "ram_gb": {
           "url": "https://nanoreview.net/en/phone/google-pixel-9-pro",
           "releve_le": "2026-08-20",
-          "extrait": "RAM size 16"
+          "extrait": "RAM size 16",
+          "origine": "constructeur"
         },
         "antutu_score": {
           "url": "https://nanoreview.net/en/phone/google-pixel-9-pro",
-          "releve_le": "2026-08-20",
-          "extrait": "AnTuTu Benchmark 11 1499601"
+          "releve_le": "2026-10-31",
+          "extrait": "AnTuTu Benchmark 11 1606238",
+          "origine": "agregat",
+          "protocole": "antutu-11"
         },
         "geekbench_multi": {
           "url": "https://nanoreview.net/en/phone/google-pixel-9-pro",
           "releve_le": "2026-08-20",
-          "extrait": "Geekbench 6 (Multi-Core) 4471"
+          "extrait": "Geekbench 6 (Multi-Core) 4471",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
         }
       },
       "geekbench_multi": 4471
@@ -486,37 +580,47 @@
         "display_size": {
           "url": "https://nanoreview.net/en/phone/google-pixel-8-pro",
           "releve_le": "2026-08-20",
-          "extrait": "Screen: 6.7"
+          "extrait": "Screen: 6.7",
+          "origine": "constructeur"
         },
         "battery_mah": {
           "url": "https://nanoreview.net/en/phone/google-pixel-8-pro",
           "releve_le": "2026-08-20",
-          "extrait": "Battery: 5050"
+          "extrait": "Battery: 5050",
+          "origine": "constructeur"
         },
         "storage_gb": {
           "url": "https://nanoreview.net/en/phone/google-pixel-8-pro",
           "releve_le": "2026-08-20",
-          "extrait": "Storage size 128"
+          "extrait": "Storage size 128",
+          "origine": "constructeur"
         },
         "ram_gb": {
           "url": "https://nanoreview.net/en/phone/google-pixel-8-pro",
           "releve_le": "2026-08-20",
-          "extrait": "RAM size 12"
+          "extrait": "RAM size 12",
+          "origine": "constructeur"
         },
         "antutu_score": {
           "url": "https://nanoreview.net/en/phone/google-pixel-8-pro",
           "releve_le": "2026-08-20",
-          "extrait": "AnTuTu Benchmark 11 1367231"
+          "extrait": "AnTuTu Benchmark 11 1367231",
+          "origine": "agregat",
+          "protocole": "antutu-11"
         },
         "geekbench_single": {
           "url": "https://nanoreview.net/en/phone/google-pixel-8-pro",
           "releve_le": "2026-08-20",
-          "extrait": "Geekbench 6 (Single-Core) 1765"
+          "extrait": "Geekbench 6 (Single-Core) 1765",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
         },
         "geekbench_multi": {
           "url": "https://nanoreview.net/en/phone/google-pixel-8-pro",
           "releve_le": "2026-08-20",
-          "extrait": "Geekbench 6 (Multi-Core) 4297"
+          "extrait": "Geekbench 6 (Multi-Core) 4297",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
         }
       },
       "geekbench_single": 1765,
@@ -529,43 +633,53 @@
       "battery_mah": 4880,
       "storage_gb": 256,
       "ram_gb": 12,
-      "antutu_score": 2402307,
+      "antutu_score": 2397671,
       "cpu_name": "Qualcomm Snapdragon 8 Gen 3",
       "provenance": {
         "display_size": {
           "url": "https://nanoreview.net/en/phone/xiaomi-14-pro",
           "releve_le": "2026-08-20",
-          "extrait": "Screen: 6.73"
+          "extrait": "Screen: 6.73",
+          "origine": "constructeur"
         },
         "battery_mah": {
           "url": "https://nanoreview.net/en/phone/xiaomi-14-pro",
           "releve_le": "2026-08-20",
-          "extrait": "Battery: 4880"
+          "extrait": "Battery: 4880",
+          "origine": "constructeur"
         },
         "storage_gb": {
           "url": "https://nanoreview.net/en/phone/xiaomi-14-pro",
           "releve_le": "2026-08-20",
-          "extrait": "Storage size 256"
+          "extrait": "Storage size 256",
+          "origine": "constructeur"
         },
         "ram_gb": {
           "url": "https://nanoreview.net/en/phone/xiaomi-14-pro",
           "releve_le": "2026-08-20",
-          "extrait": "RAM size 12"
+          "extrait": "RAM size 12",
+          "origine": "constructeur"
         },
         "antutu_score": {
           "url": "https://nanoreview.net/en/phone/xiaomi-14-pro",
-          "releve_le": "2026-08-20",
-          "extrait": "AnTuTu Benchmark 11 2402307"
+          "releve_le": "2026-10-31",
+          "extrait": "AnTuTu Benchmark 11 2397671",
+          "origine": "agregat",
+          "protocole": "antutu-11"
         },
         "geekbench_single": {
           "url": "https://nanoreview.net/en/phone/xiaomi-14-pro",
           "releve_le": "2026-08-20",
-          "extrait": "Geekbench 6 (Single-Core) 2129"
+          "extrait": "Geekbench 6 (Single-Core) 2129",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
         },
         "geekbench_multi": {
           "url": "https://nanoreview.net/en/phone/xiaomi-14-pro",
           "releve_le": "2026-08-20",
-          "extrait": "Geekbench 6 (Multi-Core) 6906"
+          "extrait": "Geekbench 6 (Multi-Core) 6906",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
         }
       },
       "geekbench_single": 2129,
@@ -578,43 +692,53 @@
       "battery_mah": 5000,
       "storage_gb": 256,
       "ram_gb": 12,
-      "antutu_score": 1798756,
+      "antutu_score": 1820682,
       "cpu_name": "MediaTek Dimensity 9200 Plus",
       "provenance": {
         "display_size": {
           "url": "https://nanoreview.net/en/phone/xiaomi-13t-pro",
           "releve_le": "2026-08-20",
-          "extrait": "Screen: 6.67"
+          "extrait": "Screen: 6.67",
+          "origine": "constructeur"
         },
         "battery_mah": {
           "url": "https://nanoreview.net/en/phone/xiaomi-13t-pro",
           "releve_le": "2026-08-20",
-          "extrait": "Battery: 5000"
+          "extrait": "Battery: 5000",
+          "origine": "constructeur"
         },
         "storage_gb": {
           "url": "https://nanoreview.net/en/phone/xiaomi-13t-pro",
           "releve_le": "2026-08-20",
-          "extrait": "Storage size 256"
+          "extrait": "Storage size 256",
+          "origine": "constructeur"
         },
         "ram_gb": {
           "url": "https://nanoreview.net/en/phone/xiaomi-13t-pro",
           "releve_le": "2026-08-20",
-          "extrait": "RAM size 12"
+          "extrait": "RAM size 12",
+          "origine": "constructeur"
         },
         "antutu_score": {
           "url": "https://nanoreview.net/en/phone/xiaomi-13t-pro",
-          "releve_le": "2026-08-20",
-          "extrait": "AnTuTu Benchmark 11 1798756"
+          "releve_le": "2026-10-31",
+          "extrait": "AnTuTu Benchmark 11 1820682",
+          "origine": "agregat",
+          "protocole": "antutu-11"
         },
         "geekbench_single": {
           "url": "https://nanoreview.net/en/phone/xiaomi-13t-pro",
           "releve_le": "2026-08-20",
-          "extrait": "Geekbench 6 (Single-Core) 1917"
+          "extrait": "Geekbench 6 (Single-Core) 1917",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
         },
         "geekbench_multi": {
           "url": "https://nanoreview.net/en/phone/xiaomi-13t-pro",
           "releve_le": "2026-08-20",
-          "extrait": "Geekbench 6 (Multi-Core) 4509"
+          "extrait": "Geekbench 6 (Multi-Core) 4509",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
         }
       },
       "geekbench_single": 1917,
@@ -633,41 +757,51 @@
         "display_size": {
           "url": "https://nanoreview.net/en/phone/oneplus-12",
           "releve_le": "2026-08-20",
-          "extrait": "Screen: 6.82"
+          "extrait": "Screen: 6.82",
+          "origine": "constructeur"
         },
         "battery_mah": {
           "url": "https://nanoreview.net/en/phone/oneplus-12",
           "releve_le": "2026-08-20",
-          "extrait": "Battery: 5400"
+          "extrait": "Battery: 5400",
+          "origine": "constructeur"
         },
         "storage_gb": {
           "url": "https://nanoreview.net/en/phone/oneplus-12",
           "releve_le": "2026-08-20",
-          "extrait": "Storage size 256"
+          "extrait": "Storage size 256",
+          "origine": "constructeur"
         },
         "ram_gb": {
           "url": "https://nanoreview.net/en/phone/oneplus-12",
           "releve_le": "2026-08-20",
-          "extrait": "RAM size 12"
+          "extrait": "RAM size 12",
+          "origine": "constructeur"
         },
         "antutu_score": {
           "url": "https://nanoreview.net/en/phone/oneplus-12",
           "releve_le": "2026-08-20",
-          "extrait": "AnTuTu Benchmark 11 2401788"
+          "extrait": "AnTuTu Benchmark 11 2401788",
+          "origine": "agregat",
+          "protocole": "antutu-11"
         },
         "geekbench_single": {
           "url": "https://nanoreview.net/en/phone/oneplus-12",
-          "releve_le": "2026-08-20",
-          "extrait": "Geekbench 6 (Single-Core) 2203"
+          "releve_le": "2026-10-31",
+          "extrait": "Geekbench 6 (Single-Core) 2182",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
         },
         "geekbench_multi": {
           "url": "https://nanoreview.net/en/phone/oneplus-12",
-          "releve_le": "2026-08-20",
-          "extrait": "Geekbench 6 (Multi-Core) 6511"
+          "releve_le": "2026-10-31",
+          "extrait": "Geekbench 6 (Multi-Core) 6465",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
         }
       },
-      "geekbench_single": 2203,
-      "geekbench_multi": 6511
+      "geekbench_single": 2182,
+      "geekbench_multi": 6465
     },
     {
       "name": "Xiaomi Redmi Note 13 Pro 5G",
@@ -676,43 +810,53 @@
       "battery_mah": 5100,
       "storage_gb": 128,
       "ram_gb": 8,
-      "antutu_score": 713372,
+      "antutu_score": 718523,
       "cpu_name": "Qualcomm Snapdragon 7s Gen 2",
       "provenance": {
         "display_size": {
           "url": "https://nanoreview.net/en/phone/xiaomi-redmi-note-13-pro",
           "releve_le": "2026-08-20",
-          "extrait": "Screen: 6.67"
+          "extrait": "Screen: 6.67",
+          "origine": "constructeur"
         },
         "battery_mah": {
           "url": "https://nanoreview.net/en/phone/xiaomi-redmi-note-13-pro",
           "releve_le": "2026-08-20",
-          "extrait": "Battery: 5100"
+          "extrait": "Battery: 5100",
+          "origine": "constructeur"
         },
         "storage_gb": {
           "url": "https://nanoreview.net/en/phone/xiaomi-redmi-note-13-pro",
           "releve_le": "2026-08-20",
-          "extrait": "Storage size 128"
+          "extrait": "Storage size 128",
+          "origine": "constructeur"
         },
         "ram_gb": {
           "url": "https://nanoreview.net/en/phone/xiaomi-redmi-note-13-pro",
           "releve_le": "2026-08-20",
-          "extrait": "RAM size 8"
+          "extrait": "RAM size 8",
+          "origine": "constructeur"
         },
         "antutu_score": {
           "url": "https://nanoreview.net/en/phone/xiaomi-redmi-note-13-pro",
-          "releve_le": "2026-08-20",
-          "extrait": "AnTuTu Benchmark 11 713372"
+          "releve_le": "2026-10-31",
+          "extrait": "AnTuTu Benchmark 11 718523",
+          "origine": "agregat",
+          "protocole": "antutu-11"
         },
         "geekbench_single": {
           "url": "https://nanoreview.net/en/phone/xiaomi-redmi-note-13-pro",
           "releve_le": "2026-08-20",
-          "extrait": "Geekbench 6 (Single-Core) 1010"
+          "extrait": "Geekbench 6 (Single-Core) 1010",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
         },
         "geekbench_multi": {
           "url": "https://nanoreview.net/en/phone/xiaomi-redmi-note-13-pro",
           "releve_le": "2026-08-20",
-          "extrait": "Geekbench 6 (Multi-Core) 2842"
+          "extrait": "Geekbench 6 (Multi-Core) 2842",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
         }
       },
       "geekbench_single": 1010,
