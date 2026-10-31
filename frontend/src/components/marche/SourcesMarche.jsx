@@ -60,7 +60,7 @@ function SourcesMarche({ produits, productType }) {
               </thead>
               <tbody>
                 {lignes.map(ligne => {
-                  const gagnant = ligne.numeric
+                  const gagnant = ligne.departage
                     ? winnerIndex(produits, ligne.key, ligne.invert)
                     : -1;
                   return (

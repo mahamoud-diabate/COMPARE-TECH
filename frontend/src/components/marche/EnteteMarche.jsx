@@ -2,7 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ScoreChip } from '../Score';
 import { scoreGrade, getProductScore } from '../../utils/scores';
-import { classer, texteRang, preparerAxeNotes, placerEtiquettes, SERIES } from '../../utils/marche';
+import {
+  classer,
+  texteRang,
+  preparerAxeNotes,
+  placerEtiquettes,
+  indexMeneurs,
+  SERIES,
+} from '../../utils/marche';
 import { formatValue } from '../../utils/specs';
 import { cheminProduit } from '../../utils/liens';
 import { Glyphe, RepereSvg } from './Repere';
@@ -176,15 +183,20 @@ function EnteteMarche({ produits, catalogue, productType, type, libelleCategorie
   });
 
   const meilleure = Math.max(...lignes.map(l => l.note));
-  const meneurs = lignes.filter(l => l.note === meilleure && l.note > 0);
+  // Zone d'égalité : à moins de 3 % de la meilleure note, un produit est à
+  // égalité de fait. Pas de badge « Meilleure note » pour un écart de 2 points.
+  const meneurs = indexMeneurs(lignes.map(l => l.note)).map(i => lignes[i]);
   const effectif = Math.max(notesCatalogue.length, 1);
 
   let titre = null;
   if (meilleure > 0 && lignes.length > 1) {
+    const memeNote = meneurs.every(l => l.note === meilleure);
     titre =
-      meneurs.length > 1
-        ? `${meneurs.map(l => l.produit.name).join(' et ')} obtiennent la même note globale (${meilleure}/100).`
-        : `${meneurs[0].produit.name} obtient la meilleure note globale (${meilleure}/100).`;
+      meneurs.length === 1
+        ? `${meneurs[0].produit.name} obtient la meilleure note globale (${meilleure}/100).`
+        : memeNote
+          ? `${meneurs.map(l => l.produit.name).join(' et ')} obtiennent la même note globale (${meilleure}/100).`
+          : `${meneurs.map(l => `${l.produit.name} (${l.note})`).join(' et ')} obtiennent des notes équivalentes : moins de 3 % d’écart.`;
   }
 
   // Classement complet : la liste réelle, triée, les produits comparés

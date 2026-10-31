@@ -94,6 +94,26 @@ test('winnerIndex ne désigne personne à égalité', () => {
   );
 });
 
+test('winnerIndex ne désigne personne sous 3 % d’écart', () => {
+  // 20 500 contre 20 000 : 2,4 %, dans la variation d'une mesure à l'autre.
+  assert.equal(winnerIndex([{ s: 20000 }, { s: 20500 }], 's'), -1);
+  assert.equal(winnerIndex([{ s: 20000 }, { s: 20700 }], 's'), 1, '3,4 % : gagnant');
+  // Inversé : 100 W contre 102 W, équivalents.
+  assert.equal(winnerIndex([{ w: 100 }, { w: 102 }], 'w', true), -1);
+  // À trois : le second est trop proche du premier, même si le troisième est loin.
+  assert.equal(winnerIndex([{ s: 10000 }, { s: 20000 }, { s: 20300 }], 's'), -1);
+});
+
+test('aucune ligne de spec papier ne désigne de gagnant', () => {
+  const rows = SPEC_GROUPS.cpu.flatMap(group => group.rows);
+  for (const key of ['cores', 'threads', 'base_freq_ghz', 'max_freq_ghz']) {
+    const row = rows.find(r => r.key === key);
+    assert.ok(row, key);
+    assert.ok(!row.departage, `${key} ne doit pas départager`);
+  }
+  assert.ok(rows.find(r => r.key === 'geekbench_multi').departage, 'un benchmark départage');
+});
+
 test('winnerIndex ne désigne personne s’il manque un point de comparaison', () => {
   assert.equal(winnerIndex([{ cores: 8 }], 'cores'), -1, 'un seul produit');
   assert.equal(winnerIndex([{ cores: 8 }, {}], 'cores'), -1, 'valeur absente en face');
@@ -117,21 +137,36 @@ test('buildKeyDifferences range chaque écart du côté du gagnant', () => {
     diff.a.some(line => line.includes('multi-cœur')),
     'le multi-cœur revient au premier'
   );
-  assert.ok(
-    diff.b.some(line => line.includes('de cœurs')),
-    'le nombre de cœurs revient au second'
-  );
-  assert.ok(diff.a.every(line => !line.includes('de cœurs')));
+  assert.deepEqual(diff.b, [], 'le second ne mène sur aucun benchmark');
+});
+
+test('buildKeyDifferences ne cite jamais une spec papier comme avantage', () => {
+  // 24 cœurs contre 16 : +50 % « de cœurs » se lirait comme un avantage,
+  // alors que le Ryzen à 16 cœurs calcule plus vite. Seuls les benchmarks
+  // départagent.
+  const diff = buildKeyDifferences(ryzen, intel, 'cpu');
+  const tout = [...diff.a, ...diff.b].join(' | ');
+  assert.doesNotMatch(tout, /cœurs \(|threads|fréquence/);
 });
 
 test('buildKeyDifferences chiffre l’écart et rappelle les deux valeurs', () => {
   const diff = buildKeyDifferences(ryzen, intel, 'cpu');
-  const cores = diff.b.find(line => line.includes('de cœurs'));
+  const multi = diff.a.find(line => line.includes('multi-cœur'));
 
-  // 24 contre 16 : +50 %, et les deux valeurs brutes doivent rester lisibles
-  // pour que le lecteur puisse vérifier le pourcentage annoncé.
-  assert.match(cores, /^50 %/);
-  assert.ok(cores.includes('24') && cores.includes('16'));
+  // 23 000 contre 21 000 : +10 %, et les deux valeurs brutes doivent rester
+  // lisibles pour que le lecteur puisse vérifier le pourcentage annoncé.
+  assert.match(multi, /^10 %/);
+  assert.ok(multi.includes('23') && multi.includes('21'));
+});
+
+test('buildKeyDifferences : 3 % d’écart ou plus compte, moins non', () => {
+  const a = { name: 'A', geekbench_multi: 20000 };
+  assert.deepEqual(buildKeyDifferences(a, { name: 'B', geekbench_multi: 20500 }, 'cpu'), {
+    a: [],
+    b: [],
+  });
+  const net = buildKeyDifferences(a, { name: 'B', geekbench_multi: 20700 }, 'cpu');
+  assert.equal(net.b.length, 1);
 });
 
 test('buildKeyDifferences écarte les différences inférieures à 3 %', () => {
@@ -198,9 +233,9 @@ test('chaque benchmark a un plafond de référence strictement positif', () => {
 // --- buildStrengths (comparatifs à trois ou plus) ---------------------------
 
 test('buildStrengths ne retient que les critères où le produit devance tous les autres', () => {
-  const a = { name: 'A', geekbench_multi: 30000, cores: 8 };
-  const b = { name: 'B', geekbench_multi: 20000, cores: 16 };
-  const c = { name: 'C', geekbench_multi: 10000, cores: 12 };
+  const a = { name: 'A', geekbench_multi: 30000, geekbench_single: 3000, cores: 8 };
+  const b = { name: 'B', geekbench_multi: 20000, geekbench_single: 3400, cores: 16 };
+  const c = { name: 'C', geekbench_multi: 10000, geekbench_single: 3350, cores: 12 };
 
   const [sa, sb, sc] = buildStrengths([a, b, c], 'cpu');
 
@@ -209,13 +244,12 @@ test('buildStrengths ne retient que les critères où le produit devance tous le
     'A mène en multi-cœur'
   );
   assert.ok(
-    sa.every(line => !line.includes('de cœurs')),
-    'A ne mène pas sur les cœurs'
+    sa.every(line => !line.includes('mono-cœur')),
+    'A ne mène pas en mono-cœur'
   );
-  assert.ok(
-    sb.some(line => line.includes('de cœurs')),
-    'B mène sur les cœurs'
-  );
+  // B devance C en mono-cœur de 1,5 % seulement : équivalents, pas d'avantage.
+  // Et ses 16 cœurs ne sont pas un avantage : une spec papier ne départage pas.
+  assert.deepEqual(sb, [], 'B ne mène nettement sur rien');
   assert.deepEqual(sc, [], 'C ne mène sur rien');
 });
 

@@ -11,6 +11,7 @@ import {
   preparerAxeNotes,
   placerEtiquettes,
   decrireSource,
+  indexMeneurs,
   SEUIL_POINTS,
 } from '../src/utils/marche.js';
 
@@ -216,4 +217,14 @@ test('decrireSource rend le site et la date en français', () => {
 test('decrireSource renvoie null sans URL exploitable', () => {
   assert.equal(decrireSource(null), null);
   assert.equal(decrireSource({ url: 'pas une url' }), null);
+});
+
+// --- indexMeneurs -----------------------------------------------------------
+
+test('indexMeneurs : la meilleure note, et toute note à moins de 3 %', () => {
+  assert.deepEqual(indexMeneurs([88, 81, 57]), [0], '7 points d’écart : un seul en tête');
+  assert.deepEqual(indexMeneurs([88, 86, 57]), [0, 1], '2 points sur 88 : équivalents');
+  assert.deepEqual(indexMeneurs([55, 55]), [0, 1], 'même note');
+  assert.deepEqual(indexMeneurs([0, 0]), [], 'aucun produit noté');
+  assert.deepEqual(indexMeneurs([0, 42]), [1], 'un « non noté » n’est jamais en tête');
 });

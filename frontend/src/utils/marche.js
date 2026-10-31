@@ -17,7 +17,7 @@
 
 import { SPEC_GROUPS, resolveType, toNumber } from './specs.js';
 import { MAX_PALIERS, NB_BACS, SEUIL_BORNAGE, quantile } from '../../../shared/marche.js';
-import { ORIGINES, libelleProtocole } from '../../../shared/criteres.js';
+import { ORIGINES, equivalents, libelleProtocole } from '../../../shared/criteres.js';
 
 /*
  * Les seuils de découpage sont ceux du résumé serveur (`shared/marche.js`) :
@@ -92,6 +92,7 @@ export function criteresMarche(productType) {
         label: ligne.label,
         unit: ligne.unit || null,
         invert: Boolean(ligne.invert),
+        departage: Boolean(ligne.departage),
         groupe: groupe.group,
         aide: AIDES[ligne.key] || null,
       }))
@@ -355,6 +356,22 @@ export function decrireSource(provenance) {
     version: provenance.version || null,
     archive: provenance.archive || null,
   };
+}
+
+/**
+ * Produits en tête d'une comparaison : la meilleure note, et toute note
+ * équivalente (moins de 3 % d'écart). Une note de 0 (« non noté ») n'est
+ * jamais en tête.
+ *
+ * @param {number[]} notes  une note par produit, dans l'ordre de la comparaison
+ * @returns {number[]} les index des produits en tête ; vide si aucun n'est noté
+ */
+export function indexMeneurs(notes) {
+  const meilleure = Math.max(0, ...notes);
+  if (meilleure <= 0) return [];
+  return notes
+    .map((note, i) => (note > 0 && (note === meilleure || equivalents(note, meilleure)) ? i : -1))
+    .filter(i => i >= 0);
 }
 
 /**

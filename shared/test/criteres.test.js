@@ -9,6 +9,8 @@ import {
   ORIGINES,
   PROTOCOLES,
   SEGMENTS,
+  SEUIL_EGALITE,
+  equivalents,
   TYPES,
   critere,
   criteresDe,
@@ -160,4 +162,32 @@ test('un protocole porte sa version majeure dans son identifiant', () => {
 
 test('les origines sont les trois de la proposition', () => {
   assert.deepEqual(Object.keys(ORIGINES), ['constructeur', 'laboratoire', 'agregat']);
+});
+
+test('equivalents : moins de 3 % d’écart rapporté à la plus grande valeur', () => {
+  assert.equal(SEUIL_EGALITE, 0.03);
+  assert.ok(equivalents(20000, 20500), '2,4 %');
+  assert.ok(!equivalents(20000, 20700), '3,4 %');
+  assert.ok(equivalents(100, 102) && equivalents(102, 100), 'symétrique');
+  for (const [a, b] of [
+    [0, 0],
+    [null, 5],
+    [5, undefined],
+    [-3, -3],
+  ]) {
+    assert.ok(!equivalents(a, b), `${a} / ${b} : une valeur absente n’est équivalente à rien`);
+  }
+});
+
+test('fréquences, cœurs et threads ne départagent pas ; un critère non comparable non plus', () => {
+  for (const key of ['cores', 'threads', 'base_freq_ghz', 'max_freq_ghz']) {
+    assert.equal(critere('cpu', key).departage, false, key);
+    assert.equal(critere('cpu', key).comparable, true, `${key} reste situé dans le marché`);
+  }
+  for (const type of TYPES) {
+    for (const cr of CRITERES[type]) {
+      if (!cr.comparable) assert.equal(cr.departage, false, `${type}.${cr.key}`);
+      if (cr.nature === 'benchmark') assert.equal(cr.departage, true, `${type}.${cr.key}`);
+    }
+  }
 });

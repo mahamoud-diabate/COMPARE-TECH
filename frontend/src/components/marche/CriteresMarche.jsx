@@ -178,7 +178,10 @@ function CriteresMarche({ produits, catalogue, productType, libelleCategorie }) 
         {visibles.map(({ critere, valeurs, presentes }) => {
           const valeursCatalogue = catalogue.map(p => p[critere.key]);
           const piste = preparerPiste(valeursCatalogue, valeurs, critere.invert);
-          const gagnant = winnerIndex(produits, critere.key, critere.invert);
+          // Une spec papier (fréquence, cœurs, threads) n'a jamais de gagnant.
+          const gagnant = critere.departage
+            ? winnerIndex(produits, critere.key, critere.invert)
+            : -1;
           const enTeteGroupe = critere.groupe !== groupePrecedent;
           groupePrecedent = critere.groupe;
 
@@ -200,9 +203,11 @@ function CriteresMarche({ produits, catalogue, productType, libelleCategorie }) 
                           {formatValue(Number(piste.bornes.gauche.toFixed(1)), critere.unit)}
                         </span>
                         <span>
-                          {critere.invert
-                            ? 'plus c’est bas, mieux c’est'
-                            : 'plus c’est haut, mieux c’est'}
+                          {!critere.departage
+                            ? 'position dans le catalogue, sans valeur de jugement'
+                            : critere.invert
+                              ? 'plus c’est bas, mieux c’est'
+                              : 'plus c’est haut, mieux c’est'}
                         </span>
                         <span>
                           {formatValue(Number(piste.bornes.droite.toFixed(1)), critere.unit)}
@@ -258,11 +263,16 @@ function CriteresMarche({ produits, catalogue, productType, libelleCategorie }) 
       <div className="ct-marche-pied">
         <p>
           <strong>Comment lire :</strong> sur chaque ligne, plus un repère est à droite, meilleur il
-          est. Pour la consommation, le plus sobre est donc à droite.
+          est. Pour la consommation, le plus sobre est donc à droite. Pour les fréquences, cœurs et
+          threads, la piste situe seulement la valeur dans le catalogue.
         </p>
         <p>
           <strong>Égalités :</strong> deux produits à valeur égale partagent le même rang (« ex æquo
-          »).
+          »). Sous 3 % d’écart, aucun gagnant n’est désigné : la différence ne se ressent pas.
+        </p>
+        <p>
+          <strong>Fréquences, cœurs et threads :</strong> affichés et situés, jamais départagés. Ils
+          ne disent pas lequel calcule le plus vite ; les benchmarks, si.
         </p>
       </div>
     </section>

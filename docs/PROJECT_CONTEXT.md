@@ -283,11 +283,10 @@ La page charge les produits comparés (`POST /api/:segment/compare`) **et la col
 
 Pistes (`preparerPiste`) : `paliers` jusqu'à 12 valeurs distinctes, `points` jusqu'à 40 mesures, `colonnes` au-delà (axe borné entre P2 et P98).
 
-**Règles de départage actuelles** :
+**Règles de départage** (`shared/criteres.js`, appliquées le 30 octobre 2026) :
 
-- `winnerIndex` (`specs.js`) : le plus grand l'emporte, sauf égalité **exacte**.
-- `buildKeyDifferences` et `buildStrengths` : un écart inférieur à 3 % est ignoré.
-- Badge « Meilleure note » (`EnteteMarche`) : égalité **exacte** de note seulement.
+- **Zone d'égalité** : deux valeurs à moins de 3 % l'une de l'autre (écart rapporté à la plus grande) sont équivalentes (`equivalents`, `SEUIL_EGALITE`). Aucun gagnant n'est alors désigné, nulle part : cellule surlignée (`winnerIndex`), badge « Meilleure note » et phrase de tête (`indexMeneurs`), différences clés et avantages (`buildKeyDifferences`, `buildStrengths`), bloc de verdict.
+- **Specs papier** : fréquences, cœurs et threads des CPU portent `departage: false`. Ils s'affichent et se situent dans le marché, mais ne sont jamais surlignés ni cités comme avantage. Seuls les benchmarks disent lequel calcule le plus vite. `KEY_METRICS` refuse au chargement un critère qui ne départage pas.
 - Rang « sportif » : deux valeurs égales partagent le même rang.
 
 **Classements filtrés** (`ProductList.jsx`) : sans filtre, rang dans tout le catalogue ; avec un filtre actif, le rang est recalculé parmi les produits filtrés (« 8 modèles · rang sur ces 8 »). C'est voulu : ne pas « corriger ».
@@ -335,13 +334,11 @@ Pistes (`preparerPiste`) : `paliers` jusqu'à 12 valeurs distinctes, `points` ju
 Issues de l'étude stratégique. Ne pas les présenter comme existantes.
 
 1. **Notes par profil d'usage** (Jeu, Création, Efficacité, Mobilité, Longévité) ; la note globale devient un résumé secondaire.
-2. **Zone d'égalité** : sous 3 % d'écart, « équivalent » partout (`winnerIndex`, badge de tête), comme le font déjà `buildKeyDifferences` et `buildStrengths`.
-3. **Pas de gagnant sur les specs papier** : fréquences, cœurs et threads s'affichent sans être surlignés.
-4. **Normalisation contre une référence versionnée** au lieu de plafonds fixes qui saturent ; barème numéroté affiché sur chaque note.
-5. **Moyenne géométrique pondérée** pour combiner plusieurs tests.
-6. **Tests de cohérence** : dominance, direction de chaque critère, version du barème.
-7. **Verdict IA contraint** : gagnant calculé par des règles, l'IA ne fait que rédiger, chiffres vérifiés, cache par paire.
-8. **Provenance enrichie** : origine de la donnée (constructeur, laboratoire, agrégat), protocole exact du test, archive de la page source. Format décidé le 30 octobre 2026 : voir [`PROPOSITION-MESURE.md`](PROPOSITION-MESURE.md).
+2. **Normalisation contre une référence versionnée** au lieu de plafonds fixes qui saturent ; barème numéroté affiché sur chaque note.
+3. **Moyenne géométrique pondérée** pour combiner plusieurs tests.
+4. **Tests de cohérence** : dominance, direction de chaque critère, version du barème.
+5. **Verdict IA contraint** : gagnant calculé par des règles, l'IA ne fait que rédiger, chiffres vérifiés, cache par paire.
+6. **Provenance enrichie** : origine de la donnée (constructeur, laboratoire, agrégat), protocole exact du test, archive de la page source. Format décidé le 30 octobre 2026, phase 1 faite (champs facultatifs) ; restent les phases 2 et 3 : voir [`PROPOSITION-MESURE.md`](PROPOSITION-MESURE.md).
 
 ---
 
@@ -377,6 +374,7 @@ Les 15 CPU et 15 GPU de la production n'existent dans aucun fichier du dépôt. 
 - Plafonds fixes : deux produits au-dessus du plafond obtiennent tous deux 100.
 - Le frontend et l'API lisent `shared/`, situé hors de leur dossier : ne pas remettre de Root Directory sur Render (voir section 2).
 - La note GPU ne précise pas quel test 3DMark est utilisé.
+- Composants importés nulle part (code mort) : `SpecTable`, `KeyDifferences`, `CategoryScores`, `BenchmarkBars`, `TechRadar`. Ils appliquent les règles de départage via `winnerIndex`, mais ne sont pas affichés.
 - L'API exige **Node ≥ 20.19** (chargement de `shared/`, en ESM, depuis du CommonJS).
 - Les contrôles `--verifier` (page source téléchargée) et de quarantaine ne s'appliquent qu'à l'import, pas aux écritures de l'admin.
 
