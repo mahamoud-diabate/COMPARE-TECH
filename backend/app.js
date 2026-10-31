@@ -111,7 +111,7 @@ function creeApp({ config, modeles, User, controle, aiModel = null, baseConnecte
   monteAuth(app, { User, config, loginLimiter, fail });
   monteVedettes(app, { modeles, fail });
   monteCollections(app, { modeles, fail, requireAuth, writeLimiter, controle });
-  monteIa(app, { aiModel, aiLimiter, fail });
+  monteIa(app, { aiModel, aiLimiter, fail, modeles });
 
   /* ---------------- Fin de chaine ---------------- */
 

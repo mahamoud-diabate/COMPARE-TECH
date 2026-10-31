@@ -307,13 +307,14 @@ Pistes (`preparerPiste`) : `paliers` jusqu'à 12 valeurs distinctes, `points` ju
 
 **Classements filtrés** (`ProductList.jsx`) : sans filtre, rang dans tout le catalogue ; avec un filtre actif, le rang est recalculé parmi les produits filtrés (« 8 modèles · rang sur ces 8 »). C'est voulu : ne pas « corriger ».
 
-### 7.5 Verdict IA (`POST /api/ai/verdict`, `components/Verdict.jsx`)
+### 7.5 Avis IA encadré (`POST /api/ai/verdict`, `routes/ia.js`, `components/Verdict.jsx`)
 
-- Déclenché **à la demande** par l'utilisateur, après les mesures, et présenté comme « non une mesure ».
-- Le serveur ne transmet qu'une liste blanche de champs (`AI_FIELDS`), avec les chaînes tronquées à 120 caractères.
-- Le prompt demande un verdict court, honnête, en français, et interdit de suivre des instructions contenues dans les données.
-- Réponse : `{ "aiResponse": "…" }`. Limite : 20 appels par heure et par IP.
-- **Pas** de cache, **pas** de profil d'usage, **pas** de vérification des chiffres cités par le modèle.
+- Déclenché **à la demande**, présenté comme un avis rédigé et non comme une mesure.
+- Corps : `{ "type": "laptops", "ids": ["slug-a", "slug-b"] }` (2 à 4 identifiants ou slugs). Le serveur **relit les produits en base** : aucune mesure envoyée par le navigateur n'est utilisée. L'ancien format `{ product1, product2 }` est refusé (400).
+- Le **gagnant est calculé** par `verdictParUsage` (`shared/usages.js`), le même que sur la page. Le modèle reçoit ce verdict et les mesures des profils, avec l'interdiction de désigner un autre gagnant ou de citer un chiffre absent.
+- **Contrôle de la réponse** : tout nombre absent des faits (noms de produits compris, seuil de 3 % permis) fait écarter l'avis ; la réponse garde alors le verdict calculé et donne le motif.
+- Réponse : `{ verdict, aiResponse, enCache }` ou `{ verdict, aiResponse: null, motif }`. Cache en mémoire de 24 h par comparaison (200 entrées). Limite : 20 appels par heure et par IP.
+- Sans `GEMINI_API_KEY`, la route répond 503 (c'est le cas en production au 31 octobre 2026).
 
 ### 7.6 Résumé statistique (`shared/marche.js`, réexposé par `backend/marche.js`)
 
@@ -334,7 +335,7 @@ Pistes (`preparerPiste`) : `paliers` jusqu'à 12 valeurs distinctes, `points` ju
 | `GET`    | `/api/:segment/marche`  | Résumé statistique (voir 7.6). **Déclarée avant `/:id`** : ne pas réordonner    |
 | `GET`    | `/api/:segment/:id`     | Fiche par identifiant Mongo **ou** par slug                                     |
 | `POST`   | `/api/:segment/compare` | Corps `{ "ids": [...] }`, identifiants ou slugs, 10 au maximum                  |
-| `POST`   | `/api/ai/verdict`       | Corps `{ "product1": {...}, "product2": {...} }`                                |
+| `POST`   | `/api/ai/verdict`       | Corps `{ "type": "cpus", "ids": [...] }` ; avis IA encadré (voir 7.5)           |
 | `POST`   | `/api/:segment`         | Admin. Un objet, ou un tableau de 500 au plus. Contrôlé (7.3), tout ou rien     |
 | `PUT`    | `/api/:segment/:id`     | Admin. Contrôlé sur la fiche résultante (7.3), provenance fusionnée             |
 | `DELETE` | `/api/:segment/:id`     | Admin                                                                           |
@@ -350,8 +351,7 @@ Pistes (`preparerPiste`) : `paliers` jusqu'à 12 valeurs distinctes, `points` ju
 Issues de l'étude stratégique. Ne pas les présenter comme existantes.
 
 1. **Tests de cohérence** : dominance, direction de chaque critère, version du barème.
-2. **Verdict IA contraint** : gagnant calculé par des règles, l'IA ne fait que rédiger, chiffres vérifiés, cache par paire.
-3. **Provenance enrichie** : origine de la donnée (constructeur, laboratoire, agrégat), protocole exact du test, archive de la page source. Format décidé le 30 octobre 2026, phase 1 faite (champs facultatifs) ; restent les phases 2 et 3 : voir [`PROPOSITION-MESURE.md`](PROPOSITION-MESURE.md).
+2. **Provenance enrichie** : origine de la donnée (constructeur, laboratoire, agrégat), protocole exact du test, archive de la page source. Format décidé le 30 octobre 2026, phase 1 faite (champs facultatifs) ; restent les phases 2 et 3 : voir [`PROPOSITION-MESURE.md`](PROPOSITION-MESURE.md).
 
 ---
 

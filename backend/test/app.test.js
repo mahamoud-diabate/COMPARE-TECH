@@ -150,10 +150,11 @@ const SECRET = 'x'.repeat(48);
 const ORIGINE_PROD = 'https://compare-tech-theta.vercel.app';
 
 let promptsRecus = [];
+let reponseIa = 'Verdict de test.';
 const iaQuiRepond = {
   async generateContent(prompt) {
     promptsRecus.push(prompt);
-    return { response: { text: () => 'Verdict de test.' } };
+    return { response: { text: () => reponseIa } };
   },
 };
 const iaEnPanne = {
@@ -166,8 +167,26 @@ async function monte({ env = {}, aiModel = iaQuiRepond, baseConnectee } = {}) {
   const { config } = lireConfig(env);
   const modeles = {
     cpus: fauxModele([
-      { name: 'Ryzen A', brand: 'AMD', slug: 'ryzen-a', geekbench_multi: 20000, cores: 16 },
-      { name: 'Core B', brand: 'Intel', slug: 'core-b', geekbench_multi: 15000, cores: 8 },
+      // Mesures des profils d'usage (Création, Réactivité) : nécessaires au
+      // verdict calculé que l'IA doit rédiger.
+      {
+        name: 'Ryzen A',
+        brand: 'AMD',
+        slug: 'ryzen-a',
+        geekbench_multi: 20000,
+        geekbench_single: 3000,
+        cinebench_2024_multi: 2000,
+        cores: 16,
+      },
+      {
+        name: 'Core B',
+        brand: 'Intel',
+        slug: 'core-b',
+        geekbench_multi: 15000,
+        geekbench_single: 3300,
+        cinebench_2024_multi: 1500,
+        cores: 8,
+      },
       { name: 'Ryzen C', brand: 'AMD', slug: 'ryzen-c', geekbench_multi: 10000, cores: 6 },
     ]),
     gpus: fauxModele([{ name: 'RTX', brand: 'Nvidia', slug: 'rtx', benchmark_3dmark: 20000 }]),
@@ -607,42 +626,74 @@ test('une insertion en lot est plafonnee a 500 documents', async () => {
  * Verdict IA
  * ------------------------------------------------------------------ */
 
-test('verdict IA : 503 sans modele, 400 sans produits valides', async () => {
+test('verdict IA : 503 sans modele, 400 sans type ni deux produits', async () => {
   const sansIa = await monte({ aiModel: null });
   const r = await sansIa.appel('/api/ai/verdict', { method: 'POST', body: {} });
   assert.strictEqual(r.status, 503);
   sansIa.serveur.close();
 
-  const vide = await api.appel('/api/ai/verdict', { method: 'POST', body: { product1: {} } });
-  assert.strictEqual(vide.status, 400);
+  for (const body of [
+    {},
+    { type: 'cpus', ids: ['ryzen-a'] },
+    { type: 'montres', ids: ['a', 'b'] },
+    { product1: { name: 'A' }, product2: { name: 'B' } }, // ancien format : refusé
+  ]) {
+    const refus = await api.appel('/api/ai/verdict', { method: 'POST', body });
+    assert.strictEqual(refus.status, 400, JSON.stringify(body));
+  }
 });
 
-test('verdict IA : seuls les champs autorises partent dans le prompt', async () => {
+test('verdict IA : produits relus en base, gagnant calculé, IA cantonnée à la rédaction', async () => {
   promptsRecus = [];
+  reponseIa = 'Ryzen A pour le rendu, Core B pour la réactivité.';
   const r = await api.appel('/api/ai/verdict', {
     method: 'POST',
-    body: {
-      product1: {
-        _id: 'secret-interne',
-        name: 'Ryzen A',
-        geekbench_multi: 20000,
-        note_cachee: 'x',
-      },
-      product2: { name: 'Core B', geekbench_multi: 15000 },
-    },
+    // Des mesures envoyées par le navigateur sont ignorées : seule la base compte.
+    body: { type: 'cpus', ids: ['ryzen-a', 'core-b'], product1: { geekbench_multi: 999999 } },
   });
   assert.strictEqual(r.status, 200);
-  assert.deepStrictEqual(await r.json(), { aiResponse: 'Verdict de test.' });
+  const corps = await r.json();
+  assert.match(corps.verdict, /^Pas de vainqueur unique\./);
+  assert.strictEqual(corps.aiResponse, 'Ryzen A pour le rendu, Core B pour la réactivité.');
+
   const prompt = promptsRecus[0];
-  assert.ok(prompt.includes('"geekbench_multi":20000'));
-  assert.ok(!prompt.includes('secret-interne') && !prompt.includes('note_cachee'));
+  assert.ok(prompt.includes(corps.verdict), 'le verdict calculé est imposé au modèle');
+  assert.ok(prompt.includes('"geekbench_multi":20000'), 'mesures lues en base');
+  assert.ok(!prompt.includes('999999'), 'rien de ce que le navigateur envoie');
+});
+
+test('verdict IA : un avis qui invente un chiffre est écarté, le verdict reste', async () => {
+  reponseIa = 'Ryzen A est 35 % plus rapide et tient 140 FPS.';
+  const r = await api.appel('/api/ai/verdict', {
+    method: 'POST',
+    // Ordre inverse du test précédent : autre comparaison, donc pas de cache.
+    body: { type: 'cpus', ids: ['core-b', 'ryzen-a'] },
+  });
+  const corps = await r.json();
+  assert.strictEqual(corps.aiResponse, null);
+  assert.match(corps.motif, /chiffres absents des mesures \(35, 140\)/);
+  assert.match(corps.verdict, /Pas de vainqueur unique/, 'le verdict calculé reste affiché');
+});
+
+test('verdict IA : une même comparaison n’interroge le modèle qu’une fois', async () => {
+  const local = await monte();
+  promptsRecus = [];
+  reponseIa = 'Avis mis en cache.';
+  const demande = { method: 'POST', body: { type: 'cpus', ids: ['core-b', 'ryzen-a'] } };
+  const premier = await (await local.appel('/api/ai/verdict', demande)).json();
+  const second = await (await local.appel('/api/ai/verdict', demande)).json();
+  assert.strictEqual(premier.enCache, false);
+  assert.strictEqual(second.enCache, true);
+  assert.strictEqual(second.aiResponse, 'Avis mis en cache.');
+  assert.strictEqual(promptsRecus.length, 1);
+  local.serveur.close();
 });
 
 test('verdict IA : une panne repond 502 sans details en production', async () => {
   const enPanne = await monte({ aiModel: iaEnPanne, env: { NODE_ENV: 'production' } });
   const r = await enPanne.appel('/api/ai/verdict', {
     method: 'POST',
-    body: { product1: { name: 'A' }, product2: { name: 'B' } },
+    body: { type: 'cpus', ids: ['ryzen-a', 'core-b'] },
   });
   assert.strictEqual(r.status, 502);
   assert.deepStrictEqual(await r.json(), { error: "L'IA n'a pas pu generer de reponse." });

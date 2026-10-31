@@ -4,6 +4,7 @@ import { ScoreBar } from './Score';
 import { getProductScore } from '../utils/scores';
 import { resolveType, toNumber, formatValue } from '../utils/specs';
 import { indexMeneurs } from '../utils/marche';
+import { SEGMENTS } from '../../../shared/criteres.js';
 
 // Métrique de référence par type : celle qui pèse le plus dans le score.
 const MAIN_METRIC = {
@@ -30,7 +31,7 @@ function Verdict({ products, productType, analyseSeule = false }) {
 
   if (!products || products.length < 2) return null;
 
-  const [p1, p2] = products;
+  const [p1] = products;
   const type = resolveType(productType || p1.productType);
   const metric = MAIN_METRIC[type] || MAIN_METRIC.cpu;
 
@@ -40,19 +41,24 @@ function Verdict({ products, productType, analyseSeule = false }) {
       // Même point d'entrée que le reste du site : en développement, `/api`
       // passe par le proxy Vite. L'ancienne version visait en dur un backend
       // local sur le port 3001, qui n'existe que si on le démarre soi-même.
+      // Le serveur relit les produits en base et calcule lui-même le verdict :
+      // on ne lui envoie que la catégorie et les identifiants.
       const response = await fetch(`${API_BASE}/ai/verdict`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ product1: p1, product2: p2 }),
+        body: JSON.stringify({
+          type: SEGMENTS[type],
+          ids: products.map(p => p.slug || p._id),
+        }),
       });
       const data = await response.json();
       setAiAnalysis(
-        response.ok && data.aiResponse
-          ? data.aiResponse
-          : data.error || data.details || 'Une erreur est survenue sur le serveur IA.'
+        response.ok
+          ? { verdict: data.verdict, texte: data.aiResponse, motif: data.motif }
+          : { erreur: data.error || 'Une erreur est survenue sur le serveur IA.' }
       );
     } catch {
-      setAiAnalysis("Impossible de joindre le serveur d'analyse.");
+      setAiAnalysis({ erreur: "Impossible de joindre le serveur d'analyse." });
     }
     setLoading(false);
   };
@@ -77,8 +83,9 @@ function Verdict({ products, productType, analyseSeule = false }) {
       {!aiAnalysis ? (
         <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
           <span className="ct-text-gray-small" style={{ flex: '1 1 240px' }}>
-            Un commentaire rédigé peut compléter les chiffres. Il est généré par un modèle de
-            langage et n’est pas une mesure.
+            Un commentaire rédigé peut compléter les chiffres. Le gagnant est calculé par le site ;
+            le modèle de langage ne fait que le rédiger, et son texte est écarté s’il cite un
+            chiffre absent des mesures.
           </span>
           <button className="ct-btn" onClick={askGemini} disabled={loading}>
             {loading ? 'Analyse en cours…' : 'Demander une analyse'}
@@ -86,11 +93,23 @@ function Verdict({ products, productType, analyseSeule = false }) {
         </div>
       ) : (
         <>
-          <div className="ct-title-h4">Analyse générée</div>
-          <p style={{ whiteSpace: 'pre-line' }}>{aiAnalysis}</p>
-          <p className="ct-text-gray-small" style={{ marginTop: 8 }}>
-            Texte produit automatiquement : à recouper avec le tableau de spécifications.
-          </p>
+          {aiAnalysis.erreur && <p>{aiAnalysis.erreur}</p>}
+          {aiAnalysis.verdict && (
+            <p>
+              <strong>Verdict calculé :</strong> {aiAnalysis.verdict}
+            </p>
+          )}
+          {aiAnalysis.texte && (
+            <>
+              <div className="ct-title-h4">Avis rédigé</div>
+              <p style={{ whiteSpace: 'pre-line' }}>{aiAnalysis.texte}</p>
+              <p className="ct-text-gray-small" style={{ marginTop: 8 }}>
+                Texte produit automatiquement à partir des mesures ci-dessus ; ses chiffres ont été
+                vérifiés.
+              </p>
+            </>
+          )}
+          {aiAnalysis.motif && <p className="ct-text-gray-small">{aiAnalysis.motif}</p>}
         </>
       )}
     </div>

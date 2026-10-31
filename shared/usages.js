@@ -18,7 +18,7 @@
  * La note globale (formules.js) reste affichée, en résumé secondaire.
  */
 
-import { criteresDe, resolveType } from './criteres.js';
+import { criteresDe, equivalents, resolveType } from './criteres.js';
 
 export const BAREME = Object.freeze({
   version: 'v1',
@@ -143,4 +143,75 @@ export function noteProfil(produit, productType, profil) {
 /** Toutes les notes par usage d'un produit, dans l'ordre des profils. */
 export function notesParUsage(produit, productType) {
   return profilsDe(productType).map(profil => noteProfil(produit, productType, profil));
+}
+
+/**
+ * Produits en tête d'une comparaison : la meilleure note, et toute note
+ * équivalente (moins de 3 % d'écart). Une note de 0 (« non noté ») n'est
+ * jamais en tête.
+ *
+ * @param {number[]} notes  une note par produit, dans l'ordre de la comparaison
+ * @returns {number[]} les index des produits en tête ; vide si aucun n'est noté
+ */
+export function indexMeneurs(notes) {
+  const meilleure = Math.max(0, ...notes);
+  if (meilleure <= 0) return [];
+  return notes
+    .map((note, i) => (note > 0 && (note === meilleure || equivalents(note, meilleure)) ? i : -1))
+    .filter(i => i >= 0);
+}
+
+/**
+ * Verdict d'une comparaison, usage par usage.
+ *
+ * La note globale désignait un seul vainqueur, même quand chacun gagnait sur
+ * un terrain différent (un portable de jeu « meilleur » qu'un ultraportable,
+ * alors qu'il tient 4 h sur batterie contre 19). Ici, chaque profil a son
+ * gagnant ; la phrase ne nomme un vainqueur unique que s'il gagne partout.
+ * Zone d'égalité de 3 % comprise (`indexMeneurs`).
+ *
+ * @returns {string|null} la phrase, ou null si aucun profil n'est noté pour
+ *   au moins deux produits (on retombe alors sur la note globale)
+ */
+export function verdictParUsage(produits, productType) {
+  if (!Array.isArray(produits) || produits.length < 2) return null;
+  const parProduit = produits.map(p => notesParUsage(p, productType));
+  const nbProfils = parProduit[0]?.length || 0;
+
+  const resultats = [];
+  for (let k = 0; k < nbProfils; k++) {
+    const profil = parProduit[0][k];
+    const notes = parProduit.map(n => n[k].note);
+    if (notes.filter(n => n !== null).length < 2) continue; // pas de comparaison possible
+    const meneurs = indexMeneurs(notes.map(n => n ?? 0));
+    const triees = notes.filter(n => n !== null).sort((a, b) => b - a);
+    resultats.push({ titre: profil.titre, meneurs, meilleure: triees[0], suivante: triees[1] });
+  }
+  if (resultats.length === 0) return null;
+
+  const nom = i => produits[i].name;
+  const tranches = resultats.filter(r => r.meneurs.length === 1);
+  const gagnants = new Set(tranches.map(r => r.meneurs[0]));
+  const egalites = resultats.filter(r => r.meneurs.length > 1);
+
+  const phraseEgalites = egalites.length
+    ? ` Égalité en ${egalites.map(r => `« ${r.titre} »`).join(' et ')} (moins de 3 % d’écart).`
+    : '';
+
+  if (tranches.length === 0) {
+    return `Égalité sur tous les usages notés (moins de 3 % d’écart).`;
+  }
+  if (gagnants.size === 1) {
+    const i = [...gagnants][0];
+    const detail = tranches
+      .map(r => `« ${r.titre} » (${r.meilleure} contre ${r.suivante})`)
+      .join(', ');
+    return egalites.length
+      ? `${nom(i)} l’emporte en ${detail}.${phraseEgalites}`
+      : `${nom(i)} l’emporte sur tous les usages notés : ${detail}.`;
+  }
+  const detail = tranches
+    .map(r => `${nom(r.meneurs[0])} en « ${r.titre} » (${r.meilleure} contre ${r.suivante})`)
+    .join('. ');
+  return `Pas de vainqueur unique. ${detail}.${phraseEgalites}`;
 }
