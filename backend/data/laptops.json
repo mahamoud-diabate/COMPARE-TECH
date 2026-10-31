@@ -15,27 +15,34 @@
         "ram_gb": {
           "url": "https://www.notebookcheck.net/14-inch-business-laptop-with-excellent-battery-life-HP-EliteBook-8-G2a-14-AI-Review.1370559.0.html",
           "releve_le": "2026-08-20",
-          "extrait": "Memory 32 GB"
+          "extrait": "Memory 32 GB",
+          "origine": "constructeur"
         },
         "storage_gb": {
           "url": "https://www.notebookcheck.net/14-inch-business-laptop-with-excellent-battery-life-HP-EliteBook-8-G2a-14-AI-Review.1370559.0.html",
           "releve_le": "2026-08-20",
-          "extrait": "PC SN5000S SDEPNSJ-1T00-1006, 1000 GB"
+          "extrait": "PC SN5000S SDEPNSJ-1T00-1006, 1000 GB",
+          "origine": "constructeur"
         },
         "geekbench_multi": {
           "url": "https://www.notebookcheck.net/14-inch-business-laptop-with-excellent-battery-life-HP-EliteBook-8-G2a-14-AI-Review.1370559.0.html",
           "releve_le": "2026-10-29",
-          "extrait": "HP EliteBook 8 G2a 14AMD Ryzen AI 7 450 13611 Points"
+          "extrait": "HP EliteBook 8 G2a 14AMD Ryzen AI 7 450 13611 Points",
+          "origine": "laboratoire"
         },
         "display_brightness_nits": {
           "url": "https://www.notebookcheck.net/14-inch-business-laptop-with-excellent-battery-life-HP-EliteBook-8-G2a-14-AI-Review.1370559.0.html",
           "releve_le": "2026-08-20",
-          "extrait": "Average: 434.2 cd/m²"
+          "extrait": "Average: 434.2 cd/m²",
+          "origine": "laboratoire",
+          "protocole": "notebookcheck-luminance-moyenne"
         },
         "battery_life_hours": {
           "url": "https://www.notebookcheck.net/14-inch-business-laptop-with-excellent-battery-life-HP-EliteBook-8-G2a-14-AI-Review.1370559.0.html",
           "releve_le": "2026-08-20",
-          "extrait": "WiFi Websurfing 19h 19min"
+          "extrait": "WiFi Websurfing 19h 19min",
+          "origine": "laboratoire",
+          "protocole": "notebookcheck-wifi"
         }
       }
     },
@@ -52,22 +59,27 @@
         "ram_gb": {
           "url": "https://www.notebookcheck.net/AMD-Strix-Halo-with-32-GB-RAM-for-1899-Asus-ProArt-PX13-2026-Convertible-Review.1352377.0.html",
           "releve_le": "2026-08-20",
-          "extrait": "Memory 32 GB"
+          "extrait": "Memory 32 GB",
+          "origine": "constructeur"
         },
         "storage_gb": {
           "url": "https://www.notebookcheck.net/AMD-Strix-Halo-with-32-GB-RAM-for-1899-Asus-ProArt-PX13-2026-Convertible-Review.1352377.0.html",
           "releve_le": "2026-08-20",
-          "extrait": "BG6 KBG60ZNS512G, 512 GB"
+          "extrait": "BG6 KBG60ZNS512G, 512 GB",
+          "origine": "constructeur"
         },
         "geekbench_multi": {
           "url": "https://www.notebookcheck.net/AMD-Strix-Halo-with-32-GB-RAM-for-1899-Asus-ProArt-PX13-2026-Convertible-Review.1352377.0.html",
           "releve_le": "2026-10-29",
-          "extrait": "Asus ProArt PX13 HN7306EA Ryzen AI MAX+ 388AMD Ryzen AI Max+ 388 14915 Points"
+          "extrait": "Asus ProArt PX13 HN7306EA Ryzen AI MAX+ 388AMD Ryzen AI Max+ 388 14915 Points",
+          "origine": "laboratoire"
         },
         "battery_life_hours": {
           "url": "https://www.notebookcheck.net/AMD-Strix-Halo-with-32-GB-RAM-for-1899-Asus-ProArt-PX13-2026-Convertible-Review.1352377.0.html",
           "releve_le": "2026-08-20",
-          "extrait": "WiFi Websurfing 10h 31min"
+          "extrait": "WiFi Websurfing 10h 31min",
+          "origine": "laboratoire",
+          "protocole": "notebookcheck-wifi"
         }
       }
     },
@@ -85,27 +97,34 @@
         "ram_gb": {
           "url": "https://www.notebookcheck.net/Excellent-business-laptop-with-64-GB-RAM-Lenovo-ThinkPad-T14s-Gen-7-AMD-Review.1328170.0.html",
           "releve_le": "2026-08-20",
-          "extrait": "Memory 64 GB"
+          "extrait": "Memory 64 GB",
+          "origine": "constructeur"
         },
         "storage_gb": {
           "url": "https://www.notebookcheck.net/Excellent-business-laptop-with-64-GB-RAM-Lenovo-ThinkPad-T14s-Gen-7-AMD-Review.1328170.0.html",
           "releve_le": "2026-08-20",
-          "extrait": "2650 MTFDKBA512TGW, 512 GB"
+          "extrait": "2650 MTFDKBA512TGW, 512 GB",
+          "origine": "constructeur"
         },
         "geekbench_multi": {
           "url": "https://www.notebookcheck.net/Excellent-business-laptop-with-64-GB-RAM-Lenovo-ThinkPad-T14s-Gen-7-AMD-Review.1328170.0.html",
           "releve_le": "2026-10-29",
-          "extrait": "Lenovo ThinkPad T14s Gen 7 21YW0022GEAMD Ryzen AI 7 PRO 450 13439 Points"
+          "extrait": "Lenovo ThinkPad T14s Gen 7 21YW0022GEAMD Ryzen AI 7 PRO 450 13439 Points",
+          "origine": "laboratoire"
         },
         "display_brightness_nits": {
           "url": "https://www.notebookcheck.net/Excellent-business-laptop-with-64-GB-RAM-Lenovo-ThinkPad-T14s-Gen-7-AMD-Review.1328170.0.html",
           "releve_le": "2026-08-20",
-          "extrait": "Average: 529.7 cd/m²"
+          "extrait": "Average: 529.7 cd/m²",
+          "origine": "laboratoire",
+          "protocole": "notebookcheck-luminance-moyenne"
         },
         "battery_life_hours": {
           "url": "https://www.notebookcheck.net/Excellent-business-laptop-with-64-GB-RAM-Lenovo-ThinkPad-T14s-Gen-7-AMD-Review.1328170.0.html",
           "releve_le": "2026-08-20",
-          "extrait": "WiFi Websurfing 17h 22min"
+          "extrait": "WiFi Websurfing 17h 22min",
+          "origine": "laboratoire",
+          "protocole": "notebookcheck-wifi"
         }
       }
     },
@@ -123,27 +142,34 @@
         "ram_gb": {
           "url": "https://www.notebookcheck.net/Flagship-business-laptop-with-almost-24-hours-of-battery-life-Lenovo-ThinkPad-X1-Carbon-Gen-14-Review.1332558.0.html",
           "releve_le": "2026-08-20",
-          "extrait": "Memory 32 GB"
+          "extrait": "Memory 32 GB",
+          "origine": "constructeur"
         },
         "storage_gb": {
           "url": "https://www.notebookcheck.net/Flagship-business-laptop-with-almost-24-hours-of-battery-life-Lenovo-ThinkPad-X1-Carbon-Gen-14-Review.1332558.0.html",
           "releve_le": "2026-08-20",
-          "extrait": "PM9C1b MZVL8512HFLU-00BLL, 512 GB"
+          "extrait": "PM9C1b MZVL8512HFLU-00BLL, 512 GB",
+          "origine": "constructeur"
         },
         "geekbench_multi": {
           "url": "https://www.notebookcheck.net/Flagship-business-laptop-with-almost-24-hours-of-battery-life-Lenovo-ThinkPad-X1-Carbon-Gen-14-Review.1332558.0.html",
           "releve_le": "2026-10-29",
-          "extrait": "Lenovo ThinkPad X1 Carbon Gen 14 21V70075GEIntel Core Ultra 5 325 11038 Points"
+          "extrait": "Lenovo ThinkPad X1 Carbon Gen 14 21V70075GEIntel Core Ultra 5 325 11038 Points",
+          "origine": "laboratoire"
         },
         "display_brightness_nits": {
           "url": "https://www.notebookcheck.net/Flagship-business-laptop-with-almost-24-hours-of-battery-life-Lenovo-ThinkPad-X1-Carbon-Gen-14-Review.1332558.0.html",
           "releve_le": "2026-08-20",
-          "extrait": "Average: 524.3 cd/m²"
+          "extrait": "Average: 524.3 cd/m²",
+          "origine": "laboratoire",
+          "protocole": "notebookcheck-luminance-moyenne"
         },
         "battery_life_hours": {
           "url": "https://www.notebookcheck.net/Flagship-business-laptop-with-almost-24-hours-of-battery-life-Lenovo-ThinkPad-X1-Carbon-Gen-14-Review.1332558.0.html",
           "releve_le": "2026-08-20",
-          "extrait": "WiFi Websurfing 23h 13min"
+          "extrait": "WiFi Websurfing 23h 13min",
+          "origine": "laboratoire",
+          "protocole": "notebookcheck-wifi"
         }
       }
     },
@@ -161,27 +187,34 @@
         "ram_gb": {
           "url": "https://www.notebookcheck.net/Gaming-Monster-with-4K-Mini-LED-RTX-5090-and-128-GB-RAM-Asus-ROG-Strix-SCAR-18-G835LXG-Review.1351131.0.html",
           "releve_le": "2026-08-20",
-          "extrait": "Memory 128 GB"
+          "extrait": "Memory 128 GB",
+          "origine": "constructeur"
         },
         "storage_gb": {
           "url": "https://www.notebookcheck.net/Gaming-Monster-with-4K-Mini-LED-RTX-5090-and-128-GB-RAM-Asus-ROG-Strix-SCAR-18-G835LXG-Review.1351131.0.html",
           "releve_le": "2026-08-20",
-          "extrait": "PM9E1 MZVLC4T0HBL1 (RAID 0), 8192 GB"
+          "extrait": "PM9E1 MZVLC4T0HBL1 (RAID 0), 8192 GB",
+          "origine": "constructeur"
         },
         "geekbench_multi": {
           "url": "https://www.notebookcheck.net/Gaming-Monster-with-4K-Mini-LED-RTX-5090-and-128-GB-RAM-Asus-ROG-Strix-SCAR-18-G835LXG-Review.1351131.0.html",
           "releve_le": "2026-10-29",
-          "extrait": "Asus ROG Strix Scar 18 G835LXGIntel Core Ultra 9 290HX Plus 22850 Points"
+          "extrait": "Asus ROG Strix Scar 18 G835LXGIntel Core Ultra 9 290HX Plus 22850 Points",
+          "origine": "laboratoire"
         },
         "display_brightness_nits": {
           "url": "https://www.notebookcheck.net/Gaming-Monster-with-4K-Mini-LED-RTX-5090-and-128-GB-RAM-Asus-ROG-Strix-SCAR-18-G835LXG-Review.1351131.0.html",
           "releve_le": "2026-08-20",
-          "extrait": "Average: 604.4 cd/m²"
+          "extrait": "Average: 604.4 cd/m²",
+          "origine": "laboratoire",
+          "protocole": "notebookcheck-luminance-moyenne"
         },
         "battery_life_hours": {
           "url": "https://www.notebookcheck.net/Gaming-Monster-with-4K-Mini-LED-RTX-5090-and-128-GB-RAM-Asus-ROG-Strix-SCAR-18-G835LXG-Review.1351131.0.html",
           "releve_le": "2026-08-20",
-          "extrait": "2h 58min WiFi Websurfing 4h"
+          "extrait": "2h 58min WiFi Websurfing 4h",
+          "origine": "laboratoire",
+          "protocole": "notebookcheck-wifi"
         }
       }
     },
@@ -199,27 +232,34 @@
         "ram_gb": {
           "url": "https://www.notebookcheck.net/MacBook-Neo-rival-with-Intel-Wildcat-Lake-for-449-Chuwi-UniBook-Laptop-Review.1360578.0.html",
           "releve_le": "2026-08-20",
-          "extrait": "Memory 8 GB"
+          "extrait": "Memory 8 GB",
+          "origine": "constructeur"
         },
         "storage_gb": {
           "url": "https://www.notebookcheck.net/MacBook-Neo-rival-with-Intel-Wildcat-Lake-for-449-Chuwi-UniBook-Laptop-Review.1360578.0.html",
           "releve_le": "2026-08-20",
-          "extrait": "Lake-U PCHStorageHOGE H750L 256GB"
+          "extrait": "Lake-U PCHStorageHOGE H750L 256GB",
+          "origine": "constructeur"
         },
         "geekbench_multi": {
           "url": "https://www.notebookcheck.net/MacBook-Neo-rival-with-Intel-Wildcat-Lake-for-449-Chuwi-UniBook-Laptop-Review.1360578.0.html",
           "releve_le": "2026-10-29",
-          "extrait": "Chuwi UniBookIntel Core 3 304 5987 Points"
+          "extrait": "Chuwi UniBookIntel Core 3 304 5987 Points",
+          "origine": "laboratoire"
         },
         "display_brightness_nits": {
           "url": "https://www.notebookcheck.net/MacBook-Neo-rival-with-Intel-Wildcat-Lake-for-449-Chuwi-UniBook-Laptop-Review.1360578.0.html",
           "releve_le": "2026-08-20",
-          "extrait": "Average: 286.8 cd/m²"
+          "extrait": "Average: 286.8 cd/m²",
+          "origine": "laboratoire",
+          "protocole": "notebookcheck-luminance-moyenne"
         },
         "battery_life_hours": {
           "url": "https://www.notebookcheck.net/MacBook-Neo-rival-with-Intel-Wildcat-Lake-for-449-Chuwi-UniBook-Laptop-Review.1360578.0.html",
           "releve_le": "2026-08-20",
-          "extrait": "WiFi Websurfing 13h 40min"
+          "extrait": "WiFi Websurfing 13h 40min",
+          "origine": "laboratoire",
+          "protocole": "notebookcheck-wifi"
         }
       }
     },
@@ -237,27 +277,34 @@
         "ram_gb": {
           "url": "https://www.notebookcheck.net/Snapdragon-X2-Plus-is-much-faster-Microsoft-Surface-Laptop-13-8-2026-Review.1334131.0.html",
           "releve_le": "2026-08-20",
-          "extrait": "Memory 16 GB"
+          "extrait": "Memory 16 GB",
+          "origine": "constructeur"
         },
         "storage_gb": {
           "url": "https://www.notebookcheck.net/Snapdragon-X2-Plus-is-much-faster-Microsoft-Surface-Laptop-13-8-2026-Review.1334131.0.html",
           "releve_le": "2026-10-29",
-          "extrait": "SK hynix PVC10 HFS512GEM4X182N, 512 GB"
+          "extrait": "SK hynix PVC10 HFS512GEM4X182N, 512 GB",
+          "origine": "constructeur"
         },
         "geekbench_multi": {
           "url": "https://www.notebookcheck.net/Snapdragon-X2-Plus-is-much-faster-Microsoft-Surface-Laptop-13-8-2026-Review.1334131.0.html",
           "releve_le": "2026-10-29",
-          "extrait": "Microsoft Surface Laptop 8 13.8Qualcomm Snapdragon X2 Plus X2P-64-100 14277 Points"
+          "extrait": "Microsoft Surface Laptop 8 13.8Qualcomm Snapdragon X2 Plus X2P-64-100 14277 Points",
+          "origine": "laboratoire"
         },
         "display_brightness_nits": {
           "url": "https://www.notebookcheck.net/Snapdragon-X2-Plus-is-much-faster-Microsoft-Surface-Laptop-13-8-2026-Review.1334131.0.html",
           "releve_le": "2026-08-20",
-          "extrait": "Average: 623.3 cd/m²"
+          "extrait": "Average: 623.3 cd/m²",
+          "origine": "laboratoire",
+          "protocole": "notebookcheck-luminance-moyenne"
         },
         "battery_life_hours": {
           "url": "https://www.notebookcheck.net/Snapdragon-X2-Plus-is-much-faster-Microsoft-Surface-Laptop-13-8-2026-Review.1334131.0.html",
           "releve_le": "2026-08-20",
-          "extrait": "WiFi Websurfing 18h 53min"
+          "extrait": "WiFi Websurfing 18h 53min",
+          "origine": "laboratoire",
+          "protocole": "notebookcheck-wifi"
         }
       }
     },
@@ -274,22 +321,27 @@
         "ram_gb": {
           "url": "https://www.notebookcheck.net/Still-one-of-the-fastest-and-quietest-gaming-laptops-Razer-Blade-18-2026-Review.1338818.0.html",
           "releve_le": "2026-08-20",
-          "extrait": "Memory 32 GB"
+          "extrait": "Memory 32 GB",
+          "origine": "constructeur"
         },
         "storage_gb": {
           "url": "https://www.notebookcheck.net/Still-one-of-the-fastest-and-quietest-gaming-laptops-Razer-Blade-18-2026-Review.1338818.0.html",
           "releve_le": "2026-08-20",
-          "extrait": "PM9C1b MZVL82T0HBL1, 2048 GB"
+          "extrait": "PM9C1b MZVL82T0HBL1, 2048 GB",
+          "origine": "constructeur"
         },
         "geekbench_multi": {
           "url": "https://www.notebookcheck.net/Still-one-of-the-fastest-and-quietest-gaming-laptops-Razer-Blade-18-2026-Review.1338818.0.html",
           "releve_le": "2026-10-29",
-          "extrait": "Razer Blade 18 2026Intel Core Ultra 9 290HX Plus 20962 Points"
+          "extrait": "Razer Blade 18 2026Intel Core Ultra 9 290HX Plus 20962 Points",
+          "origine": "laboratoire"
         },
         "battery_life_hours": {
           "url": "https://www.notebookcheck.net/Still-one-of-the-fastest-and-quietest-gaming-laptops-Razer-Blade-18-2026-Review.1338818.0.html",
           "releve_le": "2026-08-20",
-          "extrait": "WiFi Websurfing 7h 47min"
+          "extrait": "WiFi Websurfing 7h 47min",
+          "origine": "laboratoire",
+          "protocole": "notebookcheck-wifi"
         }
       }
     }
