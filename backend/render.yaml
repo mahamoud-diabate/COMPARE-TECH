@@ -31,6 +31,12 @@ services:
         sync: false
       - key: GEMINI_MODEL
         value: gemini-3.8-flash
+      # Second fournisseur possible pour /api/ai/verdict : Gemini passe en
+      # premier s'il est configure, DeepSeek prend le relais sinon.
+      - key: DEEPSEEK_API_KEY
+        sync: false
+      - key: DEEPSEEK_MODEL
+        value: deepseek-flash
       - key: CORS_ORIGINS
         sync: false
       - key: NODE_ENV
