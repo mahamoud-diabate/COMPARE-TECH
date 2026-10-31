@@ -2,46 +2,1204 @@
   "type": "cpus",
   "produits": [
     {
-      "name": "Intel Core Ultra 9 285K",
-      "brand": "Intel",
-      "cores": 24,
+      "name": "AMD Ryzen 9 9950X",
+      "brand": "AMD",
+      "socket": "AM5",
+      "annee_sortie": 2024,
+      "cores": 16,
+      "threads": 32,
+      "base_freq_ghz": 4.3,
+      "max_freq_ghz": 5.7,
+      "cache_l3_mo": 64,
+      "tdp_w": 170,
+      "geekbench_single": 3418,
+      "geekbench_multi": 21758,
+      "cinebench_2024_multi": 2320,
       "provenance": {
+        "annee_sortie": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-9-9950x",
+          "releve_le": "2026-10-30",
+          "extrait": "Released June 3, 2024",
+          "origine": "constructeur"
+        },
         "cores": {
-          "url": "https://nanoreview.net/en/cpu-compare/intel-core-ultra-9-285k-vs-apple-m5",
-          "releve_le": "2026-08-20",
-          "extrait": "Total Cores 24"
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-9-9950x",
+          "releve_le": "2026-10-30",
+          "extrait": "Total Cores 16",
+          "origine": "constructeur"
+        },
+        "threads": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-9-9950x",
+          "releve_le": "2026-10-30",
+          "extrait": "Total Threads 32",
+          "origine": "constructeur"
+        },
+        "base_freq_ghz": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-9-9950x",
+          "releve_le": "2026-10-30",
+          "extrait": "Base Frequency (P) 4.3 GHz",
+          "origine": "constructeur"
+        },
+        "max_freq_ghz": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-9-9950x",
+          "releve_le": "2026-10-30",
+          "extrait": "Turbo Boost Frequency (P) 5.7 GHz",
+          "origine": "constructeur"
+        },
+        "cache_l3_mo": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-9-9950x",
+          "releve_le": "2026-10-30",
+          "extrait": "L3 Cache 64MB (shared)",
+          "origine": "constructeur"
+        },
+        "tdp_w": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-9-9950x",
+          "releve_le": "2026-10-30",
+          "extrait": "TDP (PL1) 170 W",
+          "origine": "constructeur"
+        },
+        "geekbench_single": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-9-9950x",
+          "releve_le": "2026-10-30",
+          "extrait": "Geekbench 6 (Single-Core) 3418",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
+        },
+        "geekbench_multi": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-9-9950x",
+          "releve_le": "2026-10-30",
+          "extrait": "Geekbench 6 (Multi-Core) 21758",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
+        },
+        "cinebench_2024_multi": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-9-9950x",
+          "releve_le": "2026-10-30",
+          "extrait": "Cinebench 2024 (Multi) 2320",
+          "origine": "agregat",
+          "protocole": "cinebench-2024"
         }
       }
     },
     {
-      "name": "Intel Core Ultra 7 265K",
-      "brand": "Intel",
-      "cores": 20,
+      "name": "AMD Ryzen 7 7800X3D",
+      "brand": "AMD",
+      "socket": "AM5",
+      "annee_sortie": 2023,
+      "cores": 8,
+      "threads": 16,
+      "base_freq_ghz": 4.2,
+      "max_freq_ghz": 5.0,
+      "cache_l3_mo": 96,
+      "tdp_w": 120,
+      "geekbench_single": 2657,
+      "geekbench_multi": 15319,
+      "cinebench_2024_multi": 1119,
       "provenance": {
+        "annee_sortie": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-7-7800x3d",
+          "releve_le": "2026-10-30",
+          "extrait": "Released January 4, 2023",
+          "origine": "constructeur"
+        },
         "cores": {
-          "url": "https://nanoreview.net/en/cpu-compare/intel-core-ultra-7-265k-vs-amd-ryzen-5-5500x3d",
-          "releve_le": "2026-08-20",
-          "extrait": "Total Cores 20"
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-7-7800x3d",
+          "releve_le": "2026-10-30",
+          "extrait": "Total Cores 8",
+          "origine": "constructeur"
+        },
+        "threads": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-7-7800x3d",
+          "releve_le": "2026-10-30",
+          "extrait": "Total Threads 16",
+          "origine": "constructeur"
+        },
+        "base_freq_ghz": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-7-7800x3d",
+          "releve_le": "2026-10-30",
+          "extrait": "Base Frequency (P) 4.2 GHz",
+          "origine": "constructeur"
+        },
+        "max_freq_ghz": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-7-7800x3d",
+          "releve_le": "2026-10-30",
+          "extrait": "Turbo Boost Frequency (P) 5 GHz",
+          "origine": "constructeur"
+        },
+        "cache_l3_mo": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-7-7800x3d",
+          "releve_le": "2026-10-30",
+          "extrait": "L3 Cache 96MB (shared)",
+          "origine": "constructeur"
+        },
+        "tdp_w": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-7-7800x3d",
+          "releve_le": "2026-10-30",
+          "extrait": "TDP (PL1) 120 W",
+          "origine": "constructeur"
+        },
+        "geekbench_single": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-7-7800x3d",
+          "releve_le": "2026-10-30",
+          "extrait": "Geekbench 6 (Single-Core) 2657",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
+        },
+        "geekbench_multi": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-7-7800x3d",
+          "releve_le": "2026-10-30",
+          "extrait": "Geekbench 6 (Multi-Core) 15319",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
+        },
+        "cinebench_2024_multi": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-7-7800x3d",
+          "releve_le": "2026-10-30",
+          "extrait": "Cinebench 2024 (Multi) 1119",
+          "origine": "agregat",
+          "protocole": "cinebench-2024"
         }
       }
     },
-    { "name": "Intel Core Ultra 5 245K", "brand": "Intel" },
-    { "name": "Intel Core i9-14900K", "brand": "Intel" },
-    { "name": "Intel Core i7-14700K", "brand": "Intel" },
-    { "name": "Intel Core i5-14600K", "brand": "Intel" },
-    { "name": "Intel Core i9-13900K", "brand": "Intel" },
-    { "name": "Intel Core i7-13700K", "brand": "Intel" },
-    { "name": "Intel Core i5-13600K", "brand": "Intel" },
-    { "name": "AMD Ryzen 9 9950X", "brand": "AMD" },
-    { "name": "AMD Ryzen 9 9900X", "brand": "AMD" },
-    { "name": "AMD Ryzen 7 9700X", "brand": "AMD" },
-    { "name": "AMD Ryzen 5 9600X", "brand": "AMD" },
-    { "name": "AMD Ryzen 9 7950X3D", "brand": "AMD" },
-    { "name": "AMD Ryzen 9 7950X", "brand": "AMD" },
-    { "name": "AMD Ryzen 7 7800X3D", "brand": "AMD" },
-    { "name": "AMD Ryzen 7 7700X", "brand": "AMD" },
-    { "name": "AMD Ryzen 5 7600X", "brand": "AMD" },
-    { "name": "AMD Ryzen 9 5950X", "brand": "AMD" },
-    { "name": "AMD Ryzen 7 5800X3D", "brand": "AMD" }
+    {
+      "name": "AMD Ryzen 9 7950X",
+      "brand": "AMD",
+      "socket": "AM5",
+      "annee_sortie": 2022,
+      "cores": 16,
+      "threads": 32,
+      "base_freq_ghz": 4.5,
+      "max_freq_ghz": 5.7,
+      "cache_l3_mo": 64,
+      "tdp_w": 170,
+      "geekbench_single": 3068,
+      "geekbench_multi": 21401,
+      "cinebench_2024_multi": 2077,
+      "provenance": {
+        "annee_sortie": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-9-7950x",
+          "releve_le": "2026-10-30",
+          "extrait": "Released August 29, 2022",
+          "origine": "constructeur"
+        },
+        "cores": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-9-7950x",
+          "releve_le": "2026-10-30",
+          "extrait": "Total Cores 16",
+          "origine": "constructeur"
+        },
+        "threads": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-9-7950x",
+          "releve_le": "2026-10-30",
+          "extrait": "Total Threads 32",
+          "origine": "constructeur"
+        },
+        "base_freq_ghz": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-9-7950x",
+          "releve_le": "2026-10-30",
+          "extrait": "Base Frequency (P) 4.5 GHz",
+          "origine": "constructeur"
+        },
+        "max_freq_ghz": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-9-7950x",
+          "releve_le": "2026-10-30",
+          "extrait": "Turbo Boost Frequency (P) 5.7 GHz",
+          "origine": "constructeur"
+        },
+        "cache_l3_mo": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-9-7950x",
+          "releve_le": "2026-10-30",
+          "extrait": "L3 Cache 64MB (shared)",
+          "origine": "constructeur"
+        },
+        "tdp_w": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-9-7950x",
+          "releve_le": "2026-10-30",
+          "extrait": "TDP (PL1) 170 W",
+          "origine": "constructeur"
+        },
+        "geekbench_single": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-9-7950x",
+          "releve_le": "2026-10-30",
+          "extrait": "Geekbench 6 (Single-Core) 3068",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
+        },
+        "geekbench_multi": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-9-7950x",
+          "releve_le": "2026-10-30",
+          "extrait": "Geekbench 6 (Multi-Core) 21401",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
+        },
+        "cinebench_2024_multi": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-9-7950x",
+          "releve_le": "2026-10-30",
+          "extrait": "Cinebench 2024 (Multi) 2077",
+          "origine": "agregat",
+          "protocole": "cinebench-2024"
+        }
+      }
+    },
+    {
+      "name": "AMD Ryzen 9 7950X3D",
+      "brand": "AMD",
+      "socket": "AM5",
+      "annee_sortie": 2023,
+      "cores": 16,
+      "threads": 32,
+      "base_freq_ghz": 4.2,
+      "max_freq_ghz": 5.7,
+      "cache_l3_mo": 128,
+      "tdp_w": 120,
+      "geekbench_single": 3003,
+      "geekbench_multi": 19043,
+      "cinebench_2024_multi": 2003,
+      "provenance": {
+        "annee_sortie": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-9-7950x3d",
+          "releve_le": "2026-10-30",
+          "extrait": "Released January 4, 2023",
+          "origine": "constructeur"
+        },
+        "cores": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-9-7950x3d",
+          "releve_le": "2026-10-30",
+          "extrait": "Total Cores 16",
+          "origine": "constructeur"
+        },
+        "threads": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-9-7950x3d",
+          "releve_le": "2026-10-30",
+          "extrait": "Total Threads 32",
+          "origine": "constructeur"
+        },
+        "base_freq_ghz": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-9-7950x3d",
+          "releve_le": "2026-10-30",
+          "extrait": "Base Frequency (P) 4.2 GHz",
+          "origine": "constructeur"
+        },
+        "max_freq_ghz": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-9-7950x3d",
+          "releve_le": "2026-10-30",
+          "extrait": "Turbo Boost Frequency (P) 5.7 GHz",
+          "origine": "constructeur"
+        },
+        "cache_l3_mo": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-9-7950x3d",
+          "releve_le": "2026-10-30",
+          "extrait": "L3 Cache 128MB (shared)",
+          "origine": "constructeur"
+        },
+        "tdp_w": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-9-7950x3d",
+          "releve_le": "2026-10-30",
+          "extrait": "TDP (PL1) 120 W",
+          "origine": "constructeur"
+        },
+        "geekbench_single": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-9-7950x3d",
+          "releve_le": "2026-10-30",
+          "extrait": "Geekbench 6 (Single-Core) 3003",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
+        },
+        "geekbench_multi": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-9-7950x3d",
+          "releve_le": "2026-10-30",
+          "extrait": "Geekbench 6 (Multi-Core) 19043",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
+        },
+        "cinebench_2024_multi": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-9-7950x3d",
+          "releve_le": "2026-10-30",
+          "extrait": "Cinebench 2024 (Multi) 2003",
+          "origine": "agregat",
+          "protocole": "cinebench-2024"
+        }
+      }
+    },
+    {
+      "name": "AMD Ryzen 7 7700X",
+      "brand": "AMD",
+      "socket": "AM5",
+      "annee_sortie": 2022,
+      "cores": 8,
+      "threads": 16,
+      "base_freq_ghz": 4.5,
+      "max_freq_ghz": 5.4,
+      "cache_l3_mo": 32,
+      "tdp_w": 105,
+      "geekbench_single": 2931,
+      "geekbench_multi": 15478,
+      "cinebench_2024_multi": 1104,
+      "provenance": {
+        "annee_sortie": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-7-7700x",
+          "releve_le": "2026-10-30",
+          "extrait": "Released September 29, 2022",
+          "origine": "constructeur"
+        },
+        "cores": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-7-7700x",
+          "releve_le": "2026-10-30",
+          "extrait": "Total Cores 8",
+          "origine": "constructeur"
+        },
+        "threads": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-7-7700x",
+          "releve_le": "2026-10-30",
+          "extrait": "Total Threads 16",
+          "origine": "constructeur"
+        },
+        "base_freq_ghz": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-7-7700x",
+          "releve_le": "2026-10-30",
+          "extrait": "Base Frequency (P) 4.5 GHz",
+          "origine": "constructeur"
+        },
+        "max_freq_ghz": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-7-7700x",
+          "releve_le": "2026-10-30",
+          "extrait": "Turbo Boost Frequency (P) 5.4 GHz",
+          "origine": "constructeur"
+        },
+        "cache_l3_mo": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-7-7700x",
+          "releve_le": "2026-10-30",
+          "extrait": "L3 Cache 32MB (shared)",
+          "origine": "constructeur"
+        },
+        "tdp_w": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-7-7700x",
+          "releve_le": "2026-10-30",
+          "extrait": "TDP (PL1) 105 W",
+          "origine": "constructeur"
+        },
+        "geekbench_single": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-7-7700x",
+          "releve_le": "2026-10-30",
+          "extrait": "Geekbench 6 (Single-Core) 2931",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
+        },
+        "geekbench_multi": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-7-7700x",
+          "releve_le": "2026-10-30",
+          "extrait": "Geekbench 6 (Multi-Core) 15478",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
+        },
+        "cinebench_2024_multi": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-7-7700x",
+          "releve_le": "2026-10-30",
+          "extrait": "Cinebench 2024 (Multi) 1104",
+          "origine": "agregat",
+          "protocole": "cinebench-2024"
+        }
+      }
+    },
+    {
+      "name": "AMD Ryzen 5 7600X",
+      "brand": "AMD",
+      "socket": "AM5",
+      "annee_sortie": 2022,
+      "cores": 6,
+      "threads": 12,
+      "base_freq_ghz": 4.7,
+      "max_freq_ghz": 5.3,
+      "cache_l3_mo": 32,
+      "tdp_w": 105,
+      "geekbench_single": 2941,
+      "geekbench_multi": 13615,
+      "cinebench_2024_multi": 846,
+      "provenance": {
+        "annee_sortie": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-5-7600x",
+          "releve_le": "2026-10-30",
+          "extrait": "Released September 29, 2022",
+          "origine": "constructeur"
+        },
+        "cores": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-5-7600x",
+          "releve_le": "2026-10-30",
+          "extrait": "Total Cores 6",
+          "origine": "constructeur"
+        },
+        "threads": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-5-7600x",
+          "releve_le": "2026-10-30",
+          "extrait": "Total Threads 12",
+          "origine": "constructeur"
+        },
+        "base_freq_ghz": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-5-7600x",
+          "releve_le": "2026-10-30",
+          "extrait": "Base Frequency (P) 4.7 GHz",
+          "origine": "constructeur"
+        },
+        "max_freq_ghz": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-5-7600x",
+          "releve_le": "2026-10-30",
+          "extrait": "Turbo Boost Frequency (P) 5.3 GHz",
+          "origine": "constructeur"
+        },
+        "cache_l3_mo": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-5-7600x",
+          "releve_le": "2026-10-30",
+          "extrait": "L3 Cache 32MB (shared)",
+          "origine": "constructeur"
+        },
+        "tdp_w": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-5-7600x",
+          "releve_le": "2026-10-30",
+          "extrait": "TDP (PL1) 105 W",
+          "origine": "constructeur"
+        },
+        "geekbench_single": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-5-7600x",
+          "releve_le": "2026-10-30",
+          "extrait": "Geekbench 6 (Single-Core) 2941",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
+        },
+        "geekbench_multi": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-5-7600x",
+          "releve_le": "2026-10-30",
+          "extrait": "Geekbench 6 (Multi-Core) 13615",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
+        },
+        "cinebench_2024_multi": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-5-7600x",
+          "releve_le": "2026-10-30",
+          "extrait": "Cinebench 2024 (Multi) 846",
+          "origine": "agregat",
+          "protocole": "cinebench-2024"
+        }
+      }
+    },
+    {
+      "name": "AMD Ryzen 7 9800X3D",
+      "brand": "AMD",
+      "socket": "AM5",
+      "annee_sortie": 2024,
+      "cores": 8,
+      "threads": 16,
+      "base_freq_ghz": 4.7,
+      "max_freq_ghz": 5.2,
+      "cache_l3_mo": 96,
+      "tdp_w": 120,
+      "geekbench_single": 3315,
+      "geekbench_multi": 18350,
+      "cinebench_2024_multi": 1332,
+      "provenance": {
+        "annee_sortie": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-7-9800x3d",
+          "releve_le": "2026-10-30",
+          "extrait": "Released October 31, 2024",
+          "origine": "constructeur"
+        },
+        "cores": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-7-9800x3d",
+          "releve_le": "2026-10-30",
+          "extrait": "Total Cores 8",
+          "origine": "constructeur"
+        },
+        "threads": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-7-9800x3d",
+          "releve_le": "2026-10-30",
+          "extrait": "Total Threads 16",
+          "origine": "constructeur"
+        },
+        "base_freq_ghz": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-7-9800x3d",
+          "releve_le": "2026-10-30",
+          "extrait": "Base Frequency (P) 4.7 GHz",
+          "origine": "constructeur"
+        },
+        "max_freq_ghz": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-7-9800x3d",
+          "releve_le": "2026-10-30",
+          "extrait": "Turbo Boost Frequency (P) 5.2 GHz",
+          "origine": "constructeur"
+        },
+        "cache_l3_mo": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-7-9800x3d",
+          "releve_le": "2026-10-30",
+          "extrait": "L3 Cache 96MB (shared)",
+          "origine": "constructeur"
+        },
+        "tdp_w": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-7-9800x3d",
+          "releve_le": "2026-10-30",
+          "extrait": "TDP (PL1) 120 W",
+          "origine": "constructeur"
+        },
+        "geekbench_single": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-7-9800x3d",
+          "releve_le": "2026-10-30",
+          "extrait": "Geekbench 6 (Single-Core) 3315",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
+        },
+        "geekbench_multi": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-7-9800x3d",
+          "releve_le": "2026-10-30",
+          "extrait": "Geekbench 6 (Multi-Core) 18350",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
+        },
+        "cinebench_2024_multi": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-7-9800x3d",
+          "releve_le": "2026-10-30",
+          "extrait": "Cinebench 2024 (Multi) 1332",
+          "origine": "agregat",
+          "protocole": "cinebench-2024"
+        }
+      }
+    },
+    {
+      "name": "Intel Core i9-14900K",
+      "brand": "Intel",
+      "socket": "LGA-1700",
+      "annee_sortie": 2023,
+      "cores": 24,
+      "threads": 32,
+      "base_freq_ghz": 3.2,
+      "max_freq_ghz": 6.0,
+      "cache_l3_mo": 36,
+      "tdp_w": 125,
+      "geekbench_single": 3171,
+      "geekbench_multi": 22629,
+      "cinebench_2024_multi": 2086,
+      "provenance": {
+        "annee_sortie": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i9-14900k",
+          "releve_le": "2026-10-30",
+          "extrait": "Released October 16, 2023",
+          "origine": "constructeur"
+        },
+        "cores": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i9-14900k",
+          "releve_le": "2026-10-30",
+          "extrait": "Total Cores 24",
+          "origine": "constructeur"
+        },
+        "threads": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i9-14900k",
+          "releve_le": "2026-10-30",
+          "extrait": "Total Threads 32",
+          "origine": "constructeur"
+        },
+        "base_freq_ghz": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i9-14900k",
+          "releve_le": "2026-10-30",
+          "extrait": "Base Frequency (P) 3.2 GHz",
+          "origine": "constructeur"
+        },
+        "max_freq_ghz": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i9-14900k",
+          "releve_le": "2026-10-30",
+          "extrait": "Turbo Boost Frequency (P) 6 GHz",
+          "origine": "constructeur"
+        },
+        "cache_l3_mo": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i9-14900k",
+          "releve_le": "2026-10-30",
+          "extrait": "L3 Cache 36MB (shared)",
+          "origine": "constructeur"
+        },
+        "tdp_w": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i9-14900k",
+          "releve_le": "2026-10-30",
+          "extrait": "TDP (PL1) 125 W",
+          "origine": "constructeur"
+        },
+        "geekbench_single": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i9-14900k",
+          "releve_le": "2026-10-30",
+          "extrait": "Geekbench 6 (Single-Core) 3171",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
+        },
+        "geekbench_multi": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i9-14900k",
+          "releve_le": "2026-10-30",
+          "extrait": "Geekbench 6 (Multi-Core) 22629",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
+        },
+        "cinebench_2024_multi": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i9-14900k",
+          "releve_le": "2026-10-30",
+          "extrait": "Cinebench 2024 (Multi) 2086",
+          "origine": "agregat",
+          "protocole": "cinebench-2024"
+        }
+      }
+    },
+    {
+      "name": "Intel Core i7-14700K",
+      "brand": "Intel",
+      "socket": "LGA-1700",
+      "annee_sortie": 2023,
+      "cores": 20,
+      "threads": 28,
+      "base_freq_ghz": 3.4,
+      "max_freq_ghz": 5.6,
+      "cache_l3_mo": 33,
+      "tdp_w": 125,
+      "geekbench_single": 3012,
+      "geekbench_multi": 20262,
+      "cinebench_2024_multi": 1859,
+      "provenance": {
+        "annee_sortie": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i7-14700k",
+          "releve_le": "2026-10-30",
+          "extrait": "Released October 16, 2023",
+          "origine": "constructeur"
+        },
+        "cores": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i7-14700k",
+          "releve_le": "2026-10-30",
+          "extrait": "Total Cores 20",
+          "origine": "constructeur"
+        },
+        "threads": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i7-14700k",
+          "releve_le": "2026-10-30",
+          "extrait": "Total Threads 28",
+          "origine": "constructeur"
+        },
+        "base_freq_ghz": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i7-14700k",
+          "releve_le": "2026-10-30",
+          "extrait": "Base Frequency (P) 3.4 GHz",
+          "origine": "constructeur"
+        },
+        "max_freq_ghz": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i7-14700k",
+          "releve_le": "2026-10-30",
+          "extrait": "Turbo Boost Frequency (P) 5.6 GHz",
+          "origine": "constructeur"
+        },
+        "cache_l3_mo": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i7-14700k",
+          "releve_le": "2026-10-30",
+          "extrait": "L3 Cache 33MB (shared)",
+          "origine": "constructeur"
+        },
+        "tdp_w": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i7-14700k",
+          "releve_le": "2026-10-30",
+          "extrait": "TDP (PL1) 125 W",
+          "origine": "constructeur"
+        },
+        "geekbench_single": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i7-14700k",
+          "releve_le": "2026-10-30",
+          "extrait": "Geekbench 6 (Single-Core) 3012",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
+        },
+        "geekbench_multi": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i7-14700k",
+          "releve_le": "2026-10-30",
+          "extrait": "Geekbench 6 (Multi-Core) 20262",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
+        },
+        "cinebench_2024_multi": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i7-14700k",
+          "releve_le": "2026-10-30",
+          "extrait": "Cinebench 2024 (Multi) 1859",
+          "origine": "agregat",
+          "protocole": "cinebench-2024"
+        }
+      }
+    },
+    {
+      "name": "Intel Core i5-14600K",
+      "brand": "Intel",
+      "socket": "LGA-1700",
+      "annee_sortie": 2023,
+      "cores": 14,
+      "threads": 20,
+      "base_freq_ghz": 3.5,
+      "max_freq_ghz": 5.3,
+      "cache_l3_mo": 24,
+      "tdp_w": 125,
+      "geekbench_single": 2804,
+      "geekbench_multi": 15949,
+      "cinebench_2024_multi": 1273,
+      "provenance": {
+        "annee_sortie": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i5-14600k",
+          "releve_le": "2026-10-30",
+          "extrait": "Released October 16, 2023",
+          "origine": "constructeur"
+        },
+        "cores": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i5-14600k",
+          "releve_le": "2026-10-30",
+          "extrait": "Total Cores 14",
+          "origine": "constructeur"
+        },
+        "threads": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i5-14600k",
+          "releve_le": "2026-10-30",
+          "extrait": "Total Threads 20",
+          "origine": "constructeur"
+        },
+        "base_freq_ghz": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i5-14600k",
+          "releve_le": "2026-10-30",
+          "extrait": "Base Frequency (P) 3.5 GHz",
+          "origine": "constructeur"
+        },
+        "max_freq_ghz": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i5-14600k",
+          "releve_le": "2026-10-30",
+          "extrait": "Turbo Boost Frequency (P) 5.3 GHz",
+          "origine": "constructeur"
+        },
+        "cache_l3_mo": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i5-14600k",
+          "releve_le": "2026-10-30",
+          "extrait": "L3 Cache 24MB (shared)",
+          "origine": "constructeur"
+        },
+        "tdp_w": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i5-14600k",
+          "releve_le": "2026-10-30",
+          "extrait": "TDP (PL1) 125 W",
+          "origine": "constructeur"
+        },
+        "geekbench_single": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i5-14600k",
+          "releve_le": "2026-10-30",
+          "extrait": "Geekbench 6 (Single-Core) 2804",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
+        },
+        "geekbench_multi": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i5-14600k",
+          "releve_le": "2026-10-30",
+          "extrait": "Geekbench 6 (Multi-Core) 15949",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
+        },
+        "cinebench_2024_multi": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i5-14600k",
+          "releve_le": "2026-10-30",
+          "extrait": "Cinebench 2024 (Multi) 1273",
+          "origine": "agregat",
+          "protocole": "cinebench-2024"
+        }
+      }
+    },
+    {
+      "name": "Intel Core i9-13900K",
+      "brand": "Intel",
+      "socket": "LGA-1700",
+      "annee_sortie": 2022,
+      "cores": 24,
+      "threads": 32,
+      "base_freq_ghz": 3.0,
+      "max_freq_ghz": 5.4,
+      "cache_l3_mo": 36,
+      "tdp_w": 125,
+      "geekbench_single": 2939,
+      "geekbench_multi": 20498,
+      "cinebench_2024_multi": 1896,
+      "provenance": {
+        "annee_sortie": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i9-13900k",
+          "releve_le": "2026-10-30",
+          "extrait": "Released September 27, 2022",
+          "origine": "constructeur"
+        },
+        "cores": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i9-13900k",
+          "releve_le": "2026-10-30",
+          "extrait": "Total Cores 24",
+          "origine": "constructeur"
+        },
+        "threads": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i9-13900k",
+          "releve_le": "2026-10-30",
+          "extrait": "Total Threads 32",
+          "origine": "constructeur"
+        },
+        "base_freq_ghz": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i9-13900k",
+          "releve_le": "2026-10-30",
+          "extrait": "Base Frequency (P) 3.0 GHz",
+          "origine": "constructeur"
+        },
+        "max_freq_ghz": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i9-13900k",
+          "releve_le": "2026-10-30",
+          "extrait": "Turbo Boost Frequency (P) 5.4 GHz",
+          "origine": "constructeur"
+        },
+        "cache_l3_mo": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i9-13900k",
+          "releve_le": "2026-10-30",
+          "extrait": "L3 Cache 36MB (shared)",
+          "origine": "constructeur"
+        },
+        "tdp_w": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i9-13900k",
+          "releve_le": "2026-10-30",
+          "extrait": "TDP (PL1) 125 W",
+          "origine": "constructeur"
+        },
+        "geekbench_single": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i9-13900k",
+          "releve_le": "2026-10-30",
+          "extrait": "Geekbench 6 (Single-Core) 2939",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
+        },
+        "geekbench_multi": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i9-13900k",
+          "releve_le": "2026-10-30",
+          "extrait": "Geekbench 6 (Multi-Core) 20498",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
+        },
+        "cinebench_2024_multi": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i9-13900k",
+          "releve_le": "2026-10-30",
+          "extrait": "Cinebench 2024 (Multi) 1896",
+          "origine": "agregat",
+          "protocole": "cinebench-2024"
+        }
+      }
+    },
+    {
+      "name": "Intel Core i7-13700K",
+      "brand": "Intel",
+      "socket": "LGA-1700",
+      "annee_sortie": 2022,
+      "cores": 16,
+      "threads": 24,
+      "base_freq_ghz": 3.4,
+      "max_freq_ghz": 5.3,
+      "cache_l3_mo": 30,
+      "tdp_w": 125,
+      "geekbench_single": 2941,
+      "geekbench_multi": 20193,
+      "cinebench_2024_multi": 1521,
+      "provenance": {
+        "annee_sortie": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i7-13700k",
+          "releve_le": "2026-10-30",
+          "extrait": "Released September 27, 2022",
+          "origine": "constructeur"
+        },
+        "cores": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i7-13700k",
+          "releve_le": "2026-10-30",
+          "extrait": "Total Cores 16",
+          "origine": "constructeur"
+        },
+        "threads": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i7-13700k",
+          "releve_le": "2026-10-30",
+          "extrait": "Total Threads 24",
+          "origine": "constructeur"
+        },
+        "base_freq_ghz": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i7-13700k",
+          "releve_le": "2026-10-30",
+          "extrait": "Base Frequency (P) 3.4 GHz",
+          "origine": "constructeur"
+        },
+        "max_freq_ghz": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i7-13700k",
+          "releve_le": "2026-10-30",
+          "extrait": "Turbo Boost Frequency (P) 5.3 GHz",
+          "origine": "constructeur"
+        },
+        "cache_l3_mo": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i7-13700k",
+          "releve_le": "2026-10-30",
+          "extrait": "L3 Cache 30MB (shared)",
+          "origine": "constructeur"
+        },
+        "tdp_w": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i7-13700k",
+          "releve_le": "2026-10-30",
+          "extrait": "TDP (PL1) 125 W",
+          "origine": "constructeur"
+        },
+        "geekbench_single": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i7-13700k",
+          "releve_le": "2026-10-30",
+          "extrait": "Geekbench 6 (Single-Core) 2941",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
+        },
+        "geekbench_multi": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i7-13700k",
+          "releve_le": "2026-10-30",
+          "extrait": "Geekbench 6 (Multi-Core) 20193",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
+        },
+        "cinebench_2024_multi": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i7-13700k",
+          "releve_le": "2026-10-30",
+          "extrait": "Cinebench 2024 (Multi) 1521",
+          "origine": "agregat",
+          "protocole": "cinebench-2024"
+        }
+      }
+    },
+    {
+      "name": "Intel Core i5-13600K",
+      "brand": "Intel",
+      "socket": "LGA-1700",
+      "annee_sortie": 2022,
+      "cores": 14,
+      "threads": 20,
+      "base_freq_ghz": 3.5,
+      "max_freq_ghz": 5.1,
+      "cache_l3_mo": 24,
+      "tdp_w": 125,
+      "geekbench_single": 2718,
+      "geekbench_multi": 16101,
+      "cinebench_2024_multi": 1289,
+      "provenance": {
+        "annee_sortie": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i5-13600k",
+          "releve_le": "2026-10-30",
+          "extrait": "Released September 27, 2022",
+          "origine": "constructeur"
+        },
+        "cores": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i5-13600k",
+          "releve_le": "2026-10-30",
+          "extrait": "Total Cores 14",
+          "origine": "constructeur"
+        },
+        "threads": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i5-13600k",
+          "releve_le": "2026-10-30",
+          "extrait": "Total Threads 20",
+          "origine": "constructeur"
+        },
+        "base_freq_ghz": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i5-13600k",
+          "releve_le": "2026-10-30",
+          "extrait": "Base Frequency (P) 3.5 GHz",
+          "origine": "constructeur"
+        },
+        "max_freq_ghz": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i5-13600k",
+          "releve_le": "2026-10-30",
+          "extrait": "Turbo Boost Frequency (P) 5.1 GHz",
+          "origine": "constructeur"
+        },
+        "cache_l3_mo": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i5-13600k",
+          "releve_le": "2026-10-30",
+          "extrait": "L3 Cache 24MB (shared)",
+          "origine": "constructeur"
+        },
+        "tdp_w": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i5-13600k",
+          "releve_le": "2026-10-30",
+          "extrait": "TDP (PL1) 125 W",
+          "origine": "constructeur"
+        },
+        "geekbench_single": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i5-13600k",
+          "releve_le": "2026-10-30",
+          "extrait": "Geekbench 6 (Single-Core) 2718",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
+        },
+        "geekbench_multi": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i5-13600k",
+          "releve_le": "2026-10-30",
+          "extrait": "Geekbench 6 (Multi-Core) 16101",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
+        },
+        "cinebench_2024_multi": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-i5-13600k",
+          "releve_le": "2026-10-30",
+          "extrait": "Cinebench 2024 (Multi) 1289",
+          "origine": "agregat",
+          "protocole": "cinebench-2024"
+        }
+      }
+    },
+    {
+      "name": "Intel Core Ultra 9 285K",
+      "brand": "Intel",
+      "socket": "FCLGA-1851",
+      "annee_sortie": 2024,
+      "cores": 24,
+      "threads": 24,
+      "base_freq_ghz": 3.7,
+      "max_freq_ghz": 5.5,
+      "cache_l3_mo": 36,
+      "tdp_w": 125,
+      "geekbench_single": 3379,
+      "geekbench_multi": 23095,
+      "cinebench_2024_multi": 2261,
+      "provenance": {
+        "annee_sortie": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-ultra-9-285k",
+          "releve_le": "2026-10-30",
+          "extrait": "Released October 11, 2024",
+          "origine": "constructeur"
+        },
+        "cores": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-ultra-9-285k",
+          "releve_le": "2026-10-30",
+          "extrait": "Total Cores 24",
+          "origine": "constructeur"
+        },
+        "threads": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-ultra-9-285k",
+          "releve_le": "2026-10-30",
+          "extrait": "Total Threads 24",
+          "origine": "constructeur"
+        },
+        "base_freq_ghz": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-ultra-9-285k",
+          "releve_le": "2026-10-30",
+          "extrait": "Base Frequency (P) 3.7 GHz",
+          "origine": "constructeur"
+        },
+        "max_freq_ghz": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-ultra-9-285k",
+          "releve_le": "2026-10-30",
+          "extrait": "Turbo Boost Frequency (P) 5.5 GHz",
+          "origine": "constructeur"
+        },
+        "cache_l3_mo": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-ultra-9-285k",
+          "releve_le": "2026-10-30",
+          "extrait": "L3 Cache 36MB (shared)",
+          "origine": "constructeur"
+        },
+        "tdp_w": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-ultra-9-285k",
+          "releve_le": "2026-10-30",
+          "extrait": "TDP (PL1) 125 W",
+          "origine": "constructeur"
+        },
+        "geekbench_single": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-ultra-9-285k",
+          "releve_le": "2026-10-30",
+          "extrait": "Geekbench 6 (Single-Core) 3379",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
+        },
+        "geekbench_multi": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-ultra-9-285k",
+          "releve_le": "2026-10-30",
+          "extrait": "Geekbench 6 (Multi-Core) 23095",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
+        },
+        "cinebench_2024_multi": {
+          "url": "https://nanoreview.net/en/cpu/intel-core-ultra-9-285k",
+          "releve_le": "2026-10-30",
+          "extrait": "Cinebench 2024 (Multi) 2261",
+          "origine": "agregat",
+          "protocole": "cinebench-2024"
+        }
+      }
+    },
+    {
+      "name": "AMD Ryzen 9 5900X",
+      "brand": "AMD",
+      "socket": "AM4",
+      "annee_sortie": 2020,
+      "cores": 12,
+      "threads": 24,
+      "base_freq_ghz": 3.7,
+      "max_freq_ghz": 4.8,
+      "cache_l3_mo": 64,
+      "tdp_w": 105,
+      "geekbench_single": 2263,
+      "geekbench_multi": 12701,
+      "cinebench_2024_multi": 1193,
+      "provenance": {
+        "annee_sortie": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-9-5900x",
+          "releve_le": "2026-10-30",
+          "extrait": "Released October 8, 2020",
+          "origine": "constructeur"
+        },
+        "cores": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-9-5900x",
+          "releve_le": "2026-10-30",
+          "extrait": "Total Cores 12",
+          "origine": "constructeur"
+        },
+        "threads": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-9-5900x",
+          "releve_le": "2026-10-30",
+          "extrait": "Total Threads 24",
+          "origine": "constructeur"
+        },
+        "base_freq_ghz": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-9-5900x",
+          "releve_le": "2026-10-30",
+          "extrait": "Base Frequency (P) 3.7 GHz",
+          "origine": "constructeur"
+        },
+        "max_freq_ghz": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-9-5900x",
+          "releve_le": "2026-10-30",
+          "extrait": "Turbo Boost Frequency (P) 4.8 GHz",
+          "origine": "constructeur"
+        },
+        "cache_l3_mo": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-9-5900x",
+          "releve_le": "2026-10-30",
+          "extrait": "L3 Cache 64MB (shared)",
+          "origine": "constructeur"
+        },
+        "tdp_w": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-9-5900x",
+          "releve_le": "2026-10-30",
+          "extrait": "TDP (PL1) 105 W",
+          "origine": "constructeur"
+        },
+        "geekbench_single": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-9-5900x",
+          "releve_le": "2026-10-30",
+          "extrait": "Geekbench 6 (Single-Core) 2263",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
+        },
+        "geekbench_multi": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-9-5900x",
+          "releve_le": "2026-10-30",
+          "extrait": "Geekbench 6 (Multi-Core) 12701",
+          "origine": "agregat",
+          "protocole": "geekbench-6"
+        },
+        "cinebench_2024_multi": {
+          "url": "https://nanoreview.net/en/cpu/amd-ryzen-9-5900x",
+          "releve_le": "2026-10-30",
+          "extrait": "Cinebench 2024 (Multi) 1193",
+          "origine": "agregat",
+          "protocole": "cinebench-2024"
+        }
+      }
+    }
   ]
 }
