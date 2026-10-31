@@ -13,11 +13,16 @@
  *   label    — intitulé affiché
  *   key      — champ du document
  *   unit     — suffixe affiché après la valeur (optionnel)
- *   numeric  — la valeur se compare chiffre à chiffre (surligne un gagnant)
+ *   numeric  — la valeur se compare chiffre à chiffre (rang, place dans le marché)
+ *   departage — un gagnant peut être désigné (absent pour les specs papier)
  *   invert   — plus petit = meilleur (consommation, poids…)
  */
 
-import { critere, resolveType as resolveTypePartage } from '../../../shared/criteres.js';
+import {
+  critere,
+  equivalents,
+  resolveType as resolveTypePartage,
+} from '../../../shared/criteres.js';
 
 /*
  * Les trois aides ci-dessous lisent l'unité, le sens de lecture et le plafond
@@ -31,6 +36,7 @@ function ligne(type, key, label) {
   const row = { label, key };
   if (cr.unite) row.unit = cr.unite;
   if (cr.comparable) row.numeric = true;
+  if (cr.departage) row.departage = true;
   if (cr.inverse) row.invert = true;
   return row;
 }
@@ -46,6 +52,11 @@ function barre(type, key, label) {
 /** Métrique des synthèses (« 50 % de cœurs »). */
 function metrique(type, key, label) {
   const cr = critere(type, key);
+  if (!cr.departage) {
+    // Les synthèses ne parlent que de ce qui départage : « 50 % de cœurs en
+    // plus » se lirait comme un avantage, ce qu'un nombre de cœurs n'est pas.
+    throw new Error(`${type}.${key} ne départage pas : il n'a pas sa place dans KEY_METRICS.`);
+  }
   const row = { key, label };
   if (cr.unite) row.unit = cr.unite;
   if (cr.inverse) row.invert = true;
@@ -180,9 +191,6 @@ export const KEY_METRICS = {
   cpu: [
     metrique('cpu', 'geekbench_multi', 'de performances multi-cœur'),
     metrique('cpu', 'geekbench_single', 'de performances mono-cœur'),
-    metrique('cpu', 'cores', 'de cœurs'),
-    metrique('cpu', 'threads', 'de threads'),
-    metrique('cpu', 'max_freq_ghz', 'de fréquence maximale'),
     metrique('cpu', 'tdp_w', 'de consommation'),
   ],
   gpu: [
@@ -239,8 +247,10 @@ export function formatValue(value, unit) {
 
 /**
  * Index du produit gagnant sur une ligne, ou -1.
- * Renvoie -1 dès que toutes les valeurs sont égales : surligner une égalité
- * ferait croire à un avantage.
+ * Renvoie -1 dès qu'un autre produit est ÉQUIVALENT au meilleur (moins de
+ * 3 % d'écart, voir `equivalents`) : surligner une égalité de fait ferait
+ * croire à un avantage. L'appelant ne l'appelle que pour une ligne
+ * `departage`.
  */
 export function winnerIndex(products, key, invert = false) {
   const values = products.map(p => toNumber(p?.[key]));
@@ -253,13 +263,15 @@ export function winnerIndex(products, key, invert = false) {
     if (v === bestVal) bestIndices.push(i);
   });
 
-  return bestIndices.length === 1 ? bestIndices[0] : -1;
+  if (bestIndices.length !== 1) return -1;
+  const suivants = present.filter(v => v !== bestVal);
+  return suivants.some(v => equivalents(v, bestVal)) ? -1 : bestIndices[0];
 }
 
 /**
  * Différences clés entre deux produits, groupées par gagnant.
- * Un écart inférieur à 3 % est ignoré : sous ce seuil, la différence n'est
- * pas perceptible à l'usage et encombrerait la synthèse.
+ * Deux valeurs équivalentes (moins de 3 % d'écart) sont ignorées : sous ce
+ * seuil, la différence n'est pas perceptible à l'usage.
  */
 export function buildKeyDifferences(a, b, productType) {
   const type = resolveType(productType);
@@ -271,13 +283,13 @@ export function buildKeyDifferences(a, b, productType) {
     const va = toNumber(a[key]);
     const vb = toNumber(b[key]);
     if (va === null || vb === null || va <= 0 || vb <= 0 || va === vb) return;
+    if (equivalents(va, vb)) return;
 
     const high = Math.max(va, vb);
     const low = Math.min(va, vb);
     if (invert) {
       const winner = va < vb ? 'a' : 'b';
       const delta = Math.round(((high - low) / high) * 100);
-      if (delta < 3) return;
       result[winner].push(
         `${delta} % ${label} en moins (${formatValue(low, unit)} contre ${formatValue(high, unit)})`
       );
@@ -286,8 +298,6 @@ export function buildKeyDifferences(a, b, productType) {
 
     const winner = va > vb ? 'a' : 'b';
     const delta = Math.round(((high - low) / low) * 100);
-    if (delta < 3) return;
-
     result[winner].push(
       `${delta} % ${label} (${formatValue(high, unit)} contre ${formatValue(low, unit)})`
     );
@@ -326,10 +336,9 @@ export function buildStrengths(products, productType) {
 
       if (invert) {
         const bestRival = Math.min(...rivals);
-        if (mine >= bestRival) return;
+        if (mine >= bestRival || equivalents(mine, bestRival)) return;
 
         const delta = Math.round(((bestRival - mine) / bestRival) * 100);
-        if (delta < 3) return;
 
         lines.push(
           `${delta} % ${label} en moins que son meilleur rival (${formatValue(mine, unit)})`
@@ -338,10 +347,9 @@ export function buildStrengths(products, productType) {
       }
 
       const bestRival = Math.max(...rivals);
-      if (mine <= bestRival) return;
+      if (mine <= bestRival || equivalents(mine, bestRival)) return;
 
       const delta = Math.round(((mine - bestRival) / bestRival) * 100);
-      if (delta < 3) return;
 
       lines.push(`${delta} % ${label} de plus que son meilleur rival (${formatValue(mine, unit)})`);
     });

@@ -23,6 +23,10 @@
  *               'caracteristique' donnée de fiche technique (cœurs, Go, GHz)
  *   unite       unité affichée après la valeur, ou null
  *   inverse     true si la valeur la plus basse est la meilleure (consommation)
+ *   departage   false pour une « spec papier » (fréquences, cœurs, threads) :
+ *               la valeur s'affiche et se situe dans le marché, mais n'est
+ *               jamais désignée gagnante ni citée comme avantage, car elle ne
+ *               prédit pas les performances. Vaut `comparable` par défaut.
  *   comparable  false si deux valeurs ne se comparent pas entre marques : la
  *               valeur s'affiche, mais aucun gagnant ni rang n'est calculé
  *   plafond     valeur ramenée à 100 dans les notes et le radar, ou null
@@ -43,6 +47,26 @@ export const SEGMENTS = {
 };
 
 export const TYPES = Object.keys(SEGMENTS);
+
+/*
+ * Zone d'égalité : deux valeurs à moins de 3 % l'une de l'autre sont
+ * « équivalentes ». Sous ce seuil, l'écart ne se ressent pas à l'usage et se
+ * situe dans la variation d'une mesure à l'autre d'un même benchmark : en
+ * désigner un gagnant fabriquerait une différence. Toute désignation de
+ * gagnant du site (tableaux, badge « Meilleure note », différences clés,
+ * avantages) passe par `equivalents`.
+ */
+export const SEUIL_EGALITE = 0.03;
+
+/**
+ * Deux valeurs positives sont-elles équivalentes (écart relatif à la plus
+ * grande inférieur à SEUIL_EGALITE) ? Une valeur absente, nulle ou négative
+ * n'est équivalente à rien.
+ */
+export function equivalents(a, b) {
+  if (!(Number.isFinite(a) && Number.isFinite(b) && a > 0 && b > 0)) return false;
+  return Math.abs(a - b) / Math.max(a, b) < SEUIL_EGALITE;
+}
 
 /*
  * Qui a produit une valeur. Distinct de la `nature` d'un critère : une
@@ -92,6 +116,8 @@ const c = (key, options = {}) =>
     unite: options.unite ?? null,
     inverse: Boolean(options.inverse),
     comparable: options.comparable !== false,
+    // Un critère non comparable n'est a fortiori jamais départagé.
+    departage: options.comparable !== false && options.departage !== false,
     plafond: options.plafond ?? null,
     protocoles: Object.freeze([...(options.protocoles || [])]),
   });
@@ -108,10 +134,13 @@ const GEEKBENCH = ['geekbench-6', 'geekbench-5'];
  */
 export const CRITERES = Object.freeze({
   cpu: Object.freeze([
-    c('cores', { plafond: 24 }),
-    c('threads', { plafond: 32 }),
-    c('base_freq_ghz', { unite: 'GHz' }),
-    c('max_freq_ghz', { unite: 'GHz', plafond: 6 }),
+    // Specs papier : un cœur, un thread ou un GHz ne valent pas la même chose
+    // d'une architecture à l'autre. Affichés et situés, jamais départagés :
+    // c'est Geekbench qui dit lequel calcule le plus vite.
+    c('cores', { plafond: 24, departage: false }),
+    c('threads', { plafond: 32, departage: false }),
+    c('base_freq_ghz', { unite: 'GHz', departage: false }),
+    c('max_freq_ghz', { unite: 'GHz', plafond: 6, departage: false }),
     c('tdp_w', { unite: 'W', inverse: true }),
     c('geekbench_single', { nature: 'benchmark', plafond: 3500, protocoles: GEEKBENCH }),
     c('geekbench_multi', { nature: 'benchmark', plafond: 29000, protocoles: GEEKBENCH }),

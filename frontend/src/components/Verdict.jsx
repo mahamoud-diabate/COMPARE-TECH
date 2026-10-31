@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { ScoreBar } from './Score';
 import { getProductScore } from '../utils/scores';
 import { resolveType, toNumber, formatValue } from '../utils/specs';
+import { indexMeneurs } from '../utils/marche';
 
 // Métrique de référence par type : celle qui pèse le plus dans le score.
 const MAIN_METRIC = {
@@ -58,7 +59,9 @@ function Verdict({ products, productType, analyseSeule = false }) {
 
   const scores = products.map(p => getProductScore(p, productType));
   const best = Math.max(...scores);
-  const winners = products.filter((_, i) => scores[i] === best);
+  // Zone d'égalité : une note à moins de 3 % de la meilleure est une égalité
+  // de fait, comme dans l'en-tête de la comparaison.
+  const winners = indexMeneurs(scores).map(i => products[i]);
 
   const rawValues = products.map(p => toNumber(p[metric.key]));
   const usable = rawValues.filter(v => v !== null && v > 0);
@@ -131,7 +134,7 @@ function Verdict({ products, productType, analyseSeule = false }) {
           ) : winners.length > 1 ? (
             <>
               <strong>{winners.map(p => p.name).join(' et ')}</strong> terminent à égalité sur le
-              score global.
+              score global (moins de 3 % d’écart).
             </>
           ) : (
             <>

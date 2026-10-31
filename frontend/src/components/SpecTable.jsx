@@ -61,7 +61,7 @@ function SpecTable({ products = [], showDifferencesOnly = false, productType }) 
               <tbody>
                 {group.rows.map(row => {
                   const winner =
-                    row.numeric && list.length > 1 ? winnerIndex(list, row.key, row.invert) : -1;
+                    row.departage && list.length > 1 ? winnerIndex(list, row.key, row.invert) : -1;
                   const equal = list.length > 1 && isIdentical(row.key);
 
                   return (
