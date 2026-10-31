@@ -33,8 +33,32 @@
           "releve_le": "2026-10-30",
           "extrait": "Time Spy 36299",
           "origine": "agregat"
+        },
+        "fps_1080p": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-4090",
+          "releve_le": "2026-10-31",
+          "extrait": "Average FPS by Resolution 1080p High 255 1080p Ultra 217",
+          "origine": "agregat",
+          "protocole": "nanoreview-fps-ultra"
+        },
+        "fps_1440p": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-4090",
+          "releve_le": "2026-10-31",
+          "extrait": "Average FPS by Resolution 1080p High 255 1080p Ultra 217 1440p Ultra 177",
+          "origine": "agregat",
+          "protocole": "nanoreview-fps-ultra"
+        },
+        "fps_4k": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-4090",
+          "releve_le": "2026-10-31",
+          "extrait": "Average FPS by Resolution 1080p High 255 1080p Ultra 217 1440p Ultra 177 4K Ultra 106",
+          "origine": "agregat",
+          "protocole": "nanoreview-fps-ultra"
         }
-      }
+      },
+      "fps_1080p": 217,
+      "fps_1440p": 177,
+      "fps_4k": 106
     },
     {
       "name": "AMD Radeon RX 7900 XTX",
@@ -68,8 +92,32 @@
           "releve_le": "2026-10-30",
           "extrait": "Time Spy 30804",
           "origine": "agregat"
+        },
+        "fps_1080p": {
+          "url": "https://nanoreview.net/en/gpu/radeon-rx-7900-xtx",
+          "releve_le": "2026-10-31",
+          "extrait": "Average FPS by Resolution 1080p High 242 1080p Ultra 203",
+          "origine": "agregat",
+          "protocole": "nanoreview-fps-ultra"
+        },
+        "fps_1440p": {
+          "url": "https://nanoreview.net/en/gpu/radeon-rx-7900-xtx",
+          "releve_le": "2026-10-31",
+          "extrait": "Average FPS by Resolution 1080p High 242 1080p Ultra 203 1440p Ultra 159",
+          "origine": "agregat",
+          "protocole": "nanoreview-fps-ultra"
+        },
+        "fps_4k": {
+          "url": "https://nanoreview.net/en/gpu/radeon-rx-7900-xtx",
+          "releve_le": "2026-10-31",
+          "extrait": "Average FPS by Resolution 1080p High 242 1080p Ultra 203 1440p Ultra 159 4K Ultra 95",
+          "origine": "agregat",
+          "protocole": "nanoreview-fps-ultra"
         }
-      }
+      },
+      "fps_1080p": 203,
+      "fps_1440p": 159,
+      "fps_4k": 95
     },
     {
       "name": "Nvidia GeForce RTX 4080 SUPER",
@@ -103,8 +151,32 @@
           "releve_le": "2026-10-30",
           "extrait": "Time Spy 28271",
           "origine": "agregat"
+        },
+        "fps_1080p": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-4080-super",
+          "releve_le": "2026-10-31",
+          "extrait": "Average FPS by Resolution 1080p High 219 1080p Ultra 187",
+          "origine": "agregat",
+          "protocole": "nanoreview-fps-ultra"
+        },
+        "fps_1440p": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-4080-super",
+          "releve_le": "2026-10-31",
+          "extrait": "Average FPS by Resolution 1080p High 219 1080p Ultra 187 1440p Ultra 149",
+          "origine": "agregat",
+          "protocole": "nanoreview-fps-ultra"
+        },
+        "fps_4k": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-4080-super",
+          "releve_le": "2026-10-31",
+          "extrait": "Average FPS by Resolution 1080p High 219 1080p Ultra 187 1440p Ultra 149 4K Ultra 89",
+          "origine": "agregat",
+          "protocole": "nanoreview-fps-ultra"
         }
-      }
+      },
+      "fps_1080p": 187,
+      "fps_1440p": 149,
+      "fps_4k": 89
     },
     {
       "name": "AMD Radeon RX 7900 XT",
@@ -138,8 +210,32 @@
           "releve_le": "2026-10-30",
           "extrait": "Time Spy 27106",
           "origine": "agregat"
+        },
+        "fps_1080p": {
+          "url": "https://nanoreview.net/en/gpu/radeon-rx-7900-xt",
+          "releve_le": "2026-10-31",
+          "extrait": "Average FPS by Resolution 1080p High 219 1080p Ultra 184",
+          "origine": "agregat",
+          "protocole": "nanoreview-fps-ultra"
+        },
+        "fps_1440p": {
+          "url": "https://nanoreview.net/en/gpu/radeon-rx-7900-xt",
+          "releve_le": "2026-10-31",
+          "extrait": "Average FPS by Resolution 1080p High 219 1080p Ultra 184 1440p Ultra 142",
+          "origine": "agregat",
+          "protocole": "nanoreview-fps-ultra"
+        },
+        "fps_4k": {
+          "url": "https://nanoreview.net/en/gpu/radeon-rx-7900-xt",
+          "releve_le": "2026-10-31",
+          "extrait": "Average FPS by Resolution 1080p High 219 1080p Ultra 184 1440p Ultra 142 4K Ultra 84",
+          "origine": "agregat",
+          "protocole": "nanoreview-fps-ultra"
         }
-      }
+      },
+      "fps_1080p": 184,
+      "fps_1440p": 142,
+      "fps_4k": 84
     },
     {
       "name": "Nvidia GeForce RTX 4070 Ti SUPER",
@@ -173,8 +269,32 @@
           "releve_le": "2026-10-30",
           "extrait": "Time Spy 24220",
           "origine": "agregat"
+        },
+        "fps_1080p": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-4070-ti-super",
+          "releve_le": "2026-10-31",
+          "extrait": "Average FPS by Resolution 1080p High 201 1080p Ultra 171",
+          "origine": "agregat",
+          "protocole": "nanoreview-fps-ultra"
+        },
+        "fps_1440p": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-4070-ti-super",
+          "releve_le": "2026-10-31",
+          "extrait": "Average FPS by Resolution 1080p High 201 1080p Ultra 171 1440p Ultra 134",
+          "origine": "agregat",
+          "protocole": "nanoreview-fps-ultra"
+        },
+        "fps_4k": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-4070-ti-super",
+          "releve_le": "2026-10-31",
+          "extrait": "Average FPS by Resolution 1080p High 201 1080p Ultra 171 1440p Ultra 134 4K Ultra 79",
+          "origine": "agregat",
+          "protocole": "nanoreview-fps-ultra"
         }
-      }
+      },
+      "fps_1080p": 171,
+      "fps_1440p": 134,
+      "fps_4k": 79
     },
     {
       "name": "Nvidia GeForce RTX 4070 SUPER",
@@ -243,8 +363,32 @@
           "releve_le": "2026-10-30",
           "extrait": "Time Spy 20095",
           "origine": "agregat"
+        },
+        "fps_1080p": {
+          "url": "https://nanoreview.net/en/gpu/radeon-rx-7800-xt",
+          "releve_le": "2026-10-31",
+          "extrait": "Average FPS by Resolution 1080p High 180 1080p Ultra 150",
+          "origine": "agregat",
+          "protocole": "nanoreview-fps-ultra"
+        },
+        "fps_1440p": {
+          "url": "https://nanoreview.net/en/gpu/radeon-rx-7800-xt",
+          "releve_le": "2026-10-31",
+          "extrait": "Average FPS by Resolution 1080p High 180 1080p Ultra 150 1440p Ultra 115",
+          "origine": "agregat",
+          "protocole": "nanoreview-fps-ultra"
+        },
+        "fps_4k": {
+          "url": "https://nanoreview.net/en/gpu/radeon-rx-7800-xt",
+          "releve_le": "2026-10-31",
+          "extrait": "Average FPS by Resolution 1080p High 180 1080p Ultra 150 1440p Ultra 115 4K Ultra 67",
+          "origine": "agregat",
+          "protocole": "nanoreview-fps-ultra"
         }
-      }
+      },
+      "fps_1080p": 150,
+      "fps_1440p": 115,
+      "fps_4k": 67
     },
     {
       "name": "Nvidia GeForce RTX 3090",
@@ -278,8 +422,32 @@
           "releve_le": "2026-10-30",
           "extrait": "Time Spy 19896",
           "origine": "agregat"
+        },
+        "fps_1080p": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-3090",
+          "releve_le": "2026-10-31",
+          "extrait": "Average FPS by Resolution 1080p High 181 1080p Ultra 152",
+          "origine": "agregat",
+          "protocole": "nanoreview-fps-ultra"
+        },
+        "fps_1440p": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-3090",
+          "releve_le": "2026-10-31",
+          "extrait": "Average FPS by Resolution 1080p High 181 1080p Ultra 152 1440p Ultra 120",
+          "origine": "agregat",
+          "protocole": "nanoreview-fps-ultra"
+        },
+        "fps_4k": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-3090",
+          "releve_le": "2026-10-31",
+          "extrait": "Average FPS by Resolution 1080p High 181 1080p Ultra 152 1440p Ultra 120 4K Ultra 70",
+          "origine": "agregat",
+          "protocole": "nanoreview-fps-ultra"
         }
-      }
+      },
+      "fps_1080p": 152,
+      "fps_1440p": 120,
+      "fps_4k": 70
     },
     {
       "name": "AMD Radeon RX 6800 XT",
@@ -313,8 +481,32 @@
           "releve_le": "2026-10-30",
           "extrait": "Time Spy 19379",
           "origine": "agregat"
+        },
+        "fps_1080p": {
+          "url": "https://nanoreview.net/en/gpu/radeon-rx-6800-xt",
+          "releve_le": "2026-10-31",
+          "extrait": "Average FPS by Resolution 1080p High 177 1080p Ultra 146",
+          "origine": "agregat",
+          "protocole": "nanoreview-fps-ultra"
+        },
+        "fps_1440p": {
+          "url": "https://nanoreview.net/en/gpu/radeon-rx-6800-xt",
+          "releve_le": "2026-10-31",
+          "extrait": "Average FPS by Resolution 1080p High 177 1080p Ultra 146 1440p Ultra 111",
+          "origine": "agregat",
+          "protocole": "nanoreview-fps-ultra"
+        },
+        "fps_4k": {
+          "url": "https://nanoreview.net/en/gpu/radeon-rx-6800-xt",
+          "releve_le": "2026-10-31",
+          "extrait": "Average FPS by Resolution 1080p High 177 1080p Ultra 146 1440p Ultra 111 4K Ultra 65",
+          "origine": "agregat",
+          "protocole": "nanoreview-fps-ultra"
         }
-      }
+      },
+      "fps_1080p": 146,
+      "fps_1440p": 111,
+      "fps_4k": 65
     },
     {
       "name": "Nvidia GeForce RTX 4070",
@@ -348,8 +540,32 @@
           "releve_le": "2026-10-30",
           "extrait": "Time Spy 17799",
           "origine": "agregat"
+        },
+        "fps_1080p": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-4070",
+          "releve_le": "2026-10-31",
+          "extrait": "Average FPS by Resolution 1080p High 167 1080p Ultra 139",
+          "origine": "agregat",
+          "protocole": "nanoreview-fps-ultra"
+        },
+        "fps_1440p": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-4070",
+          "releve_le": "2026-10-31",
+          "extrait": "Average FPS by Resolution 1080p High 167 1080p Ultra 139 1440p Ultra 106",
+          "origine": "agregat",
+          "protocole": "nanoreview-fps-ultra"
+        },
+        "fps_4k": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-4070",
+          "releve_le": "2026-10-31",
+          "extrait": "Average FPS by Resolution 1080p High 167 1080p Ultra 139 1440p Ultra 106 4K Ultra 62",
+          "origine": "agregat",
+          "protocole": "nanoreview-fps-ultra"
         }
-      }
+      },
+      "fps_1080p": 139,
+      "fps_1440p": 106,
+      "fps_4k": 62
     },
     {
       "name": "Nvidia GeForce RTX 3080",
@@ -383,8 +599,32 @@
           "releve_le": "2026-10-30",
           "extrait": "Time Spy 17664",
           "origine": "agregat"
+        },
+        "fps_1080p": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-3080",
+          "releve_le": "2026-10-31",
+          "extrait": "Average FPS by Resolution 1080p High 167 1080p Ultra 141",
+          "origine": "agregat",
+          "protocole": "nanoreview-fps-ultra"
+        },
+        "fps_1440p": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-3080",
+          "releve_le": "2026-10-31",
+          "extrait": "Average FPS by Resolution 1080p High 167 1080p Ultra 141 1440p Ultra 108",
+          "origine": "agregat",
+          "protocole": "nanoreview-fps-ultra"
+        },
+        "fps_4k": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-3080",
+          "releve_le": "2026-10-31",
+          "extrait": "Average FPS by Resolution 1080p High 167 1080p Ultra 141 1440p Ultra 108 4K Ultra 64",
+          "origine": "agregat",
+          "protocole": "nanoreview-fps-ultra"
         }
-      }
+      },
+      "fps_1080p": 141,
+      "fps_1440p": 108,
+      "fps_4k": 64
     },
     {
       "name": "AMD Radeon RX 7700 XT",
@@ -418,8 +658,32 @@
           "releve_le": "2026-10-30",
           "extrait": "Time Spy 17109",
           "origine": "agregat"
+        },
+        "fps_1080p": {
+          "url": "https://nanoreview.net/en/gpu/radeon-rx-7700-xt",
+          "releve_le": "2026-10-31",
+          "extrait": "Average FPS by Resolution 1080p High 161 1080p Ultra 133",
+          "origine": "agregat",
+          "protocole": "nanoreview-fps-ultra"
+        },
+        "fps_1440p": {
+          "url": "https://nanoreview.net/en/gpu/radeon-rx-7700-xt",
+          "releve_le": "2026-10-31",
+          "extrait": "Average FPS by Resolution 1080p High 161 1080p Ultra 133 1440p Ultra 99",
+          "origine": "agregat",
+          "protocole": "nanoreview-fps-ultra"
+        },
+        "fps_4k": {
+          "url": "https://nanoreview.net/en/gpu/radeon-rx-7700-xt",
+          "releve_le": "2026-10-31",
+          "extrait": "Average FPS by Resolution 1080p High 161 1080p Ultra 133 1440p Ultra 99 4K Ultra 57",
+          "origine": "agregat",
+          "protocole": "nanoreview-fps-ultra"
         }
-      }
+      },
+      "fps_1080p": 133,
+      "fps_1440p": 99,
+      "fps_4k": 57
     },
     {
       "name": "Nvidia GeForce RTX 4060 Ti 8GB",
@@ -453,8 +717,32 @@
           "releve_le": "2026-10-30",
           "extrait": "Time Spy 13479",
           "origine": "agregat"
+        },
+        "fps_1080p": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-4060-ti-8gb",
+          "releve_le": "2026-10-31",
+          "extrait": "Average FPS by Resolution 1080p High 139 1080p Ultra 116",
+          "origine": "agregat",
+          "protocole": "nanoreview-fps-ultra"
+        },
+        "fps_1440p": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-4060-ti-8gb",
+          "releve_le": "2026-10-31",
+          "extrait": "Average FPS by Resolution 1080p High 139 1080p Ultra 116 1440p Ultra 86",
+          "origine": "agregat",
+          "protocole": "nanoreview-fps-ultra"
+        },
+        "fps_4k": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-4060-ti-8gb",
+          "releve_le": "2026-10-31",
+          "extrait": "Average FPS by Resolution 1080p High 139 1080p Ultra 116 1440p Ultra 86 4K Ultra 50",
+          "origine": "agregat",
+          "protocole": "nanoreview-fps-ultra"
         }
-      }
+      },
+      "fps_1080p": 116,
+      "fps_1440p": 86,
+      "fps_4k": 50
     },
     {
       "name": "AMD Radeon RX 7600",
@@ -488,8 +776,32 @@
           "releve_le": "2026-10-30",
           "extrait": "Time Spy 10931",
           "origine": "agregat"
+        },
+        "fps_1080p": {
+          "url": "https://nanoreview.net/en/gpu/radeon-rx-7600",
+          "releve_le": "2026-10-31",
+          "extrait": "Average FPS by Resolution 1080p High 116 1080p Ultra 94",
+          "origine": "agregat",
+          "protocole": "nanoreview-fps-ultra"
+        },
+        "fps_1440p": {
+          "url": "https://nanoreview.net/en/gpu/radeon-rx-7600",
+          "releve_le": "2026-10-31",
+          "extrait": "Average FPS by Resolution 1080p High 116 1080p Ultra 94 1440p Ultra 67",
+          "origine": "agregat",
+          "protocole": "nanoreview-fps-ultra"
+        },
+        "fps_4k": {
+          "url": "https://nanoreview.net/en/gpu/radeon-rx-7600",
+          "releve_le": "2026-10-31",
+          "extrait": "Average FPS by Resolution 1080p High 116 1080p Ultra 94 1440p Ultra 67 4K Ultra 36",
+          "origine": "agregat",
+          "protocole": "nanoreview-fps-ultra"
         }
-      }
+      },
+      "fps_1080p": 94,
+      "fps_1440p": 67,
+      "fps_4k": 36
     },
     {
       "name": "Nvidia GeForce RTX 4060",
@@ -523,8 +835,32 @@
           "releve_le": "2026-10-30",
           "extrait": "Time Spy 10615",
           "origine": "agregat"
+        },
+        "fps_1080p": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-4060",
+          "releve_le": "2026-10-31",
+          "extrait": "Average FPS by Resolution 1080p High 116 1080p Ultra 96",
+          "origine": "agregat",
+          "protocole": "nanoreview-fps-ultra"
+        },
+        "fps_1440p": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-4060",
+          "releve_le": "2026-10-31",
+          "extrait": "Average FPS by Resolution 1080p High 116 1080p Ultra 96 1440p Ultra 69",
+          "origine": "agregat",
+          "protocole": "nanoreview-fps-ultra"
+        },
+        "fps_4k": {
+          "url": "https://nanoreview.net/en/gpu/geforce-rtx-4060",
+          "releve_le": "2026-10-31",
+          "extrait": "Average FPS by Resolution 1080p High 116 1080p Ultra 96 1440p Ultra 69 4K Ultra 40",
+          "origine": "agregat",
+          "protocole": "nanoreview-fps-ultra"
         }
-      }
+      },
+      "fps_1080p": 96,
+      "fps_1440p": 69,
+      "fps_4k": 40
     }
   ]
 }
