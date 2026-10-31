@@ -12,6 +12,7 @@ import {
   placerEtiquettes,
   decrireSource,
   indexMeneurs,
+  verdictParUsage,
   SEUIL_POINTS,
 } from '../src/utils/marche.js';
 
@@ -227,4 +228,65 @@ test('indexMeneurs : la meilleure note, et toute note à moins de 3 %', () => {
   assert.deepEqual(indexMeneurs([55, 55]), [0, 1], 'même note');
   assert.deepEqual(indexMeneurs([0, 0]), [], 'aucun produit noté');
   assert.deepEqual(indexMeneurs([0, 42]), [1], 'un « non noté » n’est jamais en tête');
+});
+
+// --- verdictParUsage --------------------------------------------------------
+
+const X1 = {
+  name: 'X1 Carbon',
+  battery_life_hours: 22.07,
+  display_brightness_nits: 623.3,
+  geekbench_multi: 11000,
+};
+const SCAR = {
+  name: 'SCAR 18',
+  battery_life_hours: 4,
+  display_brightness_nits: 604.4,
+  geekbench_multi: 22850,
+};
+
+test('verdictParUsage : chaque usage a son gagnant quand ils diffèrent', () => {
+  const v = verdictParUsage([X1, SCAR], 'laptop');
+  assert.match(v, /^Pas de vainqueur unique\./);
+  assert.match(v, /X1 Carbon en « Mobilité »/);
+  assert.match(v, /SCAR 18 en « Performance » \(100 contre 48\)/);
+});
+
+test('verdictParUsage : un seul nom quand il gagne partout', () => {
+  const fort = {
+    name: 'Fort',
+    geekbench_single: 3418,
+    geekbench_multi: 23095,
+    cinebench_2024_multi: 2320,
+  };
+  const faible = {
+    name: 'Faible',
+    geekbench_single: 2000,
+    geekbench_multi: 12000,
+    cinebench_2024_multi: 1000,
+  };
+  assert.match(verdictParUsage([faible, fort], 'cpu'), /^Fort l’emporte sur tous les usages notés/);
+});
+
+test('verdictParUsage : la zone d’égalité de 3 % s’applique', () => {
+  const a = {
+    name: 'A',
+    geekbench_single: 3400,
+    geekbench_multi: 23000,
+    cinebench_2024_multi: 2300,
+  };
+  const b = {
+    name: 'B',
+    geekbench_single: 3390,
+    geekbench_multi: 15000,
+    cinebench_2024_multi: 1500,
+  };
+  const v = verdictParUsage([a, b], 'cpu');
+  assert.match(v, /A l’emporte en « Création & calcul lourd »/);
+  assert.match(v, /Égalité en « Réactivité au quotidien »/);
+});
+
+test('verdictParUsage : null sans usage comparable, la note globale prend le relais', () => {
+  assert.equal(verdictParUsage([{ name: 'A' }, { name: 'B' }], 'gpu'), null);
+  assert.equal(verdictParUsage([X1], 'laptop'), null);
 });

@@ -8,6 +8,7 @@ import {
   preparerAxeNotes,
   placerEtiquettes,
   indexMeneurs,
+  verdictParUsage,
   SERIES,
 } from '../../utils/marche';
 import { formatValue } from '../../utils/specs';
@@ -190,8 +191,10 @@ function EnteteMarche({ produits, catalogue, productType, type, libelleCategorie
   const meneurs = indexMeneurs(lignes.map(l => l.note)).map(i => lignes[i]);
   const effectif = Math.max(notesCatalogue.length, 1);
 
-  let titre = null;
-  if (meilleure > 0 && lignes.length > 1) {
+  // Le verdict suit les usages ; la note globale ne décide plus de la phrase
+  // que lorsqu'aucun usage n'est comparable.
+  let titre = verdictParUsage(produits, productType);
+  if (!titre && meilleure > 0 && lignes.length > 1) {
     const memeNote = meneurs.every(l => l.note === meilleure);
     titre =
       meneurs.length === 1
@@ -230,7 +233,7 @@ function EnteteMarche({ produits, catalogue, productType, type, libelleCategorie
                   <div className="ct-marche-fiche-marque">
                     <Glyphe index={l.index} />
                     <span>{l.produit.brand}</span>
-                    {enTete && <span className="ct-marche-badge">Meilleure note</span>}
+                    {enTete && <span className="ct-marche-badge">Meilleure note globale</span>}
                   </div>
                   <Link className="ct-marche-fiche-nom" to={cheminProduit(type, l.produit)}>
                     {l.produit.name}

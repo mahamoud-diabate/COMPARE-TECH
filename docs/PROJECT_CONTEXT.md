@@ -243,6 +243,7 @@ Six profils, calculés uniquement sur des mesures : CPU **Création** (Cinebench
 - Mesure absente, ou relevée avec un autre test que la référence du critère : profil « non noté », jamais 0.
 - Les profils sans mesure (Jeu CPU et portable, Création GPU, Autonomie et Photo téléphone) ne sont pas affichés.
 - La note globale de 7.2 reste affichée en résumé secondaire.
+- **Verdict du comparatif** (`verdictParUsage`, `utils/marche.js`) : un gagnant par usage ; un vainqueur unique n'est nommé que s'il gagne tous les usages notés (zone d'égalité de 3 % comprise). La note globale ne décide de la phrase que si aucun usage n'est comparable ; son badge s'appelle « Meilleure note globale ».
 - Affichage : onglets « Notes par usage » de la fiche (`genererUsages`, `ficheProduit.js`) et ligne sous chaque carte du comparatif (`EnteteMarche`).
 
 ### 7.3 Provenance des données
