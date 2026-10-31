@@ -108,7 +108,12 @@ export const SPEC_GROUPS = {
     },
     {
       group: 'Performances',
-      rows: [ligne('gpu', 'benchmark_3dmark', '3DMark')],
+      rows: [
+        ligne('gpu', 'fps_1080p', 'Jeu en 1080p (Ultra)'),
+        ligne('gpu', 'fps_1440p', 'Jeu en 1440p (Ultra)'),
+        ligne('gpu', 'fps_4k', 'Jeu en 4K (Ultra)'),
+        ligne('gpu', 'benchmark_3dmark', '3DMark'),
+      ],
     },
   ],
 
@@ -199,6 +204,7 @@ export const KEY_METRICS = {
     metrique('cpu', 'tdp_w', 'de TDP'),
   ],
   gpu: [
+    metrique('gpu', 'fps_1440p', 'd’images par seconde en 1440p'),
     metrique('gpu', 'benchmark_3dmark', 'de performances 3D'),
     metrique('gpu', 'memory_gb', 'de mémoire vidéo'),
     metrique('gpu', 'tdp_w', 'de puissance annoncée'),

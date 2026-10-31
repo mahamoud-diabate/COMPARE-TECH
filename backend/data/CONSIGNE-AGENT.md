@@ -154,13 +154,16 @@ vérifiées : une valeur en dehors est rejetée.
 
 ### `gpus`
 
-| Champ              | Type   | Bornes      |                                            |
-| ------------------ | ------ | ----------- | ------------------------------------------ |
-| `cores`            | nombre | 1 – 100 000 | unités de calcul (CUDA, stream processors) |
-| `memory_gb`        | nombre | 0 – 256     | mémoire vidéo                              |
-| `memory_type`      | texte  |             | ex. `GDDR6X`                               |
-| `tdp_w`            | nombre | 1 – 1000    | consommation en W, sans l'unité            |
-| `benchmark_3dmark` | nombre | 0 – 200 000 |                                            |
+| Champ              | Type   | Bornes      |                                                          |
+| ------------------ | ------ | ----------- | -------------------------------------------------------- |
+| `cores`            | nombre | 1 – 100 000 | unités de calcul (CUDA, stream processors)               |
+| `memory_gb`        | nombre | 0 – 256     | mémoire vidéo                                            |
+| `memory_type`      | texte  |             | ex. `GDDR6X`                                             |
+| `tdp_w`            | nombre | 1 – 1000    | TGP annoncé en W, sans l'unité                           |
+| `benchmark_3dmark` | nombre | 0 – 200 000 | Time Spy (sans protocole si non précisé)                 |
+| `fps_1080p`        | nombre | 0 – 2000    | FPS moyens 1080p Ultra, protocole `nanoreview-fps-ultra` |
+| `fps_1440p`        | nombre | 0 – 2000    | FPS moyens 1440p Ultra, même protocole                   |
+| `fps_4k`           | nombre | 0 – 2000    | FPS moyens 4K Ultra, même protocole                      |
 
 ### `laptops`
 

@@ -13,6 +13,11 @@ const gpuSchema = new Schema({
   tdp_w: { type: Number, required: false, min: 1, max: 1000 },
   imageUrl: { type: String, required: false },
   benchmark_3dmark: { type: Number, required: false, min: 0, max: 200000 },
+  // Images par seconde moyennes en jeu, reglages Ultra : la mesure la plus
+  // proche de ce que vit le joueur (profil « Jeu », docs/PROPOSITION-USAGES.md).
+  fps_1080p: { type: Number, required: false, min: 0, max: 2000 },
+  fps_1440p: { type: Number, required: false, min: 0, max: 2000 },
+  fps_4k: { type: Number, required: false, min: 0, max: 2000 },
   pros: [String],
   cons: [String],
 });

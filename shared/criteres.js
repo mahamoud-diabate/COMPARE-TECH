@@ -94,6 +94,7 @@ export const PROTOCOLES = Object.freeze({
   'geekbench-6': 'Geekbench 6',
   'geekbench-5': 'Geekbench 5',
   'cinebench-2024': 'Cinebench 2024',
+  'nanoreview-fps-ultra': 'NanoReview, moyenne de jeux en réglages Ultra',
   '3dmark-time-spy-graphics': '3DMark Time Spy (score graphique)',
   '3dmark-time-spy': '3DMark Time Spy (score global)',
   '3dmark-time-spy-extreme-graphics': '3DMark Time Spy Extreme (score graphique)',
@@ -125,6 +126,7 @@ const c = (key, options = {}) =>
 
 // Listes réutilisées : le premier élément est le test de référence.
 const GEEKBENCH = ['geekbench-6', 'geekbench-5'];
+const FPS = ['nanoreview-fps-ultra'];
 
 /*
  * L'ordre de chaque liste est l'ordre d'affichage par défaut.
@@ -173,6 +175,11 @@ export const CRITERES = Object.freeze({
         '3dmark-steel-nomad',
       ],
     }),
+    // FPS moyens en jeu : départagés (zone d'égalité à 3 %), hors de la note
+    // globale ; ils serviront au profil « Jeu ».
+    c('fps_1080p', { nature: 'benchmark', unite: 'FPS', protocoles: FPS }),
+    c('fps_1440p', { nature: 'benchmark', unite: 'FPS', protocoles: FPS }),
+    c('fps_4k', { nature: 'benchmark', unite: 'FPS', protocoles: FPS }),
   ]),
 
   laptop: Object.freeze([
