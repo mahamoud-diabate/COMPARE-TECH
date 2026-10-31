@@ -36,6 +36,8 @@ Positionnement : à l'opposé d'UserBenchmark (formules opaques et partisanes) e
 
 > **Incident du 30 octobre 2026.** Du 23 août au 30 octobre, aucun commit n'a été déployé : le lien Vercel ↔ GitHub était cassé (« Project Link not found » dans Settings → Git), sans aucune alerte. Le site servait une version d'août pendant que `main` avançait. Réparé en reconnectant le dépôt. **Après chaque fusion, vérifier qu'un déploiement apparaît dans l'onglet Deployments de Vercel**, et non seulement que la CI est verte.
 
+> **Incident du 31 octobre 2026 (Render).** L'API ne s'est jamais redéployée automatiquement : l'app GitHub de Render n'était pas installée sur le dépôt, donc « Auto-Deploy : On Commit » n'avait aucun webhook pour se déclencher. Tous les déploiements de l'API étaient manuels ; le code en ligne était resté sur la PR n° 6. Rattrapé par un déploiement manuel de `b23fe59`. **Après chaque push touchant `backend/` ou `shared/`, vérifier dans Render → Events qu'un déploiement a eu lieu**, tant que l'app GitHub de Render n'est pas installée.
+
 L'offre gratuite de Render met l'API en veille : le premier appel peut prendre 20 à 50 secondes. Le frontend attend jusqu'à 75 secondes (`utils/catalog.js`).
 
 ---
