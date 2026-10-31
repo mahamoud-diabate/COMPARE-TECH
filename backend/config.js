@@ -16,6 +16,14 @@
 // https://ai.google.dev/gemini-api/docs/deprecations
 const MODELE_IA_DEFAUT = 'gemini-3.8-flash';
 
+// Modele DeepSeek par defaut. `deepseek-flash` est le nom recommande par la
+// documentation DeepSeek (servi par DeepSeek-V4.1-Flash) ; `deepseek-v4-pro`
+// coute plus cher pour une phrase de verdict, sans gain utile ici. L'ancien
+// nom `deepseek-chat` n'est plus servi : un defaut mort ferait echouer la route
+// IA sur une installation neuve, sans que rien ne l'annonce.
+// https://api-docs.deepseek.com/
+const MODELE_DEEPSEEK_DEFAUT = 'deepseek-flash';
+
 /**
  * @param {Record<string, string|undefined>} env  en pratique `process.env`
  * @returns {{config: object, avertissements: string[]}}
@@ -28,6 +36,8 @@ function lireConfig(env = {}) {
     adminPassword: env.ADMIN_PASSWORD || '',
     geminiApiKey: env.GEMINI_API_KEY || '',
     geminiModel: env.GEMINI_MODEL || MODELE_IA_DEFAUT,
+    deepseekApiKey: env.DEEPSEEK_API_KEY || '',
+    deepseekModel: env.DEEPSEEK_MODEL || MODELE_DEEPSEEK_DEFAUT,
     corsOrigins: env.CORS_ORIGINS || '',
     enProduction: env.NODE_ENV === 'production',
     port: env.PORT || 3001,
@@ -51,11 +61,13 @@ function lireConfig(env = {}) {
       'JWT_SECRET absente ou trop courte : génère-en une (48+ caractères hex) et définis-la.'
     );
   }
-  if (!config.geminiApiKey) {
-    avertissements.push('GEMINI_API_KEY absente : la route /api/ai/verdict renverra 503.');
+  if (!config.geminiApiKey && !config.deepseekApiKey) {
+    avertissements.push(
+      'Ni GEMINI_API_KEY ni DEEPSEEK_API_KEY : la route /api/ai/verdict renverra 503.'
+    );
   }
 
   return { config, avertissements };
 }
 
-module.exports = { lireConfig, MODELE_IA_DEFAUT };
+module.exports = { lireConfig, MODELE_IA_DEFAUT, MODELE_DEEPSEEK_DEFAUT };

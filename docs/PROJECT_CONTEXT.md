@@ -111,17 +111,19 @@ La CI (`.github/workflows/ci.yml`) lance, sur Node 20 et 22 : tests de `shared/`
 
 **Backend** (`backend/.env`, modèle dans `backend/.env.example`) :
 
-| Variable         | Rôle                                                                      | Si absente                                                     |
-| ---------------- | ------------------------------------------------------------------------- | -------------------------------------------------------------- |
-| `DB_URI`         | Connexion MongoDB                                                         | Le serveur refuse de démarrer                                  |
-| `ADMIN_USERNAME` | Compte admin (défaut `admin`)                                             | —                                                              |
-| `ADMIN_PASSWORD` | Mot de passe admin (10 caractères minimum conseillés)                     | Connexion et écritures désactivées (503)                       |
-| `JWT_SECRET`     | Signature des jetons (32 caractères minimum)                              | Écritures désactivées (503)                                    |
-| `GEMINI_API_KEY` | Verdict IA                                                                | `/api/ai/verdict` renvoie 503                                  |
-| `GEMINI_MODEL`   | Modèle Gemini (défaut `gemini-3.8-flash`)                                 | Défaut utilisé                                                 |
-| `CORS_ORIGINS`   | Origines **supplémentaires**, séparées par des virgules                   | Seules les origines de production codées en dur sont acceptées |
-| `NODE_ENV`       | `production` masque les détails d'erreur et retire les origines localhost | Mode développement                                             |
-| `PORT`           | Port d'écoute (défaut 3001)                                               | —                                                              |
+| Variable           | Rôle                                                                      | Si absente                                                     |
+| ------------------ | ------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| `DB_URI`           | Connexion MongoDB                                                         | Le serveur refuse de démarrer                                  |
+| `ADMIN_USERNAME`   | Compte admin (défaut `admin`)                                             | —                                                              |
+| `ADMIN_PASSWORD`   | Mot de passe admin (10 caractères minimum conseillés)                     | Connexion et écritures désactivées (503)                       |
+| `JWT_SECRET`       | Signature des jetons (32 caractères minimum)                              | Écritures désactivées (503)                                    |
+| `GEMINI_API_KEY`   | Verdict IA (fournisseur 1)                                                | `/api/ai/verdict` renvoie 503 sans aucun fournisseur           |
+| `GEMINI_MODEL`     | Modèle Gemini (défaut `gemini-3.8-flash`)                                 | Défaut utilisé                                                 |
+| `DEEPSEEK_API_KEY` | Verdict IA (fournisseur 2, utilisé si Gemini est absent)                  | `/api/ai/verdict` renvoie 503 sans aucun fournisseur           |
+| `DEEPSEEK_MODEL`   | Modèle DeepSeek (défaut `deepseek-flash`)                                 | Défaut utilisé                                                 |
+| `CORS_ORIGINS`     | Origines **supplémentaires**, séparées par des virgules                   | Seules les origines de production codées en dur sont acceptées |
+| `NODE_ENV`         | `production` masque les détails d'erreur et retire les origines localhost | Mode développement                                             |
+| `PORT`             | Port d'écoute (défaut 3001)                                               | —                                                              |
 
 **Frontend** : `VITE_API_BASE` (racine de l'API, **sans** `/api`). Sans valeur : chaîne vide en développement (proxy Vite), URL Render au build.
 
@@ -316,7 +318,7 @@ Pistes (`preparerPiste`) : `paliers` jusqu'à 12 valeurs distinctes, `points` ju
 - Le **gagnant est calculé** par `verdictParUsage` (`shared/usages.js`), le même que sur la page. Le modèle reçoit ce verdict et les mesures des profils, avec l'interdiction de désigner un autre gagnant ou de citer un chiffre absent.
 - **Contrôle de la réponse** : tout nombre absent des faits (noms de produits compris, seuil de 3 % permis) fait écarter l'avis ; la réponse garde alors le verdict calculé et donne le motif.
 - Réponse : `{ verdict, aiResponse, enCache }` ou `{ verdict, aiResponse: null, motif }`. Cache en mémoire de 24 h par comparaison (200 entrées). Limite : 20 appels par heure et par IP.
-- Sans `GEMINI_API_KEY`, la route répond 503 (c'est le cas en production au 31 octobre 2026).
+- **Fournisseur d'IA** : Gemini si `GEMINI_API_KEY` est renseignée, sinon DeepSeek (`DEEPSEEK_API_KEY`, interface identique via `backend/ia-deepseek.js`). Sans aucun des deux, la route répond 503 (c'est le cas en production au 31 octobre 2026).
 
 ### 7.6 Résumé statistique (`shared/marche.js`, réexposé par `backend/marche.js`)
 

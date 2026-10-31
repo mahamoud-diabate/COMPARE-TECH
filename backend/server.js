@@ -23,6 +23,7 @@ const User = require('./models/User');
 const { hashPassword } = require('./auth');
 const { lireConfig } = require('./config');
 const { creeApp } = require('./app');
+const { creeModeleDeepseek } = require('./ia-deepseek');
 const { valideProduit } = require('./controles');
 
 const { config, avertissements } = lireConfig(process.env);
@@ -33,9 +34,15 @@ if (!config.dbUri) {
 }
 for (const avertissement of avertissements) console.warn(avertissement);
 
+// Fournisseur d'IA : Gemini si sa cle est la, sinon DeepSeek, sinon aucun
+// (la route repond alors 503 et le site affiche le verdict calcule seul).
+// Les deux exposent la meme interface, donc `routes/ia.js` les traite a
+// l'identique : memes garde-fous, meme cache, meme 502 en cas de panne.
 const aiModel = config.geminiApiKey
   ? new GoogleGenerativeAI(config.geminiApiKey).getGenerativeModel({ model: config.geminiModel })
-  : null;
+  : config.deepseekApiKey
+    ? creeModeleDeepseek({ apiKey: config.deepseekApiKey, model: config.deepseekModel })
+    : null;
 
 const modeles = { cpus: Cpu, gpus: Gpu, laptops: Laptop, telephones: Telephone };
 
