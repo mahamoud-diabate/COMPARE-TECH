@@ -17,6 +17,8 @@
 name: Déploiement Render
 
 on:
+  # Relance à la main possible : Actions → Déploiement Render → Run workflow.
+  workflow_dispatch:
   workflow_run:
     workflows: [CI]
     types: [completed]
@@ -33,34 +35,14 @@ concurrency:
 
 jobs:
   deploy:
-    name: Déployer l'API si l'API a changé
-    # Une CI rouge ne déploie jamais.
-    if: github.event.workflow_run.conclusion == 'success'
+    name: Déployer l'API
+    # Une CI rouge ne déploie jamais. Pas de filtre sur les fichiers modifiés :
+    # un push peut contenir plusieurs commits ; ne regarder que le dernier
+    # laisserait passer en silence un changement du serveur.
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-        with:
-          # Le commit que la CI vient de valider, et son parent : le diff des
-          # deux dit si le changement touche le serveur.
-          ref: ${{ github.event.workflow_run.head_sha }}
-          fetch-depth: 2
-
-      - name: Le changement touche-t-il `backend/` ou `shared/` ?
-        id: portee
-        run: |
-          set -eu
-          fichiers=$(git diff --name-only HEAD~1 HEAD || true)
-          echo "Fichiers du commit :"
-          echo "$fichiers"
-          if echo "$fichiers" | grep -qE '^(backend|shared)/'; then
-            echo "touche=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "touche=false" >> "$GITHUB_OUTPUT"
-            echo "Aucun fichier du serveur : rien à déployer (le site React est servi par Vercel)."
-          fi
-
       - name: Déclencher le deploy hook de Render
-        if: steps.portee.outputs.touche == 'true'
         env:
           HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
         run: |
