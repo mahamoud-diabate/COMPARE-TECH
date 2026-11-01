@@ -7,17 +7,32 @@
  * pas diverger. Un comparateur qui montre « 88/100 » sans montrer d'où ça
  * vient demande qu'on lui fasse confiance ; celui-ci s'en dispense.
  *
- * Les plafonds ne sont plus écrits ici : ils viennent de `criteres.js`, où le
- * radar et les barres de benchmark les lisent aussi. Une seule valeur par
- * critère, donc une seule échelle partout.
+ * Depuis le 31 octobre 2026, la note se calcule comme les notes par usage
+ * (shared/usages.js) : chaque mesure est rapportée à la référence du BARÈME
+ * VERSIONNÉ (100 = meilleure valeur du catalogue d'octobre 2026), puis les
+ * mesures se combinent par MOYENNE GÉOMÉTRIQUE pondérée. Les anciens plafonds
+ * fixes saturaient (la RTX 4090 dépassait celui des GPU et restait bloquée à
+ * 100, à égalité avec toute carte plus rapide) ; une note au-delà de 100 dit
+ * maintenant, honnêtement, qu'il est temps de publier un barème v2.
+ *
+ * Les plafonds de `criteres.js` ne servent plus qu'aux échelles graphiques
+ * bornées (radar, barres).
  *
  * Module partagé : le navigateur l'utilise pour afficher les notes, le serveur
  * pourra l'utiliser pour les servir (verdict IA, aperçus de partage).
  */
 
-import { plafond, resolveType } from './criteres.js';
+import { resolveType } from './criteres.js';
+import { BAREME } from './usages.js';
 
-const terme = (type, key, label, poids) => ({ key, label, max: plafond(type, key), poids });
+const terme = (type, key, label, poids) => {
+  const reference = BAREME.references[type]?.[key];
+  if (!(reference > 0)) {
+    throw new Error(`${type}.${key} : pas de référence au barème ${BAREME.version}.`);
+  }
+  // `max` reste exposé pour les affichages existants : c'est la référence.
+  return { key, label, reference, max: reference, poids };
+};
 
 export const FORMULES = Object.freeze({
   cpu: {
@@ -56,34 +71,42 @@ export const FORMULES = Object.freeze({
 /**
  * Détail du calcul d'une note.
  *
- * @returns {{total: number, termes: Array, complet: boolean, formule: object|null}}
- *   `termes` porte, pour chaque critère : la valeur mesurée, le plafond, le
- *   poids et les points effectivement apportés. `complet` dit si tous les
- *   critères exigés sont renseignés.
+ * @returns {{total: number, termes: Array, complet: boolean, formule: object|null, bareme: string}}
+ *   `termes` porte, pour chaque critère : la valeur mesurée, la référence du
+ *   barème, le poids et l'indice (valeur / référence × 100). `complet` dit si
+ *   tous les critères exigés sont renseignés. `total` vaut 0 quand la note
+ *   n'est pas calculable : jamais une contre-performance, une donnée absente.
  */
 export function explainScore(product, productType) {
   const type = resolveType(productType || product?.productType);
   const formule = type ? FORMULES[type] : null;
+  const bareme = `barème ${BAREME.version} (${BAREME.date})`;
 
   if (!product || !formule) {
-    return { total: 0, termes: [], complet: false, formule: null };
+    return { total: 0, termes: [], complet: false, formule: null, bareme };
   }
 
   const termes = formule.termes.map(t => {
     const valeur = Number(product[t.key]);
     const mesuree = Number.isFinite(valeur) && valeur > 0 ? valeur : null;
-    const points = mesuree === null ? 0 : (mesuree / t.max) * 100 * t.poids;
-    return { ...t, valeur: mesuree, points };
+    const indice = mesuree === null ? null : (mesuree / t.reference) * 100;
+    return { ...t, valeur: mesuree, indice };
   });
 
-  const manquants = termes.filter(t => t.valeur === null);
-  const complet = manquants.length === 0;
+  const presents = termes.filter(t => t.valeur !== null);
+  const complet = presents.length === termes.length;
 
   // Une donnée manquante ne vaut pas zéro : sans elle, la note n'est pas
   // calculable, et un 0 la ferait passer pour une contre-performance mesurée.
-  const calculable = formule.exigeTout ? complet : manquants.length < termes.length;
-  const brut = termes.reduce((somme, t) => somme + t.points, 0);
-  const total = calculable ? Math.min(100, Math.round(brut)) : 0;
+  const calculable = formule.exigeTout ? complet : presents.length > 0;
+  if (!calculable) return { total: 0, termes, complet, formule, bareme };
 
-  return { total, termes, complet, formule };
+  // Moyenne géométrique pondérée, sur les termes présents (poids renormalisés
+  // quand la formule n'exige pas tout).
+  const poidsTotal = presents.reduce((s, t) => s + t.poids, 0);
+  const log = presents.reduce(
+    (s, t) => s + (t.poids / poidsTotal) * Math.log(t.valeur / t.reference),
+    0
+  );
+  return { total: Math.round(100 * Math.exp(log)), termes, complet, formule, bareme };
 }

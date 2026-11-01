@@ -223,21 +223,22 @@ Ajoutés le 30 octobre 2026 pour préparer les notes par usage (vides tant que l
 
 Les unités de calcul GPU (`cores`) s'affichent sans gagnant : un cœur CUDA et un stream processor ne se comparent pas.
 
-### 7.2 Notes sur 100 (`shared/formules.js`)
+### 7.2 Note globale (`shared/formules.js`)
 
-Chaque terme vaut `(valeur / plafond) × 100 × poids`, et le total est plafonné à 100.
+Résumé secondaire, affiché sous les notes par usage. Depuis le 31 octobre 2026, elle se calcule comme elles : chaque mesure est divisée par sa référence du **barème v1** (`BAREME`, `shared/usages.js`), puis les mesures sont combinées par **moyenne géométrique pondérée**. Plus de plafond : une note au-delà de 100 signale un produit plus rapide que la référence, et qu'il faut publier un barème v2.
 
-| Catégorie | Formule                                        | Plafonds       | Données manquantes                   |
-| --------- | ---------------------------------------------- | -------------- | ------------------------------------ |
-| CPU       | 70 % Geekbench 6 multi + 30 % Geekbench 6 mono | 29 000 / 3 500 | Les deux exigées, sinon « non noté » |
-| GPU       | 100 % `benchmark_3dmark`                       | 35 000         | « Non noté » si absent               |
-| Laptop    | 100 % Geekbench 6 multi                        | 26 000         | « Non noté » si absent               |
-| Téléphone | 70 % Geekbench 6 multi + 30 % mono             | 9 500 / 3 600  | Les deux exigées                     |
+| Catégorie | Formule                                 | Références (barème v1) | Données manquantes                   |
+| --------- | --------------------------------------- | ---------------------- | ------------------------------------ |
+| CPU       | Geekbench 6 multi (70 %) et mono (30 %) | 23 095 / 3 418         | Les deux exigées, sinon « non noté » |
+| GPU       | 3DMark Time Spy (100 %)                 | 36 299                 | « Non noté » si absent               |
+| Laptop    | Geekbench multi (100 %)                 | 22 850                 | « Non noté » si absent               |
+| Téléphone | Geekbench 6 multi (70 %) et mono (30 %) | 8 789 / 3 507          | Les deux exigées                     |
 
 - Une note de **0 signifie « non mesurable »**, jamais « mauvais ». Les produits non notés sont exclus des rangs et des médianes.
 - Les téléphones sont notés sur Geekbench et non sur AnTuTu, qui n'utilise pas la même API graphique sur Android et iOS. AnTuTu reste affiché.
-- Les plafonds sont déclarés une seule fois, dans `shared/criteres.js` ; les notes, le radar et les barres de benchmark les y lisent.
+- Les plafonds de `shared/criteres.js` ne servent plus qu'aux échelles graphiques bornées (radar, barres).
 - Notes-lettres : A+ ≥ 90, A ≥ 70, B ≥ 50, C ≥ 30, D ≥ 1.
+- **Tests de cohérence** (`shared/test/coherence.test.js`) : pour la note globale et chaque profil, sur des milliers de combinaisons tirées au hasard, améliorer une mesure ne fait jamais baisser une note, un produit meilleur partout n'est jamais noté plus bas, et aucune formule ne combine un critère « plus bas = meilleur ».
 
 ### 7.2 bis Notes par usage (`shared/usages.js`)
 
@@ -354,41 +355,28 @@ Pistes (`preparerPiste`) : `paliers` jusqu'à 12 valeurs distinctes, `points` ju
 
 Issues de l'étude stratégique. Ne pas les présenter comme existantes.
 
-1. **Tests de cohérence** : dominance, direction de chaque critère, version du barème.
-2. **Provenance enrichie** : origine de la donnée (constructeur, laboratoire, agrégat), protocole exact du test, archive de la page source. Format décidé le 30 octobre 2026, phase 1 faite (champs facultatifs) ; restent les phases 2 et 3 : voir [`PROPOSITION-MESURE.md`](PROPOSITION-MESURE.md).
+1. **Provenance enrichie** : origine de la donnée (constructeur, laboratoire, agrégat), protocole exact du test, archive de la page source. Format décidé le 30 octobre 2026, phase 1 faite (champs facultatifs) ; restent les phases 2 et 3 : voir [`PROPOSITION-MESURE.md`](PROPOSITION-MESURE.md).
 
 ---
 
 ## 10. État des données et limites connues
 
-> ⚠ **Catalogue de test.** Les fiches actuellement en production servent à faire tourner le site pendant le développement. Elles ne constituent pas un catalogue de référence, et leurs valeurs n'ont pas été revérifiées. Ne pas s'en servir pour calibrer des plafonds, des seuils ou des tests. **Avant toute mise en avant publique du site**, les remplacer par des données importées et vérifiées avec `scripts/import.js --verifier`.
+**Catalogue réel et vérifié** (30 et 31 octobre 2026) : chaque fiche de production a été importée depuis `backend/data/*.json` avec `scripts/import.js --verifier` (extrait retrouvé mot pour mot sur la page source), via `scripts/remplace-catalogue.js`. **Les fichiers du dépôt sont la copie exacte de la base** : toute correction passe par eux, puis par `remplace-catalogue.js`.
 
-**Base de production** (lue via l'API publique le 30 octobre 2026) : toutes les fiches portent un champ de provenance, aucune fiche générée par `populateRemaining.js` n'est présente.
+| Collection (fichier)           | Fiches | Mesures                                                                                             | Source        |
+| ------------------------------ | ------ | --------------------------------------------------------------------------------------------------- | ------------- |
+| CPU (`cpus.json`)              | 15     | cœurs, threads, fréquences, TDP, cache L3, année, socket, Geekbench 6 mono et multi, Cinebench 2024 | NanoReview    |
+| GPU (`gpus.json`)              | 15     | unités de calcul, VRAM, TGP, Time Spy (test non précisé), FPS 1080p/1440p/4K (14 sur 15)            | NanoReview    |
+| Portables (`laptops.json`)     | 8      | RAM, stockage, Geekbench multi, autonomie Wi-Fi et luminosité mesurées (6 sur 8)                    | Notebookcheck |
+| Téléphones (`telephones.json`) | 15     | écran, batterie, RAM, stockage, Geekbench 6 (14 sur 15 en mono), AnTuTu 11 (13 sur 15)              | NanoReview    |
 
-| Collection | Fiches | Mesures présentes                                                      |
-| ---------- | ------ | ---------------------------------------------------------------------- |
-| CPU        | 15     | Cœurs, threads, fréquences, Geekbench 6 mono et multi (pas de `tdp_w`) |
-| GPU        | 15     | Unités de calcul, VRAM, 3DMark                                         |
-| Laptops    | 8      | Geekbench multi, autonomie Wi-Fi mesurée, luminosité (6 sur 8)         |
-| Téléphones | 15     | Geekbench, AnTuTu (13 sur 15), batterie, écran                         |
+Sauvegardes de chaque remplacement : `backend/backup/<date>/` (ignoré par Git). `demonstration.json` n'est qu'un exemple de format.
 
-**Fichiers de `backend/data/`** :
-
-| Fichier              | Fiches | Mesures                                   | Source        |
-| -------------------- | ------ | ----------------------------------------- | ------------- |
-| `cpus.json`          | 20     | 2 nombres de cœurs, aucun benchmark       | NanoReview    |
-| `gpus.json`          | —      | **fichier absent**                        | —             |
-| `laptops.json`       | 8      | Identique à la production                 | Notebookcheck |
-| `telephones.json`    | 15     | Identique à la production                 | NanoReview    |
-| `demonstration.json` | 3      | Exemple de format (URL `exemple.invalid`) | —             |
-
-Les 15 CPU et 15 GPU de la production n'existent dans aucun fichier du dépôt. Sans conséquence tant qu'il s'agit de données de test.
+À surveiller : les moyennes NanoReview évoluent (19 valeurs de téléphones avaient bougé en deux mois) ; un nouvel essai `--verifier` les signale.
 
 **Limites connues** :
 
 - `scripts/populateRemaining.js` génère des laptops et téléphones **fictifs** et vide d'abord ces deux collections. Il refuse de tourner sans l'option `--donnees-fictives` **et** sans une base dont le nom contient `demo`, `test` ou `local`.
-- La RTX 4090 (36 309 points 3DMark) dépasse le plafond GPU de 35 000 : elle est bloquée à 100/100, et toute carte plus rapide serait déclarée à égalité.
-- Plafonds fixes : deux produits au-dessus du plafond obtiennent tous deux 100.
 - Le frontend et l'API lisent `shared/`, situé hors de leur dossier : ne pas remettre de Root Directory sur Render (voir section 2).
 - La note GPU ne précise pas quel test 3DMark est utilisé.
 - Composants importés nulle part (code mort) : `SpecTable`, `KeyDifferences`, `CategoryScores`, `BenchmarkBars`, `TechRadar`. Ils appliquent les règles de départage via `winnerIndex`, mais ne sont pas affichés.

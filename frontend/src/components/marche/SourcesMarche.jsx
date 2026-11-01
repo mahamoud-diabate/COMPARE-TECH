@@ -36,13 +36,15 @@ function SourcesMarche({ produits, productType }) {
         <div className="ct-marche-tiroir-corps">
           {formule && (
             <div className="ct-marche-methode">
-              <strong>Calcul de la note sur 100 :</strong>{' '}
+              <strong>Calcul de la note sur 100 :</strong> moyenne géométrique de{' '}
               {formule.termes
                 .map(
-                  t => `${Math.round(t.poids * 100)} % ${t.label} (plafond ${formatValue(t.max)})`
+                  t =>
+                    `${t.label} (${Math.round(t.poids * 100)} %, référence ${formatValue(t.reference)})`
                 )
-                .join(' + ')}
-              . Une mesure manquante rend la note incalculable : elle ne compte jamais pour zéro.
+                .join(' et ')}
+              , chaque mesure étant divisée par sa référence du barème v1 (octobre 2026), qui vaut
+              100. Une mesure manquante rend la note incalculable : elle ne compte jamais pour zéro.
             </div>
           )}
 

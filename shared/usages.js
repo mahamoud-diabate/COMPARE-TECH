@@ -33,7 +33,7 @@ export const BAREME = Object.freeze({
       geekbench_multi: 23095,
       geekbench_single: 3418,
     }),
-    gpu: Object.freeze({ fps_1080p: 217, fps_1440p: 177, fps_4k: 106 }),
+    gpu: Object.freeze({ fps_1080p: 217, fps_1440p: 177, fps_4k: 106, benchmark_3dmark: 36299 }),
     laptop: Object.freeze({
       battery_life_hours: 23.22,
       display_brightness_nits: 623.3,

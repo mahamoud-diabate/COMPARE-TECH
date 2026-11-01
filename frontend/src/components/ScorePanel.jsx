@@ -102,12 +102,12 @@ function ScorePanel({ product, type, peers = [] }) {
                     <td className="ct-num">
                       {terme.valeur === null ? 'non renseigné' : nombre(terme.valeur)}
                     </td>
-                    <td className="ct-num ct-formula-scale">/ {nombre(terme.max)}</td>
+                    <td className="ct-num ct-formula-scale">/ {nombre(terme.reference)}</td>
                     <td className="ct-num ct-formula-scale">
                       {terme.poids < 1 ? `× ${Math.round(terme.poids * 100)} %` : ''}
                     </td>
                     <td className="ct-num ct-formula-points">
-                      {terme.valeur === null ? '—' : Math.round(terme.points)}
+                      {terme.valeur === null ? '—' : Math.round(terme.indice)}
                     </td>
                   </tr>
                 ))}
@@ -120,9 +120,9 @@ function ScorePanel({ product, type, peers = [] }) {
             </table>
 
             <p className="ct-text-gray-small" style={{ marginTop: 10 }}>
-              Chaque mesure est ramenée sur 100 par rapport à un plafond de référence propre à la
-              catégorie, puis pondérée. Le plafond fixe l’échelle, il ne change pas l’ordre entre
-              deux produits.
+              Chaque mesure est divisée par sa référence du {detail.bareme} (100 = meilleure valeur
+              du catalogue à cette date), puis les mesures sont combinées par moyenne géométrique
+              pondérée. Une note au-delà de 100 signale un produit plus rapide que la référence.
             </p>
           </details>
         )}

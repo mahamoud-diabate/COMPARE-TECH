@@ -18,14 +18,18 @@ import {
 
 // --- pondération du score CPU ----------------------------------------------
 
-test('le score CPU pèse 70 % multi-cœur et 30 % mono-cœur', () => {
-  // Plafonds de référence : 29000 en multi, 3500 en mono.
-  const parfait = calculateCpuScore({ geekbench_multi: 29000, geekbench_single: 3500 });
-  assert.equal(parfait, 100);
+// Références du barème v1 (shared/usages.js) : 23 095 en multi, 3 418 en mono.
+const REF_CPU = { geekbench_multi: 23095, geekbench_single: 3418 };
 
-  // Uniquement le plafond multi : 100 × 0,7
-  const multiSeul = calculateCpuScore({ geekbench_multi: 29000, geekbench_single: 1 });
-  assert.ok(multiSeul >= 70 && multiSeul <= 71, `attendu ~70, obtenu ${multiSeul}`);
+test('le score CPU pèse 70 % multi-cœur et 30 % mono-cœur (moyenne géométrique)', () => {
+  assert.equal(calculateCpuScore(REF_CPU), 100);
+
+  // Moitié de la référence en multi seulement : 100 × 0,5^0,7 = 62.
+  const multiMoitie = calculateCpuScore({ ...REF_CPU, geekbench_multi: 23095 / 2 });
+  assert.equal(multiMoitie, 62);
+  // Moitié en mono seulement : 100 × 0,5^0,3 = 81. Le multi pèse plus lourd.
+  const monoMoitie = calculateCpuScore({ ...REF_CPU, geekbench_single: 3418 / 2 });
+  assert.equal(monoMoitie, 81);
 });
 
 test('le score CPU vaut 0 si un des deux benchmarks manque', () => {
@@ -36,11 +40,12 @@ test('le score CPU vaut 0 si un des deux benchmarks manque', () => {
 
 // --- plafonnement -----------------------------------------------------------
 
-test('aucun score ne dépasse 100, même au-delà du plafond de référence', () => {
-  assert.equal(calculateCpuScore({ geekbench_multi: 99000, geekbench_single: 9000 }), 100);
-  assert.equal(calculateGpuScore({ benchmark_3dmark: 99000 }), 100);
-  assert.equal(calculateLaptopScore({ geekbench_multi: 99000 }), 100);
-  assert.equal(calculateTelephoneScore({ geekbench_multi: 99000, geekbench_single: 9000 }), 100);
+test('au-delà du barème, la note dépasse 100 au lieu de saturer', () => {
+  // Bloquer à 100 mettait à égalité la RTX 4090 et toute carte plus rapide.
+  assert.equal(calculateGpuScore({ benchmark_3dmark: 36299 * 1.2 }), 120);
+  assert.ok(calculateCpuScore({ geekbench_multi: 30000, geekbench_single: 4000 }) > 100);
+  assert.ok(calculateLaptopScore({ geekbench_multi: 30000 }) > 100);
+  assert.ok(calculateTelephoneScore({ geekbench_multi: 10000, geekbench_single: 4000 }) > 100);
 });
 
 test('un benchmark absent donne 0 et non NaN', () => {
@@ -52,22 +57,22 @@ test('un benchmark absent donne 0 et non NaN', () => {
 // --- aiguillage -------------------------------------------------------------
 
 test('getProductScore choisit la formule d’après le type', () => {
-  const gpu = { benchmark_3dmark: 17500 };
+  const gpu = { benchmark_3dmark: 36299 / 2 };
   assert.equal(getProductScore(gpu, 'gpu'), 50);
   assert.equal(getProductScore(gpu, 'gpus'), 50, 'la forme plurielle doit fonctionner');
 });
 
 test('getProductScore lit le type porté par le produit à défaut d’argument', () => {
-  // La moitié de chaque plafond téléphone (9500 multi, 3600 mono) : quelle que
-  // soit la pondération, la note vaut 50.
-  const phone = { geekbench_multi: 4750, geekbench_single: 1800, productType: 'telephone' };
+  // La moitié de chaque référence téléphone (8789 multi, 3507 mono) : quelle
+  // que soit la pondération, la note vaut 50.
+  const phone = { geekbench_multi: 8789 / 2, geekbench_single: 3507 / 2, productType: 'telephone' };
   assert.equal(getProductScore(phone), 50);
 });
 
 test('getProductScore ignore un score imposé sur le document', () => {
   // La note publiée doit toujours être celle de la formule affichée : un
   // champ `score` posé à la main ne la remplace pas.
-  const cpu = { score: 42, geekbench_multi: 29000, geekbench_single: 3500 };
+  const cpu = { score: 42, ...REF_CPU };
   assert.equal(getProductScore(cpu, 'cpu'), 100);
 });
 
@@ -120,34 +125,33 @@ test('getScoreColor reste disponible pour les appelants historiques', () => {
 
 // --- explainScore : le calcul rendu vérifiable ---------------------------
 
-test('explainScore détaille chaque terme de la formule', () => {
-  const detail = explainScore({ geekbench_multi: 29000, geekbench_single: 3500 }, 'cpu');
+test('explainScore détaille chaque terme : valeur, référence, poids, indice', () => {
+  const detail = explainScore({ geekbench_multi: 23095 / 2, geekbench_single: 3418 }, 'cpu');
 
   assert.equal(detail.termes.length, 2);
-  assert.equal(detail.total, 100);
   assert.equal(detail.complet, true);
+  assert.match(detail.bareme, /barème v1/);
 
   const multi = detail.termes.find(t => t.key === 'geekbench_multi');
-  assert.equal(multi.valeur, 29000);
-  assert.equal(multi.max, 29000);
+  assert.equal(multi.reference, 23095);
   assert.equal(multi.poids, 0.7);
-  assert.equal(Math.round(multi.points), 70, 'le plafond apporte 100 × son poids');
+  assert.equal(Math.round(multi.indice), 50, 'indice = valeur / référence × 100');
 });
 
-test('la somme des points détaillés reconstitue le total affiché', () => {
-  // C'est toute la raison d'être de la table : le détail montré à l'écran ne
-  // peut pas raconter autre chose que le chiffre à côté duquel il s'affiche.
+test('les indices détaillés reconstituent le total affiché', () => {
+  // Le détail montré à l'écran ne peut pas raconter autre chose que le chiffre
+  // à côté duquel il s'affiche : total = moyenne géométrique pondérée des indices.
   const produits = [
-    [{ geekbench_multi: 24000, geekbench_single: 3400 }, 'cpu'],
-    [{ benchmark_3dmark: 17500 }, 'gpu'],
-    [{ geekbench_multi: 13000 }, 'laptop'],
-    [{ geekbench_multi: 7000, geekbench_single: 2600 }, 'telephone'],
+    [{ geekbench_multi: 21758, geekbench_single: 3418 }, 'cpu'],
+    [{ benchmark_3dmark: 20879 }, 'gpu'],
+    [{ geekbench_multi: 13611 }, 'laptop'],
+    [{ geekbench_multi: 6705, geekbench_single: 2612 }, 'telephone'],
   ];
 
   for (const [produit, type] of produits) {
     const detail = explainScore(produit, type);
-    const somme = Math.min(100, Math.round(detail.termes.reduce((s, t) => s + t.points, 0)));
-    assert.equal(somme, detail.total, `type ${type}`);
+    const geo = detail.termes.reduce((p, t) => p * (t.indice / 100) ** t.poids, 1);
+    assert.equal(Math.round(100 * geo), detail.total, `type ${type}`);
     assert.equal(detail.total, getProductScore(produit, type));
   }
 });
@@ -160,10 +164,12 @@ test('explainScore signale une donnée manquante sans la compter comme zéro', (
 
   const mono = detail.termes.find(t => t.key === 'geekbench_single');
   assert.equal(mono.valeur, null, 'la valeur est absente, pas nulle');
-  assert.equal(mono.points, 0);
+  assert.equal(mono.indice, null);
 });
 
 test('explainScore renvoie une structure vide pour un type inconnu', () => {
   const detail = explainScore({ geekbench_multi: 24000 }, 'montre');
-  assert.deepEqual(detail, { total: 0, termes: [], complet: false, formule: null });
+  assert.equal(detail.total, 0);
+  assert.deepEqual(detail.termes, []);
+  assert.equal(detail.formule, null);
 });

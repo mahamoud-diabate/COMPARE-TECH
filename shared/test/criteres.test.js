@@ -19,6 +19,7 @@ import {
   toutesLesCles,
 } from '../criteres.js';
 import { FORMULES, explainScore } from '../formules.js';
+import { BAREME } from '../usages.js';
 import { CHAMPS_MARCHE } from '../marche.js';
 
 const NATURES = new Set(['benchmark', 'mesure', 'caracteristique']);
@@ -83,12 +84,16 @@ test('toutesLesCles liste chaque mesure une seule fois', () => {
 
 // --- formules ------------------------------------------------------------
 
-test('chaque formule ne repose que sur des benchmarks déclarés, avec plafond', () => {
+test('chaque formule ne repose que sur des benchmarks déclarés, rapportés au barème', () => {
   for (const [type, formule] of Object.entries(FORMULES)) {
     for (const terme of formule.termes) {
       const cr = critere(type, terme.key);
       assert.equal(cr.nature, 'benchmark', `${type} : ${terme.key} n'est pas un benchmark`);
-      assert.equal(terme.max, cr.plafond, `${type} : ${terme.key} a un plafond recopié`);
+      assert.equal(
+        terme.reference,
+        BAREME.references[type][terme.key],
+        `${type} : ${terme.key} a une référence recopiée`
+      );
     }
   }
 });
@@ -112,9 +117,17 @@ test('explainScore : une donnée manquante rend la note incalculable, jamais nul
   assert.equal(incomplet.total, 0);
   assert.equal(incomplet.complet, false);
 
-  const plein = explainScore({ geekbench_multi: 29000, geekbench_single: 3500 }, 'cpu');
-  assert.equal(plein.total, 100);
+  const plein = explainScore({ geekbench_multi: 23095, geekbench_single: 3418 }, 'cpu');
+  assert.equal(plein.total, 100, 'les références du barème valent 100');
   assert.equal(plein.complet, true);
+  assert.match(plein.bareme, /barème v1/);
+});
+
+test('explainScore : au-delà du barème, la note dépasse 100 au lieu de saturer', () => {
+  // La RTX 4090 dépassait l'ancien plafond GPU (35 000) : bloquée à 100, à
+  // égalité avec toute carte plus rapide. Plus maintenant.
+  assert.equal(explainScore({ benchmark_3dmark: 36299 }, 'gpu').total, 100);
+  assert.equal(explainScore({ benchmark_3dmark: 39929 }, 'gpu').total, 110);
 });
 
 // --- marché ---------------------------------------------------------------
