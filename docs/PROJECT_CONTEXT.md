@@ -178,7 +178,7 @@ COMPARE-TECH/
 │   │   │   ├── ficheProduit.js, liens.js, iconFiles.js
 │   │   ├── components/
 │   │   │   ├── marche/         # EnteteMarche, CriteresMarche, Repere, SourcesMarche
-│   │   │   ├── Verdict.jsx, TechRadar.jsx, ProductList.jsx, ProductDetail.jsx, CategoryPage.jsx, …
+│   │   │   ├── Verdict.jsx, ProductList.jsx, ProductDetail.jsx, CategoryPage.jsx, …
 │   │   ├── pages/              # Homepage, ComparePage, AdminPage, LoginPage, pages par catégorie
 │   │   └── index.css           # Feuille unique (~2 800 lignes), classes .ct-*, variables --ct-*
 │   └── test/              # node --test sur les utils (criteres, scores, specs, marche, radarAxes, ficheProduit, liens)
@@ -379,7 +379,6 @@ Sauvegardes de chaque remplacement : `backend/backup/<date>/` (ignoré par Git).
 - `scripts/populateRemaining.js` génère des laptops et téléphones **fictifs** et vide d'abord ces deux collections. Il refuse de tourner sans l'option `--donnees-fictives` **et** sans une base dont le nom contient `demo`, `test` ou `local`.
 - Le frontend et l'API lisent `shared/`, situé hors de leur dossier : ne pas remettre de Root Directory sur Render (voir section 2).
 - La note GPU ne précise pas quel test 3DMark est utilisé.
-- Composants importés nulle part (code mort) : `SpecTable`, `KeyDifferences`, `CategoryScores`, `BenchmarkBars`, `TechRadar`. Ils appliquent les règles de départage via `winnerIndex`, mais ne sont pas affichés.
 - L'API exige **Node ≥ 20.19** (chargement de `shared/`, en ESM, depuis du CommonJS).
 - Les contrôles `--verifier` (page source téléchargée) et de quarantaine ne s'appliquent qu'à l'import, pas aux écritures de l'admin.
 

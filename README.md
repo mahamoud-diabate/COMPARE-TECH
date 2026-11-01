@@ -17,9 +17,9 @@ Monorepo réunissant le backend et le frontend dans un seul dépôt, avec l'hist
 
 ![Parcours du site : accueil, menu, classement des cartes graphiques](docs/demo-parcours.gif)
 
-**Comparer** — deux modèles désignés à la saisie, leurs écarts chiffrés, les notes par critère et le radar de profil.
+**Comparer** — deux à quatre modèles, situés dans tout leur marché : notes par usage, verdict usage par usage, chaque mesure avec sa source.
 
-![Comparaison de deux cartes graphiques, des différences clés au radar](docs/demo-comparaison.gif)
+![Comparaison de deux cartes graphiques (enregistrement d'une version antérieure)](docs/demo-comparaison.gif)
 
 **Chercher** — recherche instantanée sur tout le catalogue, fiche produit, thème sombre.
 
@@ -88,8 +88,7 @@ caractéristiques doit s'y référer plutôt que redéclarer sa propre liste :
 | `src/utils/scores.js`    | Formules du score sur 100 et son échelle de couleur                                 |
 | `src/utils/radarAxes.js` | Axes du radar et notes par critère                                                  |
 
-Le radar est tracé en SVG par `src/components/TechRadar.jsx`, sans bibliothèque
-de graphiques. Les collections sont mises en cache une minute par
+Les collections sont mises en cache une minute par
 `src/utils/catalog.js`, partagé entre la recherche de l'en-tête et les pages :
 c'est ce qui évite qu'une même liste soit demandée deux fois par écran.
 

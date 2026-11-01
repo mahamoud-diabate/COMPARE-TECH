@@ -7,6 +7,7 @@ import EnteteMarche from '../components/marche/EnteteMarche';
 import CriteresMarche from '../components/marche/CriteresMarche';
 import SourcesMarche from '../components/marche/SourcesMarche';
 import Verdict from '../components/Verdict';
+import { ordreDeLaDemande } from '../utils/liens';
 import { resolveType, buildKeyDifferences, buildStrengths } from '../utils/specs';
 import { loadCatalog } from '../utils/catalog';
 import { usePageTitle } from '../hooks/usePageTitle';
@@ -77,7 +78,11 @@ function ComparePage() {
         if (!response.ok) throw new Error('Comparatif indisponible');
         return response.json();
       })
-      .then(data => setProducts(data.map(item => ({ ...item, productType }))))
+      .then(data =>
+        setProducts(
+          ordreDeLaDemande(data, idsString.split(',')).map(item => ({ ...item, productType }))
+        )
+      )
       .catch(err => setError(err.message))
       .finally(() => setLoading(false));
 

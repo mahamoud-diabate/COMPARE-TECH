@@ -22,4 +22,23 @@ export function cheminProduit(type, produit) {
   return ref ? `/${type}/${ref}` : `/${type}`;
 }
 
+/**
+ * Remet les produits renvoyés par l'API dans l'ordre de l'adresse.
+ *
+ * `POST /:segment/compare` renvoie les fiches dans l'ordre de la base. Or
+ * l'ordre de l'adresse est celui que le visiteur a choisi (« ce portable
+ * contre celui-là ») : les cartes, les colonnes et le verdict doivent le
+ * suivre. Un produit introuvable est simplement absent.
+ *
+ * @param {object[]} produits  réponse de l'API
+ * @param {string[]} cles      slugs ou identifiants, dans l'ordre de l'adresse
+ */
+export function ordreDeLaDemande(produits, cles) {
+  const rang = p => {
+    const i = cles.findIndex(c => c && (c === p?.slug || c === String(p?._id)));
+    return i === -1 ? cles.length : i;
+  };
+  return [...produits].sort((a, b) => rang(a) - rang(b));
+}
+
 export default cheminProduit;
