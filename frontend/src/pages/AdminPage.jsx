@@ -94,15 +94,16 @@ function ChampsSource({ cle, valeur, source, protocoles, onChange }) {
         value={s.extrait}
         onChange={e => onChange(cle, 'extrait', e.target.value)}
       />
-      {/* Qualification : facultative pour l'instant, mais contrôlée si remplie.
-          Les choix proposés sont exactement ceux qu'accepte le serveur. */}
+      {/* Qualification obligatoire depuis les phases 2 et 3 : le serveur refuse
+          une mesure écrite sans origine, ou sans test quand le critère en a.
+          Les choix proposés sont exactement ceux qu'il accepte. */}
       <select
         className="ct-input is-large"
         aria-label={`Origine de la valeur (${cle})`}
         value={s.origine}
         onChange={e => onChange(cle, 'origine', e.target.value)}
       >
-        <option value="">Origine : non précisée</option>
+        <option value="">Origine (obligatoire)</option>
         {Object.entries(ORIGINES).map(([id, libelle]) => (
           <option key={id} value={id}>
             {libelle.charAt(0).toUpperCase() + libelle.slice(1)}
@@ -117,7 +118,7 @@ function ChampsSource({ cle, valeur, source, protocoles, onChange }) {
             value={s.protocole}
             onChange={e => onChange(cle, 'protocole', e.target.value)}
           >
-            <option value="">Test : non précisé</option>
+            <option value="">Test (obligatoire)</option>
             {protocoles.map((id, i) => (
               <option key={id} value={id}>
                 {libelleProtocole(id)}

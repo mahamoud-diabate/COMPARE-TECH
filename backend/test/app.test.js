@@ -21,7 +21,7 @@ const SCHEMAS = {
   laptops: require('../models/Laptop'),
   telephones: require('../models/Telephone'),
 };
-const controle = (segment, fiche) => valideProduit(SCHEMAS[segment], fiche);
+const controle = (segment, fiche, options) => valideProduit(SCHEMAS[segment], fiche, options);
 
 /* ------------------------------------------------------------------ *
  * Faux modeles Mongoose : juste ce que les routes utilisent
@@ -428,10 +428,13 @@ test('creation, modification et suppression avec un jeton valide', async () => {
  * Controles d'ecriture : memes regles que l'importateur
  * ------------------------------------------------------------------ */
 
-const source = extrait => ({
+// Origine renseignée par défaut : depuis la phase 2, toute mesure écrite
+// par l'API doit la déclarer.
+const source = (extrait, qualification = { origine: 'constructeur' }) => ({
   url: 'https://www.notebookcheck.net/fiche.html',
   releve_le: '2026-10-30',
   extrait,
+  ...qualification,
 });
 const AUTH = () => ({ Authorization: `Bearer ${jeton()}` });
 
@@ -478,6 +481,21 @@ test('une creation refuse un champ inconnu du modele et une valeur hors plage', 
   const { erreurs } = await r.json();
   assert.ok(erreurs.some(e => /prix_eur : champ inconnu/.test(e)));
   assert.ok(erreurs.some(e => /^max_freq_ghz :/.test(e)));
+});
+
+test('une creation sans origine est refusee (phase 2)', async () => {
+  const r = await apiAuth.appel('/api/cpus', {
+    method: 'POST',
+    headers: AUTH(),
+    body: {
+      name: 'Sans origine',
+      brand: 'AMD',
+      cores: 24,
+      provenance: { cores: source('Total Cores 24', {}) },
+    },
+  });
+  assert.strictEqual(r.status, 400);
+  assert.match((await r.json()).erreurs.join(' '), /cores : origine obligatoire/);
 });
 
 test('une creation prouvee est acceptee', async () => {

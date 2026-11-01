@@ -28,7 +28,7 @@ function champsMesures(Model) {
  * Controle un produit du fichier avant tout contact avec la base.
  * @returns {string[]} la liste des motifs de refus, vide si le produit passe.
  */
-function valideProduit(Model, produit) {
+function valideProduit(Model, produit, { exiger = false } = {}) {
   const erreurs = [];
 
   if (!produit || typeof produit !== 'object') return ["entree qui n'est pas un objet"];
@@ -63,7 +63,11 @@ function valideProduit(Model, produit) {
   erreurs.push(...controleProvenance(champsMesures(Model), produit));
   // Origine, protocole, version, archive : facultatifs, mais valables s'ils
   // sont donnes. `modelName` (« Laptop ») designe la categorie dans criteres.js.
-  erreurs.push(...controleQualification(criteresDe(Model.modelName.toLowerCase()), produit));
+  // Phases 2 et 3 : sur les mesures ÉCRITES (`exiger` : true, ou la liste
+  // des champs écrits), origine et protocole deviennent obligatoires.
+  erreurs.push(
+    ...controleQualification(criteresDe(Model.modelName.toLowerCase()), produit, { exiger })
+  );
 
   return erreurs;
 }

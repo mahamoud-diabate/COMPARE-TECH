@@ -23,6 +23,7 @@ import {
   equivalents,
   resolveType as resolveTypePartage,
 } from '../../../shared/criteres.js';
+import { mesureUtilisable } from '../../../shared/usages.js';
 
 /*
  * Les trois aides ci-dessous lisent l'unité, le sens de lecture et le plafond
@@ -257,14 +258,27 @@ export function formatValue(value, unit) {
 }
 
 /**
+ * Valeur d'un produit à comparer aux autres, ou null.
+ *
+ * Avec le type, une valeur relevée avec un autre test que la référence du
+ * critère est écartée (phase 3 : deux tests différents ne se comparent pas) ;
+ * elle reste affichée, mais ne gagne rien et n'est battue par rien.
+ */
+function valeurComparable(produit, key, type) {
+  const brute = toNumber(produit?.[key]);
+  if (brute === null || !type || !produit) return brute;
+  return mesureUtilisable({ ...produit, [key]: brute }, type, key);
+}
+
+/**
  * Index du produit gagnant sur une ligne, ou -1.
  * Renvoie -1 dès qu'un autre produit est ÉQUIVALENT au meilleur (moins de
  * 3 % d'écart, voir `equivalents`) : surligner une égalité de fait ferait
  * croire à un avantage. L'appelant ne l'appelle que pour une ligne
  * `departage`.
  */
-export function winnerIndex(products, key, invert = false) {
-  const values = products.map(p => toNumber(p?.[key]));
+export function winnerIndex(products, key, invert = false, type = null) {
+  const values = products.map(p => valeurComparable(p, key, type));
   const present = values.filter(v => v !== null && v > 0);
   if (present.length < 2) return -1;
 
@@ -291,8 +305,8 @@ export function buildKeyDifferences(a, b, productType) {
   const result = { a: [], b: [] };
 
   (KEY_METRICS[type] || []).forEach(({ key, label, unit, invert }) => {
-    const va = toNumber(a[key]);
-    const vb = toNumber(b[key]);
+    const va = valeurComparable(a, key, type);
+    const vb = valeurComparable(b, key, type);
     if (va === null || vb === null || va <= 0 || vb <= 0 || va === vb) return;
     if (equivalents(va, vb)) return;
 
@@ -338,7 +352,7 @@ export function buildStrengths(products, productType) {
     const lines = [];
 
     metrics.forEach(({ key, label, unit, invert }) => {
-      const values = products.map(p => toNumber(p?.[key]));
+      const values = products.map(p => valeurComparable(p, key, type));
       const mine = values[index];
       if (mine === null || mine <= 0) return;
 

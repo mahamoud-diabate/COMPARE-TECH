@@ -322,3 +322,18 @@ test('buildKeyDifferences et buildStrengths avantagent la puissance annoncée la
   assert.deepEqual(sMoyen, []);
   assert.deepEqual(sGourmand, []);
 });
+
+test('phase 3 : deux tests différents ne désignent pas de gagnant', () => {
+  const src = protocole => ({
+    url: 'https://x.org',
+    releve_le: '2026-11-01',
+    extrait: 'x',
+    protocole,
+  });
+  const a = { geekbench_single: 3400, provenance: { geekbench_single: src('geekbench-6') } };
+  const b = { geekbench_single: 1900, provenance: { geekbench_single: src('geekbench-5') } };
+  // Sans le type, comparaison brute (compatibilité) ; avec, Geekbench 5 est écarté.
+  assert.equal(winnerIndex([a, b], 'geekbench_single'), 0);
+  assert.equal(winnerIndex([a, b], 'geekbench_single', false, 'cpu'), -1);
+  assert.deepEqual(buildKeyDifferences(a, b, 'cpu'), { a: [], b: [] });
+});

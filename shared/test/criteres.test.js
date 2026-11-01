@@ -169,7 +169,12 @@ test('chaque protocole cité par un critère est déclaré, et seuls les tests e
 
 test('un protocole porte sa version majeure dans son identifiant', () => {
   for (const id of Object.keys(PROTOCOLES)) {
-    if (/geekbench|antutu/.test(id)) assert.match(id, /-\d+$/, id);
+    // Un protocole nommé d'après le test porte sa version ; un protocole « de
+    // source » (notebookcheck-…, nanoreview-…) dit justement qu'on l'ignore.
+    if (/^(geekbench|antutu)/.test(id)) assert.match(id, /-\d+$/, id);
+    else if (/^(notebookcheck|nanoreview)-(geekbench|time-spy)/.test(id)) {
+      assert.match(PROTOCOLES[id], /non précisée/, id);
+    }
   }
 });
 

@@ -63,7 +63,7 @@ function SourcesMarche({ produits, productType }) {
               <tbody>
                 {lignes.map(ligne => {
                   const gagnant = ligne.departage
-                    ? winnerIndex(produits, ligne.key, ligne.invert)
+                    ? winnerIndex(produits, ligne.key, ligne.invert, resolveType(productType))
                     : -1;
                   return (
                     <tr key={ligne.key}>

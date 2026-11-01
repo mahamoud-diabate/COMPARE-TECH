@@ -80,10 +80,11 @@ rejetée.
 | `releve_le` | La date du jour, format `AAAA-MM-JJ`                                                      |
 | `extrait`   | La ligne où tu as lu la valeur, recopiée telle quelle                                     |
 
-### Qualifier la valeur : origine et test (recommandé)
+### Qualifier la valeur : origine et test (obligatoire)
 
-Quatre champs de plus, **facultatifs pour l'instant**, mais refusés s'ils sont
-faux. Remplis-les chaque fois que la page te permet de le faire sans deviner.
+Quatre champs de plus. **`origine` est obligatoire pour toute mesure, et
+`protocole` pour tout benchmark ou mesure de laboratoire** : l'import refuse
+une fiche qui ne les porte pas. `version` et `archive` restent facultatifs.
 
 | Champ       | Contenu                                                                                                                                                                             |
 | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -95,16 +96,20 @@ faux. Remplis-les chaque fois que la page te permet de le faire sans deviner.
 Protocoles acceptés (liste complète et à jour : `PROTOCOLES` dans
 `shared/criteres.js`) :
 
-| Champ                                 | Protocoles, le premier étant la référence                                                               |
-| ------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| `geekbench_single`, `geekbench_multi` | `geekbench-6`, `geekbench-5`                                                                            |
-| `benchmark_3dmark`                    | `3dmark-time-spy-graphics`, `3dmark-time-spy`, `3dmark-time-spy-extreme-graphics`, `3dmark-steel-nomad` |
-| `antutu_score`                        | `antutu-11`, `antutu-10`                                                                                |
-| `battery_life_hours`                  | `notebookcheck-wifi`, `annonce-constructeur`                                                            |
-| `display_brightness_nits`             | `notebookcheck-luminance-moyenne`, `annonce-constructeur`                                               |
+| Champ                                 | Protocoles, le premier étant la référence                                                                                      |
+| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `geekbench_single`, `geekbench_multi` | `geekbench-6`, `geekbench-5`                                                                                                   |
+| `benchmark_3dmark`                    | `nanoreview-time-spy`, `3dmark-time-spy-graphics`, `3dmark-time-spy`, `3dmark-time-spy-extreme-graphics`, `3dmark-steel-nomad` |
+| `geekbench_multi` (portables)         | `notebookcheck-geekbench`, `geekbench-6`, `geekbench-5`                                                                        |
+| `antutu_score`                        | `antutu-11`, `antutu-10`                                                                                                       |
+| `battery_life_hours`                  | `notebookcheck-wifi`, `annonce-constructeur`                                                                                   |
+| `display_brightness_nits`             | `notebookcheck-luminance-moyenne`, `annonce-constructeur`                                                                      |
 
 **Ne devine jamais un protocole.** « Time Spy 36309 » ne dit pas s'il s'agit du
-score graphique ou du score global : dans ce cas, laisse `protocole` vide. Une
+score graphique ou du score global : prends alors le **protocole de source**
+(`nanoreview-time-spy`), qui dit exactement cela. Même chose pour un Geekbench
+sans version chez Notebookcheck (`notebookcheck-geekbench`). Si aucun protocole
+de la liste ne décrit honnêtement la mesure, ne la relève pas. Une
 caractéristique de fiche technique (cœurs, Go, GHz) ne prend **pas** de
 protocole : elle ne sort d'aucun test.
 

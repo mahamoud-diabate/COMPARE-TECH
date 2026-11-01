@@ -95,6 +95,13 @@ export const PROTOCOLES = Object.freeze({
   'geekbench-5': 'Geekbench 5',
   'cinebench-2024': 'Cinebench 2024',
   'nanoreview-fps-ultra': 'NanoReview, moyenne de jeux en réglages Ultra',
+  // Protocoles « de source » : le test est connu, sa variante exacte non. La
+  // source ne dit pas si son Time Spy est le score graphique ou global, ni
+  // quelle version de Geekbench elle a lancée. Plutôt que de deviner, on nomme
+  // ce qu'on sait : même source, même libellé, donc comparables entre eux, et
+  // jamais avec une variante précise.
+  'nanoreview-time-spy': '3DMark Time Spy publié par NanoReview (variante non précisée)',
+  'notebookcheck-geekbench': 'Geekbench mesuré par Notebookcheck (version non précisée)',
   '3dmark-time-spy-graphics': '3DMark Time Spy (score graphique)',
   '3dmark-time-spy': '3DMark Time Spy (score global)',
   '3dmark-time-spy-extreme-graphics': '3DMark Time Spy Extreme (score graphique)',
@@ -168,7 +175,9 @@ export const CRITERES = Object.freeze({
     c('benchmark_3dmark', {
       nature: 'benchmark',
       plafond: 35000,
+      // Référence : la mesure dont dispose tout le catalogue (octobre 2026).
       protocoles: [
+        'nanoreview-time-spy',
         '3dmark-time-spy-graphics',
         '3dmark-time-spy',
         '3dmark-time-spy-extreme-graphics',
@@ -197,7 +206,11 @@ export const CRITERES = Object.freeze({
       plafond: 20,
       protocoles: ['notebookcheck-wifi', 'annonce-constructeur'],
     }),
-    c('geekbench_multi', { nature: 'benchmark', plafond: 26000, protocoles: GEEKBENCH }),
+    c('geekbench_multi', {
+      nature: 'benchmark',
+      plafond: 26000,
+      protocoles: ['notebookcheck-geekbench', ...GEEKBENCH],
+    }),
   ]),
 
   telephone: Object.freeze([

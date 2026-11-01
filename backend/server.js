@@ -51,7 +51,7 @@ const { app, allowedOrigins } = creeApp({
   modeles,
   User,
   // Memes regles que l'importateur : provenance prouvee, champs connus, plages.
-  controle: (segment, fiche) => valideProduit(modeles[segment], fiche),
+  controle: (segment, fiche, options) => valideProduit(modeles[segment], fiche, options),
   aiModel,
   baseConnectee: () => mongoose.connection.readyState === 1,
 });

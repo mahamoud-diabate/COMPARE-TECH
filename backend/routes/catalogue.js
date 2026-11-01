@@ -11,6 +11,7 @@
 const { lecturePaginee } = require('../pagination');
 const { CHAMPS_MARCHE, resumeMarche } = require('../marche');
 const { SLUG_VALIDE, estIdentifiant, estReference } = require('../references');
+const { criteresDe, resolveType } = require('../../shared/criteres.js');
 
 /*
  * Resume « dans le marche » : distribution de chaque critere sur toute la
@@ -33,7 +34,9 @@ function creeLectureMarche() {
     // Projection reduite aux criteres : un catalogue de 10 000 fiches ne fait
     // transiter que les quelques nombres utiles, pas les noms, images et
     // descriptions.
-    const projection = champs.map(champ => champ.key).join(' ');
+    // La provenance suit : seules les valeurs relevées avec le test de
+    // référence du critère entrent dans le résumé (phase 3).
+    const projection = [...champs.map(champ => champ.key), 'provenance'].join(' ');
     const [documents, total] = await Promise.all([
       // `.lean()` ici, contrairement a la route de liste : le plugin
       // `catalogue` ne convertit que des mesures stockees en texte, et
@@ -43,10 +46,29 @@ function creeLectureMarche() {
       Model.estimatedDocumentCount(),
     ]);
 
-    const resume = resumeMarche(documents, champs, total);
+    const resume = resumeMarche(
+      documents.map(d => referenceSeule(d, segment)),
+      champs,
+      total
+    );
     cacheMarche.set(segment, { resume, expire: Date.now() + DUREE_CACHE_MARCHE });
     return resume;
   };
+}
+
+/**
+ * Retire d'un document les valeurs relevées avec un autre test que la
+ * référence de leur critère : elles s'affichent sur la fiche, mais ne se
+ * comparent pas aux autres (docs/PROPOSITION-MESURE.md, règle 4.3).
+ */
+function referenceSeule(doc, segment) {
+  const type = resolveType(segment);
+  const copie = { ...doc };
+  for (const cr of criteresDe(type)) {
+    const protocole = doc.provenance && doc.provenance[cr.key]?.protocole;
+    if (protocole && cr.protocoles.length && protocole !== cr.protocoles[0]) delete copie[cr.key];
+  }
+  return copie;
 }
 
 /** Reponse de refus : les motifs sont destines a l'utilisateur, en clair. */
@@ -224,7 +246,7 @@ function monteCollections(app, { modeles, fail, requireAuth, writeLimiter, contr
       // ecriture partielle laisserait la base dans un etat que personne n'a
       // demande, et obligerait a deviner quelles fiches sont passees.
       const erreurs = fiches.flatMap((fiche, i) =>
-        controle(segment, fiche).map(motif =>
+        controle(segment, fiche, { exiger: true }).map(motif =>
           lot ? `#${i + 1} (${nomDe(fiche)}) : ${motif}` : motif
         )
       );
@@ -257,7 +279,13 @@ function monteCollections(app, { modeles, fail, requireAuth, writeLimiter, contr
         if (maj.provenance || actuel.provenance) {
           maj.provenance = { ...(actuel.provenance || {}), ...(maj.provenance || {}) };
         }
-        const erreurs = controle(segment, { ...actuel, ...maj });
+        // Qualification exigée sur les seuls champs écrits : une fiche ancienne
+        // reste modifiable sans requalifier toutes ses autres mesures.
+        const ecrits = [
+          ...Object.keys(req.body || {}).filter(cle => cle !== 'provenance'),
+          ...Object.keys((req.body && req.body.provenance) || {}),
+        ];
+        const erreurs = controle(segment, { ...actuel, ...maj }, { exiger: ecrits });
         if (erreurs.length) return refuse(res, erreurs);
 
         const updated = await Model.findByIdAndUpdate(req.params.id, maj, {

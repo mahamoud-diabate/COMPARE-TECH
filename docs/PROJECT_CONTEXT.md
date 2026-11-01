@@ -265,14 +265,16 @@ Chaque mesure chiffrée porte une entrée dans `provenance`, indexée par le nom
 }
 ```
 
-Les champs obligatoires sont `url`, `releve_le` et `extrait`. Quatre champs **facultatifs** qualifient la valeur (phase 1 de [`PROPOSITION-MESURE.md`](PROPOSITION-MESURE.md)) :
+Les champs obligatoires sont `url`, `releve_le` et `extrait`. Quatre champs qualifient la valeur ([`PROPOSITION-MESURE.md`](PROPOSITION-MESURE.md)) ; **`origine` est obligatoire, et `protocole` aussi pour tout critère qui en a une liste** (phases 2 et 3, 1er novembre 2026) :
 
 - `origine` : `constructeur`, `laboratoire` ou `agregat` (liste `ORIGINES` de `shared/criteres.js`) ;
 - `protocole` : le test exact, pris dans la liste `protocoles` du critère, dont le premier est la référence. Une caractéristique de fiche technique n'en a pas ;
 - `version` : la sous-version du test, si la source la donne ;
 - `archive` : l'URL d'une copie archivée de la page.
 
-Absents, rien n'est exigé ; présents, ils sont contrôlés (`controleQualification`, `shared/provenance.js`), et une clé de source inconnue est refusée plutôt que perdue. Les règles de comparaison par protocole ne s'appliqueront qu'en phase 3, une fois le catalogue de test remplacé.
+Contrôle : `controleQualification` (`shared/provenance.js`), avec `exiger` : `true` pour l'import et la création (`POST`), la liste des champs écrits pour une modification (`PUT`), si bien qu'une fiche ancienne reste modifiable champ par champ. Une clé de source inconnue est refusée plutôt que perdue.
+
+**Comparaison (phase 3)** : seules les valeurs relevées avec le **protocole de référence** du critère (le premier de sa liste) se comparent : gagnant (`winnerIndex` avec le type), différences clés, avantages, rangs et pistes du comparatif, résumé `/marche`, note globale et notes par usage (`mesureUtilisable`, `shared/usages.js`). Une valeur d'un autre protocole s'affiche avec sa source, sans gagner ni être battue. Deux **protocoles de source** couvrent les cas où la source ne précise pas la variante : `nanoreview-time-spy` (3DMark des GPU) et `notebookcheck-geekbench` (Geekbench des portables).
 
 **Où c'est vérifié** : toute écriture passe par `valideProduit` (`backend/controles.js`), qui applique les trois contrôles hors ligne :
 
@@ -355,7 +357,9 @@ Pistes (`preparerPiste`) : `paliers` jusqu'à 12 valeurs distinctes, `points` ju
 
 Issues de l'étude stratégique. Ne pas les présenter comme existantes.
 
-1. **Provenance enrichie** : origine de la donnée (constructeur, laboratoire, agrégat), protocole exact du test, archive de la page source. Format décidé le 30 octobre 2026, phase 1 faite (champs facultatifs) ; restent les phases 2 et 3 : voir [`PROPOSITION-MESURE.md`](PROPOSITION-MESURE.md).
+---
+
+Toutes les règles décidées par l'étude sont implémentées au 1er novembre 2026. Restent des **mesures** à relever (endurance des téléphones, création GPU, jeu CPU et portables) et l'élargissement du catalogue.
 
 ---
 

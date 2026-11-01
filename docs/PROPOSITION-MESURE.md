@@ -1,6 +1,6 @@
 # Proposition : le format d'une mesure
 
-> **Statut : décidé le 30 octobre 2026. Phase 1 implémentée** (champs facultatifs, contrôlés s'ils sont présents) ; phases 2 et 3 à venir. Les cinq décisions sont en section 6, les phases en section 5.
+> **Statut : décidé le 30 octobre 2026 ; phases 1, 2 et 3 implémentées** (1er novembre 2026). Origine obligatoire sur toute mesure écrite, protocole obligatoire pour tout critère qui en a ; comparaisons, rangs, résumé du marché et notes limités au protocole de référence de chaque critère. Les cinq décisions sont en section 6, les phases en section 5.
 >
 > Rédigé le 30 octobre 2026, à partir du code réel (`shared/criteres.js`, `backend/models/catalogue.js`, `shared/provenance.js`) et de l'étude stratégique.
 
@@ -139,7 +139,7 @@ C'est le point qui change le comportement du site, et la vraie raison de ce trav
 | 2. Obligatoires pour les nouvelles | `import.js` et l'API exigent `origine` (et `protocole` pour un benchmark) sur toute mesure **nouvelle ou modifiée**.                                            | Inchangées tant qu'on n'y touche pas                                     |
 | 3. Obligatoires partout            | Une fiche sans ces champs est refusée. Les règles de comparaison de 4.3 s'appliquent.                                                                           | Le catalogue de test a été remplacé entre-temps (section 10 du contexte) |
 
-**Pas de rétro-remplissage automatique.** Déduire `protocole: "3dmark-time-spy-graphics"` de l'extrait « Time Spy 36309 » serait affirmer ce que la source ne dit pas. Les fiches de test restent sans protocole jusqu'à leur remplacement. Elles s'affichent normalement en phase 1 et 2, et sont remplacées avant la phase 3.
+**Pas de rétro-remplissage automatique.** Déduire `protocole: "3dmark-time-spy-graphics"` de l'extrait « Time Spy 36309 » serait affirmer ce que la source ne dit pas. Quand la source ne précise pas la variante (NanoReview pour Time Spy, Notebookcheck pour la version de Geekbench), on déclare un **protocole de source** (`nanoreview-time-spy`, `notebookcheck-geekbench`) : même source et même libellé, donc comparables entre eux, jamais avec une variante précise. C'est la solution retenue pour passer en phase 3 sans rien deviner.
 
 ## 6. Décisions (30 octobre 2026)
 

@@ -156,10 +156,28 @@ export function controleProvenance(champs, produit) {
  * @param {object} produit  le document, avec son objet `provenance`
  * @returns {string[]} les motifs de refus, vide si tout est valable
  */
-export function controleQualification(criteres, produit) {
+export function controleQualification(criteres, produit, { exiger = false } = {}) {
   const erreurs = [];
   const provenance = (produit && produit.provenance) || {};
   const parCle = new Map(criteres.map(cr => [cr.key, cr]));
+
+  // Phases 2 et 3 (docs/PROPOSITION-MESURE.md) : sur les mesures écrites,
+  // l'origine devient obligatoire, et le protocole pour tout critère qui en a.
+  // `exiger` vaut true (toutes les mesures), ou la liste des champs écrits.
+  const exiges = exiger === true ? criteres.map(cr => cr.key) : Array.isArray(exiger) ? exiger : [];
+  for (const champ of exiges) {
+    const cr = parCle.get(champ);
+    const valeur = produit ? produit[champ] : undefined;
+    if (!cr || vide(valeur)) continue;
+    const source = provenance[champ];
+    if (!source) continue; // déjà signalé par controleProvenance
+    if (vide(source.origine)) {
+      erreurs.push(`${champ} : origine obligatoire (${Object.keys(ORIGINES).join(', ')}).`);
+    }
+    if (cr.protocoles.length && vide(source.protocole)) {
+      erreurs.push(`${champ} : protocole obligatoire. Acceptés : ${cr.protocoles.join(', ')}.`);
+    }
+  }
 
   for (const [champ, source] of Object.entries(provenance)) {
     if (!source || typeof source !== 'object') continue;

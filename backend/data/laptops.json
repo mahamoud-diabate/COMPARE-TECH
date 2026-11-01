@@ -28,7 +28,8 @@
           "url": "https://www.notebookcheck.net/14-inch-business-laptop-with-excellent-battery-life-HP-EliteBook-8-G2a-14-AI-Review.1370559.0.html",
           "releve_le": "2026-10-29",
           "extrait": "HP EliteBook 8 G2a 14AMD Ryzen AI 7 450 13611 Points",
-          "origine": "laboratoire"
+          "origine": "laboratoire",
+          "protocole": "notebookcheck-geekbench"
         },
         "display_brightness_nits": {
           "url": "https://www.notebookcheck.net/14-inch-business-laptop-with-excellent-battery-life-HP-EliteBook-8-G2a-14-AI-Review.1370559.0.html",
@@ -72,7 +73,8 @@
           "url": "https://www.notebookcheck.net/AMD-Strix-Halo-with-32-GB-RAM-for-1899-Asus-ProArt-PX13-2026-Convertible-Review.1352377.0.html",
           "releve_le": "2026-10-29",
           "extrait": "Asus ProArt PX13 HN7306EA Ryzen AI MAX+ 388AMD Ryzen AI Max+ 388 14915 Points",
-          "origine": "laboratoire"
+          "origine": "laboratoire",
+          "protocole": "notebookcheck-geekbench"
         },
         "battery_life_hours": {
           "url": "https://www.notebookcheck.net/AMD-Strix-Halo-with-32-GB-RAM-for-1899-Asus-ProArt-PX13-2026-Convertible-Review.1352377.0.html",
@@ -110,7 +112,8 @@
           "url": "https://www.notebookcheck.net/Excellent-business-laptop-with-64-GB-RAM-Lenovo-ThinkPad-T14s-Gen-7-AMD-Review.1328170.0.html",
           "releve_le": "2026-10-29",
           "extrait": "Lenovo ThinkPad T14s Gen 7 21YW0022GEAMD Ryzen AI 7 PRO 450 13439 Points",
-          "origine": "laboratoire"
+          "origine": "laboratoire",
+          "protocole": "notebookcheck-geekbench"
         },
         "display_brightness_nits": {
           "url": "https://www.notebookcheck.net/Excellent-business-laptop-with-64-GB-RAM-Lenovo-ThinkPad-T14s-Gen-7-AMD-Review.1328170.0.html",
@@ -155,7 +158,8 @@
           "url": "https://www.notebookcheck.net/Flagship-business-laptop-with-almost-24-hours-of-battery-life-Lenovo-ThinkPad-X1-Carbon-Gen-14-Review.1332558.0.html",
           "releve_le": "2026-10-29",
           "extrait": "Lenovo ThinkPad X1 Carbon Gen 14 21V70075GEIntel Core Ultra 5 325 11038 Points",
-          "origine": "laboratoire"
+          "origine": "laboratoire",
+          "protocole": "notebookcheck-geekbench"
         },
         "display_brightness_nits": {
           "url": "https://www.notebookcheck.net/Flagship-business-laptop-with-almost-24-hours-of-battery-life-Lenovo-ThinkPad-X1-Carbon-Gen-14-Review.1332558.0.html",
@@ -200,7 +204,8 @@
           "url": "https://www.notebookcheck.net/Gaming-Monster-with-4K-Mini-LED-RTX-5090-and-128-GB-RAM-Asus-ROG-Strix-SCAR-18-G835LXG-Review.1351131.0.html",
           "releve_le": "2026-10-29",
           "extrait": "Asus ROG Strix Scar 18 G835LXGIntel Core Ultra 9 290HX Plus 22850 Points",
-          "origine": "laboratoire"
+          "origine": "laboratoire",
+          "protocole": "notebookcheck-geekbench"
         },
         "display_brightness_nits": {
           "url": "https://www.notebookcheck.net/Gaming-Monster-with-4K-Mini-LED-RTX-5090-and-128-GB-RAM-Asus-ROG-Strix-SCAR-18-G835LXG-Review.1351131.0.html",
@@ -245,7 +250,8 @@
           "url": "https://www.notebookcheck.net/MacBook-Neo-rival-with-Intel-Wildcat-Lake-for-449-Chuwi-UniBook-Laptop-Review.1360578.0.html",
           "releve_le": "2026-10-29",
           "extrait": "Chuwi UniBookIntel Core 3 304 5987 Points",
-          "origine": "laboratoire"
+          "origine": "laboratoire",
+          "protocole": "notebookcheck-geekbench"
         },
         "display_brightness_nits": {
           "url": "https://www.notebookcheck.net/MacBook-Neo-rival-with-Intel-Wildcat-Lake-for-449-Chuwi-UniBook-Laptop-Review.1360578.0.html",
@@ -290,7 +296,8 @@
           "url": "https://www.notebookcheck.net/Snapdragon-X2-Plus-is-much-faster-Microsoft-Surface-Laptop-13-8-2026-Review.1334131.0.html",
           "releve_le": "2026-10-29",
           "extrait": "Microsoft Surface Laptop 8 13.8Qualcomm Snapdragon X2 Plus X2P-64-100 14277 Points",
-          "origine": "laboratoire"
+          "origine": "laboratoire",
+          "protocole": "notebookcheck-geekbench"
         },
         "display_brightness_nits": {
           "url": "https://www.notebookcheck.net/Snapdragon-X2-Plus-is-much-faster-Microsoft-Surface-Laptop-13-8-2026-Review.1334131.0.html",
@@ -334,7 +341,8 @@
           "url": "https://www.notebookcheck.net/Still-one-of-the-fastest-and-quietest-gaming-laptops-Razer-Blade-18-2026-Review.1338818.0.html",
           "releve_le": "2026-10-29",
           "extrait": "Razer Blade 18 2026Intel Core Ultra 9 290HX Plus 20962 Points",
-          "origine": "laboratoire"
+          "origine": "laboratoire",
+          "protocole": "notebookcheck-geekbench"
         },
         "battery_life_hours": {
           "url": "https://www.notebookcheck.net/Still-one-of-the-fastest-and-quietest-gaming-laptops-Razer-Blade-18-2026-Review.1338818.0.html",

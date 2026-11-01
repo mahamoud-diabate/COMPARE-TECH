@@ -95,3 +95,28 @@ test('une caractéristique de fiche technique ne prend pas de protocole', () => 
   };
   assert.match(controleQualification(LAPTOP, ram)[0], /caractéristique de fiche technique/);
 });
+
+// --- Phases 2 et 3 : qualification exigée -----------------------------------
+
+test('exiger : origine obligatoire partout, protocole pour les critères qui en ont', () => {
+  const portable = {
+    ram_gb: 32,
+    battery_life_hours: 12,
+    provenance: {
+      ram_gb: source('Memory 32 GB'),
+      battery_life_hours: source('WiFi Websurfing 12h 0min'),
+    },
+  };
+  const motifs = controleQualification(LAPTOP, portable, { exiger: true }).join(' | ');
+  assert.match(motifs, /ram_gb : origine obligatoire/);
+  assert.match(motifs, /battery_life_hours : origine obligatoire/);
+  assert.match(motifs, /battery_life_hours : protocole obligatoire/);
+  assert.doesNotMatch(motifs, /ram_gb : protocole/, 'une caractéristique n’a pas de test');
+
+  // Sans exigence (fiches anciennes relues), rien n'est réclamé.
+  assert.deepEqual(controleQualification(LAPTOP, portable), []);
+  // Exigence limitée aux champs écrits : ram_gb seul.
+  assert.deepEqual(controleQualification(LAPTOP, portable, { exiger: ['ram_gb'] }), [
+    'ram_gb : origine obligatoire (constructeur, laboratoire, agregat).',
+  ]);
+});

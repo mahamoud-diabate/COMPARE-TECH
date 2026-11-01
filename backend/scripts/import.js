@@ -387,7 +387,9 @@ async function main() {
   const refuses = [];
   const retenus = [];
   for (const produit of produits) {
-    const erreurs = valideProduit(Model, produit);
+    // Un fichier d'import est la source complète d'une catégorie : toutes ses
+    // mesures doivent être qualifiées (origine, protocole).
+    const erreurs = valideProduit(Model, produit, { exiger: true });
     if (erreurs.length) refuses.push({ produit, erreurs });
     else retenus.push(produit);
   }

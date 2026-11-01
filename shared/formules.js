@@ -23,7 +23,7 @@
  */
 
 import { resolveType } from './criteres.js';
-import { BAREME } from './usages.js';
+import { BAREME, mesureUtilisable } from './usages.js';
 
 const terme = (type, key, label, poids) => {
   const reference = BAREME.references[type]?.[key];
@@ -87,8 +87,9 @@ export function explainScore(product, productType) {
   }
 
   const termes = formule.termes.map(t => {
-    const valeur = Number(product[t.key]);
-    const mesuree = Number.isFinite(valeur) && valeur > 0 ? valeur : null;
+    // Une mesure relevée avec un autre test que la référence du critère ne
+    // compte pas : deux tests différents ne se comparent pas.
+    const mesuree = mesureUtilisable(product, type, t.key);
     const indice = mesuree === null ? null : (mesuree / t.reference) * 100;
     return { ...t, valeur: mesuree, indice };
   });

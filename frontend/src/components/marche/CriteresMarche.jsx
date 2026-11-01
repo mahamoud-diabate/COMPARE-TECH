@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { toNumber, formatValue, winnerIndex } from '../../utils/specs';
+import { formatValue, winnerIndex, resolveType } from '../../utils/specs';
+import { mesureUtilisable } from '../../../../shared/usages.js';
 import { criteresMarche, classer, texteRang, preparerPiste, SERIES } from '../../utils/marche';
 import { Glyphe, RepereSvg } from './Repere';
 
@@ -116,9 +117,13 @@ function Piste({ piste }) {
 function CriteresMarche({ produits, catalogue, productType, libelleCategorie }) {
   const [ecartsSeulement, setEcartsSeulement] = useState(false);
   const criteres = criteresMarche(productType);
+  const type = resolveType(productType);
+  // Phase 3 : seules les valeurs du test de référence se comparent et se
+  // situent dans le marché.
+  const comparable = (p, key) => mesureUtilisable(p, type, key);
 
   const lignes = criteres.map(critere => {
-    const valeurs = produits.map(p => toNumber(p[critere.key]));
+    const valeurs = produits.map(p => comparable(p, critere.key));
     const presentes = valeurs.filter(v => v !== null && v > 0);
     const ecart =
       presentes.length >= 2
@@ -176,11 +181,11 @@ function CriteresMarche({ produits, catalogue, productType, libelleCategorie }) 
 
       <div className="ct-marche-lignes" style={{ '--ct-nb-produits': produits.length }}>
         {visibles.map(({ critere, valeurs, presentes }) => {
-          const valeursCatalogue = catalogue.map(p => p[critere.key]);
+          const valeursCatalogue = catalogue.map(p => comparable(p, critere.key));
           const piste = preparerPiste(valeursCatalogue, valeurs, critere.invert);
           // Une spec papier (fréquence, cœurs, threads) n'a jamais de gagnant.
           const gagnant = critere.departage
-            ? winnerIndex(produits, critere.key, critere.invert)
+            ? winnerIndex(produits, critere.key, critere.invert, type)
             : -1;
           const enTeteGroupe = critere.groupe !== groupePrecedent;
           groupePrecedent = critere.groupe;
